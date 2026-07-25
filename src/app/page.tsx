@@ -1,65 +1,89 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
+import BackgroundEffects from "@/components/BackgroundEffects";
+import Counter from "@/components/Counter";
+import MusicPlayer from "@/components/MusicPlayer";
+import AboutSofi from "@/components/AboutSofi";
+import Albums from "@/components/Albums";
 
 export default function Home() {
+  // 08.07.2026 - July 8th, 2026
+  const startDate = new Date(2026, 6, 8, 0, 0, 0);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen w-full relative flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden font-sans">
+      <BackgroundEffects />
+
+      <div className="z-10 flex flex-col items-center w-full max-w-4xl mx-auto">
+        {/* Floating Heart Icon */}
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1, delay: 0.2, type: "spring" }}
+          className="mb-8"
+        >
+          <motion.div
+            animate={{ 
+              scale: [1, 1.2, 1],
+              filter: ["drop-shadow(0 0 10px rgba(168,85,247,0.5))", "drop-shadow(0 0 25px rgba(217,70,239,0.8))", "drop-shadow(0 0 10px rgba(168,85,247,0.5))"]
+            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Heart className="w-12 h-12 text-purple-400 fill-purple-400" />
+          </motion.div>
+        </motion.div>
+
+        {/* Title */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          className="text-center"
+        >
+          <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight mb-4 flex flex-wrap justify-center gap-x-4 items-center">
+            <span className="bg-clip-text text-transparent bg-linear-to-br from-white via-purple-100 to-purple-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">Axel</span>
+            <span className="text-4xl sm:text-5xl md:text-6xl text-purple-400 font-light italic">&</span>
+            <span className="bg-clip-text text-transparent bg-linear-to-br from-white via-purple-100 to-purple-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">Sofía</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="text-lg sm:text-xl md:text-2xl font-medium text-purple-200/80 tracking-widest uppercase mt-4 sm:mt-6"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            Desde el 8 de Julio de 2026
+          </motion.p>
+        </motion.div>
+
+        {/* Separator line */}
+        <motion.div 
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 1 }}
+          transition={{ duration: 1.5, delay: 1 }}
+          className="w-32 sm:w-64 h-px bg-linear-to-r from-transparent via-purple-500/50 to-transparent mt-10 mb-2"
+        />
+
+        {/* Counter Component */}
+        <Counter startDate={startDate} />
+      </div>
+
+      {/* Music Player Section */}
+      <div className="z-10 w-full mt-4 sm:mt-8">
+        <MusicPlayer />
+      </div>
+
+      {/* About Section */}
+      <div className="z-10 w-full mt-10">
+        <AboutSofi />
+      </div>
+
+      {/* Albums Section */}
+      <div className="z-10 w-full mt-10">
+        <Albums />
+      </div>
+    </main>
   );
 }
