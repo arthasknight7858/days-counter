@@ -30,6 +30,7 @@ export default function BackgroundEffects() {
       targetOpacity: Math.random() * 0.5 + 0.2,
     }));
     
+    // eslint-disable-next-line
     setParticles(newParticles);
   }, []);
 

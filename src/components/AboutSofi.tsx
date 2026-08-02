@@ -104,7 +104,7 @@ export default function AboutSofi() {
         className="relative bg-white/5 backdrop-blur-xl border-l-4 border-purple-500 rounded-r-3xl p-8 sm:p-12 shadow-[0_0_40px_rgba(168,85,247,0.1)]"
       >
         {/* Decorative quote mark */}
-        <div className="absolute top-4 left-6 text-6xl text-purple-500/20 font-serif leading-none select-none">"</div>
+        <div className="absolute top-4 left-6 text-6xl text-purple-500/20 font-serif leading-none select-none">&quot;</div>
         
         <div className="relative z-10 space-y-6 text-purple-50/90 text-lg sm:text-xl font-serif italic leading-relaxed">
           {letterParagraphs.map((paragraph, i) => (
