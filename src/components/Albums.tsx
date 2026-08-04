@@ -31,7 +31,7 @@ export default function Albums() {
         "sofi10.png", "sofi 11.png", "sofi12.png", "sofi 13.png", "sofi14.png", 
         "sofi 15.png", "sofi16.png", "sofi 17.png", "sofi 18.png", "sofi 19.png", 
         "sofi20.png", "sofi21.png", "sofi22.png", "sofi23.png", "sofi 24.png", 
-        "sofi 25.png", "sofi26.png", "sofi27.png"
+        "sofi 25.png", "sofi26.png", "sofi27.png", "sofi28.png"
       ]
     },
     {
