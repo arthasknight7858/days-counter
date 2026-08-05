@@ -51,8 +51,9 @@ export default function AboutSofi() {
 
   const letterParagraphs = [
     "Sofi, Mi amor...",
-    "Quiero decirte que te amo muchisimo, entraste a mi vida en el mejor momento posible y este ultimo mes a tu lado la he pasado como nunca, cada segundo contigo es tan valioso como el oro y conocerte hace 3 meses fue lo mejor que me ha podido pasar, con cada abrazo me aferro mas a ti y cada beso me hace sentir la persona mas afortunada del mundo, a pesar de estar rodeados siempre de muchas personas somos solo nosotros siempre, amo carita tierna, tu hermosa sonrisa, tus ojitos, tus labios, amo como eres conmigo, como me hablas, como me celas porque me amas, te amo simplemente a ti.",
-    "Gracias por permitirme ser parte de tu historia, por cada momento juntos, por ser mi lugar seguro seguro. Eres mi persona favorita en el mundo, mi \"bebesita\", y esto apenas es un mes de todo lo que nos falta por vivir Gracias por estar conmigo, te amo mucho mi vida, feliz primer mes juntos:3.",
+    "Quiero decirte que te amo muchisimo, entraste a mi vida en el mejor momento posible y este ultimo mes a tu lado la he pasado como nunca, cada segundo contigo es tan valioso como el oro y conocerte hace 3 meses fue lo mejor que me ha podido pasar, con cada abrazo me aferro mas a ti y cada beso me hace sentir la persona mas afortunada del mundo, a pesar de estar rodeados siempre de muchas personas somos solo nosotros siempre, amo tu carita tierna, tu hermosa sonrisa, tus ojitos, tus labios, amo como eres conmigo, como me hablas, como me celas porque me amas, te amo simplemente a ti.",
+    "Gracias por permitirme ser parte de tu historia, por cada momento juntos, por ser mi lugar seguro. Eres mi persona favorita en el mundo, mi \"bebesita\", y esto apenas es un mes de todo lo que nos falta por vivir, recuerda que siempre estaré para ti.",
+    "Gracias por estar conmigo, te amo mucho mi vida, feliz primer mes juntos:3.",
     "Te amo con toda mi alma, hoy y siempre."
   ];
 
