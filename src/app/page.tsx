@@ -7,6 +7,7 @@ import Counter from "@/components/Counter";
 import MusicPlayer from "@/components/MusicPlayer";
 import AboutSofi from "@/components/AboutSofi";
 import Albums from "@/components/Albums";
+import LettersAccordion from "@/components/LettersAccordion";
 
 export default function Home() {
   // 08.07.2026 - July 8th, 2026
@@ -31,7 +32,7 @@ export default function Home() {
             }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <Heart className="w-12 h-12 text-purple-400 fill-purple-400" />
+            <Heart className="w-12 h-12 text-purple-400 fill-purple-400 animate-heartbeat" />
           </motion.div>
         </motion.div>
 
@@ -78,6 +79,11 @@ export default function Home() {
       {/* About Section */}
       <div className="z-10 w-full mt-10">
         <AboutSofi />
+      </div>
+
+      {/* Letters Section */}
+      <div className="z-10 w-full mt-10">
+        <LettersAccordion />
       </div>
 
       {/* Albums Section */}

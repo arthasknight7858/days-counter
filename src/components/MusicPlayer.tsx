@@ -54,11 +54,11 @@ export default function MusicPlayer() {
         className="flex flex-col items-center"
       >
         <div className="flex items-center gap-3 mb-8">
-          <Heart className="w-5 h-5 text-purple-400 fill-purple-400 animate-pulse" />
+          <Heart className="w-5 h-5 text-purple-400 fill-purple-400 animate-heartbeat" />
           <h3 className="text-xl sm:text-2xl font-serif italic text-purple-200 tracking-wide text-center">
             Canción que me hace pensar en ti
           </h3>
-          <Heart className="w-5 h-5 text-purple-400 fill-purple-400 animate-pulse" />
+          <Heart className="w-5 h-5 text-purple-400 fill-purple-400 animate-heartbeat" />
         </div>
 
         <div className="bg-white/5 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 sm:p-8 w-full shadow-[0_10px_40px_rgba(168,85,247,0.15)] relative overflow-hidden group">
@@ -98,7 +98,7 @@ export default function MusicPlayer() {
             <div className="text-center w-full mb-8">
               <h4 className="text-2xl font-bold text-white mb-2 tracking-wide drop-shadow-md">THINGS YOU DO</h4>
               <p className="text-purple-300/90 font-medium tracking-widest uppercase text-sm flex items-center justify-center gap-2">
-                <Music className="w-4 h-4" /> Para mi amor
+                <Music className="w-4 h-4 animate-heartbeat" /> Para mi amor
               </p>
             </div>
 
@@ -129,7 +129,7 @@ export default function MusicPlayer() {
                   }
                 }}
               >
-                <SkipBack className="w-7 h-7 fill-current" />
+                <SkipBack className="w-7 h-7 fill-current animate-heartbeat" />
               </button>
               
               <button 
@@ -137,9 +137,9 @@ export default function MusicPlayer() {
                 className="w-16 h-16 flex items-center justify-center bg-linear-to-br from-purple-400 to-purple-600 text-white rounded-full shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-110 hover:shadow-[0_0_35px_rgba(168,85,247,0.7)] transition-all active:scale-95"
               >
                 {isPlaying ? (
-                  <Pause className="w-7 h-7 fill-current" />
+                  <Pause className="w-7 h-7 fill-current animate-heartbeat" />
                 ) : (
-                  <Play className="w-7 h-7 fill-current ml-1" />
+                  <Play className="w-7 h-7 fill-current ml-1 animate-heartbeat" />
                 )}
               </button>
               
@@ -151,7 +151,7 @@ export default function MusicPlayer() {
                   }
                 }}
               >
-                <SkipForward className="w-7 h-7 fill-current" />
+                <SkipForward className="w-7 h-7 fill-current animate-heartbeat" />
               </button>
             </div>
           </div>

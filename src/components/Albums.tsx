@@ -21,9 +21,9 @@ export default function Albums() {
       ]
     },
     {
-      id: "ella",
+      id: "sofi",
       icon: "💖",
-      title: "Ella",
+      title: "Sofi",
       folder: "Sofi",
       images: [
         "sofi.png", "sofi1.png", "sofi2.png", "sofi3.png", "sofi4.png", 
@@ -31,7 +31,19 @@ export default function Albums() {
         "sofi10.png", "sofi 11.png", "sofi12.png", "sofi 13.png", "sofi14.png", 
         "sofi 15.png", "sofi16.png", "sofi 17.png", "sofi 18.png", "sofi 19.png", 
         "sofi20.png", "sofi21.png", "sofi22.png", "sofi23.png", "sofi 24.png", 
-        "sofi 25.png", "sofi26.png", "sofi27.png", "sofi28.png"
+        "sofi 25.png", "sofi26.png", "sofi27.png", "sofi28.png", "sofi30.png",
+        "sofi31.png", "sofi32.png", "sofi33.png", "sofi34.png", "sofi35.png"
+      ]
+    },
+    {
+      id: "axel",
+      icon: "🧑",
+      title: "Axel",
+      folder: "axel",
+      images: [
+        "axel1.jpeg", "axel2.jpeg", "axel3.jpeg", "axel4.jpeg", "axel5.jpeg", 
+        "axel6.jpeg", "axel7.jpeg", "axel8.jpeg", "axel9.jpeg", "axel10.jpeg", 
+        "axel11.jpeg", "axel12.jpeg", "axel13.jpeg", "axel14.jpeg", "axel15.jpeg"
       ]
     },
     {
@@ -42,6 +54,16 @@ export default function Albums() {
       images: [
         "kukis 1.jpg", "kukis 2.jpg", "kukis 3.png", "kukis4.png", 
         "kukis5.jpg", "kukis 6.jpg", "kukis7.jpg"
+      ]
+    },
+    {
+      id: "jacobo",
+      icon: "🐶",
+      title: "Jacobo",
+      folder: "jacobo",
+      images: [
+        "jacobo1.jpeg", "jacobo2.jpeg", "jacobo3.jpeg", "jacobo4.jpeg", "jacobo5.jpeg", 
+        "jacobo6.jpeg", "jacobo7.jpeg", "jacobo8.jpeg", "jacobo9.jpeg"
       ]
     },
     {
@@ -116,7 +138,7 @@ export default function Albums() {
                 className="w-full flex items-center justify-between p-5 sm:p-6 text-left transition-colors"
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-2xl sm:text-3xl">{album.icon}</span>
+                  <span className="text-2xl sm:text-3xl inline-block animate-heartbeat">{album.icon}</span>
                   <span className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
                     {album.title}
                   </span>
@@ -127,7 +149,7 @@ export default function Albums() {
                     animate={{ rotate: openAlbum === album.id ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <ChevronDown className="w-5 h-5 text-purple-400" />
+                    <ChevronDown className="w-5 h-5 text-purple-400 animate-heartbeat" />
                   </motion.div>
                 </div>
               </button>
@@ -185,7 +207,7 @@ export default function Albums() {
               className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all z-10"
               onClick={() => setLightbox(null)}
             >
-              <X className="w-6 h-6 sm:w-8 sm:h-8" />
+              <X className="w-6 h-6 sm:w-8 sm:h-8 animate-heartbeat" />
             </button>
 
             {/* Prev button */}
@@ -196,7 +218,7 @@ export default function Albums() {
                 setLightbox(prev => prev ? { ...prev, imageIndex: (prev.imageIndex - 1 + currentAlbum.images.length) % currentAlbum.images.length } : null);
               }}
             >
-              <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8" />
+              <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 animate-heartbeat" />
             </button>
 
             {/* Next button */}
@@ -207,7 +229,7 @@ export default function Albums() {
                 setLightbox(prev => prev ? { ...prev, imageIndex: (prev.imageIndex + 1) % currentAlbum.images.length } : null);
               }}
             >
-              <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8" />
+              <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 animate-heartbeat" />
             </button>
 
             {/* Image container */}
