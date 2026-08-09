@@ -18,7 +18,7 @@ export default function LettersAccordion() {
       title: "Carta del Primer Mes",
       date: "8 de Agosto de 2026",
       content: (
-        <div className="space-y-4 text-purple-100/90 leading-relaxed font-serif text-xl">
+        <div className="space-y-3 sm:space-y-4 text-purple-100/90 leading-relaxed font-serif text-base sm:text-lg">
           <p>Sofi, Mi amor...</p>
           <p>Quiero decirte que te amo muchisimo, entraste a mi vida en el mejor momento posible y este ultimo mes a tu lado la he pasado como nunca, cada segundo contigo es tan valioso como el oro y conocerte hace 3 meses fue lo mejor que me ha podido pasar, con cada abrazo me aferro mas a ti y cada beso me hace sentir la persona mas afortunada del mundo, a pesar de estar rodeados siempre de muchas personas somos solo nosotros siempre, amo tu carita tierna, tu hermosa sonrisa, tus ojitos, tus labios, amo como eres conmigo, como me hablas, como me celas porque me amas, te amo simplemente a ti.</p>
           <p>Gracias por permitirme ser parte de tu historia, por cada momento juntos, por ser mi lugar seguro. Eres mi persona favorita en el mundo, mi &quot;bebesita&quot;, y esto apenas es un mes de todo lo que nos falta por vivir, recuerda que siempre estaré para ti.</p>
@@ -112,8 +112,8 @@ export default function LettersAccordion() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                   >
-                    <div className="p-6 pt-2 border-t border-white/5 mx-6">
-                      <div className="bg-white/5 rounded-xl p-6 sm:p-8 relative">
+                    <div className="p-3 sm:p-6 pt-2 border-t border-white/5 mx-2 sm:mx-6">
+                      <div className="bg-white/5 rounded-xl p-4 sm:p-8 relative">
                         {/* Decorative quotes */}
                         <div className="absolute top-4 left-4 text-4xl text-pink-500/20 font-serif">&quot;</div>
                         <div className="absolute bottom-4 right-4 text-4xl text-pink-500/20 font-serif">&quot;</div>
