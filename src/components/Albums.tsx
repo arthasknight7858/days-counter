@@ -32,7 +32,7 @@ export default function Albums() {
         "sofi 15.png", "sofi16.png", "sofi 17.png", "sofi 18.png", "sofi 19.png", 
         "sofi20.png", "sofi21.png", "sofi22.png", "sofi23.png", "sofi 24.png", 
         "sofi 25.png", "sofi26.png", "sofi27.png", "sofi28.png", "sofi30.png",
-        "sofi31.png", "sofi32.png", "sofi33.png", "sofi34.png", "sofi35.png"
+        "sofi31.png", "sofi32.png", "sofi33.png", "sofi34.png", "sofi35.png", "sofi36.png"
       ]
     },
     {
@@ -74,6 +74,15 @@ export default function Albums() {
       images: [
         "beso1.png", "beso 2.png", "beso 3.png", "beso 4.png", 
         "beso 5.png", "beso 6.png", "beso 7.png", "beso 8.png", "besito.png"
+      ]
+    },
+    {
+      id: "anime",
+      icon: "🌸",
+      title: "Anime",
+      folder: "anime",
+      images: [
+        "anime1.jpeg"
       ]
     },
     {
