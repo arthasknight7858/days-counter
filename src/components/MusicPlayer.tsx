@@ -163,7 +163,7 @@ export default function MusicPlayer() {
 
           <div className="flex flex-col items-center relative z-10">
             {/* Album Cover with slide animation */}
-            <div className="relative w-48 h-48 sm:w-56 sm:h-56 mb-8 overflow-hidden rounded-full">
+            <div className="relative w-48 h-48 sm:w-56 sm:h-56 mb-8">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={currentIndex}
@@ -179,10 +179,11 @@ export default function MusicPlayer() {
                   transition={{ duration: 0.4, ease: "easeInOut" }}
                   className="absolute inset-0"
                 >
-                  <motion.div
-                    animate={{ rotate: isPlaying ? 360 : 0 }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                    className="w-full h-full rounded-full overflow-hidden border-4 border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.4)] relative"
+                  <div
+                    className={`w-full h-full rounded-full overflow-hidden border-4 border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.4)] relative ${
+                      isPlaying ? "animate-spin" : ""
+                    }`}
+                    style={{ animationDuration: "8s", animationTimingFunction: "linear" }}
                   >
                     <Image
                       src={currentSong.cover}
@@ -190,11 +191,11 @@ export default function MusicPlayer() {
                       fill
                       className="object-cover"
                     />
-                    {/* Vinyl hole */}
-                    <div className="absolute inset-0 m-auto w-12 h-12 bg-[#050505] rounded-full border-2 border-purple-500/30 flex items-center justify-center shadow-inner" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", position: "absolute" }}>
-                      <div className="w-3 h-3 bg-purple-500/50 rounded-full"></div>
+                    {/* Vinyl hole — centrado correctamente */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-[#050505] rounded-full border-2 border-purple-500/30 flex items-center justify-center shadow-inner">
+                      <div className="w-3 h-3 bg-purple-500/50 rounded-full" />
                     </div>
-                  </motion.div>
+                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
