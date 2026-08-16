@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, SkipForward, SkipBack, Heart, Music, ChevronDown } from "lucide-react";
@@ -14,6 +14,11 @@ const songs = [
   {
     title: "COME AROUND ME",
     file: "/music/Come Around Me.mp3",
+    cover: "/music/changes.jpg",
+  },
+  {
+    title: "INTENTIONS",
+    file: "/music/Intentions.mp3",
     cover: "/music/changes.jpg",
   },
   {
@@ -112,12 +117,12 @@ export default function MusicPlayer() {
 
   const handleNext = () => {
     setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % songs.length);
+    setCurrentIndex((prev: number) => (prev + 1) % songs.length);
   };
 
   const handlePrev = () => {
     setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + songs.length) % songs.length);
+    setCurrentIndex((prev: number) => (prev - 1 + songs.length) % songs.length);
   };
 
   const handleSongEnd = () => {
@@ -201,7 +206,7 @@ export default function MusicPlayer() {
             </div>
 
             {/* Song Info with slide animation */}
-            <div className="text-center w-full mb-6 min-h-[64px]">
+            <div className="text-center w-full mb-6 min-h-16">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={currentIndex}

@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
 
@@ -43,7 +43,8 @@ export default function Albums() {
       images: [
         "axel1.jpeg", "axel2.jpeg", "axel3.jpeg", "axel4.jpeg", "axel5.jpeg", 
         "axel6.jpeg", "axel7.jpeg", "axel8.jpeg", "axel9.jpeg", "axel10.jpeg", 
-        "axel11.jpeg", "axel12.jpeg", "axel13.jpeg", "axel14.jpeg", "axel15.jpeg"
+        "axel11.jpeg", "axel12.jpeg", "axel13.jpeg", "axel14.jpeg", "axel15.jpeg",
+        "axel16.jpeg", "axel17.jpeg", "axel18.jpeg"
       ]
     },
     {
@@ -73,7 +74,7 @@ export default function Albums() {
       folder: "besos",
       images: [
         "beso1.png", "beso 2.png", "beso 3.png", "beso 4.png", 
-        "beso 5.png", "beso 6.png", "beso 7.png", "beso 8.png", "besito.png"
+        "beso 5.png", "beso 6.png", "beso 7.png", "beso 8.png", "besito.png", "besote.jpeg"
       ]
     },
     {
@@ -88,10 +89,13 @@ export default function Albums() {
     {
       id: "xv",
       icon: "🎉",
-      title: "Imaginando fiesta de XV",
-      folder: "juntos",
+      title: "Tu fiesta de XV",
+      folder: "fiesta de XV",
       images: [
-        "xv.png", "xv2.png"
+        "xv.png", "xv2.png", "xv3.jpeg", "xv4.jpeg", "xv5.jpeg", 
+        "xv6.jpeg", "xv7.jpeg", "xv8.jpeg", "xv9.jpeg", "xv10.jpeg", 
+        "xv11.jpeg", "xv12.jpeg", "xv13.jpeg", "xv14.jpeg", "xv15.jpeg", 
+        "xv16.jpeg", "xv17.jpeg"
       ]
     }
   ];
@@ -103,10 +107,10 @@ export default function Albums() {
       if (!lightbox || !currentAlbum) return;
       if (e.key === "Escape") setLightbox(null);
       if (e.key === "ArrowRight") {
-        setLightbox(prev => prev ? { ...prev, imageIndex: (prev.imageIndex + 1) % currentAlbum.images.length } : null);
+        setLightbox((prev: { albumId: string, imageIndex: number } | null) => prev ? { ...prev, imageIndex: (prev.imageIndex + 1) % currentAlbum.images.length } : null);
       }
       if (e.key === "ArrowLeft") {
-        setLightbox(prev => prev ? { ...prev, imageIndex: (prev.imageIndex - 1 + currentAlbum.images.length) % currentAlbum.images.length } : null);
+        setLightbox((prev: { albumId: string, imageIndex: number } | null) => prev ? { ...prev, imageIndex: (prev.imageIndex - 1 + currentAlbum.images.length) % currentAlbum.images.length } : null);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -208,7 +212,7 @@ export default function Albums() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 sm:p-8 backdrop-blur-md"
+            className="fixed inset-0 z-100 flex items-center justify-center bg-black/90 p-4 sm:p-8 backdrop-blur-md"
             onClick={() => setLightbox(null)}
           >
             {/* Close button */}
@@ -222,9 +226,9 @@ export default function Albums() {
             {/* Prev button */}
             <button 
               className="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all z-10"
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 e.stopPropagation();
-                setLightbox(prev => prev ? { ...prev, imageIndex: (prev.imageIndex - 1 + currentAlbum.images.length) % currentAlbum.images.length } : null);
+                setLightbox((prev: { albumId: string, imageIndex: number } | null) => prev ? { ...prev, imageIndex: (prev.imageIndex - 1 + currentAlbum.images.length) % currentAlbum.images.length } : null);
               }}
             >
               <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 animate-heartbeat" />
@@ -233,9 +237,9 @@ export default function Albums() {
             {/* Next button */}
             <button 
               className="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all z-10"
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 e.stopPropagation();
-                setLightbox(prev => prev ? { ...prev, imageIndex: (prev.imageIndex + 1) % currentAlbum.images.length } : null);
+                setLightbox((prev: { albumId: string, imageIndex: number } | null) => prev ? { ...prev, imageIndex: (prev.imageIndex + 1) % currentAlbum.images.length } : null);
               }}
             >
               <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 animate-heartbeat" />
