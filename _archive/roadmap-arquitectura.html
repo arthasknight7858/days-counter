@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Map Arquitectura — Desde Cero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #1a1917;
+    --ink-2:     #3d3b36;
+    --ink-3:     #7a786f;
+    --paper:     #f7f5f0;
+    --paper-2:   #eeece6;
+    --paper-3:   #e3e0d8;
+    --rule:      #d4d1c8;
+
+    --p0: #2d6a4f;  --p0-bg: #d8f3dc;  --p0-mid: #74c69d;
+    --p1: #1d4e89;  --p1-bg: #dde9f8;  --p1-mid: #74a7d8;
+    --p2: #7b3f00;  --p2-bg: #fde8c8;  --p2-mid: #e09945;
+    --p3: #4a1d96;  --p3-bg: #ede9fe;  --p3-mid: #a78bfa;
+    --p4: #7f1d1d;  --p4-bg: #fee2e2;  --p4-mid: #f87171;
+
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans:  'DM Sans', system-ui, sans-serif;
+    --mono:  'DM Mono', monospace;
+
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 2px solid #3d3b36;
+  }
+  .header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.75rem 0;
+    flex-wrap: wrap;
+  }
+  .site-logo {
+    font-family: var(--serif);
+    font-size: 1.1rem; letter-spacing: 0.01em;
+    color: var(--paper);
+    flex: 1;
+  }
+  .site-logo span { color: var(--p0-mid); }
+  .nav-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .nav-pill {
+    font-size: 11px; font-weight: 500; padding: 4px 12px;
+    border-radius: 20px; border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7); cursor: pointer; text-decoration: none;
+    transition: all .2s; white-space: nowrap;
+  }
+  .nav-pill:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.3); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    color: var(--paper);
+    padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      90deg, transparent, transparent 60px,
+      rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 61px
+    ),
+    repeating-linear-gradient(
+      0deg, transparent, transparent 60px,
+      rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 61px
+    );
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+    color: var(--p0-mid); text-transform: uppercase; margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--p0-mid); }
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(2.5rem, 7vw, 5rem);
+    line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    max-width: 800px;
+  }
+  .hero h1 em { font-style: italic; color: var(--p0-mid); }
+  .hero-desc {
+    font-size: 1.1rem; color: rgba(255,255,255,0.65); max-width: 560px;
+    line-height: 1.7; margin-bottom: 2.5rem;
+  }
+  .hero-stats {
+    display: flex; gap: clamp(1.5rem, 4vw, 3rem); flex-wrap: wrap;
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: var(--serif); font-size: 2.2rem; color: var(--paper);
+    line-height: 1; display: block;
+  }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  /* ── NAV INDEX ── */
+  .phase-index {
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--rule);
+    padding: 1.25rem clamp(1.5rem, 5vw, 4rem);
+    overflow-x: auto;
+  }
+  .phase-index-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .index-label { font-size: 11px; color: var(--ink-3); font-weight: 500; white-space: nowrap; margin-right: 4px; }
+  .index-btn {
+    font-size: 12px; font-weight: 500; padding: 6px 14px;
+    border-radius: 20px; border: 1.5px solid var(--rule);
+    background: var(--paper); color: var(--ink-2); cursor: pointer;
+    text-decoration: none; white-space: nowrap; transition: all .2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .index-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+  .index-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── MAIN LAYOUT ── */
+  main { max-width: 1100px; margin: 0 auto; padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem); }
+
+  /* ── PHASE SECTION ── */
+  .phase-section { margin-bottom: 5rem; }
+  .phase-section:last-child { margin-bottom: 0; }
+
+  .phase-heading {
+    display: flex; align-items: flex-start; gap: 1rem;
+    margin-bottom: 2rem; padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--rule);
+  }
+  .phase-num {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    padding: 4px 10px; border-radius: 20px; border: 1.5px solid;
+    white-space: nowrap; margin-top: 6px;
+  }
+  .phase-title-block { flex: 1; }
+  .phase-title-block h2 {
+    font-family: var(--serif); font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.4rem;
+  }
+  .phase-subtitle { font-size: 13px; color: var(--ink-3); max-width: 520px; }
+
+  /* ── TOPIC CARDS ── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr));
+    gap: 1.25rem;
+  }
+
+  .topic-card {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: box-shadow .2s, border-color .2s;
+  }
+  .topic-card:hover { border-color: #bbb; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+
+  .card-top {
+    padding: 1.25rem 1.4rem 1rem;
+    border-bottom: 1px solid var(--paper-3);
+  }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.5rem; }
+  .card-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+  .card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-left: auto; }
+  .tag {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 3px 8px; border-radius: 20px; white-space: nowrap;
+  }
+  .tag-yt   { background: #fee2e2; color: #991b1b; }
+  .tag-book { background: #d8f3dc; color: #1a4731; }
+  .tag-soft { background: #dde9f8; color: #1d3a6e; }
+  .tag-prac { background: #fde8c8; color: #7b3f00; }
+  .tag-web  { background: #ede9fe; color: #4a1d96; }
+  .tag-key  { background: var(--ink); color: var(--paper); }
+
+  .card-title { font-size: 1rem; font-weight: 700; color: var(--ink); line-height: 1.3; margin-bottom: 0.35rem; }
+  .card-sub { font-size: 12.5px; color: var(--ink-3); }
+
+  .card-body { padding: 1.2rem 1.4rem; }
+
+  /* Resources */
+  .res-section + .res-section { margin-top: 1.25rem; }
+  .res-section-title {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-3);
+    margin-bottom: 0.6rem; padding-bottom: 5px;
+    border-bottom: 1px solid var(--paper-3);
+  }
+  .res-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .res-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 13px; color: var(--ink-2); line-height: 1.5;
+  }
+  .res-ico {
+    font-size: 15px; flex-shrink: 0; width: 22px;
+    text-align: center; margin-top: 1px;
+  }
+  .res-item a { color: var(--p1); text-decoration: underline; text-underline-offset: 2px; }
+  .res-item a:hover { color: var(--ink); }
+  .res-item strong { font-weight: 600; color: var(--ink); }
+
+  /* Tips */
+  .tips-block {
+    margin-top: 1.1rem; padding: 0.9rem 1rem;
+    background: var(--paper-2); border-radius: var(--radius);
+  }
+  .tips-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.5rem;
+  }
+  .tip-item {
+    font-size: 12.5px; color: var(--ink-2); padding: 4px 0;
+    border-bottom: 1px solid var(--paper-3); display: flex; gap: 8px;
+    align-items: flex-start;
+  }
+  .tip-item:last-child { border-bottom: none; }
+  .tip-ico { color: #2d6a4f; font-size: 13px; flex-shrink: 0; }
+
+  /* Highlight callout */
+  .callout {
+    border-left: 3px solid;
+    padding: 0.75rem 1rem; border-radius: 0 var(--radius) var(--radius) 0;
+    margin-top: 1rem; font-size: 13px;
+  }
+  .callout-warn { border-color: #e09945; background: #fdf3e3; color: #7b3f00; }
+  .callout-info { border-color: var(--p1-mid); background: #dde9f8; color: var(--p1); }
+  .callout-ok   { border-color: var(--p0-mid); background: #d8f3dc; color: var(--p0); }
+  .callout strong { font-weight: 600; }
+
+  /* Timeline card (fase 4 plan) */
+  .timeline { display: flex; flex-direction: column; gap: 0; margin-top: 0.5rem; }
+  .tl-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--paper-3);
+  }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-period {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    color: var(--ink-3); white-space: nowrap; padding-top: 3px;
+    min-width: 68px;
+  }
+  .tl-text { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+  .tl-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    margin-top: 5px; background: var(--rule);
+  }
+
+  /* ── NOTA YOUTUBE ESPECIAL ── */
+  .yt-note {
+    background: #fff; border: 1.5px solid #fca5a5;
+    border-radius: var(--radius-lg); padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .yt-note h3 { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--ink); }
+  .yt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+  @media (max-width: 540px) { .yt-grid { grid-template-columns: 1fr; } }
+  .yt-col h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+  .yt-col.yes h4 { color: #15803d; }
+  .yt-col.no  h4 { color: #b91c1c; }
+  .yt-col ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .yt-col ul li { font-size: 13px; color: var(--ink-2); display: flex; gap: 7px; }
+  .yt-channels { margin-top: 1rem; }
+  .yt-channels h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin-bottom: 0.6rem; }
+  .channel-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .channel-pill {
+    font-size: 12px; padding: 4px 12px; border-radius: 20px;
+    background: var(--paper-2); border: 1px solid var(--rule); color: var(--ink-2);
+  }
+  .channel-pill.en { border-color: var(--p1-mid); color: var(--p1); background: var(--p1-bg); }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    background: var(--ink); color: rgba(255,255,255,0.5);
+    padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+    text-align: center; font-size: 12.5px; margin-top: 5rem;
+  }
+  .site-footer strong { color: rgba(255,255,255,0.8); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .topics-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+    .phase-heading { flex-direction: column; gap: 0.5rem; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .site-header, .phase-index { position: static; }
+    body { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-logo">Arquitectura <span>desde cero</span></div>
+    <nav class="nav-pills">
+      <a class="nav-pill" href="#fase0">Fase 0</a>
+      <a class="nav-pill" href="#fase1">Software</a>
+      <a class="nav-pill" href="#fase2">Diseño</a>
+      <a class="nav-pill" href="#fase3">Renders</a>
+      <a class="nav-pill" href="#fase4">Carrera</a>
+      <a class="nav-pill" href="#fase5">Construcción</a>
+      <a class="nav-pill" href="#errores">Errores</a>
+      <a class="nav-pill" href="#concursos">Concursos</a>
+      <a class="nav-pill" href="#glosario">Glosario</a>
+      <a class="nav-pill" href="#recursos">Recursos</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Road Map completo</p>
+    <h1>Aprende<br><em>arquitectura</em><br>desde cero.</h1>
+    <p class="hero-desc">Todo lo que necesitas saber: qué estudiar, en qué orden, qué software, qué canales de YouTube, qué libros, y cómo construir una carrera real.</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">9</span>
+        <span class="stat-label">Secciones temáticas</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">28</span>
+        <span class="stat-label">Temas con recursos</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">100+</span>
+        <span class="stat-label">Recursos, trucos y canales</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">12</span>
+        <span class="stat-label">Meses hasta portafolio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDEX -->
+<div class="phase-index">
+  <div class="phase-index-inner">
+    <span class="index-label">Ir a →</span>
+    <a class="index-btn" href="#fase0"><span class="index-dot" style="background:var(--p0)"></span>Fundamentos</a>
+    <a class="index-btn" href="#fase1"><span class="index-dot" style="background:var(--p1)"></span>Software CAD</a>
+    <a class="index-btn" href="#fase2"><span class="index-dot" style="background:var(--p2)"></span>Proyecto</a>
+    <a class="index-btn" href="#fase3"><span class="index-dot" style="background:var(--p3)"></span>Renders</a>
+    <a class="index-btn" href="#fase4"><span class="index-dot" style="background:var(--p4)"></span>Carrera</a>
+    <a class="index-btn" href="#fase5"><span class="index-dot" style="background:#0f766e"></span>Construcción</a>
+    <a class="index-btn" href="#errores"><span class="index-dot" style="background:#b45309"></span>Errores comunes</a>
+    <a class="index-btn" href="#concursos"><span class="index-dot" style="background:#0369a1"></span>Concursos</a>
+    <a class="index-btn" href="#glosario"><span class="index-dot" style="background:#475569"></span>Glosario</a>
+    <a class="index-btn" href="#recursos"><span class="index-dot" style="background:#1a1917"></span>Recursos maestros</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MAIN -->
+<main>
+
+<!-- ──────────────────── FASE 0 ──────────────────── -->
+<section class="phase-section" id="fase0">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:var(--p0);color:var(--p0);background:var(--p0-bg)">Fase 0</span>
+    <div class="phase-title-block">
+      <h2 style="color:var(--p0)">Fundamentos y mentalidad</h2>
+      <p class="phase-subtitle">Antes de tocar software, construye la base intelectual y manual que sostiene todo lo demás.</p>
+    </div>
+  </div>
+
+  <div class="topics-grid">
+
+    <!-- Card 0.1 -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🧱</span>
+          <div class="card-tags">
+            <span class="tag tag-book">Inicio</span>
+            <span class="tag tag-yt">YouTube</span>
+          </div>
+        </div>
+        <div class="card-title">¿Qué estudia la arquitectura?</div>
+        <div class="card-sub">Historia del arte, teoría del espacio, geometría, escala humana, dibujo.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">▶ Canales de YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Arquisemana</strong> — Historia y cultura arquitectónica en español, muy didáctico.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>ArquiTerrazas</strong> — Análisis de proyectos y conceptos básicos para principiantes.</span></li>
+            <li class="res-item"><span class="res-ico">🇬🇧</span><span><strong>Architecture School</strong> (EN) — Explica qué hace un arquitecto en el día a día. Tiene subtítulos.</span></li>
+            <li class="res-item"><span class="res-ico">🇬🇧</span><span><strong>The B1M</strong> (EN) — Documentales de arquitectura modernos con visualizaciones excelentes.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">📖 Lectura esencial</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"La arquitectura como espacio"</strong> de Bruno Zevi — Lectura corta e imprescindible. Explica qué es el espacio en arquitectura.</span></li>
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Complejidad y contradicción en arquitectura"</strong> de Robert Venturi — Para cuando tengas base.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos y consejos</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Ve museos, plazas y edificios con ojos críticos. Pregúntate "¿por qué está construido así?" Lleva un cuaderno.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>No necesitas saber dibujar ni tener software para empezar esta fase. Solo curiosidad.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>ArchDaily.com</strong> es el portal de referencia mundial — explora un proyecto al día como rutina.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 0.2 -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">✏️</span>
+          <div class="card-tags">
+            <span class="tag tag-prac">Práctica diaria</span>
+            <span class="tag tag-key">Imprescindible</span>
+          </div>
+        </div>
+        <div class="card-title">Dibujo técnico a mano</div>
+        <div class="card-sub">Líneas, vistas ortogonales (planta, alzado, sección), escala, achurado, convenciones.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Dibujo técnico arquitectónico desde cero"</strong> — hay varias series completas en español muy bien explicadas.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Tutoriales Dibujo Técnico</strong> — canal dedicado con ejercicios progresivos.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">📖 El libro fundamental</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Manual de dibujo arquitectónico"</strong> de Francis D.K. Ching — La referencia absoluta. Ilustraciones únicas que ningún video puede reemplazar. Consíguelo.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🛒 Material mínimo</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📐</span><span>Escuadra 30/60° y cartabón 45°</span></li>
+            <li class="res-item"><span class="res-ico">✏️</span><span>Portaminas 0.5 mm y 0.3 mm (no lápiz HB normal)</span></li>
+            <li class="res-item"><span class="res-ico">📄</span><span>Papel A3 bond o milimetrado para los primeros ejercicios</span></li>
+            <li class="res-item"><span class="res-ico">📏</span><span>Escalímetro 1:50, 1:100, 1:200 — fundamental</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>15 minutos al día a mano.</strong> No importa que quede feo al principio — la mano se educa sola con la repetición.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Aprende primero a dibujar a mano antes de tocar el software. El software sin base manual produce malos planos.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Dibuja el plano de tu propia casa como primer ejercicio real.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 0.3 -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">📐</span>
+          <div class="card-tags">
+            <span class="tag tag-book">Técnico</span>
+          </div>
+        </div>
+        <div class="card-title">Geometría descriptiva</div>
+        <div class="card-sub">Proyecciones ortogonales, vistas en planta y alzado, perspectiva cónica e isométrica.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Geometría descriptiva"</strong> en el canal <strong>Tutoriales Dibujo Técnico</strong> — series completas en español.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Canal de la <strong>UNAM en YouTube</strong> — clases universitarias completas y gratuitas de geometría descriptiva.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">📖 Libro de referencia</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Geometría Descriptiva"</strong> de Izquierdo Asensi — El clásico en universidades latinoamericanas. Exhaustivo.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Toma objetos cotidianos (un vaso, una silla, una caja) y dibújalos en las tres vistas: planta, alzado y perfil.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>La geometría descriptiva es la lógica detrás del CAD — quien la domina a mano usa el software mucho mejor.</span></div>
+        </div>
+        <div class="callout callout-info">
+          <strong>Por qué importa:</strong> Esta es la base del pensamiento tridimensional. Sin entender cómo representar el espacio en papel, el software 3D se vuelve confuso.
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 0.4 -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🎨</span>
+          <div class="card-tags">
+            <span class="tag tag-yt">YouTube</span>
+            <span class="tag tag-book">Cultura</span>
+          </div>
+        </div>
+        <div class="card-title">Historia de la arquitectura</div>
+        <div class="card-sub">Antigüedad, Grecia y Roma, Gótico, Renacimiento, Barroco, Modernismo, Contemporánea.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">▶ Canales gratuitos</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Arquisemana</strong> — Episodios temáticos de historia en español, muy entretenidos.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Canal UNAM</strong> — Clases completas de historia del arte y arquitectura, completamente gratuitas.</span></li>
+            <li class="res-item"><span class="res-ico">🇬🇧</span><span><strong>ArchDaily YouTube</strong> — Proyectos contemporáneos con análisis, subtítulos en español disponibles.</span></li>
+            <li class="res-item"><span class="res-ico">🇬🇧</span><span><strong>The B1M</strong> — Documentales de alta producción sobre arquitectura moderna e histórica.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">📖 Libros</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Historia de la Arquitectura Occidental"</strong> de Sigfried Giedion — referencia académica estándar.</span></li>
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Espacio, tiempo y arquitectura"</strong> del mismo Giedion — sobre el movimiento moderno.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🌐 Web imprescindible</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://www.archdaily.com" target="_blank">ArchDaily.com</a> — El portal de arquitectura más visitado del mundo. Proyectos de todos los períodos históricos y tendencias actuales. Gratis.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>No memorices fechas: entiende <em>por qué</em> cambia la arquitectura en cada período — contexto político, social, tecnológico.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Busca al menos 5 referentes por tipología antes de diseñar cualquier proyecto. La historia es tu banco de ideas.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /topics-grid fase 0 -->
+</section>
+
+<!-- ──────────────────── FASE 1 ──────────────────── -->
+<section class="phase-section" id="fase1">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:var(--p1);color:var(--p1);background:var(--p1-bg)">Fase 1</span>
+    <div class="phase-title-block">
+      <h2 style="color:var(--p1)">Software CAD y dibujo digital</h2>
+      <p class="phase-subtitle">Las herramientas que usa la industria. Dominar al menos dos de estas es el mínimo para trabajar en cualquier estudio.</p>
+    </div>
+  </div>
+
+  <div class="topics-grid">
+
+    <!-- Card 1.1 AutoCAD -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">💻</span>
+          <div class="card-tags">
+            <span class="tag tag-soft">Software</span>
+            <span class="tag tag-key">Estándar industria</span>
+          </div>
+        </div>
+        <div class="card-title">AutoCAD — Planos 2D</div>
+        <div class="card-sub">La herramienta estándar mundial para dibujo técnico de planos arquitectónicos.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>CADe SIFO</strong> — Serie completa de AutoCAD desde cero en español. Muy clara y progresiva.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>El Mundo del BIM</strong> — AutoCAD enfocado a arquitectura e ingeniería.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Canal oficial Autodesk ES</strong> — Tutoriales paso a paso y actualizados directamente del fabricante.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">💰 Cómo conseguirlo gratis</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🎓</span><span><strong>Autodesk Education:</strong> <a href="https://www.autodesk.com/education/edu-software" target="_blank">autodesk.com/education</a> — 1 año gratis con email universitario. Incluye AutoCAD, Revit, 3ds Max y más.</span></li>
+            <li class="res-item"><span class="res-ico">🆓</span><span><strong>AutoCAD Web</strong> — Versión ligera que corre en el navegador. Ideal para empezar sin instalar nada.</span></li>
+            <li class="res-item"><span class="res-ico">🆓</span><span><strong>DraftSight</strong> — Alternativa gratuita muy similar a AutoCAD. Ideal si no tienes email universitario.</span></li>
+            <li class="res-item"><span class="res-ico">🆓</span><span><strong>LibreCAD</strong> — Open source, gratuito para siempre. Menos funciones pero suficiente para aprender.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos que cambian todo</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Aprende atajos desde el primer día:</strong> L=línea, TR=recortar, CO=copiar, M=mover, O=desfase, MI=simetría, AR=arreglo. Triplica tu velocidad.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Trabaja siempre en <strong>escala real</strong> (1:1) en el espacio modelo y ajusta la escala solo en el espacio papel (layouts).</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Crea <strong>capas (layers)</strong> desde el principio: muros, cotas, texto, mobiliario, estructura. Un plano sin capas es inmanejable.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Primer ejercicio real: dibuja el plano de tu casa o apartamento midiendo con cinta métrica. Real data = motivación real.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 1.2 Revit -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🏗️</span>
+          <div class="card-tags">
+            <span class="tag tag-soft">Software BIM</span>
+            <span class="tag tag-key">Alta demanda</span>
+          </div>
+        </div>
+        <div class="card-title">Revit — Modelado BIM</div>
+        <div class="card-sub">Building Information Modeling: el estándar para proyectos de mediana y gran escala.</div>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-ok">
+          <strong>¿Qué es BIM?</strong> En lugar de dibujar líneas, modelas un edificio inteligente: cada pared sabe su material, grosor y precio. Los planos, cortes y alzados se generan solos.
+        </div>
+        <div class="res-section" style="margin-top:1rem;">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>BIM Master</strong> — Serie desde cero en español, muy completa y actualizada.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Revit desde Cero</strong> — Canal dedicado exclusivamente a Revit en español.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>El Mundo del BIM</strong> — También cubre Revit con enfoque a proyectos reales latinoamericanos.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🎓 Cursos de pago (valen la pena)</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">💲</span><span><strong>Udemy</strong> — Busca cursos de Revit con más de 4.5 estrellas. En descuento frecuente quedan entre $10–$15 USD. Invierte ahí.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🌐 Comunidad</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">👥</span><span>Grupos de Facebook: <strong>"Revit Colombia"</strong> y <strong>"BIM Latinoamérica"</strong> — activos, responden dudas técnicas rápido.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://forums.autodesk.com" target="_blank">Foro oficial Autodesk</a> — para problemas específicos.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Empieza con una casa de un piso.</strong> No comiences con edificios complejos — te frustrarás y abandanarás.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Aprende primero a modelar muros, puertas y ventanas. Luego techos y escaleras. No saltes pasos.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>El <strong>BIM Manager</strong> (quien gestiona modelos BIM en equipos grandes) es uno de los perfiles mejor pagados hoy.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 1.3 SketchUp -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">✒️</span>
+          <div class="card-tags">
+            <span class="tag tag-soft">Software</span>
+            <span class="tag tag-key">El más fácil</span>
+          </div>
+        </div>
+        <div class="card-title">SketchUp — Modelado 3D rápido</div>
+        <div class="card-sub">Modelado intuitivo ideal para volumetrías, maquetas digitales y primeras ideas en 3D.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Canal oficial SketchUp en español</strong> — tutoriales gratuitos desde cero, directamente del fabricante. Excelentes.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"SketchUp arquitectura desde cero"</strong> — docenas de tutoriales gratuitos en español.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">💰 Cómo conseguirlo gratis</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🆓</span><span><strong>SketchUp Free</strong> — Corre 100% en el navegador en <a href="https://app.sketchup.com" target="_blank">app.sketchup.com</a>. Sin instalar nada. Ideal para empezar.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🔥 Trucos avanzados</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">💡</span><span><strong>3D Warehouse</strong> (incluido gratis): biblioteca con millones de objetos — mobiliario, autos, vegetación, equipos. Drag &amp; drop.</span></li>
+            <li class="res-item"><span class="res-ico">💡</span><span>La combinación <strong>SketchUp + V-Ray</strong> es la favorita de estudios medianos para renders arquitectónicos de calidad sin complejidad.</span></li>
+            <li class="res-item"><span class="res-ico">💡</span><span>Extensiones clave: <strong>1001bit Tools</strong> (muros y escaleras automáticas) y <strong>Curic Section</strong> (cortes en tiempo real).</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Estrategia de aprendizaje</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Usa SketchUp para <em>explorar</em> y Revit para <em>documentar</em>. Muchos estudios usan ambos en paralelo.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Primer proyecto: modela en 3D el plano de tu casa que dibujaste en AutoCAD. Verás la conexión entre las dos herramientas.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 1.4 Adobe Suite -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🖋️</span>
+          <div class="card-tags">
+            <span class="tag tag-soft">Software</span>
+            <span class="tag tag-prac">Presentación</span>
+          </div>
+        </div>
+        <div class="card-title">Adobe Suite para arquitectos</div>
+        <div class="card-sub">Photoshop, Illustrator e InDesign para post-producción de renders, collages y láminas.</div>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-warn">
+          <strong>Regla de oro:</strong> Presentar bien vale tanto como diseñar bien. Un proyecto mediocre bien presentado se vende mejor que un gran proyecto mal presentado.
+        </div>
+        <div class="res-section" style="margin-top:1rem;">
+          <div class="res-section-title">▶ YouTube por herramienta</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🖼️</span><span><strong>Photoshop:</strong> Busca "Photoshop para arquitectos" — tutoriales de collages, post-producción de renders y edición de planos.</span></li>
+            <li class="res-item"><span class="res-ico">📋</span><span><strong>InDesign:</strong> Busca "InDesign lámina arquitectónica" — composición y maquetación de planchas de presentación.</span></li>
+            <li class="res-item"><span class="res-ico">✏️</span><span><strong>Illustrator:</strong> Para diagramas, gráficas de análisis, plantas conceptuales con estilo.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🆓 Alternativas gratuitas (si no puedes pagar Adobe)</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🆓</span><span><strong>GIMP</strong> — Equivalente gratuito de Photoshop. gimp.org</span></li>
+            <li class="res-item"><span class="res-ico">🆓</span><span><strong>Inkscape</strong> — Equivalente gratuito de Illustrator. inkscape.org</span></li>
+            <li class="res-item"><span class="res-ico">🆓</span><span><strong>Scribus</strong> — Equivalente gratuito de InDesign para maquetación.</span></li>
+            <li class="res-item"><span class="res-ico">🆓</span><span><strong>Canva</strong> — Para presentaciones rápidas y portafolios online. canva.com</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 La habilidad más valorada en portafolios</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Aprende a hacer <strong>collages arquitectónicos en Photoshop</strong>: tomas el render, añades personas, vegetación, texturas, cielo. Es lo que diferencia un portafolio promedio de uno excepcional.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Estudia <strong>tipografía básica</strong>: la fuente, el tamaño y el espaciado de texto en una lámina dice mucho de tu criterio de diseño.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /topics-grid fase 1 -->
+</section>
+
+<!-- ──────────────────── FASE 2 ──────────────────── -->
+<section class="phase-section" id="fase2">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:var(--p2);color:var(--p2);background:var(--p2-bg)">Fase 2</span>
+    <div class="phase-title-block">
+      <h2 style="color:var(--p2)">Diseño y proyecto arquitectónico</h2>
+      <p class="phase-subtitle">El corazón de la carrera. Aquí aprendes a pensar como arquitecto: de la idea al plano ejecutivo.</p>
+    </div>
+  </div>
+
+  <div class="topics-grid">
+
+    <!-- Card 2.1 Tipologías -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🏠</span>
+          <div class="card-tags">
+            <span class="tag tag-book">Teoría</span>
+            <span class="tag tag-key">Neufert</span>
+          </div>
+        </div>
+        <div class="card-title">Tipologías arquitectónicas y programas</div>
+        <div class="card-sub">Vivienda, educación, salud, comercio, cultura, industria. Qué debe contener cada tipo de edificio.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">📖 El libro más importante de la carrera</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Arte de Proyectar en Arquitectura"</strong> de Ernst Neufert — Dimensiones humanas, programas por tipología, medidas estándar de todo. Consíguelo en físico o PDF. Es tu diccionario de por vida.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🌐 Referencias online</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://www.archdaily.com" target="_blank">ArchDaily.com</a> — Busca proyectos del tipo que quieres diseñar. Analiza plantas, secciones y conceptos de proyectos ganadores.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><strong>Plataforma de Arquitectura</strong> (ArchDaily en español) — Lo mismo pero en castellano.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Análisis de referentes arquitectónicos"</strong> — canales que desglosan cómo funciona un edificio famoso desde su planta.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Método de los 5 referentes</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Antes de diseñar cualquier cosa</strong>, busca 5 proyectos similares construidos. Analiza sus plantas y conceptos. Tus ideas siempre serán mejores sobre esa base.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>El Neufert te dice "cuánto" mide todo. ArchDaily te dice "cómo" lo resolvieron otros. Los dos juntos son invencibles.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2.2 Proceso de diseño -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🌀</span>
+          <div class="card-tags">
+            <span class="tag tag-prac">Proceso</span>
+          </div>
+        </div>
+        <div class="card-title">El proceso de diseño arquitectónico</div>
+        <div class="card-sub">Concepto, partido arquitectónico, boceto, anteproyecto, proyecto básico y ejecutivo.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">Las etapas del proceso</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">1️⃣</span><span><strong>Análisis:</strong> Estudio del terreno, entorno, clima, normativa, necesidades del cliente.</span></li>
+            <li class="res-item"><span class="res-ico">2️⃣</span><span><strong>Concepto:</strong> Una idea rectora (puede ser una metáfora, una geometría, un material) que guía todo.</span></li>
+            <li class="res-item"><span class="res-ico">3️⃣</span><span><strong>Partido arquitectónico:</strong> La organización espacial básica — cómo se distribuyen los espacios en la planta.</span></li>
+            <li class="res-item"><span class="res-ico">4️⃣</span><span><strong>Anteproyecto:</strong> Planos preliminares con escala real, fachadas y volumetría. Se muestra al cliente.</span></li>
+            <li class="res-item"><span class="res-ico">5️⃣</span><span><strong>Proyecto ejecutivo:</strong> Todos los planos con detalles constructivos, cotas, materiales. Con esto se construye.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Cómo hacer un partido arquitectónico"</strong> — series completas del proceso real de diseño.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Borromini Arquitectura</strong> — Muestra el proceso de diseño de proyectos reales en tiempo real. Muy valioso.</span></li>
+            <li class="res-item"><span class="res-ico">🇬🇧</span><span><strong>30X40 Design Workshop</strong> (EN) — El mejor canal sobre proceso de diseño y vida de un arquitecto independiente. Subtítulos disponibles.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos del proceso</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Lleva siempre un cuaderno de bocetos.</strong> Escanéalos y guárdalos — el proceso de pensamiento vale tanto como el resultado final para empleadores y clientes.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>El concepto más <strong>simple</strong> suele ser el mejor. La complejidad sin razón es el error más común de los principiantes.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>No empieces en el computador. Empieza siempre a mano con bocetos rápidos — el software limita la creatividad si se usa demasiado pronto.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2.3 Normativa -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">📏</span>
+          <div class="card-tags">
+            <span class="tag tag-web">Legal</span>
+            <span class="tag tag-key">Colombia</span>
+          </div>
+        </div>
+        <div class="card-title">Normativa y reglamentos en Colombia</div>
+        <div class="card-sub">NSR-10, POT, zonificación, accesibilidad, normas de construcción locales.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">🇨🇴 Normativa colombiana clave</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📜</span><span><strong>NSR-10 (Reglamento Colombiano de Construcción Sismo Resistente)</strong> — Descarga gratuita en el sitio del Ministerio de Vivienda. Es la norma técnica de construcción en Colombia. Obligatoria.</span></li>
+            <li class="res-item"><span class="res-ico">📜</span><span><strong>POT (Plan de Ordenamiento Territorial)</strong> — Cada municipio tiene el suyo. El POT de Ibagué regula usos del suelo, alturas máximas, aislamientos, ocupación y construcción permitida. Consúltalo en la Alcaldía de Ibagué.</span></li>
+            <li class="res-item"><span class="res-ico">📜</span><span><strong>Ley 400 de 1997 y Decreto 926 de 2010</strong> — Marco legal del NSR-10. Útil entender el contexto.</span></li>
+            <li class="res-item"><span class="res-ico">♿</span><span><strong>Norma de Accesibilidad (NTC 6047)</strong> — Diseño universal para personas con discapacidad. Obligatoria en edificios públicos.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"NSR-10 para principiantes"</strong> y <strong>"Cómo leer un POT"</strong> — hay explicaciones accesibles en español sobre cómo aplicar estas normas.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos para Colombia</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Antes de diseñar cualquier proyecto real</strong>, visita la Secretaría de Planeación de Ibagué y pide el certificado de norma urbanística del lote. Esto te dice todo lo que puedes y no puedes hacer.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>El POT cambia con cada administración municipal. Verifícalo siempre online antes de presentar un proyecto.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>El <strong>COPNIA</strong> (copnia.gov.co) es el ente regulador de arquitectos en Colombia. Para ejercer legalmente y firmar planos necesitarás tu matrícula profesional.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2.4 Sostenibilidad -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🌿</span>
+          <div class="card-tags">
+            <span class="tag tag-book">Tendencia</span>
+            <span class="tag tag-key">Futuro</span>
+          </div>
+        </div>
+        <div class="card-title">Arquitectura sostenible y bioclimática</div>
+        <div class="card-sub">Diseño con el clima, materiales sostenibles, eficiencia energética, ventilación natural.</div>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-ok">
+          <strong>Relevancia en Ibagué:</strong> La ciudad tiene clima cálido semiárido (~26°C promedio). Dominar ventilación cruzada, protección solar y materiales de baja inercia térmica te diferencia enormemente en el mercado local.
+        </div>
+        <div class="res-section" style="margin-top:1rem;">
+          <div class="res-section-title">📖 Libros</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Arquitectura y clima"</strong> de Serra Florensa y Coch Roura — Principios bioclimáticos explicados con claridad y aplicados a Latinoamérica.</span></li>
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Manual de diseño pasivo"</strong> — Diversas ediciones gratuitas online. Estrategias por clima.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🌐 Certificaciones y comunidades</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🏅</span><span><strong>LEED</strong> — La certificación de sostenibilidad más reconocida del mundo. <a href="https://www.usgbc.org/leed" target="_blank">usgbc.org/leed</a></span></li>
+            <li class="res-item"><span class="res-ico">🏅</span><span><strong>CASA Colombia</strong> — Certificación colombiana de construcción sostenible. Cada vez más pedida en proyectos locales.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Arquitectura bioclimática ventilación cruzada"</strong> y <strong>"diseño solar pasivo"</strong> — muchos tutoriales aplicados a climas cálidos latinoamericanos.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Estrategias clave para clima cálido</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Ventilación cruzada:</strong> abre ventanas opuestas para generar corriente. El viento entra por sotavento, sale por barlovento.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Protección solar:</strong> aleros, voladizos y persianas externas evitan el calor antes de que entre. Mucho más eficiente que el aire acondicionado.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Cubierta vegetal y agua:</strong> jardines en cubiertas reducen hasta 3°C la temperatura interior.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /fase 2 -->
+</section>
+
+<!-- ──────────────────── FASE 3 ──────────────────── -->
+<section class="phase-section" id="fase3">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:var(--p3);color:var(--p3);background:var(--p3-bg)">Fase 3</span>
+    <div class="phase-title-block">
+      <h2 style="color:var(--p3)">Renders, visualización y portafolio</h2>
+      <p class="phase-subtitle">Hacer que tus proyectos se vean increíbles y construir la pieza más importante de tu carrera.</p>
+    </div>
+  </div>
+
+  <div class="topics-grid">
+
+    <!-- Card 3.1 Lumion/Enscape -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🎬</span>
+          <div class="card-tags">
+            <span class="tag tag-soft">Software</span>
+          </div>
+        </div>
+        <div class="card-title">Renders con Lumion y Enscape</div>
+        <div class="card-sub">Visualización arquitectónica fotorrealista en tiempo real. El estándar actual de presentación.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">Lumion vs Enscape — ¿cuál elegir?</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🟡</span><span><strong>Lumion</strong> — Más fácil de usar, interfaz visual muy intuitiva. Ideal para quien empieza. Funciona independiente.</span></li>
+            <li class="res-item"><span class="res-ico">🟣</span><span><strong>Enscape</strong> — Corre en tiempo real dentro de Revit o SketchUp. Ver el render mientras diseñas es una ventaja enorme.</span></li>
+            <li class="res-item"><span class="res-ico">🔵</span><span><strong>V-Ray</strong> — El más profesional y fotorrealista. Curva de aprendizaje alta. Para proyectos de alta gama.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Canal oficial Lumion en español</strong> — tutoriales gratuitos paso a paso desde el nivel cero.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Enscape tutorial desde cero"</strong> — hay series completas en español, especialmente combinado con SketchUp.</span></li>
+            <li class="res-item"><span class="res-ico">🇬🇧</span><span><strong>Lumion Official</strong> (EN) — Tips avanzados de iluminación y efectos. Subtítulos disponibles.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🆓 Pruebas gratis</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">⏱️</span><span><a href="https://lumion.com/try-lumion.html" target="_blank">Lumion.com</a> — versión de prueba de 14 días con todas las funciones.</span></li>
+            <li class="res-item"><span class="res-ico">⏱️</span><span><a href="https://enscape3d.com" target="_blank">Enscape3D.com</a> — trial gratuito de 14 días.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Los trucos de iluminación que cambian un render</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>La luz lo es todo.</strong> Aprende a manejar la hora del día (hora dorada = magia), las luces artificiales interiores y la bruma atmosférica antes que cualquier otro ajuste.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Vegetación abundante</strong> transforma un proyecto mediocre en uno espectacular. No seas tacaño con los árboles.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Añade <strong>personas a escala</strong> — dan vida y comunican el tamaño real del espacio.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Post-producción en Photoshop: ajusta contraste, añade niebla, reflejos en suelo mojado. 10 minutos de Photoshop = nivel siguiente.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3.2 Portafolio -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">📁</span>
+          <div class="card-tags">
+            <span class="tag tag-prac">Carrera</span>
+            <span class="tag tag-key">Lo más importante</span>
+          </div>
+        </div>
+        <div class="card-title">Tu portafolio profesional</div>
+        <div class="card-sub">El documento más importante de tu carrera. Cómo armarlo, qué poner y cómo distribuirlo.</div>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-warn">
+          <strong>Regla de oro:</strong> 3 proyectos excelentes &gt; 10 proyectos mediocres. Menos es más. Los estudios ven decenas de portafolios — el tuyo debe ser memorable desde la primera página.
+        </div>
+        <div class="res-section" style="margin-top:1rem;">
+          <div class="res-section-title">📐 Qué debe contener cada proyecto</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">✅</span><span><strong>Concepto y proceso:</strong> bocetos, diagramas, evolución de la idea. Los estudios quieren ver cómo piensas, no solo el resultado.</span></li>
+            <li class="res-item"><span class="res-ico">✅</span><span><strong>Planos técnicos:</strong> planta, alzados, sección. Limpios, cotados, con escala gráfica.</span></li>
+            <li class="res-item"><span class="res-ico">✅</span><span><strong>Renders de calidad:</strong> al menos un exterior y un interior bien iluminados.</span></li>
+            <li class="res-item"><span class="res-ico">✅</span><span><strong>Texto corto:</strong> máximo 3-4 líneas explicando el concepto. Nada de párrafos largos.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🌐 Plataformas para publicar</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://issuu.com" target="_blank">Issuu.com</a> — Publica tu PDF como revista interactiva. Gratis. Ideal para enviar por link en emails y LinkedIn.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://www.behance.net" target="_blank">Behance.net</a> — La red de portafolios de Adobe. Muy usada en arquitectura y diseño. Gratis.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://archinect.com" target="_blank">Archinect.com</a> — Portafolios arquitectónicos. Comunidad activa de estudiantes y profesionales.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Cómo hacer un portafolio de arquitectura"</strong> — hay guías de estudiantes y recién egresados muy prácticas.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Errores comunes a evitar</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>No uses PowerPoint para el portafolio. Usa <strong>InDesign</strong> (o Canva como alternativa) — la diferencia en calidad es enorme.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Tamaño A3 horizontal es el estándar. Máximo 20-24 páginas para el portafolio general.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Adapta el portafolio según a qué estudias: más renders para estudios de lujo, más técnico para constructoras, más innovador para estudios jóvenes.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3.3 IA -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🤖</span>
+          <div class="card-tags">
+            <span class="tag tag-yt">Nuevo</span>
+            <span class="tag tag-soft">IA</span>
+          </div>
+        </div>
+        <div class="card-title">Inteligencia Artificial en arquitectura</div>
+        <div class="card-sub">Midjourney, Stable Diffusion, Adobe Firefly para conceptos rápidos e imágenes inspiracionales.</div>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-info">
+          <strong>Perspectiva honesta:</strong> La IA no reemplaza al arquitecto — reemplaza el tiempo que tardabas en buscar y explorar referencias. Úsala para velocidad, no para evitar aprender.
+        </div>
+        <div class="res-section" style="margin-top:1rem;">
+          <div class="res-section-title">🛠️ Herramientas IA para arquitectos</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🎨</span><span><strong>Midjourney</strong> (Discord) — Genera renders conceptuales e imágenes de inspiración en segundos. Ideal para presentar ideas antes de modelar. <a href="https://midjourney.com" target="_blank">midjourney.com</a></span></li>
+            <li class="res-item"><span class="res-ico">🎨</span><span><strong>Adobe Firefly</strong> — Integrado en Photoshop. Genera y edita imágenes de renders. Gratis con suscripción Adobe. Muy útil para post-producción.</span></li>
+            <li class="res-item"><span class="res-ico">🎨</span><span><strong>Stable Diffusion</strong> — Open source, gratis para siempre si tienes GPU. Más técnico pero sin límites.</span></li>
+            <li class="res-item"><span class="res-ico">🏗️</span><span><strong>Spacemaker / Autodesk Forma</strong> — IA para análisis de sitio, soleamiento y masas urbanas. El futuro del diseño urbano.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Midjourney para arquitectura"</strong> y <strong>"IA en diseño arquitectónico 2024"</strong> — tendencia en rápido crecimiento con tutoriales en español.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Cómo usar IA con criterio</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Úsala en la <strong>fase de concepto</strong>: genera 20 imágenes de estilos diferentes en 5 minutos para mostrar opciones al cliente antes de modelar.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Nunca la uses para el proyecto definitivo</strong> — la IA aún comete errores estructurales graves (columnas en el aire, geometrías imposibles). Es inspiración, no diseño.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Los estudios que mejor pagan ya integran IA en su flujo de trabajo. Aprenderla te hace más valioso ahora mismo.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3.4 YouTube honesto -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🎥</span>
+          <div class="card-tags">
+            <span class="tag tag-yt">YouTube</span>
+            <span class="tag tag-key">Respuesta honesta</span>
+          </div>
+        </div>
+        <div class="card-title">¿Puedo aprender arquitectura por YouTube?</div>
+        <div class="card-sub">La respuesta completa y honesta sobre qué sí y qué no se puede aprender sin universidad.</div>
+      </div>
+      <div class="card-body">
+
+        <div class="yt-grid">
+          <div class="yt-col yes">
+            <h4>✅ SÍ puedes aprender</h4>
+            <ul>
+              <li>✓ <span>AutoCAD, Revit, SketchUp</span></li>
+              <li>✓ <span>Lumion, Enscape, V-Ray</span></li>
+              <li>✓ <span>Photoshop, InDesign</span></li>
+              <li>✓ <span>Historia de la arquitectura</span></li>
+              <li>✓ <span>Normativa y teoría</span></li>
+              <li>✓ <span>Armado de portafolio</span></li>
+              <li>✓ <span>Renderizado y presentación</span></li>
+            </ul>
+          </div>
+          <div class="yt-col no">
+            <h4>⚠️ Difícil sin feedback</h4>
+            <ul>
+              <li>✗ <span>Proceso de diseño real</span></li>
+              <li>✗ <span>Crítica de proyectos</span></li>
+              <li>✗ <span>Sentido del espacio</span></li>
+              <li>✗ <span>Trabajo en equipo</span></li>
+              <li>✗ <span>Negociación con clientes</span></li>
+              <li>✗ <span>Dirección de obra</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="yt-channels">
+          <h4>🇪🇸 Canales en español recomendados</h4>
+          <div class="channel-list">
+            <span class="channel-pill">Arquisemana</span>
+            <span class="channel-pill">CADe SIFO</span>
+            <span class="channel-pill">BIM Master</span>
+            <span class="channel-pill">Borromini Arquitectura</span>
+            <span class="channel-pill">MasArquitectura</span>
+            <span class="channel-pill">El Mundo del BIM</span>
+            <span class="channel-pill">Revit desde Cero</span>
+          </div>
+        </div>
+        <div class="yt-channels" style="margin-top:0.75rem;">
+          <h4>🇬🇧 Canales en inglés (subtítulos disponibles)</h4>
+          <div class="channel-list">
+            <span class="channel-pill en">30X40 Design Workshop ⭐</span>
+            <span class="channel-pill en">The B1M</span>
+            <span class="channel-pill en">ArchDaily</span>
+            <span class="channel-pill en">MADE Architecture</span>
+            <span class="channel-pill en">Architecture School</span>
+          </div>
+        </div>
+        <div class="callout callout-ok" style="margin-top:1rem;">
+          <strong>La fórmula ganadora:</strong> YouTube + práctica constante + feedback de alguien con experiencia = aprendizaje real. El 30X40 Design Workshop es el mejor canal de arquitectura del mundo para aprender a pensar como arquitecto.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /fase 3 -->
+</section>
+
+<!-- ──────────────────── FASE 4 ──────────────────── -->
+<section class="phase-section" id="fase4">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:var(--p4);color:var(--p4);background:var(--p4-bg)">Fase 4</span>
+    <div class="phase-title-block">
+      <h2 style="color:var(--p4)">Especialización y carrera profesional</h2>
+      <p class="phase-subtitle">Decisiones de largo plazo: universidad vs. autodidacta, especialidades, red de contactos y plan de acción.</p>
+    </div>
+  </div>
+
+  <div class="topics-grid">
+
+    <!-- Card 4.1 Universidad -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🎓</span>
+          <div class="card-tags">
+            <span class="tag tag-book">Decisión clave</span>
+            <span class="tag tag-key">Colombia</span>
+          </div>
+        </div>
+        <div class="card-title">Universidad vs. Autodidacta en Colombia</div>
+        <div class="card-sub">Las diferencias reales, la legalidad y el camino que más te conviene según tu objetivo.</div>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-warn">
+          <strong>Importante en Colombia:</strong> Para firmar planos como arquitecto y ejercer legalmente necesitas <strong>matrícula profesional</strong> del COPNIA. Esto requiere título universitario. Sin título puedes hacer casi todo, pero no firmar proyectos ante entidades gubernamentales.
+        </div>
+        <div class="res-section" style="margin-top:1rem;">
+          <div class="res-section-title">🏫 Ruta universitaria</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">✅</span><span>Matrícula profesional COPNIA — permite firmar planos legalmente.</span></li>
+            <li class="res-item"><span class="res-ico">✅</span><span>Red de contactos: compañeros, profesores, prácticas.</span></li>
+            <li class="res-item"><span class="res-ico">✅</span><span>Feedback directo de profesores y críticos de proyecto.</span></li>
+            <li class="res-item"><span class="res-ico">⚠️</span><span>Duración: 5 años. Costo variable por universidad.</span></li>
+            <li class="res-item"><span class="res-ico">🏫</span><span><strong>En Tolima:</strong> Universidad del Tolima (Ibagué) — programa de Arquitectura presencial. UNAD — modalidad a distancia.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🖥️ Ruta autodidacta (sin título)</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">✅</span><span>Visualizador 3D / Renderista — se trabaja freelance desde casa, sin título.</span></li>
+            <li class="res-item"><span class="res-ico">✅</span><span>Diseñador de interiores — no requiere título en muchos contextos.</span></li>
+            <li class="res-item"><span class="res-ico">✅</span><span>BIM Modeler — muy demandado en proyectos internacionales.</span></li>
+            <li class="res-item"><span class="res-ico">✅</span><span>Cursos con certificado: <a href="https://www.coursera.org" target="_blank">Coursera</a>, <a href="https://www.edx.org" target="_blank">edX</a> — suman al portafolio aunque no equivalen al título.</span></li>
+            <li class="res-item"><span class="res-ico">❌</span><span>No puede firmar proyectos ante entidades ni ejercer como arquitecto titulado.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Recomendación</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Si puedes hacer la carrera: hazla. El título abre puertas que el portafolio solo no puede abrir en Colombia.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Si no puedes ahora: empieza autodidacta con renders y BIM, construye portafolio y clientes, y estudia en paralelo o después.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4.2 Especialidades -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🔧</span>
+          <div class="card-tags">
+            <span class="tag tag-web">Empleo</span>
+            <span class="tag tag-key">Alta demanda</span>
+          </div>
+        </div>
+        <div class="card-title">Especialidades con mayor demanda hoy</div>
+        <div class="card-sub">Los perfiles que las empresas buscan y cómo diferenciarte en el mercado laboral.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">💼 Perfiles más buscados en 2024-2025</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🥇</span><span><strong>BIM Manager:</strong> gestiona modelos digitales en equipos grandes. Revit avanzado + coordinación de especialidades. Uno de los salarios más altos.</span></li>
+            <li class="res-item"><span class="res-ico">🥈</span><span><strong>Visualizador 3D / Renderista:</strong> se trabaja freelance desde casa, en dólares. Lumion + V-Ray + post en Photoshop.</span></li>
+            <li class="res-item"><span class="res-ico">🥉</span><span><strong>Diseñador de interiores:</strong> alta demanda residencial y comercial. SketchUp + renders + buena paleta de materiales.</span></li>
+            <li class="res-item"><span class="res-ico">4️⃣</span><span><strong>Arquitecto sostenible / bioclimático:</strong> cada vez más exigido por clientes conscientes y proyectos públicos.</span></li>
+            <li class="res-item"><span class="res-ico">5️⃣</span><span><strong>Diseñador urbano:</strong> trabajo con municipios, POTs y proyectos de espacio público. Perfil más técnico-político.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🌐 Plataformas para trabajo freelance</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">💲</span><span><a href="https://www.workana.com" target="_blank">Workana.com</a> — Plataforma latinoamericana para freelance. Pagan en dólares. Muchos proyectos de renders y planos.</span></li>
+            <li class="res-item"><span class="res-ico">💲</span><span><a href="https://www.freelancer.com" target="_blank">Freelancer.com</a> — Global, proyectos de modelado y renders desde todo el mundo.</span></li>
+            <li class="res-item"><span class="res-ico">💲</span><span><a href="https://www.upwork.com" target="_blank">Upwork.com</a> — Para perfiles más establecidos. Los mejores pagos del mercado freelance.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 El truco que multiplica el salario</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Aprende inglés técnico.</strong> Con fluencia en inglés + Revit o renders puedes trabajar remotamente para estudios de EE.UU. o Europa y ganar en dólares o euros desde Ibagué.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>La especialización vale más que el generalismo. Ser <em>el mejor renderista de Ibagué</em> te lleva más clientes que ser "arquitecto regular".</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4.3 Comunidades -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🌍</span>
+          <div class="card-tags">
+            <span class="tag tag-web">Red</span>
+          </div>
+        </div>
+        <div class="card-title">Comunidades y redes profesionales</div>
+        <div class="card-sub">Dónde conectar con otros arquitectos, inspirarte y encontrar oportunidades reales.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">🌐 Redes sociales y comunidades</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">💼</span><span><strong>LinkedIn</strong> — Sigue a arquitectos colombianos. Publica tus proyectos con proceso y renders. Los reclutadores y clientes están aquí.</span></li>
+            <li class="res-item"><span class="res-ico">📸</span><span><strong>Instagram</strong> — @archdaily, @dezeen, @arquitecturacolombiana. La comunidad visual más grande de arquitectura. Muestra tu trabajo con stories de proceso.</span></li>
+            <li class="res-item"><span class="res-ico">💬</span><span><strong>Reddit</strong> — r/architecture y r/Architectureschool — comunidad de estudiantes y profesionales que responden dudas. En inglés pero muy activa.</span></li>
+            <li class="res-item"><span class="res-ico">👥</span><span><strong>Facebook Groups</strong> — "Arquitectura Colombia", "Revit Colombia", "SketchUp en Español" — muy activos para resolver dudas técnicas.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🏛️ Instituciones locales en Ibagué / Tolima</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🏛️</span><span><strong>Colegio de Arquitectos del Tolima</strong> — Organiza eventos, charlas y exposiciones. Asistir te conecta con profesionales locales desde antes de graduarte.</span></li>
+            <li class="res-item"><span class="res-ico">🏛️</span><span><strong>Sociedad Colombiana de Arquitectos (SCA)</strong> — sca.org.co — Concursos, publicaciones y eventos nacionales.</span></li>
+            <li class="res-item"><span class="res-ico">🏛️</span><span><strong>COPNIA</strong> — <a href="https://copnia.gov.co" target="_blank">copnia.gov.co</a> — Registro profesional obligatorio para ejercer legalmente en Colombia.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 El networking que funciona</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Asiste a eventos aunque seas principiante.</strong> La mayoría de los proyectos y empleos en arquitectura se consiguen por contacto directo, no por convocatoria pública.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Publica tu proceso en Instagram o LinkedIn antes de terminar el proyecto. El proceso engancha más que el resultado.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4.4 Plan de estudio -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">📅</span>
+          <div class="card-tags">
+            <span class="tag tag-prac">Plan</span>
+            <span class="tag tag-key">Desde hoy</span>
+          </div>
+        </div>
+        <div class="card-title">Plan de estudio mes a mes — 12 meses</div>
+        <div class="card-sub">Cómo organizar el tiempo si empiezas desde cero hoy, con 1 hora mínima diaria.</div>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-ok">
+          <strong>Principio clave:</strong> 1 hora diaria constante supera a 8 horas un sábado al mes. La constancia es más importante que la intensidad.
+        </div>
+        <div class="timeline" style="margin-top:1rem;">
+          <div class="tl-item">
+            <div class="tl-period">Mes 1–2</div>
+            <div class="tl-dot" style="background:var(--p0)"></div>
+            <div class="tl-text"><strong>Dibujo a mano + Historia.</strong> 15 min de dibujo diario, videos de historia de la arquitectura. Libro: Francis Ching.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-period">Mes 3–4</div>
+            <div class="tl-dot" style="background:var(--p1)"></div>
+            <div class="tl-text"><strong>AutoCAD o SketchUp.</strong> Reproduce planos de casas existentes para practicar. Objetivo: dibujar tu casa completa en CAD.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-period">Mes 5–6</div>
+            <div class="tl-dot" style="background:var(--p2)"></div>
+            <div class="tl-text"><strong>Neufert + primer proyecto propio.</strong> Diseña una vivienda de 60–80 m² desde concepto hasta planta y fachadas. Consulta el POT de Ibagué.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-period">Mes 7–8</div>
+            <div class="tl-dot" style="background:var(--p3)"></div>
+            <div class="tl-text"><strong>Revit básico.</strong> Modela tu proyecto anterior en Revit. Los planos se generan solos. Aprende familias básicas (muros, puertas, ventanas).</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-period">Mes 9</div>
+            <div class="tl-dot" style="background:#7F77DD"></div>
+            <div class="tl-text"><strong>Lumion o Enscape.</strong> Haz renders de tu proyecto de Revit. Aprende iluminación, vegetación y post-producción en Photoshop.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-period">Mes 10–11</div>
+            <div class="tl-dot" style="background:#E24B4A"></div>
+            <div class="tl-text"><strong>Segundo proyecto.</strong> Tipología diferente: una tienda, una cafetería, un espacio público. Aplica lo aprendido con más criterio.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-period">Mes 12</div>
+            <div class="tl-dot" style="background:var(--p4)"></div>
+            <div class="tl-text"><strong>Portafolio digital.</strong> 3 proyectos bien presentados en InDesign. Súbelo a Behance e Issuu. Empieza a compartirlo en LinkedIn.</div>
+          </div>
+        </div>
+        <div class="tips-block" style="margin-top:1rem;">
+          <div class="tips-title">💡 Lo que marca la diferencia</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Busca un arquitecto o estudiante avanzado local que te dé una crítica honesta de tus proyectos. Una hora de feedback vale más que 10 tutoriales.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>No esperes a "saber suficiente" para empezar. Empieza hoy, aunque sea imperfecto. El proyecto imperfecto terminado supera al proyecto perfecto que nunca se empieza.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /fase 4 -->
+</section>
+
+<!-- ──────────────────── FASE 5: CONSTRUCCIÓN Y MATERIALES ──────────────────── -->
+<section class="phase-section" id="fase5">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:#0f766e;color:#0f766e;background:#ccfbf1">Fase 5</span>
+    <div class="phase-title-block">
+      <h2 style="color:#0f766e">Construcción, materiales y estructuras</h2>
+      <p class="phase-subtitle">Un arquitecto que no entiende cómo se construye lo que diseña comete errores graves. Esta fase te conecta con la realidad física de la arquitectura.</p>
+    </div>
+  </div>
+
+  <div class="topics-grid">
+
+    <!-- Card 5.1 Materiales -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🧱</span>
+          <div class="card-tags">
+            <span class="tag tag-book">Técnico</span>
+            <span class="tag tag-prac">Visita de obra</span>
+          </div>
+        </div>
+        <div class="card-title">Materiales de construcción</div>
+        <div class="card-sub">Concreto, acero, madera, vidrio, ladrillo, prefabricados, materiales sostenibles y locales.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">📖 Libros esenciales</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Materiales de construcción"</strong> de Aurelio Rojo Vidal — Referencia iberoamericana muy completa. Propiedades, usos y patologías.</span></li>
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Detail" (revista alemana en español)</strong> — La publicación de referencia mundial sobre detalles constructivos reales. Cada número analiza un material o sistema.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Materiales de construcción arquitectura"</strong> y <strong>"detalle constructivo"</strong> — hay canales de ingeniería civil que explican muy bien las propiedades físicas.</span></li>
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span><strong>Construmática</strong> en YouTube — contenido técnico de materiales para construcción en América Latina.</span></li>
+            <li class="res-item"><span class="res-ico">🇬🇧</span><span><strong>Practical Engineering</strong> (EN) — Explica cómo funcionan los materiales de forma visual. Subtítulos disponibles.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🏗️ Los materiales clave que debes conocer</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🔵</span><span><strong>Concreto (hormigón):</strong> el más usado en Colombia. Resistencias (f'c), tipos de mezcla, curado, patologías (fisuras, carbonatación).</span></li>
+            <li class="res-item"><span class="res-ico">⚫</span><span><strong>Acero:</strong> perfiles estructurales, láminas, tornillería. Ventajas de rapidez de montaje vs. costo.</span></li>
+            <li class="res-item"><span class="res-ico">🟤</span><span><strong>Ladrillo y mampostería:</strong> el sistema más común en vivienda colombiana. Ladrillo estructural vs. de fachada.</span></li>
+            <li class="res-item"><span class="res-ico">🟢</span><span><strong>Madera y bambú:</strong> materiales con gran potencial en Colombia. El guadua es patrimonio técnico nacional.</span></li>
+            <li class="res-item"><span class="res-ico">⚪</span><span><strong>Vidrio:</strong> tipos (templado, laminado, bajo emisivo), sistemas de fachada, control solar.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 El mejor aprendizaje: visitar obras</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Ve a visitar obras de construcción.</strong> Habla con el maestro de obra — aprenderás más en 2 horas que en 20 videos. Pide permiso con respeto y llevas casco.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Toca los materiales, observa cómo se unen, pregunta por qué se hace de cierta manera. La obra es el aula real.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Ve a ferreterías y almacenes de construcción para conocer precios reales y dimensiones comerciales de materiales. Diseñar con medidas comerciales ahorra costos.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5.2 Estructuras -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">⚙️</span>
+          <div class="card-tags">
+            <span class="tag tag-book">Técnico</span>
+            <span class="tag tag-key">NSR-10</span>
+          </div>
+        </div>
+        <div class="card-title">Estructuras básicas para arquitectos</div>
+        <div class="card-sub">Cargas, vigas, columnas, losas, cimentaciones, sistemas estructurales y sismo resistencia.</div>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-warn">
+          <strong>Nota importante:</strong> El cálculo estructural detallado lo hace un ingeniero civil. El arquitecto debe entender los principios para diseñar con sentido estructural, no calcular armaduras.
+        </div>
+        <div class="res-section" style="margin-top:1rem;">
+          <div class="res-section-title">Conceptos que todo arquitecto debe dominar</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📐</span><span><strong>Sistemas estructurales:</strong> pórticos (columnas y vigas), muros de carga, estructuras metálicas, losas planas. Cada uno tiene implicaciones en el diseño arquitectónico.</span></li>
+            <li class="res-item"><span class="res-ico">📐</span><span><strong>Cargas:</strong> carga muerta (peso propio del edificio) + carga viva (personas, muebles) + cargas sísmicas y de viento. La NSR-10 las define para Colombia.</span></li>
+            <li class="res-item"><span class="res-ico">📐</span><span><strong>Cimentaciones:</strong> zapatas, vigas de cimentación, pilotes. La geotecnia del terreno determina cuál usar.</span></li>
+            <li class="res-item"><span class="res-ico">📐</span><span><strong>Luces libres:</strong> la distancia máxima entre columnas sin apoyo intermedio. Crítica para el diseño de espacios abiertos.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Estructuras para arquitectos"</strong> — hay canales de ingeniería estructural con enfoque en lo que necesita saber un arquitecto (no el cálculo completo).</span></li>
+            <li class="res-item"><span class="res-ico">🇬🇧</span><span><strong>The Efficient Engineer</strong> (EN) — Explica conceptos estructurales con animaciones excepcionales. Subtítulos en español. Muy recomendado.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">📖 Libro recomendado</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📘</span><span><strong>"Estructuras para Arquitectos"</strong> de Salvadori y Heller — Escrito específicamente para arquitectos. Sin fórmulas complejas, con mucha intuición visual.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos de coordinación</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Diseña desde el principio con la estructura en mente.</strong> Cambiar la posición de columnas al final de un proyecto sale muy caro.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Una losa convencional con concreto puede cubrir hasta ~6m sin apoyo. Para más luz libre necesitas vigas especiales o estructura metálica.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Colombia es zona de amenaza sísmica media-alta en muchas regiones. El diseño sismo resistente no es opcional — está en la NSR-10.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5.3 Instalaciones -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🔌</span>
+          <div class="card-tags">
+            <span class="tag tag-book">Técnico</span>
+          </div>
+        </div>
+        <div class="card-title">Instalaciones hidráulicas, eléctricas y HVAC</div>
+        <div class="card-sub">Las redes que hacen funcionar un edificio. El arquitecto debe coordinarlas con el diseño.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">🔧 Las instalaciones que debe coordinar el arquitecto</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">💧</span><span><strong>Hidráulica y sanitaria:</strong> redes de agua potable (fría y caliente), aguas residuales, aguas lluvias. El arquitecto define recorridos y espacios técnicos para tuberías.</span></li>
+            <li class="res-item"><span class="res-ico">⚡</span><span><strong>Eléctrica:</strong> tableros, ductos, tomacorrientes, iluminación. Coordinar con el diseño de cielos y muros desde el inicio.</span></li>
+            <li class="res-item"><span class="res-ico">❄️</span><span><strong>HVAC (climatización):</strong> en Ibagué, con clima cálido, el aire acondicionado es frecuente en comercio y oficinas. El arquitecto debe prever ductos y unidades condensadoras.</span></li>
+            <li class="res-item"><span class="res-ico">🔥</span><span><strong>Gas natural:</strong> redes de gas, ventilaciones obligatorias, distancias de seguridad.</span></li>
+            <li class="res-item"><span class="res-ico">📡</span><span><strong>Telecomunicaciones:</strong> ductos para datos, fibra óptica, CCTV. Cada vez más importante en diseño moderno.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Instalaciones hidráulicas en arquitectura"</strong> e <strong>"instalaciones eléctricas planos"</strong> — hay tutoriales de cómo coordinar e integrar instalaciones en el proyecto arquitectónico.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 La regla de coordinación</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Define los espacios técnicos desde el anteproyecto:</strong> cuarto de máquinas, pozos de instalaciones, espacios de cielo raso para ductos. Añadirlos al final es costoso y feo.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>En Revit, la coordinación MEP (Mechanical, Electrical, Plumbing) evita que tuberías y estructuras se choquen. Es una de las grandes ventajas del BIM.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Trabaja siempre con los ingenieros de instalaciones desde la fase de anteproyecto, no al final. Los cambios tardíos en instalaciones pueden costar millones.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5.4 Presupuesto y costos -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">💰</span>
+          <div class="card-tags">
+            <span class="tag tag-web">Profesional</span>
+            <span class="tag tag-key">Nadie lo enseña</span>
+          </div>
+        </div>
+        <div class="card-title">Presupuestos y costos de construcción</div>
+        <div class="card-sub">Cómo estimar cuánto cuesta construir lo que diseñas. Lo que nadie te enseña en YouTube.</div>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-info">
+          <strong>Realidad profesional:</strong> El cliente siempre pregunta "¿cuánto cuesta?" Si no tienes idea, pierdes credibilidad. No necesitas ser ingeniero de costos, pero debes manejar órdenes de magnitud.
+        </div>
+        <div class="res-section" style="margin-top:1rem;">
+          <div class="res-section-title">📊 Conceptos clave</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📋</span><span><strong>APU (Análisis de Precios Unitarios):</strong> el costo de cada actividad constructiva desglosado en materiales, mano de obra y equipo. Base de todo presupuesto en Colombia.</span></li>
+            <li class="res-item"><span class="res-ico">📋</span><span><strong>Costo m² de construcción:</strong> en Colombia varía entre $1.8M y $5M COP por m² según el estrato y calidad. Tener estas referencias te salva en reuniones con clientes.</span></li>
+            <li class="res-item"><span class="res-ico">📋</span><span><strong>Licencia de construcción:</strong> trámite obligatorio ante la curaduría urbana. Tiene costos y tiempos que debes incluir en la planificación del proyecto.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🌐 Herramientas y fuentes</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🔗</span><span><strong>CAMACOL</strong> (camacol.co) — La Cámara Colombiana de la Construcción publica índices de costos de construcción actualizados.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><strong>SENA</strong> — Cursos gratuitos de presupuestos de construcción en el portal SENA Sofía Plus.</span></li>
+            <li class="res-item"><span class="res-ico">💻</span><span><strong>Software S10</strong> — El estándar en Colombia y Latinoamérica para elaborar presupuestos de obra. Hay tutoriales en YouTube.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Trucos prácticos</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Aprende a hacer un <strong>presupuesto paramétrico</strong>: área construida × costo estimado m² = estimado inicial. No es exacto pero orienta al cliente.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Visita ferreterías y pide precios de materiales básicos. Saber cuánto cuesta un bulto de cemento, una varilla o un metro cuadrado de porcelanato te da autoridad técnica.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────────────── SECCIÓN EXTRA: ERRORES COMUNES ──────────────────── -->
+<section class="phase-section" id="errores">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:#b45309;color:#b45309;background:#fef3c7">Errores</span>
+    <div class="phase-title-block">
+      <h2 style="color:#b45309">Los 10 errores más comunes al empezar</h2>
+      <p class="phase-subtitle">Lo que hace casi todo principiante y cómo evitarlo desde el principio.</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:1rem;">
+
+    <div class="topic-card">
+      <div class="card-body" style="padding:1.25rem 1.4rem;">
+        <div class="res-section">
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>Empezar en el software antes que a mano.</strong> El computador limita la creatividad en la fase de ideación. Boceta primero, digitaliza después.</span></li>
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>Diseñar sin conocer el lote ni la normativa.</strong> Un proyecto que no cumple el POT no se puede construir, sin importar lo bonito que sea.</span></li>
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>No consultar el Neufert.</strong> Diseñar baños de 1×1m, pasillos de 60cm o estacionamientos imposibles por no revisar dimensiones mínimas.</span></li>
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>Ignorar el sol y el viento.</strong> Un edificio con ventanas al occidente en Ibagué será un horno. La orientación es lo primero que se define, no lo último.</span></li>
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>Copiar sin analizar.</strong> Copiar un proyecto de ArchDaily está bien si entiendes por qué funciona. Copiarlo sin entenderlo produce resultados sin sentido en otro contexto.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-card">
+      <div class="card-body" style="padding:1.25rem 1.4rem;">
+        <div class="res-section">
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>Presentaciones sin escala gráfica.</strong> Un plano sin escala es inútil en obra. Siempre incluye escala numérica Y gráfica.</span></li>
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>Olvidar la estructura.</strong> Diseñar un edificio de 4 pisos sin columnas visibles porque "arruinan el espacio". El ingeniero te obliga a ponerlas después de manera peor.</span></li>
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>Portafolio con todo lo que hiciste.</strong> Meter 15 proyectos mediocres en lugar de 3 excelentes. La cantidad no impresiona — la calidad sí.</span></li>
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>No guardar versiones del proceso.</strong> Diseñar encima de bocetos previos y perder el proceso. Guarda cada etapa — el proceso vale tanto como el resultado.</span></li>
+            <li class="res-item"><span class="res-ico">❌</span><span><strong>Estudiar solo.</strong> Aprender arquitectura en aislamiento sin crítica externa es el error más costoso. Busca comunidad, comparte tu trabajo, pide retroalimentación constante.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────────────── SECCIÓN EXTRA: CONCURSOS ──────────────────── -->
+<section class="phase-section" id="concursos">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:#0369a1;color:#0369a1;background:#e0f2fe">Concursos</span>
+    <div class="phase-title-block">
+      <h2 style="color:#0369a1">Concursos de arquitectura para estudiantes</h2>
+      <p class="phase-subtitle">Los concursos son la manera más rápida de crecer, construir portafolio y ganar reconocimiento sin ser titulado.</p>
+    </div>
+  </div>
+
+  <div class="topics-grid">
+
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🏆</span>
+          <div class="card-tags"><span class="tag tag-web">Competencia</span><span class="tag tag-key">Portafolio</span></div>
+        </div>
+        <div class="card-title">Concursos internacionales abiertos</div>
+        <div class="card-sub">Competencias abiertas a estudiantes y autodidactas de todo el mundo.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">🌐 Plataformas de concursos</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://competitions.archmarathon.com" target="_blank"><strong>Archmarathon</strong></a> — Concursos de ideas internacionales. Muchos son gratuitos o de bajo costo de inscripción. Abiertos a todos.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://www.archdaily.com/competitions" target="_blank"><strong>ArchDaily Competitions</strong></a> — Lista actualizada de concursos mundiales. Filtra por "open to students".</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://www.bustler.net/competitions" target="_blank"><strong>Bustler.net</strong></a> — El directorio más completo de concursos de arquitectura del mundo. Actualizado semanalmente.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://www.youngarchitectscompetitions.com" target="_blank"><strong>Young Architects Competitions</strong></a> — Exclusivo para jóvenes y estudiantes.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🇨🇴 Concursos en Colombia</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🏛️</span><span><strong>Bienal Colombiana de Arquitectura</strong> — Organizada por la Sociedad Colombiana de Arquitectos (SCA). El evento más importante del país. Categoría estudiantes.</span></li>
+            <li class="res-item"><span class="res-ico">🏛️</span><span><strong>Concurso Nacional de Estudiantes de Arquitectura</strong> — Convocatoria anual para universidades colombianas.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 Por qué participar aunque no ganes</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Participar te obliga a terminar un proyecto con calidad de presentación. Solo eso ya justifica el esfuerzo.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Las bases de un concurso son el mejor ejercicio de lectura de un programa arquitectónico real.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Una mención honorífica internacional en tu portafolio pesa enormemente, incluso si no ganaste el primer lugar.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">📐</span>
+          <div class="card-tags"><span class="tag tag-prac">Estrategia</span></div>
+        </div>
+        <div class="card-title">Cómo preparar una entrega de concurso</div>
+        <div class="card-sub">La lámina de concurso es diferente a un plano técnico. Aquí el impacto visual es clave.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">📋 Estructura de una entrega típica</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">1️⃣</span><span><strong>Imagen conceptual:</strong> Un render o collage que comunique la idea en un vistazo. Es lo primero que ven los jueces.</span></li>
+            <li class="res-item"><span class="res-ico">2️⃣</span><span><strong>Planta(s) de arquitectura:</strong> con escala, norte, leyenda. Claras y limpias.</span></li>
+            <li class="res-item"><span class="res-ico">3️⃣</span><span><strong>Al menos una sección:</strong> que muestre relaciones espaciales interiores.</span></li>
+            <li class="res-item"><span class="res-ico">4️⃣</span><span><strong>Texto del concepto:</strong> máximo 100 palabras. Directo, sin relleno.</span></li>
+            <li class="res-item"><span class="res-ico">5️⃣</span><span><strong>Diagrama/axonometría:</strong> La axonometría explotada (exploded axo) es la favorita de los concursos contemporáneos para mostrar sistema constructivo.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">▶ YouTube</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🇪🇸</span><span>Busca <strong>"Lámina de concurso arquitectura"</strong> — tutoriales de composición, tipografía y presentación para concursos.</span></li>
+            <li class="res-item"><span class="res-ico">🇬🇧</span><span>Busca <strong>"Architecture competition board layout"</strong> — en inglés hay muchísimos tutoriales de composición de láminas ganadoras con análisis de por qué funcionan.</span></li>
+          </ul>
+        </div>
+        <div class="tips-block">
+          <div class="tips-title">💡 El secreto de las láminas ganadoras</div>
+          <div class="tip-item"><span class="tip-ico">→</span><span><strong>Una imagen que lo diga todo.</strong> Los jueces ven docenas de propuestas. Tu imagen principal tiene 3 segundos para atrapar la atención.</span></div>
+          <div class="tip-item"><span class="tip-ico">→</span><span>Consistencia visual: misma paleta de colores, misma tipografía, misma sensación en toda la lámina. El desorden visual elimina propuestas buenas.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────────────── SECCIÓN: GLOSARIO ──────────────────── -->
+<section class="phase-section" id="glosario">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:#475569;color:#475569;background:#f1f5f9">Glosario</span>
+    <div class="phase-title-block">
+      <h2 style="color:#475569">Glosario de términos esenciales</h2>
+      <p class="phase-subtitle">Los términos que vas a escuchar en obra, en el estudio y en clase desde el primer día.</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:1rem;">
+
+    <div class="topic-card">
+      <div class="card-body" style="padding:1.25rem 1.4rem;">
+        <div class="res-section-title" style="margin-bottom:0.75rem;">A – L</div>
+        <ul class="res-list">
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Alzado (Fachada):</strong> Vista lateral exterior de un edificio proyectada en un plano vertical.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Anteproyecto:</strong> Fase de diseño con planos preliminares para aprobación del cliente antes del proyecto definitivo.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>APU:</strong> Análisis de Precio Unitario. Costo desglosado de cada actividad constructiva.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Axonometría:</strong> Representación tridimensional sin perspectiva cónica. Mantiene medidas reales en los ejes.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>BIM:</strong> Building Information Modeling. Metodología de trabajo con modelos digitales inteligentes.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Cota:</strong> Medida numérica indicada en un plano. Cotas de nivel = alturas.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Curaduria urbana:</strong> Entidad que aprueba licencias de construcción en Colombia.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Escala:</strong> Relación de proporción entre el dibujo y la realidad. 1:100 = 1cm en plano = 1m real.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Losa:</strong> Elemento estructural horizontal de concreto que forma pisos y cubiertas.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="topic-card">
+      <div class="card-body" style="padding:1.25rem 1.4rem;">
+        <div class="res-section-title" style="margin-bottom:0.75rem;">M – Z</div>
+        <ul class="res-list">
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Mampostería:</strong> Sistema constructivo con bloques o ladrillos unidos con mortero.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Partido arquitectónico:</strong> La idea generatriz que organiza el espacio. El "esquema madre" del proyecto.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Planta:</strong> Vista horizontal del edificio a cierta altura (normalmente a 1m del piso).</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>POT:</strong> Plan de Ordenamiento Territorial. Norma municipal que regula qué se puede construir y dónde.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Programa arquitectónico:</strong> Lista de espacios y áreas que debe tener un edificio según su función.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Sección / Corte:</strong> Vista del edificio cortado verticalmente. Muestra alturas interiores y relaciones espaciales.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Tipología:</strong> Categoría de edificio según su uso: vivienda, educación, salud, etc.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Voladizo (volado):</strong> Elemento estructural que sobresale sin apoyo en el extremo libre.</span></li>
+          <li class="res-item"><span class="res-ico">→</span><span><strong>Zonificación:</strong> División del POT que clasifica el suelo según usos permitidos (residencial, comercial, industrial, etc.).</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────────────── SECCIÓN: RECURSOS MAESTROS ──────────────────── -->
+<section class="phase-section" id="recursos">
+  <div class="phase-heading">
+    <span class="phase-num" style="border-color:#1a1917;color:#1a1917;background:#e2e8f0">Recursos</span>
+    <div class="phase-title-block">
+      <h2>Biblioteca maestra de recursos</h2>
+      <p class="phase-subtitle">Todos los libros, canales, webs y herramientas mencionados en este road map, organizados en un solo lugar.</p>
+    </div>
+  </div>
+
+  <div class="topics-grid">
+
+    <!-- Libros -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">📚</span>
+          <div class="card-tags"><span class="tag tag-book">Libros</span></div>
+        </div>
+        <div class="card-title">Los 10 libros que todo arquitecto debe tener</div>
+        <div class="card-sub">Ordenados por prioridad. Los primeros 3 son absolutamente imprescindibles.</div>
+      </div>
+      <div class="card-body">
+        <ul class="res-list">
+          <li class="res-item"><span class="res-ico">1</span><span><strong>Arte de Proyectar en Arquitectura</strong> — Ernst Neufert. Dimensiones, programas, tipologías. El más usado en el mundo.</span></li>
+          <li class="res-item"><span class="res-ico">2</span><span><strong>Manual de Dibujo Arquitectónico</strong> — Francis D.K. Ching. El libro de dibujo, teoría visual y composición.</span></li>
+          <li class="res-item"><span class="res-ico">3</span><span><strong>La Arquitectura como Espacio</strong> — Bruno Zevi. Filosofía del espacio. Lectura rápida e imprescindible.</span></li>
+          <li class="res-item"><span class="res-ico">4</span><span><strong>Estructuras para Arquitectos</strong> — Salvadori y Heller. Estructuras sin matemáticas complicadas.</span></li>
+          <li class="res-item"><span class="res-ico">5</span><span><strong>Arquitectura y Clima</strong> — Serra Florensa. Diseño bioclimático y pasivo.</span></li>
+          <li class="res-item"><span class="res-ico">6</span><span><strong>Geometría Descriptiva</strong> — Izquierdo Asensi. La geometría espacial del arquitecto.</span></li>
+          <li class="res-item"><span class="res-ico">7</span><span><strong>Complejidad y Contradicción en Arquitectura</strong> — Robert Venturi. Teoría moderna fundamental.</span></li>
+          <li class="res-item"><span class="res-ico">8</span><span><strong>Espacio, Tiempo y Arquitectura</strong> — Sigfried Giedion. Historia del movimiento moderno.</span></li>
+          <li class="res-item"><span class="res-ico">9</span><span><strong>Hacia una Arquitectura</strong> — Le Corbusier. Manifiesto del Movimiento Moderno. Lectura formativa.</span></li>
+          <li class="res-item"><span class="res-ico">10</span><span><strong>El Poema del Ángulo Recto</strong> — Le Corbusier. Arte y filosofía de la arquitectura moderna.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Canales YouTube -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">▶️</span>
+          <div class="card-tags"><span class="tag tag-yt">YouTube</span></div>
+        </div>
+        <div class="card-title">Todos los canales de YouTube recomendados</div>
+        <div class="card-sub">Los mejores canales gratuitos para aprender arquitectura, ordenados por idioma y tema.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">🇪🇸 En español — Historia y cultura</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">⭐</span><span><strong>Arquisemana</strong> — Historia, proyectos, cultura. El canal de referencia en español.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>ArquiTerrazas</strong> — Conceptos básicos, análisis de proyectos para principiantes.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>Canal UNAM</strong> — Clases universitarias completas y gratuitas. Geometría, historia, diseño.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🇪🇸 En español — Software y técnica</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">⭐</span><span><strong>CADe SIFO</strong> — AutoCAD desde cero. El mejor canal en español para CAD.</span></li>
+            <li class="res-item"><span class="res-ico">⭐</span><span><strong>BIM Master</strong> — Revit desde cero. Muy completo y actualizado.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>El Mundo del BIM</strong> — AutoCAD, Revit, BIM con enfoque profesional.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>Revit desde Cero</strong> — Canal dedicado exclusivamente a Revit en español.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>Canal oficial SketchUp ES</strong> — Tutoriales de SketchUp directamente del fabricante.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>Canal oficial Lumion ES</strong> — Renders en Lumion paso a paso.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🇪🇸 En español — Diseño y proceso</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">⭐</span><span><strong>Borromini Arquitectura</strong> — Muestra el proceso real de diseño. Muy valioso.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>MasArquitectura</strong> — Proceso de diseño y análisis de proyectos en español.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🇬🇧 En inglés (con subtítulos disponibles)</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">⭐</span><span><strong>30X40 Design Workshop</strong> — El MEJOR canal de arquitectura del mundo para pensar como arquitecto. Proceso, negocio, vida real. IMPERDIBLE.</span></li>
+            <li class="res-item"><span class="res-ico">⭐</span><span><strong>The B1M</strong> — Documentales de construcción y arquitectura de alta producción.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>ArchDaily</strong> — Proyectos contemporáneos con análisis.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>MADE Architecture</strong> — Proceso de diseño y sketching.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>Architecture School</strong> — Vida del estudiante y el arquitecto.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>The Efficient Engineer</strong> — Estructuras y materiales con animaciones excepcionales.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><strong>Practical Engineering</strong> — Ingeniería y construcción de forma visual.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Webs -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🌐</span>
+          <div class="card-tags"><span class="tag tag-web">Webs</span></div>
+        </div>
+        <div class="card-title">Webs y plataformas esenciales</div>
+        <div class="card-sub">Los sitios que debes visitar regularmente como arquitecto.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">🏛️ Arquitectura y referentes</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">⭐</span><span><a href="https://www.archdaily.com" target="_blank"><strong>ArchDaily.com</strong></a> — El portal de arquitectura más visitado del mundo. Proyectos, noticias, concursos. Gratis.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><a href="https://www.dezeen.com" target="_blank"><strong>Dezeen.com</strong></a> — Arquitectura, diseño e interiorismo contemporáneo.</span></li>
+            <li class="res-item"><span class="res-ico">✓</span><span><a href="https://www.divisare.com" target="_blank"><strong>Divisare.com</strong></a> — El mejor repositorio de fotografía de arquitectura. Inspiración visual pura.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">💻 Software y educación</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🎓</span><span><a href="https://www.autodesk.com/education/edu-software" target="_blank"><strong>Autodesk Education</strong></a> — AutoCAD, Revit, 3ds Max gratis para estudiantes.</span></li>
+            <li class="res-item"><span class="res-ico">🆓</span><span><a href="https://app.sketchup.com" target="_blank"><strong>SketchUp Free</strong></a> — SketchUp en el navegador, gratis.</span></li>
+            <li class="res-item"><span class="res-ico">💲</span><span><a href="https://www.udemy.com" target="_blank"><strong>Udemy.com</strong></a> — Cursos de Revit, AutoCAD, Lumion desde $10 en descuento.</span></li>
+            <li class="res-item"><span class="res-ico">🎓</span><span><a href="https://www.coursera.org" target="_blank"><strong>Coursera.org</strong></a> — Cursos universitarios de arquitectura con certificado internacional.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🇨🇴 Colombia específico</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">📜</span><span><a href="https://copnia.gov.co" target="_blank"><strong>COPNIA.gov.co</strong></a> — Consejo Profesional. Matrícula profesional obligatoria para ejercer.</span></li>
+            <li class="res-item"><span class="res-ico">🏗️</span><span><a href="https://camacol.co" target="_blank"><strong>CAMACOL.co</strong></a> — Cámara Colombiana de la Construcción. Índices de costos y normativa.</span></li>
+            <li class="res-item"><span class="res-ico">🏛️</span><span><a href="https://sca.org.co" target="_blank"><strong>SCA.org.co</strong></a> — Sociedad Colombiana de Arquitectos. Bienal, concursos y gremio.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">📁 Portafolio y comunidad</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://www.behance.net" target="_blank"><strong>Behance.net</strong></a> — Publica y comparte tu portafolio. Gratis.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://issuu.com" target="_blank"><strong>Issuu.com</strong></a> — Portafolio PDF como revista online. Comparte por link.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://archinect.com" target="_blank"><strong>Archinect.com</strong></a> — Comunidad y portafolios de arquitectos de todo el mundo.</span></li>
+            <li class="res-item"><span class="res-ico">🔗</span><span><a href="https://www.bustler.net/competitions" target="_blank"><strong>Bustler.net</strong></a> — Directorio completo de concursos de arquitectura.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Software completo -->
+    <div class="topic-card">
+      <div class="card-top">
+        <div class="card-header">
+          <span class="card-icon">🛠️</span>
+          <div class="card-tags"><span class="tag tag-soft">Software</span></div>
+        </div>
+        <div class="card-title">Mapa completo de software por etapa</div>
+        <div class="card-sub">Qué herramienta usar en cada momento del proceso, de menor a mayor complejidad.</div>
+      </div>
+      <div class="card-body">
+        <div class="res-section">
+          <div class="res-section-title">📐 Dibujo y planos 2D</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">1</span><span><strong>AutoCAD</strong> — Estándar industria. Versión educativa gratis. Imprescindible.</span></li>
+            <li class="res-item"><span class="res-ico">2</span><span><strong>DraftSight</strong> — Alternativa gratuita a AutoCAD. Sin registro universitario.</span></li>
+            <li class="res-item"><span class="res-ico">3</span><span><strong>LibreCAD</strong> — Open source, gratis para siempre. Básico pero funcional.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🏗️ Modelado 3D</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">1</span><span><strong>SketchUp Free</strong> — El más fácil. En el navegador. Para empezar en 3D.</span></li>
+            <li class="res-item"><span class="res-ico">2</span><span><strong>Revit</strong> — BIM completo. Gratis educación. Para proyectos reales.</span></li>
+            <li class="res-item"><span class="res-ico">3</span><span><strong>3ds Max</strong> — Modelado avanzado y rendering con V-Ray. Gratis educación.</span></li>
+            <li class="res-item"><span class="res-ico">4</span><span><strong>Rhino + Grasshopper</strong> — Modelado paramétrico y formas complejas. Nivel avanzado.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🎬 Visualización y renders</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">1</span><span><strong>Lumion</strong> — El más fácil. Trial 14 días. Ideal para empezar con renders.</span></li>
+            <li class="res-item"><span class="res-ico">2</span><span><strong>Enscape</strong> — Tiempo real desde Revit/SketchUp. Trial 14 días.</span></li>
+            <li class="res-item"><span class="res-ico">3</span><span><strong>V-Ray</strong> — El más fotorrealista. Plugin para SketchUp, Revit o 3ds Max.</span></li>
+            <li class="res-item"><span class="res-ico">4</span><span><strong>Twinmotion</strong> — De Epic Games. Gratis para uso educativo. Alternativa a Lumion.</span></li>
+          </ul>
+        </div>
+        <div class="res-section">
+          <div class="res-section-title">🎨 Presentación y gráficos</div>
+          <ul class="res-list">
+            <li class="res-item"><span class="res-ico">1</span><span><strong>Adobe Photoshop</strong> — Post-producción renders, collages. GIMP como alternativa gratis.</span></li>
+            <li class="res-item"><span class="res-ico">2</span><span><strong>Adobe InDesign</strong> — Maquetación de portafolios y láminas. Scribus como alternativa gratis.</span></li>
+            <li class="res-item"><span class="res-ico">3</span><span><strong>Adobe Illustrator</strong> — Diagramas y gráficos vectoriales. Inkscape como alternativa gratis.</span></li>
+            <li class="res-item"><span class="res-ico">4</span><span><strong>Canva</strong> — Para presentaciones rápidas. Gratis. No para portafolios profesionales.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <p style="margin-bottom:0.5rem"><strong>Road Map Arquitectura — Desde Cero · Guía Completa</strong></p>
+  <p>9 secciones · 28 temas · 100+ recursos · Normativa colombiana NSR-10 · POT · COPNIA</p>
+  <p style="margin-top:0.5rem">Fases 0–5 · Construcción y materiales · Concursos · Glosario · Biblioteca maestra de recursos</p>
+  <p style="margin-top:0.75rem; font-size:11px; opacity:0.6">Generado con Claude · archdaily.com · autodesk.com/education · copnia.gov.co · camacol.co · sca.org.co</p>
+</footer>
+
+</body>
+</html>

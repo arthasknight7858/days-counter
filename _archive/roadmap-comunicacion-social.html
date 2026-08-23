@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sintoniza tu Ruta — Roadmap de Comunicación Social desde Cero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;900&family=Literata:ital,opsz,wght@0,18..144,400;0,18..144,500;0,18..144,600;0,18..144,700;1,18..144,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12151a;
+    --ink-2:#1b2028;
+    --ink-3:#232a34;
+    --paper:#efe7d8;
+    --paper-dim:#c9c2b3;
+    --signal:#ff4d4d;
+    --wave:#3fa796;
+    --gold:#d9a441;
+    --dim:#8b93a1;
+    --line:#333c48;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Literata', serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.mast,.freq{font-family:'Big Shoulders Display', sans-serif; text-transform:uppercase; letter-spacing:0.02em;}
+  .mono{font-family:'Space Mono', monospace;}
+  a{color:var(--gold);}
+  ::selection{background:var(--signal); color:var(--ink);}
+
+  /* ---------- layout shells ---------- */
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+  section{padding:88px 0; border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    color:var(--gold);
+    font-size:13px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    margin:0 0 14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--gold); display:inline-block;}
+  h2{font-size:clamp(34px,5vw,56px); font-weight:700; margin:0 0 22px; line-height:.95; color:var(--paper);}
+  h2 span{color:var(--signal);}
+  p.lead{font-size:19px; color:var(--paper-dim); max-width:70ch; margin:0 0 30px;}
+  .card-grid{display:grid; gap:20px;}
+  .card{
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:26px 26px 24px;
+  }
+  .card h3{font-size:24px; margin:0 0 10px; color:var(--paper); font-weight:700;}
+  .card ul{margin:10px 0 0; padding-left:20px; color:var(--paper-dim);}
+  .card li{margin-bottom:6px;}
+  .tag{
+    display:inline-block; font-family:'Space Mono',monospace; font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--ink);
+    background:var(--wave); padding:3px 9px; border-radius:20px; margin-bottom:14px;
+  }
+
+  /* ---------- nav dial ---------- */
+  .dial-nav{
+    position:fixed; right:18px; top:50%; transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:14px; z-index:50;
+  }
+  .dial-nav a{
+    width:11px; height:11px; border-radius:50%;
+    background:transparent; border:1px solid var(--dim);
+    display:block; position:relative; text-decoration:none;
+  }
+  .dial-nav a.active, .dial-nav a:hover{background:var(--signal); border-color:var(--signal);}
+  .dial-nav a span{
+    position:absolute; right:22px; top:50%; transform:translateY(-50%);
+    font-family:'Space Mono',monospace; font-size:11px; color:var(--paper-dim);
+    white-space:nowrap; opacity:0; transition:opacity .15s;
+    background:var(--ink-2); padding:3px 8px; border:1px solid var(--line); border-radius:3px;
+  }
+  .dial-nav a:hover span{opacity:1;}
+  @media (max-width:900px){ .dial-nav{display:none;} }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    padding:70px 0 60px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .mast{
+    font-size:clamp(48px,9vw,108px);
+    font-weight:900;
+    line-height:.86;
+    margin:0;
+    color:var(--paper);
+  }
+  .mast .accent{color:var(--signal);}
+  .hero-sub{
+    font-family:'Space Mono',monospace; color:var(--gold); font-size:14px;
+    letter-spacing:.1em; text-transform:uppercase; margin:18px 0 26px;
+  }
+  .hero-grid{display:grid; grid-template-columns:1.3fr .9fr; gap:50px; align-items:center; margin-top:20px;}
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
+
+  /* tuner dial svg */
+  .tuner{background:var(--ink-2); border:1px solid var(--line); border-radius:6px; padding:22px; text-align:center;}
+  .tuner svg{width:100%; max-width:230px; height:auto;}
+  #needle{transform-origin:115px 118px; animation:sweep 6s ease-in-out infinite;}
+  @keyframes sweep{
+    0%{transform:rotate(-38deg);} 50%{transform:rotate(38deg);} 100%{transform:rotate(-38deg);}
+  }
+  .readout{
+    margin-top:14px; font-family:'Space Mono',monospace; color:var(--wave);
+    font-size:15px; letter-spacing:.06em; min-height:20px;
+  }
+  .readout b{color:var(--signal);}
+
+  /* equalizer bars used as node marker */
+  .eq{display:inline-flex; align-items:flex-end; gap:2px; height:16px; margin-right:10px;}
+  .eq i{display:block; width:3px; background:var(--signal); animation:eqbounce 1.1s ease-in-out infinite;}
+  .eq i:nth-child(1){height:40%; animation-delay:0s;}
+  .eq i:nth-child(2){height:100%; animation-delay:.15s;}
+  .eq i:nth-child(3){height:65%; animation-delay:.3s;}
+  .eq i:nth-child(4){height:85%; animation-delay:.45s;}
+  @keyframes eqbounce{0%,100%{transform:scaleY(.35);} 50%{transform:scaleY(1);}}
+  @media (prefers-reduced-motion:reduce){
+    #needle,.eq i{animation:none;}
+  }
+
+  /* ---------- timeline / frequencies ---------- */
+  .timeline{position:relative;}
+  .stage{
+    display:grid; grid-template-columns:200px 1fr; gap:36px;
+    padding:44px 0; border-top:1px dashed var(--line);
+    position:relative;
+  }
+  .stage:first-child{border-top:none;}
+  .freq{font-size:44px; color:var(--gold); font-weight:700; line-height:1; margin:0;}
+  .freq small{display:block; font-family:'Space Mono',monospace; font-size:12px; color:var(--dim); letter-spacing:.1em; margin-top:6px; text-transform:none;}
+  @media (max-width:720px){ .stage{grid-template-columns:1fr; gap:14px;} }
+  .stage h3.title{font-size:30px; margin:0 0 8px; display:flex; align-items:center; color:var(--paper);}
+  .stage p.desc{color:var(--paper-dim); margin:0 0 18px; max-width:70ch;}
+  .sub-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;}
+  .sub-card{background:var(--ink-2); border:1px solid var(--line); padding:18px 18px 16px; border-radius:4px;}
+  .sub-card h4{margin:0 0 8px; font-family:'Space Mono',monospace; font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--wave);}
+  .sub-card ul{margin:0; padding-left:18px; color:var(--paper-dim); font-size:15.5px;}
+  .sub-card li{margin-bottom:5px;}
+  .howto{
+    margin-top:18px; border-left:2px solid var(--signal); padding:4px 0 4px 16px; color:var(--paper-dim); font-size:15.5px;
+  }
+  .howto b{color:var(--paper);}
+
+  /* ---------- yes/no table ---------- */
+  .yn-table{width:100%; border-collapse:collapse; margin-top:10px;}
+  .yn-table th,.yn-table td{border:1px solid var(--line); padding:12px 14px; text-align:left; font-size:15.5px; vertical-align:top;}
+  .yn-table th{font-family:'Space Mono',monospace; text-transform:uppercase; font-size:12.5px; letter-spacing:.06em; color:var(--gold); background:var(--ink-2);}
+  .yn-table td.yes{color:var(--wave);}
+  .yn-table td.no{color:var(--signal);}
+
+  /* ---------- strategy list ---------- */
+  .strat{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px;}
+  .strat .card .num{font-family:'Space Mono',monospace; color:var(--dim); font-size:13px;}
+
+  /* ---------- timeline chronogram table ---------- */
+  .chrono{width:100%; border-collapse:collapse; margin-top:10px;}
+  .chrono th,.chrono td{border:1px solid var(--line); padding:12px 14px; font-size:15px;}
+  .chrono th{background:var(--ink-2); color:var(--gold); font-family:'Space Mono',monospace; text-transform:uppercase; font-size:12px; letter-spacing:.05em; text-align:left;}
+  .chrono td{color:var(--paper-dim);}
+  .chrono td.month{color:var(--paper); font-family:'Space Mono',monospace; white-space:nowrap;}
+
+  /* ---------- checklist ---------- */
+  .checklist{list-style:none; margin:0; padding:0; display:grid; gap:10px; max-width:640px;}
+  .checklist li{
+    display:flex; gap:12px; align-items:flex-start; background:var(--ink-2);
+    border:1px solid var(--line); padding:12px 16px; border-radius:4px; color:var(--paper-dim);
+  }
+  .checklist li::before{content:"▢"; color:var(--signal); font-size:17px; line-height:1.4;}
+
+  footer{padding:50px 0 80px; text-align:center;}
+  footer .mono{color:var(--dim); font-size:13px; letter-spacing:.05em;}
+  footer .freq-final{color:var(--gold); font-size:22px; margin-bottom:8px;}
+
+  .callout{
+    background:linear-gradient(135deg, rgba(255,77,77,.08), rgba(63,167,150,.08));
+    border:1px solid var(--line); border-left:3px solid var(--signal);
+    padding:20px 24px; border-radius:4px; color:var(--paper-dim); margin-top:24px;
+  }
+  .callout b{color:var(--paper);}
+</style>
+</head>
+<body>
+
+<nav class="dial-nav" id="dialNav">
+  <a href="#inicio"><span>Inicio</span></a>
+  <a href="#panorama"><span>Panorama</span></a>
+  <a href="#f1"><span>88.1 Fundamentos</span></a>
+  <a href="#f2"><span>91.3 Habilidades</span></a>
+  <a href="#f3"><span>94.5 Especialización</span></a>
+  <a href="#f4"><span>97.7 Herramientas</span></a>
+  <a href="#f5"><span>101.0 Práctica</span></a>
+  <a href="#f6"><span>104.5 Networking</span></a>
+  <a href="#f7"><span>107.9 Actualización</span></a>
+  <a href="#youtube"><span>¿YouTube sirve?</span></a>
+  <a href="#estrategias"><span>Estrategias</span></a>
+  <a href="#cronograma"><span>Cronograma</span></a>
+  <a href="#checklist"><span>Checklist</span></a>
+</nav>
+
+<header class="hero" id="inicio">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="mast">SINTONIZA<br>TU <span class="accent">RUTA</span></p>
+      <p class="hero-sub">Roadmap de Comunicación Social — desde cero hasta empleable</p>
+      <p class="lead">La comunicación social no se aprende de memoria: se aprende sintonizando, estación por estación. Esta guía te lleva desde la teoría básica hasta tener un portafolio real, pasando por qué estudiar, cómo estudiarlo, qué herramientas usar y si YouTube realmente te sirve (spoiler: sí, pero no solo).</p>
+    </div>
+    <div class="tuner">
+      <svg viewBox="0 0 230 150" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="115" cy="118" r="8" fill="#d9a441"/>
+        <path d="M35 118 A80 80 0 0 1 195 118" fill="none" stroke="#333c48" stroke-width="2"/>
+        <path d="M35 118 A80 80 0 0 1 195 118" fill="none" stroke="#3fa796" stroke-width="2" stroke-dasharray="6 10"/>
+        <g id="needle">
+          <line x1="115" y1="118" x2="115" y2="45" stroke="#ff4d4d" stroke-width="3" stroke-linecap="round"/>
+        </g>
+        <text x="45" y="140" fill="#8b93a1" font-family="Space Mono, monospace" font-size="10">88.1</text>
+        <text x="102" y="140" fill="#8b93a1" font-family="Space Mono, monospace" font-size="10">98.0</text>
+        <text x="165" y="140" fill="#8b93a1" font-family="Space Mono, monospace" font-size="10">107.9</text>
+      </svg>
+      <div class="readout mono" id="readout">88.1 — <b>FUNDAMENTOS</b></div>
+    </div>
+  </div>
+</header>
+
+<section id="panorama">
+  <div class="wrap">
+    <p class="eyebrow">Antes de sintonizar</p>
+    <h2>¿Qué es <span>estudiar Comunicación Social?</span></h2>
+    <p class="lead">Es el campo que estudia cómo se producen, transmiten e interpretan mensajes entre personas, grupos, medios e instituciones. No es una sola profesión: es un tronco común del que salen varias ramas. Antes de armar tu ruta, conviene ubicar el mapa completo.</p>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+      <div class="card"><h3>Periodismo</h3><p style="color:var(--paper-dim); margin:0;">Investigar, verificar y narrar hechos de interés público en texto, radio, TV o digital.</p></div>
+      <div class="card"><h3>Publicidad y marketing</h3><p style="color:var(--paper-dim); margin:0;">Crear mensajes persuasivos para vender productos, ideas o marcas.</p></div>
+      <div class="card"><h3>Relaciones públicas / institucional</h3><p style="color:var(--paper-dim); margin:0;">Gestionar la imagen y la relación de una organización con sus públicos.</p></div>
+      <div class="card"><h3>Producción audiovisual</h3><p style="color:var(--paper-dim); margin:0;">Contar historias en video, audio y formatos multimedia.</p></div>
+      <div class="card"><h3>Comunicación digital</h3><p style="color:var(--paper-dim); margin:0;">Redes sociales, contenido, comunidad y analítica en entornos online.</p></div>
+    </div>
+    <div class="callout">
+      <b>Cómo usar esta ruta:</b> las frecuencias 88.1 a 97.7 son la base que necesita cualquiera de las ramas de arriba. En la frecuencia 94.5 elegís hacia dónde te especializás. Nadie "termina" esta ruta — se re-sintoniza cada tanto (por eso la última frecuencia es justamente actualización constante).
+    </div>
+  </div>
+</section>
+
+<section id="f1">
+  <div class="wrap timeline">
+    <div class="stage">
+      <div>
+        <p class="freq">88.1<small>Fase 01</small></p>
+      </div>
+      <div>
+        <h3 class="title"><span class="eq"><i></i><i></i><i></i><i></i></span>Fundamentos teóricos</h3>
+        <p class="desc">Antes de escribir una nota o grabar un video, necesitás entender qué pasa cuando alguien se comunica: quién emite, qué canal usa, qué puede salir mal (ruido) y cómo se interpreta el mensaje. Es la base que después vas a aplicar en la práctica sin pensarla conscientemente.</p>
+        <div class="sub-grid">
+          <div class="sub-card">
+            <h4>Qué aprender</h4>
+            <ul>
+              <li>Modelos de comunicación (Shannon-Weaver, Lasswell, Jakobson)</li>
+              <li>Emisor, receptor, canal, código, ruido, feedback</li>
+              <li>Historia de los medios de comunicación</li>
+              <li>Comunicación verbal, no verbal y paraverbal</li>
+              <li>Teoría de la información vs. teoría de la cultura (Escuela de Frankfurt vs. Estudios Culturales, nociones básicas)</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Cómo aprender</h4>
+            <ul>
+              <li>Un curso introductorio (universidad abierta, MOOC o manual) antes que videos sueltos</li>
+              <li>Tomar apuntes propios explicando cada modelo "como si se lo explicaras a alguien de 12 años"</li>
+              <li>Buscar 1 ejemplo real por cada concepto teórico que veas</li>
+            </ul>
+          </div>
+        </div>
+        <div class="howto"><b>Truco:</b> no memorices los modelos, dibujalos. Si podés redibujar el esquema de Shannon-Weaver de memoria en una hoja en blanco, lo aprendiste de verdad.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="f2">
+  <div class="wrap timeline">
+    <div class="stage">
+      <div><p class="freq">91.3<small>Fase 02</small></p></div>
+      <div>
+        <h3 class="title"><span class="eq"><i></i><i></i><i></i><i></i></span>Habilidades transversales</h3>
+        <p class="desc">Estas son las habilidades que usás sin importar en qué rama termines. Son las que más diferencian a un comunicador junior de uno que ya puede trabajar solo.</p>
+        <div class="sub-grid">
+          <div class="sub-card">
+            <h4>Redacción</h4>
+            <ul>
+              <li>Ortografía y gramática (no negociable)</li>
+              <li>Pirámide invertida y titulación periodística</li>
+              <li>Estilo claro: frases cortas, verbos activos, un dato por oración</li>
+              <li>Redacción para web (escaneable) vs. redacción para impreso</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Oratoria y expresión oral</h4>
+            <ul>
+              <li>Dicción, respiración y manejo de pausas</li>
+              <li>Estructura de un discurso (apertura, desarrollo, cierre)</li>
+              <li>Comunicación no verbal frente a cámara y en público</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Pensamiento crítico</h4>
+            <ul>
+              <li>Verificación de fuentes y detección de desinformación</li>
+              <li>Lectura de medios con mirada analítica, no solo consumo</li>
+              <li>Argumentación y debate</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Cultura general</h4>
+            <ul>
+              <li>Actualidad nacional e internacional</li>
+              <li>Historia, política y economía básica</li>
+              <li>Ética y deontología del comunicador</li>
+            </ul>
+          </div>
+        </div>
+        <div class="howto"><b>Truco:</b> escribí 300 palabras por día sobre cualquier tema y leélas en voz alta al terminar. Vas a mejorar redacción y oratoria con el mismo hábito.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="f3">
+  <div class="wrap timeline">
+    <div class="stage">
+      <div><p class="freq">94.5<small>Fase 03</small></p></div>
+      <div>
+        <h3 class="title"><span class="eq"><i></i><i></i><i></i><i></i></span>Elegí tu especialización</h3>
+        <p class="desc">Acá es donde el camino se abre. No hace falta elegir para siempre: elegí una rama para los próximos 6-12 meses y profundizá. Podés cambiar después con la base que ya tenés.</p>
+        <div class="sub-grid">
+          <div class="sub-card">
+            <h4>Periodismo</h4>
+            <ul>
+              <li>Géneros: noticia, crónica, entrevista, reportaje, opinión</li>
+              <li>Verificación de datos (fact-checking)</li>
+              <li>Periodismo de datos, básico</li>
+              <li>Legislación de prensa y libertad de expresión</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Publicidad / Marketing</h4>
+            <ul>
+              <li>Copywriting y storytelling de marca</li>
+              <li>Fundamentos de branding</li>
+              <li>Investigación de mercado y buyer persona</li>
+              <li>Fundamentos de marketing digital y funnels</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>RRPP / Comunicación institucional</h4>
+            <ul>
+              <li>Gestión de crisis y comunicación de crisis</li>
+              <li>Relación con medios (media training, gacetillas)</li>
+              <li>Comunicación interna en organizaciones</li>
+              <li>Public affairs y stakeholders</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Producción audiovisual</h4>
+            <ul>
+              <li>Guion y estructura narrativa</li>
+              <li>Lenguaje de cámara y planos</li>
+              <li>Edición de video y sonido, nociones</li>
+              <li>Producción de podcast</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Comunicación digital</h4>
+            <ul>
+              <li>Gestión de redes sociales y calendario de contenido</li>
+              <li>Comunidad y moderación (community management)</li>
+              <li>Métricas: alcance, engagement, conversión</li>
+              <li>Fundamentos de SEO y algoritmos de plataformas</li>
+            </ul>
+          </div>
+        </div>
+        <div class="howto"><b>Cómo elegir:</b> probá una mini-tarea de cada rama en una semana (escribí una crónica, armá un guion de 1 minuto, diseñá un plan de contenido de 5 posts). La que te dio ganas de seguir de largo, esa es tu señal.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="f4">
+  <div class="wrap timeline">
+    <div class="stage">
+      <div><p class="freq">97.7<small>Fase 04</small></p></div>
+      <div>
+        <h3 class="title"><span class="eq"><i></i><i></i><i></i><i></i></span>Herramientas técnicas</h3>
+        <p class="desc">La teoría sin herramienta no produce nada mostrable. Esta fase es puramente práctica: aprender el software y los sistemas que vas a usar todos los días.</p>
+        <div class="sub-grid">
+          <div class="sub-card">
+            <h4>Edición</h4>
+            <ul>
+              <li>Canva (piezas gráficas rápidas)</li>
+              <li>CapCut o Premiere (edición de video)</li>
+              <li>Photoshop o alternativa gratuita (Photopea)</li>
+              <li>Audacity (edición de audio / podcast)</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Publicación</h4>
+            <ul>
+              <li>WordPress u otro CMS básico</li>
+              <li>Programadores de redes (Meta Business Suite, Buffer)</li>
+              <li>Nociones de newsletters (Mailchimp, Substack)</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Datos y medición</h4>
+            <ul>
+              <li>Google Analytics, nociones</li>
+              <li>Métricas nativas de cada red social</li>
+              <li>Hojas de cálculo para reportes simples</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>IA aplicada</h4>
+            <ul>
+              <li>Asistentes de IA para investigación y borradores</li>
+              <li>Generación de imágenes para piezas de apoyo</li>
+              <li>Uso ético: cuándo declarar contenido asistido por IA</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="f5">
+  <div class="wrap timeline">
+    <div class="stage">
+      <div><p class="freq">101.0<small>Fase 05</small></p></div>
+      <div>
+        <h3 class="title"><span class="eq"><i></i><i></i><i></i><i></i></span>Práctica real y portafolio</h3>
+        <p class="desc">Ningún roadmap reemplaza publicar cosas reales. Esta fase corre en paralelo a todas las anteriores, no después.</p>
+        <div class="sub-grid">
+          <div class="sub-card">
+            <h4>Proyectos propios</h4>
+            <ul>
+              <li>Un blog, canal o podcast personal (aunque tenga 3 lectores)</li>
+              <li>Cubrir un evento local como si fueras prensa</li>
+              <li>Armar un plan de comunicación ficticio para una marca real</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Práctica con otros</h4>
+            <ul>
+              <li>Medios estudiantiles o comunitarios</li>
+              <li>Pasantías o prácticas profesionales</li>
+              <li>Colaborar gratis/low-cost con una ONG o emprendimiento a cambio de portafolio</li>
+            </ul>
+          </div>
+        </div>
+        <div class="howto"><b>Truco:</b> tu portafolio no necesita 30 piezas. Necesita 5-8 piezas muy buenas, cada una mostrando una habilidad distinta.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="f6">
+  <div class="wrap timeline">
+    <div class="stage">
+      <div><p class="freq">104.5<small>Fase 06</small></p></div>
+      <div>
+        <h3 class="title"><span class="eq"><i></i><i></i><i></i><i></i></span>Networking y empleabilidad</h3>
+        <p class="desc">La comunicación social es un campo donde a quién conocés importa casi tanto como qué sabés hacer.</p>
+        <div class="sub-grid">
+          <div class="sub-card">
+            <h4>Presencia profesional</h4>
+            <ul>
+              <li>Perfil de LinkedIn con portafolio linkeado</li>
+              <li>CV enfocado en resultados, no solo tareas</li>
+              <li>Web o carpeta pública con tus mejores piezas</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <h4>Comunidad</h4>
+            <ul>
+              <li>Comunidades y foros de tu rama elegida</li>
+              <li>Eventos, meetups y charlas del sector</li>
+              <li>Mentorías, aunque sean informales</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="f7">
+  <div class="wrap timeline">
+    <div class="stage">
+      <div><p class="freq">107.9<small>Fase 07</small></p></div>
+      <div>
+        <h3 class="title"><span class="eq"><i></i><i></i><i></i><i></i></span>Actualización constante</h3>
+        <p class="desc">Esta frecuencia no tiene fin: los formatos, plataformas y herramientas cambian todo el tiempo. La ruta se repite en espiral, no en línea recta.</p>
+        <div class="howto"><b>Hábito sugerido:</b> una vez al mes, dedicá una tarde a revisar qué cambió en tu rama (un algoritmo, una herramienta, una tendencia) y ajustá tu forma de trabajar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="youtube">
+  <div class="wrap">
+    <p class="eyebrow">La pregunta obligada</p>
+    <h2>¿Puedo aprender <span>por YouTube?</span></h2>
+    <p class="lead">Sí, pero con matices. YouTube es excelente para aprender herramientas y ver ejemplos, y flojo para construir criterio y teoría sólida. La clave es no usarlo como única fuente.</p>
+    <table class="yn-table">
+      <tr><th>Para esto, YouTube funciona bien</th><th>Para esto, necesitás algo más que YouTube</th></tr>
+      <tr>
+        <td class="yes">Tutoriales de software (edición, Canva, CMS)</td>
+        <td class="no">Teoría de la comunicación estructurada y ordenada</td>
+      </tr>
+      <tr>
+        <td class="yes">Ver ejemplos reales de entrevistas, coberturas, spots</td>
+        <td class="no">Retroalimentación sobre tus propios textos o piezas</td>
+      </tr>
+      <tr>
+        <td class="yes">Charlas y conferencias de profesionales</td>
+        <td class="no">Ética, deontología y marco legal, que requieren lectura y debate</td>
+      </tr>
+      <tr>
+        <td class="yes">Mantenerte al día con tendencias y formatos nuevos</td>
+        <td class="no">Certificación formal si el mercado que buscás la pide</td>
+      </tr>
+    </table>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin-top:34px;">
+      <div class="card">
+        <span class="tag">Video</span>
+        <h3>Qué buscar en YouTube</h3>
+        <ul>
+          <li>Canales de universidades y escuelas de periodismo (buscá "OpenCourseWare comunicación")</li>
+          <li>Charlas TED en español sobre medios y persuasión</li>
+          <li>Canales de edición/diseño para las herramientas técnicas de la fase 04</li>
+          <li>Making-of y detrás de cámaras de medios que admirás</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Cursos</span>
+        <h3>Plataformas de cursos</h3>
+        <ul>
+          <li>Coursera y edX: cursos universitarios de comunicación y periodismo</li>
+          <li>Domestika y Crehana: producción audiovisual, diseño, redacción</li>
+          <li>Google Actívate / Google Skillshop: marketing digital y analítica</li>
+          <li>Plataformas abiertas (OCW) de universidades con carrera de comunicación</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Lectura</span>
+        <h3>Libros base recomendados</h3>
+        <ul>
+          <li>Teoría de la comunicación humana — Paul Watzlawick</li>
+          <li>Comprender los medios de comunicación — Marshall McLuhan</li>
+          <li>Los cínicos no sirven para este oficio — Ryszard Kapuściński</li>
+          <li>Un manual de estilo periodístico (el de tu país o el de una agencia reconocida)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Audio</span>
+        <h3>Podcasts</h3>
+        <ul>
+          <li>Podcasts de periodismo y medios en español</li>
+          <li>Podcasts de marketing y comunicación digital de tu país</li>
+          <li>Entrevistas largas a comunicadores que admirás (formato long-form)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <b>Regla práctica:</b> por cada hora de YouTube, sumá al menos media hora de práctica propia (escribir, grabar, editar) y, cuando puedas, una fuente escrita más profunda (libro, curso, artículo). El video te muestra el "cómo"; la lectura te da el "por qué".
+    </div>
+  </div>
+</section>
+
+<section id="estrategias">
+  <div class="wrap">
+    <p class="eyebrow">Método de estudio</p>
+    <h2>Estrategias y <span>trucos</span> que funcionan</h2>
+    <p class="lead">No es solo qué estudiar, sino cómo hacerlo para que quede. Estas estrategias están pensadas para un campo que combina teoría, criterio y producción.</p>
+    <div class="strat">
+      <div class="card"><span class="num mono">01</span><h3>Aprender haciendo</h3><p style="color:var(--paper-dim);">Por cada tema teórico, producí una pieza concreta la misma semana: una nota, un guion, un post. La teoría que no se aplica se olvida rápido.</p></div>
+      <div class="card"><span class="num mono">02</span><h3>Técnica Feynman</h3><p style="color:var(--paper-dim);">Explicá cada concepto (un modelo de comunicación, una técnica de redacción) en voz alta como si le enseñaras a alguien que no sabe nada del tema.</p></div>
+      <div class="card"><span class="num mono">03</span><h3>Diario de consumo crítico</h3><p style="color:var(--paper-dim);">Analizá una pieza de comunicación por día (una noticia, un anuncio, un post viral) y escribí en 3 líneas qué funcionó y qué no.</p></div>
+      <div class="card"><span class="num mono">04</span><h3>Shadowing para oratoria</h3><p style="color:var(--paper-dim);">Elegí a un comunicador con buena dicción y repetí sus frases en voz alta, imitando ritmo y pausas, para entrenar tu propia voz.</p></div>
+      <div class="card"><span class="num mono">05</span><h3>Feedback externo</h3><p style="color:var(--paper-dim);">Buscá que alguien más lea o vea tu trabajo cada semana. El criterio propio se forma más rápido con ojos ajenos.</p></div>
+      <div class="card"><span class="num mono">06</span><h3>Repetición espaciada</h3><p style="color:var(--paper-dim);">Repasá los conceptos teóricos (fase 01) a los 2 días, a la semana y al mes, no solo una vez.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="errores">
+  <div class="wrap">
+    <p class="eyebrow">Para evitar retrocesos</p>
+    <h2>Errores <span>comunes</span> al empezar</h2>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+      <div class="card"><h3>Coleccionar cursos sin producir</h3><p style="color:var(--paper-dim); margin:0;">Anotarse a todo y no terminar ni aplicar nada. Mejor un curso terminado y aplicado que cinco a medias.</p></div>
+      <div class="card"><h3>Especializarse demasiado rápido</h3><p style="color:var(--paper-dim); margin:0;">Elegir rama antes de probar al menos 2-3, y quedarse con la primera por comodidad.</p></div>
+      <div class="card"><h3>Ignorar la ortografía</h3><p style="color:var(--paper-dim); margin:0;">En comunicación, un error de redacción pesa más que en casi cualquier otro campo.</p></div>
+      <div class="card"><h3>No mostrar el trabajo</h3><p style="color:var(--paper-dim); margin:0;">Producir en privado y nunca publicar. El portafolio se construye publicando, no guardando borradores.</p></div>
+      <div class="card"><h3>Copiar el tono de otros</h3><p style="color:var(--paper-dim); margin:0;">Imitar para aprender está bien al inicio, pero hay que dejar espacio para encontrar la propia voz.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cronograma">
+  <div class="wrap">
+    <p class="eyebrow">Plan sugerido</p>
+    <h2>Cronograma de <span>12 meses</span></h2>
+    <p class="lead">Un ritmo posible si le dedicás entre 5 y 8 horas semanales. Ajustalo a tu tiempo real: lo importante es el orden, no la velocidad.</p>
+    <table class="chrono">
+      <tr><th>Período</th><th>Frecuencia</th><th>Foco principal</th></tr>
+      <tr><td class="month">Mes 1–2</td><td>88.1 – 91.3</td><td>Fundamentos teóricos + habilidades transversales (redacción y oratoria diaria)</td></tr>
+      <tr><td class="month">Mes 3</td><td>94.5</td><td>Explorar 2-3 ramas con mini-proyectos cortos</td></tr>
+      <tr><td class="month">Mes 4–6</td><td>94.5 – 97.7</td><td>Especialización elegida + herramientas técnicas de esa rama</td></tr>
+      <tr><td class="month">Mes 7–9</td><td>101.0</td><td>Proyecto propio sostenido (blog, canal, podcast o colaboraciones)</td></tr>
+      <tr><td class="month">Mes 10</td><td>104.5</td><td>Armar portafolio final, CV y perfil profesional</td></tr>
+      <tr><td class="month">Mes 11</td><td>104.5</td><td>Networking activo, postulaciones, primeras entrevistas</td></tr>
+      <tr><td class="month">Mes 12 en adelante</td><td>107.9</td><td>Actualización constante — ciclo continuo</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="checklist" style="border-bottom:none;">
+  <div class="wrap">
+    <p class="eyebrow">Antes de cerrar la señal</p>
+    <h2>Checklist <span>de inicio</span></h2>
+    <ul class="checklist">
+      <li>Elegí una fuente teórica base (curso o manual) y empezá por ahí, no por videos sueltos</li>
+      <li>Escribí o grabá algo esta semana, aunque sea corto</li>
+      <li>Probá al menos 2 ramas antes de especializarte</li>
+      <li>Creá un espacio público (blog, canal, perfil) para publicar tu trabajo</li>
+      <li>Sumá una fuente de lectura por cada tanda de videos que consumas</li>
+      <li>Pedí feedback a alguien real sobre tu primera pieza</li>
+      <li>Armá tu perfil de LinkedIn apenas tengas 3-4 piezas mostrables</li>
+      <li>Reservá una revisión mensual para actualizarte en tendencias</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="freq-final mono">107.9 FM</p>
+    <p class="mono">SEÑAL EN VIVO — LA RUTA SE RECORRE PRACTICANDO, NO SOLO LEYENDO</p>
+  </div>
+</footer>
+
+<script>
+  // hero readout cycling through stages
+  const stages = [
+    ["88.1","FUNDAMENTOS"],["91.3","HABILIDADES"],["94.5","ESPECIALIZACIÓN"],
+    ["97.7","HERRAMIENTAS"],["101.0","PRÁCTICA"],["104.5","NETWORKING"],["107.9","ACTUALIZACIÓN"]
+  ];
+  let si = 0;
+  const readout = document.getElementById('readout');
+  setInterval(() => {
+    si = (si + 1) % stages.length;
+    readout.innerHTML = stages[si][0] + " — <b>" + stages[si][1] + "</b>";
+  }, 2600);
+
+  // active dot in dial nav via IntersectionObserver
+  const navLinks = document.querySelectorAll('#dialNav a');
+  const sections = document.querySelectorAll('section, header.hero');
+  const map = {};
+  navLinks.forEach(a => map[a.getAttribute('href').slice(1)] = a);
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = map[entry.target.id];
+      if(!link) return;
+      if(entry.isIntersecting){
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin:"-45% 0px -45% 0px"});
+  sections.forEach(s => { if(s.id) obs.observe(s); });
+</script>
+</body>
+</html>

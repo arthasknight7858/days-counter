@@ -27,7 +27,7 @@ export default function AboutSofi() {
       id: "food",
       icon: <Utensils className="w-6 h-6 text-purple-400 animate-heartbeat" />,
       title: "SABORES PREFERIDOS",
-      content: "Salchipapa, tres leches arroz con leche, gomitas, pollito con papas",
+      content: "Salchipapa, tres leches, arroz con leche, gomitas, pollito con papas",
     },
     {
       id: "flowers",
@@ -39,7 +39,7 @@ export default function AboutSofi() {
       id: "sport",
       icon: <Trophy className="w-6 h-6 text-purple-400 animate-heartbeat" />,
       title: "PASIÓN DEPORTIVA",
-      content: "Voleyball",
+      content: "Voleibol / Vóley",
     },
     {
       id: "pet",

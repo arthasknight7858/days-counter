@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한국어 — Hoja de Ruta para Aprender Coreano desde Cero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161c2b;
+    --paper:#f4efe4;
+    --hong:#c1442c;      /* rojo dancheong */
+    --cheong:#2c5f7c;    /* azul dancheong */
+    --hwang:#d1a13a;     /* amarillo/oro dancheong */
+    --white-ish:#faf6ec;
+    --line: rgba(22,28,43,0.14);
+    --ink-soft: rgba(22,28,43,0.68);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+  }
+  ::selection{background:var(--hong); color:var(--white-ish);}
+
+  a{color:var(--hwang);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:8vh 6vw 10vh;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(193,68,44,0.25), transparent 45%),
+      radial-gradient(circle at 10% 85%, rgba(44,95,124,0.35), transparent 50%),
+      var(--ink);
+    border-bottom:1px solid rgba(244,239,228,0.12);
+  }
+  .hero-eyebrow{
+    font-family:'Noto Sans KR',sans-serif;
+    letter-spacing:.35em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--hwang);
+    margin-bottom:1.4rem;
+  }
+  .hero-title{
+    font-family:'Noto Serif KR',serif;
+    font-weight:900;
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    line-height:1.05;
+    margin:0 0 1.2rem;
+    color:var(--white-ish);
+  }
+  .hero-title .accent{color:var(--hong);}
+  .hero-sub{
+    max-width:640px;
+    font-size:1.08rem;
+    color:rgba(244,239,228,0.78);
+    margin-bottom:2.5rem;
+  }
+  .hangul-blocks{
+    display:flex;
+    gap:1rem;
+    flex-wrap:wrap;
+    margin-top:2rem;
+  }
+  .hblock{
+    width:74px; height:74px;
+    border:1.5px solid rgba(244,239,228,0.35);
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Gowun Batang', serif;
+    font-size:2.1rem;
+    color:var(--white-ish);
+    background:rgba(244,239,228,0.04);
+    transition:transform .35s ease, border-color .35s ease, background .35s ease;
+  }
+  .hblock:hover{ transform:translateY(-6px) rotate(-2deg); border-color:var(--hwang); background:rgba(209,161,58,0.12); }
+  .hblock:nth-child(2):hover{border-color:var(--hong); background:rgba(193,68,44,0.14);}
+  .hblock:nth-child(3):hover{border-color:var(--cheong); background:rgba(44,95,124,0.18);}
+
+  .hero-caption{
+    margin-top:1rem;
+    font-size:.85rem;
+    color:rgba(244,239,228,0.5);
+    max-width:520px;
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{
+    padding:6vh 6vw;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  h2.section-title{
+    font-family:'Noto Serif KR',serif;
+    font-weight:700;
+    font-size:clamp(1.6rem,3vw,2.3rem);
+    color:var(--white-ish);
+    margin:0 0 .4rem;
+    display:flex;
+    align-items:baseline;
+    gap:.6rem;
+  }
+  h2.section-title .ko{
+    font-family:'Gowun Batang',serif;
+    color:var(--hwang);
+    font-size:.65em;
+  }
+  .section-lead{
+    color:rgba(244,239,228,0.65);
+    max-width:680px;
+    margin-bottom:2.6rem;
+    font-size:1rem;
+  }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{
+    position:relative;
+    border-left:2px solid rgba(244,239,228,0.18);
+    padding-left:0;
+    margin-left:22px;
+  }
+  .stage{
+    position:relative;
+    padding:0 0 3.4rem 2.6rem;
+  }
+  .stage:last-child{padding-bottom:0;}
+  .stage-marker{
+    position:absolute;
+    left:-13.5px;
+    top:2px;
+    width:25px; height:25px;
+    border-radius:50%;
+    background:var(--ink);
+    border:2px solid var(--hwang);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Gowun Batang',serif;
+    font-size:.85rem;
+    color:var(--hwang);
+  }
+  .stage[data-tone="hong"] .stage-marker{border-color:var(--hong); color:var(--hong);}
+  .stage[data-tone="cheong"] .stage-marker{border-color:var(--cheong); color:var(--cheong);}
+
+  .stage-head{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    gap:.7rem;
+    margin-bottom:.5rem;
+  }
+  .stage-time{
+    font-size:.78rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--hwang);
+    border:1px solid rgba(209,161,58,0.4);
+    padding:.15rem .55rem;
+    border-radius:999px;
+  }
+  .stage[data-tone="hong"] .stage-time{color:var(--hong); border-color:rgba(193,68,44,0.4);}
+  .stage[data-tone="cheong"] .stage-time{color:var(--cheong); border-color:rgba(44,95,124,0.5);}
+
+  .stage-title{
+    font-family:'Noto Serif KR',serif;
+    font-weight:600;
+    font-size:1.35rem;
+    color:var(--white-ish);
+    margin:0;
+  }
+  .stage-goal{
+    color:rgba(244,239,228,0.6);
+    font-size:.92rem;
+    margin:.3rem 0 1rem;
+    font-style:italic;
+  }
+  .stage-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1.4rem;
+  }
+  @media(max-width:760px){ .stage-grid{grid-template-columns:1fr;} }
+
+  .stage-block h4{
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:rgba(244,239,228,0.45);
+    margin:0 0 .5rem;
+  }
+  .stage-block ul{
+    margin:0; padding-left:1.1rem;
+    font-size:.93rem;
+    color:rgba(244,239,228,0.85);
+  }
+  .stage-block li{margin-bottom:.35rem;}
+
+  /* ---------- RESOURCE CARDS ---------- */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:1.1rem;
+  }
+  .card{
+    background:rgba(244,239,228,0.05);
+    border:1px solid rgba(244,239,228,0.14);
+    border-radius:12px;
+    padding:1.3rem 1.4rem;
+    transition:border-color .3s, transform .3s;
+  }
+  .card:hover{ border-color:var(--hwang); transform:translateY(-3px); }
+  .card .tag{
+    display:inline-block;
+    font-size:.68rem;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:var(--ink);
+    background:var(--hwang);
+    padding:.15rem .5rem;
+    border-radius:5px;
+    margin-bottom:.7rem;
+  }
+  .card.hong .tag{background:var(--hong); color:var(--white-ish);}
+  .card.cheong .tag{background:var(--cheong); color:var(--white-ish);}
+  .card h3{
+    font-family:'Noto Serif KR',serif;
+    font-size:1.05rem;
+    margin:0 0 .4rem;
+    color:var(--white-ish);
+  }
+  .card p{
+    font-size:.88rem;
+    color:rgba(244,239,228,0.65);
+    margin:0;
+  }
+
+  /* ---------- STRATEGY LIST ---------- */
+  .strat-list{
+    display:grid;
+    gap:1.2rem;
+  }
+  .strat{
+    display:grid;
+    grid-template-columns:70px 1fr;
+    gap:1.2rem;
+    align-items:start;
+    padding-bottom:1.2rem;
+    border-bottom:1px solid rgba(244,239,228,0.1);
+  }
+  .strat:last-child{border-bottom:none;}
+  .strat .ko-word{
+    font-family:'Gowun Batang',serif;
+    font-size:1.6rem;
+    color:var(--hwang);
+    text-align:center;
+  }
+  .strat h4{margin:0 0 .3rem; color:var(--white-ish); font-size:1.05rem;}
+  .strat p{margin:0; color:rgba(244,239,228,0.68); font-size:.92rem;}
+
+  /* ---------- FAQ ---------- */
+  .faq-item{
+    border:1px solid rgba(244,239,228,0.14);
+    border-radius:10px;
+    margin-bottom:.8rem;
+    overflow:hidden;
+    background:rgba(244,239,228,0.03);
+  }
+  .faq-item summary{
+    padding:1rem 1.3rem;
+    cursor:pointer;
+    font-weight:600;
+    color:var(--white-ish);
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:.98rem;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{
+    content:'+';
+    color:var(--hwang);
+    font-size:1.3rem;
+    margin-left:1rem;
+  }
+  .faq-item[open] summary::after{content:'–';}
+  .faq-item .faq-body{
+    padding:0 1.3rem 1.2rem;
+    color:rgba(244,239,228,0.72);
+    font-size:.92rem;
+  }
+  .faq-body ul{padding-left:1.1rem;}
+  .faq-body li{margin-bottom:.4rem;}
+
+  /* ---------- MISTAKES ---------- */
+  .mistakes{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:1rem;
+  }
+  .mistake{
+    border-left:3px solid var(--hong);
+    padding:.2rem 0 .2rem 1rem;
+  }
+  .mistake h4{margin:0 0 .3rem; color:var(--white-ish); font-size:.98rem;}
+  .mistake p{margin:0; font-size:.88rem; color:rgba(244,239,228,0.65);}
+
+  footer{
+    text-align:center;
+    padding:5vh 6vw 6vh;
+    color:rgba(244,239,228,0.4);
+    font-size:.85rem;
+    border-top:1px solid rgba(244,239,228,0.1);
+  }
+  footer .ko{font-family:'Gowun Batang',serif; color:var(--hwang); font-size:1.1rem; display:block; margin-bottom:.6rem;}
+
+  .divider{
+    width:100%;
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(244,239,228,0.2), transparent);
+    margin:0 auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">배우다 · Aprender · 0 → 유창함</div>
+  <h1 class="hero-title">Hoja de ruta para aprender<br><span class="accent">coreano</span> desde cero</h1>
+  <p class="hero-sub">El hangul (한글) fue creado en 1443 por el rey Sejong para que cualquiera pudiera aprenderlo en pocos días: las formas de las consonantes imitan la posición de la lengua y la boca al pronunciarlas. Es, literalmente, el alfabeto diseñado para ser fácil. Esa misma lógica — estructura clara, pasos concretos — es la que sigue este plan.</p>
+  <div class="hangul-blocks">
+    <div class="hblock">한</div>
+    <div class="hblock">국</div>
+    <div class="hblock">어</div>
+  </div>
+  <p class="hero-caption">한 국 어 = "idioma coreano". Cada bloque agrupa varias letras (자모) en una sílaba — así se lee y se escribe el coreano.</p>
+</div>
+
+<section id="fases">
+  <h2 class="section-title"><span class="ko">단계</span> Las 6 fases del camino</h2>
+  <p class="section-lead">Un orden pensado para que cada fase apoye a la siguiente: primero puedes <em>leer</em>, luego puedes <em>construir</em> frases, después <em>entender</em> a nativos, y por último <em>sonar</em> natural. Los tiempos son orientativos con 30-60 min diarios.</p>
+
+  <div class="timeline">
+
+    <div class="stage" data-tone="hwang">
+      <div class="stage-marker">0</div>
+      <div class="stage-head">
+        <span class="stage-time">Semana 1-2</span>
+        <h3 class="stage-title">Fase 0 — Hangul (한글)</h3>
+      </div>
+      <p class="stage-goal">Meta: leer y escribir cualquier palabra coreana, aunque no la entiendas todavía.</p>
+      <div class="stage-grid">
+        <div class="stage-block">
+          <h4>Qué aprender</h4>
+          <ul>
+            <li>Las 14 consonantes y 10 vocales básicas</li>
+            <li>Cómo se combinan en bloques silábicos (초성-중성-종성)</li>
+            <li>Consonantes dobles (ㄲㄸㅃㅆㅉ) y diptongos</li>
+            <li>Reglas básicas de pronunciación (받침 / batchim)</li>
+          </ul>
+        </div>
+        <div class="stage-block">
+          <h4>Cómo aprenderlo</h4>
+          <ul>
+            <li>Nada de romanización desde el día 3: fuerza la lectura en hangul</li>
+            <li>Escribe a mano 15-20 min/día — la memoria motriz fija las formas</li>
+            <li>Practica leyendo en voz alta letreros, menús o packaging coreano</li>
+            <li>Un test de lectura cronometrado al final de la semana 2</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage" data-tone="hong">
+      <div class="stage-marker">1</div>
+      <div class="stage-head">
+        <span class="stage-time">Mes 1-2</span>
+        <h3 class="stage-title">Fase 1 — Fundamentos y primeras frases</h3>
+      </div>
+      <p class="stage-goal">Meta: presentarte, pedir cosas básicas y entender frases muy simples.</p>
+      <div class="stage-grid">
+        <div class="stage-block">
+          <h4>Qué aprender</h4>
+          <ul>
+            <li>Partículas de sujeto/tema: 은/는, 이/가</li>
+            <li>Partícula de objeto: 을/를</li>
+            <li>Verbo 이다 (ser) y 있다/없다 (haber/tener)</li>
+            <li>Presente informal y formal educado (해요체)</li>
+            <li>~150-300 palabras de vocabulario base</li>
+          </ul>
+        </div>
+        <div class="stage-block">
+          <h4>Cómo aprenderlo</h4>
+          <ul>
+            <li>Empieza tu mazo de Anki (SRS) desde el día 1</li>
+            <li>Un curso estructurado como columna vertebral (ver recursos)</li>
+            <li>Frases completas, no palabras sueltas: aprende patrones</li>
+            <li>Escucha 10 min diarios aunque no entiendas casi nada (oído)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage" data-tone="cheong">
+      <div class="stage-marker">2</div>
+      <div class="stage-head">
+        <span class="stage-time">Mes 3-6</span>
+        <h3 class="stage-title">Fase 2 — Gramática básica (nivel TOPIK I)</h3>
+      </div>
+      <p class="stage-goal">Meta: mantener conversaciones simples del día a día y entender textos cortos.</p>
+      <div class="stage-grid">
+        <div class="stage-block">
+          <h4>Qué aprender</h4>
+          <ul>
+            <li>Pasado y futuro (았/었, (으)ㄹ 거예요)</li>
+            <li>Conectores básicos: 그리고, 그런데, 왜냐하면, ~고, ~아서/어서</li>
+            <li>Estilo informal (반말) vs. formal (존댓말) — cuándo usar cada uno</li>
+            <li>Adjetivos-verbo, negación, preguntas con partículas interrogativas</li>
+            <li>Números nativos y sino-coreanos (¡son dos sistemas distintos!)</li>
+          </ul>
+        </div>
+        <div class="stage-block">
+          <h4>Cómo aprenderlo</h4>
+          <ul>
+            <li>Un libro de gramática de referencia (no solo apps sueltas)</li>
+            <li>Practica producción escrita: 3-5 frases propias por gramática nueva</li>
+            <li>Empieza intercambio de idiomas (tándem) aunque sea torpe</li>
+            <li>Considera presentarte al examen TOPIK I como hito medible</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage" data-tone="hwang">
+      <div class="stage-marker">3</div>
+      <div class="stage-head">
+        <span class="stage-time">Mes 6-12</span>
+        <h3 class="stage-title">Fase 3 — Vocabulario e inmersión ligera</h3>
+      </div>
+      <p class="stage-goal">Meta: pasar de "traducir en tu cabeza" a reconocer patrones directamente.</p>
+      <div class="stage-grid">
+        <div class="stage-block">
+          <h4>Qué aprender</h4>
+          <ul>
+            <li>Ampliar a 1500-2500 palabras de vocabulario activo</li>
+            <li>Verbos irregulares (ㄷ, ㅂ, ㄹ, ㅅ, 르, ㅎ)</li>
+            <li>Honoríficos básicos (사용/드리다/계시다)</li>
+            <li>Expresiones coloquiales y de uso frecuente en redes/dramas</li>
+          </ul>
+        </div>
+        <div class="stage-block">
+          <h4>Cómo aprenderlo</h4>
+          <ul>
+            <li>Input comprensible: contenido un pelín por encima de tu nivel</li>
+            <li>Shadowing (repetir en simultáneo con el audio) 10-15 min/día</li>
+            <li>Empieza a ver dramas/variety shows con subtítulos en coreano</li>
+            <li>Anota y "mina" frases nuevas del contenido que consumes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage" data-tone="hong">
+      <div class="stage-marker">4</div>
+      <div class="stage-head">
+        <span class="stage-time">Año 2</span>
+        <h3 class="stage-title">Fase 4 — Intermedio (nivel TOPIK II)</h3>
+      </div>
+      <p class="stage-goal">Meta: opinar, argumentar y seguir conversaciones a velocidad natural.</p>
+      <div class="stage-grid">
+        <div class="stage-block">
+          <h4>Qué aprender</h4>
+          <ul>
+            <li>Gramática avanzada de conexión (~는데, ~길래, ~잖아요, ~다가)</li>
+            <li>Estilo indirecto (discurso reportado)</li>
+            <li>Honoríficos completos, registro formal escrito (뉴스체)</li>
+            <li>Modismos (관용어) y refranes (속담) comunes</li>
+          </ul>
+        </div>
+        <div class="stage-block">
+          <h4>Cómo aprenderlo</h4>
+          <ul>
+            <li>Reduce el material "para estudiantes" y sube a contenido nativo real</li>
+            <li>Escribe un diario corto en coreano varias veces por semana</li>
+            <li>Clases con tutor (1-2/semana) para corregir errores fosilizados</li>
+            <li>Simulacros del TOPIK II si quieres certificación</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage" data-tone="cheong">
+      <div class="stage-marker">5</div>
+      <div class="stage-head">
+        <span class="stage-time">Año 2-3+</span>
+        <h3 class="stage-title">Fase 5 — Fluidez e inmersión total</h3>
+      </div>
+      <p class="stage-goal">Meta: vivir en coreano — trabajar, estudiar o socializar sin fricción.</p>
+      <div class="stage-grid">
+        <div class="stage-block">
+          <h4>Qué aprender</h4>
+          <ul>
+            <li>Registros especializados (negocios, academia, jerga por dominio)</li>
+            <li>Matices culturales del habla (indirectas, jerarquía social, humor)</li>
+            <li>Variaciones dialectales (사투리) si te interesan</li>
+          </ul>
+        </div>
+        <div class="stage-block">
+          <h4>Cómo aprenderlo</h4>
+          <ul>
+            <li>Consume medios coreanos sin subtítulos como rutina, no excepción</li>
+            <li>Únete a comunidades/foros/grupos 100% en coreano</li>
+            <li>Si puedes, un intercambio o estancia en Corea acelera muchísimo</li>
+            <li>Mantén el idioma activo: úsalo o lo perderás (mantenimiento &gt; estudio)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="recursos-fase0">
+  <h2 class="section-title"><span class="ko">자료</span> Recursos por categoría</h2>
+  <p class="section-lead">No necesitas usar todo esto a la vez. Elige un recurso "columna vertebral" por fase y complementa con 1-2 herramientas más.</p>
+
+  <div class="cards">
+    <div class="card hwang">
+      <span class="tag">Hangul</span>
+      <h3>Aprende hangul en un fin de semana</h3>
+      <p>Guías visuales tipo "Learn Hangul in 90 Minutes" (Ryan Estrada, gratis en PDF/web) o el canal de YouTube <strong>Korean FM</strong>. También sirve la app <strong>Dubu / Hangul</strong> específicas para el alfabeto.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Curso estructurado</span>
+      <h3>Talk To Me In Korean (TTMIK)</h3>
+      <p>El curso más recomendado por la comunidad hispanohablante y anglosajona: lecciones en PDF/audio ordenadas por nivel, con ejercicios. Tiene web, app y YouTube.</p>
+    </div>
+    <div class="card cheong">
+      <span class="tag">App diaria</span>
+      <h3>Anki + mazo "Korean 6000" o mazo propio</h3>
+      <p>El repaso espaciado (SRS) es la herramienta más eficiente para no olvidar vocabulario. Duolingo puede servir como calentamiento diario, pero no sustituye una gramática seria.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Gramática de referencia</span>
+      <h3>"Korean Grammar in Use" (Beginning / Intermediate / Advanced)</h3>
+      <p>La trilogía estándar usada incluso en academias en Corea. Explicaciones claras + ejercicios. Complementa muy bien a TTMIK.</p>
+    </div>
+    <div class="card hong">
+      <span class="tag">Escucha / oído</span>
+      <h3>Podcasts e inmersión pasiva</h3>
+      <p><strong>Iyagi</strong> (de TTMIK, diálogos naturales por nivel), <strong>KBS World Radio</strong>, y más adelante variety shows como Running Man o entrevistas sin editar.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Producción / habla</span>
+      <h3>Tándem e intercambio</h3>
+      <p>Apps como <strong>Tandem</strong>, <strong>HelloTalk</strong> o <strong>italki</strong> (para clases pagadas con tutores nativos). Hablar desde temprano, aunque cometas errores, acelera todo lo demás.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="youtube">
+  <h2 class="section-title"><span class="ko">유튜브</span> "¿Puedo aprender por YouTube?"</h2>
+  <p class="section-lead">Sí — y de hecho es uno de los mejores recursos gratuitos que existen, pero funciona mejor como <strong>complemento</strong> de un curso estructurado que como única fuente, porque YouTube no tiene un temario obligatorio ni te corrige.</p>
+
+  <div class="cards">
+    <div class="card">
+      <span class="tag">Nivel 0-1</span>
+      <h3>Talk To Me In Korean (canal)</h3>
+      <p>Versión en video de su curso. Ideal si ya sigues su material escrito.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Nivel 0-1</span>
+      <h3>Korean Unnie</h3>
+      <p>Explicaciones claras en inglés, buena para principiantes que prefieren un formato tipo "clase".</p>
+    </div>
+    <div class="card">
+      <span class="tag">Nivel 0-2</span>
+      <h3>Learn Korean with GO! Billy Korean</h3>
+      <p>Profundiza mucho en gramática y matices — muy bueno cuando ya tienes las bases y quieres entender el "por qué".</p>
+    </div>
+    <div class="card">
+      <span class="tag">Nivel 1-2</span>
+      <h3>90 Day Korean</h3>
+      <p>Enfoque práctico y de memorización rápida, útil para vocabulario temático.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Inmersión</span>
+      <h3>Canales coreanos "normales" (vlogs, mukbang, variety)</h3>
+      <p>A partir de la Fase 3, cambia canales "para extranjeros" por canales hechos <em>para coreanos</em>: es el salto real hacia comprensión auditiva nativa.</p>
+    </div>
+    <div class="card hong">
+      <span class="tag">Aviso</span>
+      <h3>Límite real de YouTube</h3>
+      <p>No corrige tu pronunciación ni tu gramática al hablar, y es fácil quedarse "mirando vídeos" sin practicar producción activa. Combínalo siempre con escritura, habla y repaso espaciado.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="estrategias">
+  <h2 class="section-title"><span class="ko">전략</span> Estrategias que marcan la diferencia</h2>
+  <div class="strat-list">
+    <div class="strat">
+      <div class="ko-word">복습</div>
+      <div><h4>Repetición espaciada (SRS)</h4><p>El cerebro olvida en curva predecible. Anki (u otra app SRS) te muestra cada palabra justo antes de que la olvides, multiplicando la retención a largo plazo frente a repasar "todo, todos los días".</p></div>
+    </div>
+    <div class="strat">
+      <div class="ko-word">그림자</div>
+      <div><h4>Shadowing (sombra)</h4><p>Repite en voz alta y en simultáneo lo que dice un audio nativo, imitando ritmo y entonación, no solo los sonidos. Es la técnica más efectiva para sonar natural y mejorar el oído a la vez.</p></div>
+    </div>
+    <div class="strat">
+      <div class="ko-word">입력</div>
+      <div><h4>Input comprensible (i+1)</h4><p>Consume contenido que entiendas en un 70-80%: suficientemente fácil para seguir el hilo, suficientemente difícil para aprender algo nuevo cada vez. Ni tan fácil que te aburras, ni tan difícil que te frustres.</p></div>
+    </div>
+    <div class="strat">
+      <div class="ko-word">출력</div>
+      <div><h4>Output activo desde el día 1</h4><p>Escribir y hablar, aunque sea mal, activa memoria distinta a la de "solo reconocer". No esperes a "estar listo" para hablar: nunca lo estarás si no empiezas a equivocarte pronto.</p></div>
+    </div>
+    <div class="strat">
+      <div class="ko-word">문장</div>
+      <div><h4>Aprende frases, no palabras sueltas</h4><p>El coreano cambia mucho según partículas y conjugación. Memorizar "가다 = ir" sirve poco; memorizar "학교에 가요 = voy a la escuela" te da la estructura gratis.</p></div>
+    </div>
+    <div class="strat">
+      <div class="ko-word">꾸준함</div>
+      <div><h4>Constancia sobre intensidad</h4><p>30 minutos diarios durante un año superan por mucho a maratones de fin de semana. La consistencia construye el hábito neurológico que hace el idioma "automático".</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="errores">
+  <h2 class="section-title"><span class="ko">실수</span> Errores comunes que retrasan el progreso</h2>
+  <div class="mistakes">
+    <div class="mistake"><h4>Quedarse en romanización</h4><p>Leer coreano escrito con letras latinas retrasa la lectura real y arrastra malas pronunciaciones.</p></div>
+    <div class="mistake"><h4>Coleccionar apps sin terminarlas</h4><p>Es mejor un curso terminado que cinco empezados a medias. La dispersión mata el avance real.</p></div>
+    <div class="mistake"><h4>Ignorar el 존댓말/반말</h4><p>No distinguir formal/informal desde el principio genera hábitos que luego cuesta corregir socialmente.</p></div>
+    <div class="mistake"><h4>Solo estudiar gramática, nunca escuchar</h4><p>Entender reglas en papel no es lo mismo que entender coreano hablado rápido y natural.</p></div>
+    <div class="mistake"><h4>Miedo a hablar hasta "estar listo"</h4><p>Ese día nunca llega. Cuanto antes hables (aunque mal), antes se corrigen los errores.</p></div>
+    <div class="mistake"><h4>No repasar lo aprendido</h4><p>Sin repetición espaciada, el vocabulario nuevo se olvida en días, no en meses.</p></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="faq">
+  <h2 class="section-title"><span class="ko">질문</span> Preguntas frecuentes</h2>
+
+  <details class="faq-item" open>
+    <summary>¿Cuánto tiempo se tarda en hablar coreano con soltura?</summary>
+    <div class="faq-body">Depende muchísimo de la constancia y de tu lengua materna, pero como referencia orientativa: con 30-60 min diarios, lo básico (Fase 1-2) suele lograrse en 3-6 meses, un nivel intermedio cómodo (Fase 4) en 1.5-2 años, y fluidez real con inmersión en 2-4 años.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary>¿Necesito aprender hanja (caracteres chinos)?</summary>
+    <div class="faq-body">No para uso cotidiano. El coreano moderno se escribe en hangul. Los hanja son útiles más adelante para entender raíces de vocabulario formal/académico, pero no son un requisito para hablar con fluidez.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary>¿Sirve Duolingo?</summary>
+    <div class="faq-body">Como calentamiento diario o para no perder el hábito, sí. Como única fuente de aprendizaje, no: su progresión gramatical es limitada y no sustituye un curso estructurado ni la práctica de habla.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary>¿Vale la pena presentarse al TOPIK?</summary>
+    <div class="faq-body">Si tu meta es estudiar o trabajar en Corea, sí, es prácticamente obligatorio. Si tu meta es solo comunicarte o por afición, es opcional, pero sirve como hito objetivo para medir tu progreso y mantener motivación.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary>¿Es más difícil que otros idiomas por el alfabeto?</summary>
+    <div class="faq-body">Al revés: el hangul es de los alfabetos más fáciles de aprender del mundo (se puede leer en días). La dificultad real del coreano está en la gramática (orden de la oración, partículas, honoríficos), no en la escritura.</div>
+  </details>
+</section>
+
+<footer>
+  <span class="ko">화이팅!</span>
+  Hoja de ruta de estudio — ajusta los tiempos a tu ritmo real, no al de nadie más.
+</footer>
+
+</body>
+</html>

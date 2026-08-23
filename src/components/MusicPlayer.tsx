@@ -1,139 +1,40 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Pause, SkipForward, SkipBack, Heart, Music, ChevronDown } from "lucide-react";
-
-const songs = [
-  {
-    title: "THINGS YOU DO",
-    file: "/music/THINGS YOU DO.mp3",
-    cover: "/music/swag.png",
-  },
-  {
-    title: "COME AROUND ME",
-    file: "/music/Come Around Me.mp3",
-    cover: "/music/changes.jpg",
-  },
-  {
-    title: "INTENTIONS",
-    file: "/music/Intentions.mp3",
-    cover: "/music/changes.jpg",
-  },
-  {
-    title: "SAILOR SONG",
-    file: "/music/001 - Sailor Song.mp3",
-    cover: "/music/swag.png",
-  },
-  {
-    title: "DUSK TILL DAWN",
-    file: "/music/002 - Dusk Till Dawn (Radio Edit).mp3",
-    cover: "/music/swag.png",
-  },
-  {
-    title: "RIPTIDE",
-    file: "/music/003 - Riptide.mp3",
-    cover: "/music/swag.png",
-  },
-  {
-    title: "BETTER MAN",
-    file: "/music/BETTER MAN.mp3",
-    cover: "/music/swag.png",
-  },
-  {
-    title: "BUTTERFLIES",
-    file: "/music/BUTTERFLIES.mp3",
-    cover: "/music/swag.png",
-  },
-  {
-    title: "DAISIES",
-    file: "/music/DAISIES.mp3",
-    cover: "/music/swag.png",
-  },
-  {
-    title: "LOVE SONG",
-    file: "/music/LOVE SONG.mp3",
-    cover: "/music/swag.png",
-  },
-];
+import { Play, Pause, SkipForward, SkipBack, Heart, Music, ChevronDown, Volume2, VolumeX, Volume1, Shuffle, Repeat, Repeat1 } from "lucide-react";
+import { useMusic } from "@/context/MusicContext";
 
 export default function MusicPlayer() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
+  const {
+    songs,
+    currentIndex,
+    currentSong,
+    isPlaying,
+    progress,
+    duration,
+    volume,
+    isMuted,
+    isShuffle,
+    repeatMode,
+    direction,
+    togglePlay,
+    playSong,
+    handleNext,
+    handlePrev,
+    handleProgressChange,
+    handleVolumeChange,
+    toggleMute,
+    toggleShuffle,
+    toggleRepeat,
+    formatTime,
+  } = useMusic();
+
   const [showPlaylist, setShowPlaylist] = useState(false);
-  const [direction, setDirection] = useState<1 | -1>(1);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  const currentSong = songs[currentIndex];
-
-  // When song changes, load and optionally autoplay
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.load();
-      setProgress(0);
-      setDuration(0);
-      if (isPlaying) {
-        audioRef.current.play().catch(() => setIsPlaying(false));
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex]);
-
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(() => setIsPlaying(false));
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setProgress(audioRef.current.currentTime);
-      setDuration(audioRef.current.duration);
-    }
-  };
-
-  const formatTime = (time: number) => {
-    if (isNaN(time) || !isFinite(time)) return "0:00";
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
-
-  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTime = Number(e.target.value);
-    if (audioRef.current) {
-      audioRef.current.currentTime = newTime;
-      setProgress(newTime);
-    }
-  };
-
-  const handleNext = () => {
-    setDirection(1);
-    setCurrentIndex((prev: number) => (prev + 1) % songs.length);
-  };
-
-  const handlePrev = () => {
-    setDirection(-1);
-    setCurrentIndex((prev: number) => (prev - 1 + songs.length) % songs.length);
-  };
-
-  const handleSongEnd = () => {
-    handleNext();
-    setIsPlaying(true);
-  };
 
   const handleSelectSong = (index: number) => {
-    setDirection(index > currentIndex ? 1 : -1);
-    setCurrentIndex(index);
-    setIsPlaying(true);
+    playSong(index);
     setShowPlaylist(false);
   };
 
@@ -158,14 +59,6 @@ export default function MusicPlayer() {
           {/* Subtle background glow */}
           <div className="absolute inset-0 bg-linear-to-br from-purple-600/10 via-transparent to-purple-900/20 opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
 
-          <audio
-            ref={audioRef}
-            src={currentSong.file}
-            onTimeUpdate={handleTimeUpdate}
-            onEnded={handleSongEnd}
-            onLoadedMetadata={handleTimeUpdate}
-          />
-
           <div className="flex flex-col items-center relative z-10">
             {/* Album Cover with slide animation */}
             <div className="relative w-48 h-48 sm:w-56 sm:h-56 mb-8">
@@ -185,18 +78,23 @@ export default function MusicPlayer() {
                   className="absolute inset-0"
                 >
                   <div
-                    className={`w-full h-full rounded-full overflow-hidden border-4 border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.4)] relative ${
-                      isPlaying ? "animate-spin" : ""
-                    }`}
-                    style={{ animationDuration: "8s", animationTimingFunction: "linear" }}
+                    className="w-full h-full rounded-full overflow-hidden border-4 border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.4)] relative animate-spin"
+                    style={{
+                      animationDuration: "8s",
+                      animationTimingFunction: "linear",
+                      animationIterationCount: "infinite",
+                      animationPlayState: isPlaying ? "running" : "paused",
+                    }}
                   >
                     <Image
                       src={currentSong.cover}
                       alt={currentSong.title}
                       fill
+                      sizes="(max-width: 640px) 192px, 224px"
                       className="object-cover"
+                      priority
                     />
-                    {/* Vinyl hole — centrado correctamente */}
+                    {/* Vinyl hole */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-[#050505] rounded-full border-2 border-purple-500/30 flex items-center justify-center shadow-inner">
                       <div className="w-3 h-3 bg-purple-500/50 rounded-full" />
                     </div>
@@ -237,7 +135,7 @@ export default function MusicPlayer() {
                 <button
                   key={i}
                   onClick={() => handleSelectSong(i)}
-                  className={`transition-all duration-300 rounded-full ${
+                  className={`transition-all duration-300 rounded-full cursor-pointer ${
                     i === currentIndex
                       ? "w-5 h-2 bg-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.8)]"
                       : "w-2 h-2 bg-purple-700/60 hover:bg-purple-500/80"
@@ -254,7 +152,7 @@ export default function MusicPlayer() {
                 min={0}
                 max={duration || 100}
                 value={progress}
-                onChange={handleProgressChange}
+                onChange={(e) => handleProgressChange(Number(e.target.value))}
                 className="w-full h-2 bg-purple-900/50 rounded-full appearance-none cursor-pointer accent-purple-400 shadow-inner"
               />
               <div className="flex justify-between text-sm text-purple-300/80 mt-2 font-mono font-medium">
@@ -263,41 +161,97 @@ export default function MusicPlayer() {
               </div>
             </div>
 
-            {/* Controls */}
-            <div className="flex items-center justify-center gap-8 w-full mb-5">
+            {/* Main Controls with Shuffle & Repeat */}
+            <div className="flex items-center justify-center gap-4 sm:gap-6 w-full mb-5">
               <button
-                className="text-purple-300/70 hover:text-purple-300 hover:scale-110 transition-all active:scale-90"
+                className={`p-2 rounded-full transition-all cursor-pointer ${
+                  isShuffle
+                    ? "text-purple-300 bg-purple-500/20 border border-purple-400/40 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                    : "text-purple-300/40 hover:text-purple-300/80"
+                }`}
+                onClick={toggleShuffle}
+                aria-label="Modo aleatorio"
+                title={isShuffle ? "Aleatorio: Activado" : "Aleatorio: Desactivado"}
+              >
+                <Shuffle className="w-4 h-4" />
+              </button>
+
+              <button
+                className="text-purple-300/70 hover:text-purple-300 hover:scale-110 transition-all active:scale-90 p-1 cursor-pointer"
                 onClick={handlePrev}
                 aria-label="Canción anterior"
               >
-                <SkipBack className="w-7 h-7 fill-current" />
+                <SkipBack className="w-6 h-6 fill-current" />
               </button>
 
               <button
                 onClick={togglePlay}
-                className="w-16 h-16 flex items-center justify-center bg-linear-to-br from-purple-400 to-purple-600 text-white rounded-full shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-110 hover:shadow-[0_0_35px_rgba(168,85,247,0.7)] transition-all active:scale-95"
+                className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center bg-linear-to-br from-purple-400 to-purple-600 text-white rounded-full shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-110 hover:shadow-[0_0_35px_rgba(168,85,247,0.7)] transition-all active:scale-95 cursor-pointer"
                 aria-label={isPlaying ? "Pausar" : "Reproducir"}
               >
                 {isPlaying ? (
-                  <Pause className="w-7 h-7 fill-current" />
+                  <Pause className="w-6 h-6 sm:w-7 sm:h-7 fill-current" />
                 ) : (
-                  <Play className="w-7 h-7 fill-current ml-1" />
+                  <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-current ml-1" />
                 )}
               </button>
 
               <button
-                className="text-purple-300/70 hover:text-purple-300 hover:scale-110 transition-all active:scale-90"
+                className="text-purple-300/70 hover:text-purple-300 hover:scale-110 transition-all active:scale-90 p-1 cursor-pointer"
                 onClick={handleNext}
                 aria-label="Siguiente canción"
               >
-                <SkipForward className="w-7 h-7 fill-current" />
+                <SkipForward className="w-6 h-6 fill-current" />
               </button>
+
+              <button
+                className={`p-2 rounded-full transition-all cursor-pointer ${
+                  repeatMode !== "off"
+                    ? "text-purple-300 bg-purple-500/20 border border-purple-400/40 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                    : "text-purple-300/40 hover:text-purple-300/80"
+                }`}
+                onClick={toggleRepeat}
+                aria-label="Repetir"
+                title={repeatMode === "all" ? "Repetir todo" : repeatMode === "one" ? "Repetir esta canción" : "Repetir: Desactivado"}
+              >
+                {repeatMode === "one" ? <Repeat1 className="w-4 h-4" /> : <Repeat className="w-4 h-4" />}
+              </button>
+            </div>
+
+            {/* Volume Control Bar */}
+            <div className="flex items-center gap-3 w-full max-w-[240px] px-2 py-1.5 rounded-full bg-white/5 border border-purple-500/10 mb-6">
+              <button
+                onClick={toggleMute}
+                className="text-purple-300/70 hover:text-white transition-colors cursor-pointer"
+                aria-label={isMuted ? "Desactivar silencio" : "Silenciar"}
+              >
+                {isMuted || volume === 0 ? (
+                  <VolumeX className="w-4 h-4" />
+                ) : volume < 0.5 ? (
+                  <Volume1 className="w-4 h-4" />
+                ) : (
+                  <Volume2 className="w-4 h-4" />
+                )}
+              </button>
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={isMuted ? 0 : volume}
+                onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+                className="w-full h-1.5 bg-purple-950 rounded-full appearance-none cursor-pointer accent-purple-400"
+                aria-label="Control de volumen"
+              />
+              <span className="text-[10px] font-mono text-purple-300/60 w-7 text-right">
+                {Math.round((isMuted ? 0 : volume) * 100)}%
+              </span>
             </div>
 
             {/* Show playlist button */}
             <button
               onClick={() => setShowPlaylist(!showPlaylist)}
-              className="flex items-center gap-2 text-purple-400/70 hover:text-purple-300 text-xs tracking-widest uppercase font-medium transition-all hover:gap-3"
+              className="flex items-center gap-2 text-purple-400/70 hover:text-purple-300 text-xs tracking-widest uppercase font-medium transition-all hover:gap-3 cursor-pointer"
               aria-label="Ver lista de canciones"
             >
               <span>Ver playlist</span>
@@ -322,7 +276,7 @@ export default function MusicPlayer() {
                 <button
                   key={index}
                   onClick={() => handleSelectSong(index)}
-                  className={`w-full flex items-center gap-4 px-5 py-3.5 text-left transition-all duration-200 hover:bg-purple-500/10 ${
+                  className={`w-full flex items-center gap-4 px-5 py-3.5 text-left transition-all duration-200 hover:bg-purple-500/10 cursor-pointer ${
                     index === currentIndex ? "bg-purple-500/15 border-l-2 border-purple-400" : "border-l-2 border-transparent"
                   } ${index !== songs.length - 1 ? "border-b border-purple-500/10" : ""}`}
                 >

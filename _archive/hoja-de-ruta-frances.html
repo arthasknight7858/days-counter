@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hoja de Ruta — Del Cero al Francés</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF7EC;
+    --paper-alt:#F4EEDD;
+    --ink:#1E2A44;
+    --ink-soft:#4A5578;
+    --grid:#C9D2EC;
+    --margin:#BE4A3D;
+    --margin-soft:#e7a89f;
+    --gold:#B4863A;
+    --sage:#5C7A5E;
+    --card:#FFFDF7;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(var(--paper) 0px, var(--paper) 27px, var(--grid) 28px, var(--paper) 29px),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    padding-left:64px;
+    position:relative;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    top:0; bottom:0; left:48px;
+    width:2px;
+    background:var(--margin);
+    opacity:.55;
+    z-index:1;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0; color:var(--ink);}
+  .hand{font-family:'Caveat',cursive;}
+  a{color:var(--margin);}
+  .wrap{max-width:880px; margin:0 auto; padding:40px 28px 120px; position:relative; z-index:2;}
+
+  /* ---------- side index tabs ---------- */
+  .tabs{
+    position:fixed; right:0; top:120px; display:flex; flex-direction:column; gap:6px; z-index:50;
+  }
+  .tabs a{
+    display:block; text-decoration:none; color:var(--paper);
+    background:var(--ink); font-family:'Fraunces',serif; font-size:12.5px; font-weight:600;
+    padding:7px 12px 7px 16px; border-radius:6px 0 0 6px; letter-spacing:.02em;
+    box-shadow:-2px 2px 4px rgba(0,0,0,.15);
+    transform:translateX(28px); transition:transform .18s ease, background .18s ease;
+    writing-mode:horizontal-tb;
+  }
+  .tabs a:hover{transform:translateX(0); background:var(--margin);}
+
+  /* ---------- cover / hero ---------- */
+  .cover{
+    background:var(--card);
+    border:1px solid #e4dcc6;
+    box-shadow:0 6px 22px rgba(30,42,68,.08);
+    padding:30px 34px;
+    margin-bottom:50px;
+    position:relative;
+  }
+  .cover-label{
+    display:grid; grid-template-columns:auto 1fr; gap:8px 14px;
+    font-size:13.5px; color:var(--ink-soft); max-width:420px;
+  }
+  .cover-label dt{font-weight:600; text-transform:uppercase; letter-spacing:.06em; font-size:11px; color:var(--gold); align-self:center;}
+  .cover-label dd{margin:0; border-bottom:1px dotted #c9bfa0; padding-bottom:3px; font-family:'Caveat',cursive; font-size:20px; color:var(--ink);}
+  .cover h1{font-size:clamp(2rem,5vw,3.1rem); line-height:1.05; margin-top:26px; font-weight:600;}
+  .cover .accent{color:var(--margin); font-style:italic;}
+  .cover p.lead{max-width:60ch; color:var(--ink-soft); margin-top:14px; font-size:16px;}
+  .stamp-mini{
+    position:absolute; top:26px; right:30px;
+    width:84px; height:84px; border-radius:50%;
+    border:2.5px dashed var(--gold); color:var(--gold);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:'Fraunces',serif; font-weight:700; font-size:12px; line-height:1.15;
+    transform:rotate(-9deg); opacity:.85;
+  }
+
+  section{margin-bottom:64px; scroll-margin-top:24px;}
+  .eyebrow{font-family:'Fraunces',serif; color:var(--margin); font-weight:600; font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:6px;}
+  h2.title{font-size:clamp(1.5rem,3.4vw,2.05rem); margin-bottom:6px;}
+  .intro{color:var(--ink-soft); max-width:68ch; margin-bottom:26px; font-size:15.5px;}
+
+  /* ---------- CEFR stamps ---------- */
+  .stamps{display:flex; flex-wrap:wrap; gap:22px;}
+  .stamp{
+    flex:1 1 150px; background:var(--card); border:1px solid #e4dcc6; padding:20px 16px 18px;
+    text-align:center; position:relative;
+  }
+  .stamp-circ{
+    width:64px; height:64px; margin:0 auto 10px; border-radius:50%;
+    border:2px dashed var(--margin); color:var(--margin);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:700; font-size:20px;
+    transform:rotate(-6deg);
+  }
+  .stamp h3{font-size:14.5px; margin-bottom:6px;}
+  .stamp p{font-size:12.8px; color:var(--ink-soft); margin:0;}
+  .stamp .hrs{display:block; margin-top:8px; font-size:11.5px; color:var(--gold); font-weight:600;}
+
+  /* ---------- timeline / fases ---------- */
+  .phase{
+    display:grid; grid-template-columns:64px 1fr; gap:0 22px; margin-bottom:6px;
+  }
+  .phase .node{
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .phase .dot{
+    width:16px; height:16px; border-radius:50%; background:var(--paper); border:3px solid var(--margin);
+    margin-top:6px;
+  }
+  .phase .line{flex:1; width:2px; background:var(--margin-soft); margin-top:4px;}
+  .phase:last-child .line{display:none;}
+  .phase-card{
+    background:var(--card); border:1px solid #e4dcc6; padding:20px 22px; margin-bottom:34px;
+  }
+  .phase-card .when{font-family:'Fraunces',serif; color:var(--margin); font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.04em;}
+  .phase-card h3{font-size:20px; margin:4px 0 10px;}
+  .phase-card .cols{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;}
+  .phase-card .cols h4{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin:0 0 6px;}
+  .phase-card .cols ul{margin:0; padding-left:18px; font-size:14.5px;}
+  .phase-card .cols li{margin-bottom:4px;}
+  .note{
+    margin-top:14px; padding:10px 14px; border-left:3px solid var(--gold); background:var(--paper-alt);
+    font-family:'Caveat',cursive; font-size:19px; color:#5a4321; line-height:1.3;
+  }
+
+  /* ---------- pilares grid ---------- */
+  .grid-pilares{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;}
+  .pilar{background:var(--card); border:1px solid #e4dcc6; padding:18px 18px 16px;}
+  .pilar .icon{width:30px; height:30px; margin-bottom:10px; color:var(--margin);}
+  .pilar h3{font-size:16px; margin-bottom:6px;}
+  .pilar p{font-size:13.8px; color:var(--ink-soft); margin:0;}
+
+  /* ---------- youtube section ---------- */
+  .yt-groups{display:flex; flex-direction:column; gap:22px;}
+  .yt-group h4{font-family:'Fraunces',serif; font-size:15px; color:var(--sage); margin-bottom:10px;}
+  .yt-list{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:12px;}
+  .yt-card{background:var(--card); border:1px solid #e4dcc6; padding:13px 15px; font-size:13.8px;}
+  .yt-card b{display:block; font-family:'Fraunces',serif; font-size:15px; margin-bottom:3px; color:var(--ink);}
+  .verdict{
+    background:var(--paper-alt); border:1px dashed var(--gold); padding:16px 18px; margin-bottom:24px; font-size:14.8px;
+  }
+  .verdict b{color:var(--margin);}
+
+  /* ---------- recursos tables ---------- */
+  .res-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px;}
+  .res-card{background:var(--card); border:1px solid #e4dcc6; padding:18px 18px 16px;}
+  .res-card h4{font-family:'Fraunces',serif; color:var(--margin); font-size:15px; margin-bottom:10px; border-bottom:1px solid #e4dcc6; padding-bottom:8px;}
+  .res-card ul{margin:0; padding-left:18px; font-size:14px;}
+  .res-card li{margin-bottom:7px;}
+  .res-card li b{color:var(--ink);}
+
+  /* ---------- trucos ---------- */
+  .trucos{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
+  .truco{background:var(--card); border:1px solid #e4dcc6; padding:16px 18px; position:relative;}
+  .truco .num{font-family:'Fraunces',serif; font-size:26px; color:var(--gold); font-weight:700; display:block; margin-bottom:4px;}
+  .truco h4{font-size:15px; margin:0 0 6px;}
+  .truco p{font-size:13.6px; color:var(--ink-soft); margin:0;}
+
+  /* ---------- temario (details) ---------- */
+  details{background:var(--card); border:1px solid #e4dcc6; margin-bottom:12px;}
+  summary{
+    cursor:pointer; padding:14px 18px; font-family:'Fraunces',serif; font-weight:600; font-size:16px;
+    display:flex; align-items:center; justify-content:space-between; list-style:none;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary::after{content:"＋"; color:var(--margin); font-size:18px; font-weight:400;}
+  details[open] summary::after{content:"－";}
+  .det-body{padding:0 18px 18px; display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .det-body h5{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--gold); margin:0 0 6px;}
+  .det-body ul{margin:0; padding-left:18px; font-size:14px;}
+  .det-body li{margin-bottom:4px;}
+
+  /* ---------- faux amis ---------- */
+  table.fa{width:100%; border-collapse:collapse; font-size:14px; background:var(--card); border:1px solid #e4dcc6;}
+  table.fa th{background:var(--paper-alt); font-family:'Fraunces',serif; font-weight:600; text-align:left; padding:10px 14px; border-bottom:2px solid var(--margin); font-size:12.5px; text-transform:uppercase; letter-spacing:.04em;}
+  table.fa td{padding:10px 14px; border-bottom:1px solid #ece5d2; vertical-align:top;}
+  table.fa tr:last-child td{border-bottom:none;}
+
+  /* ---------- plan semanal ---------- */
+  .week{display:grid; grid-template-columns:repeat(7,1fr); gap:8px;}
+  .day{background:var(--card); border:1px solid #e4dcc6; padding:10px 8px; font-size:12.3px; text-align:center;}
+  .day .d{font-family:'Fraunces',serif; font-weight:700; color:var(--margin); font-size:13px; margin-bottom:6px; display:block;}
+
+  /* ---------- footer ---------- */
+  .closing{
+    margin-top:40px; padding:24px 26px; background:var(--card); border:1px solid #e4dcc6;
+    text-align:center;
+  }
+  .closing .hand{font-size:26px; color:var(--sage); display:block; margin-bottom:6px;}
+  .closing small{color:var(--ink-soft); font-size:12px;}
+
+  @media (max-width:720px){
+    body{padding-left:26px;}
+    body::before{left:14px;}
+    .tabs{display:none;}
+    .cover .stamp-mini{display:none;}
+    .phase{grid-template-columns:0 1fr;}
+    .phase .node{display:none;}
+    .det-body{grid-template-columns:1fr;}
+    .week{grid-template-columns:repeat(2,1fr);}
+    .cover-label{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <a href="#niveles">Niveles</a>
+  <a href="#fases">Fases</a>
+  <a href="#pilares">Pilares</a>
+  <a href="#youtube">YouTube</a>
+  <a href="#recursos">Recursos</a>
+  <a href="#trucos">Trucos</a>
+  <a href="#temario">Temario</a>
+  <a href="#errores">Errores</a>
+  <a href="#plan">Plan semanal</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="stamp-mini">NIVEAU<br>ZÉRO<br>★ départ ★</div>
+    <dl class="cover-label">
+      <dt>Matière</dt><dd>Français</dd>
+      <dt>Punto de partida</dt><dd>0 — ni un "bonjour"</dd>
+      <dt>Objetivo</dt><dd>A2 → B1 → soltura real</dd>
+    </dl>
+    <h1>Hoja de ruta para<br><span class="accent">aprender francés</span> desde cero</h1>
+    <p class="lead">Una guía honesta y sin relleno: qué aprender, en qué orden, cómo practicar cada destreza,
+    qué recursos usar (sí, incluye YouTube) y los errores típicos de un hispanohablante. Piénsala como
+    tu <em>cahier</em> de bitácora — la vas a ir llenando tú mismo/a con el tiempo.</p>
+  </section>
+
+  <!-- NIVELES -->
+  <section id="niveles">
+    <div class="eyebrow">Punto de partida</div>
+    <h2 class="title">El mapa completo: los niveles del MCER</h2>
+    <p class="intro">Todo el mundo mide el francés (y cualquier idioma europeo) con la misma escala: el
+    <b>Marco Común Europeo de Referencia</b>. Es útil tenerla siempre presente porque los cursos, exámenes
+    (DELF/DALF) y apps la usan para clasificar contenido.</p>
+    <div class="stamps">
+      <div class="stamp"><div class="stamp-circ">A1</div><h3>Descubrimiento</h3><p>Frases sueltas, presentarte, pedir cosas básicas.</p><span class="hrs">≈ 80–100 h</span></div>
+      <div class="stamp"><div class="stamp-circ">A2</div><h3>Supervivencia</h3><p>Rutinas, pasado simple, conversaciones cortas.</p><span class="hrs">≈ 180–200 h</span></div>
+      <div class="stamp"><div class="stamp-circ">B1</div><h3>Umbral</h3><p>Te defiendes solo/a: viajar, trabajar, opinar.</p><span class="hrs">≈ 350–400 h</span></div>
+      <div class="stamp"><div class="stamp-circ">B2</div><h3>Avanzado</h3><p>Debates, matices, francés "real" sin subtítulos.</p><span class="hrs">≈ 550–600 h</span></div>
+      <div class="stamp"><div class="stamp-circ">C1</div><h3>Dominio</h3><p>Precisión, registros, casi como nativo.</p><span class="hrs">≈ 750+ h</span></div>
+    </div>
+    <div class="note hand">Truco de hispanohablante: partes con ventaja — más del 30% del vocabulario francés es
+    reconocible por su parecido con el español. La gramática también comparte lógica (género, subjuntivo).
+    Lo que más te va a costar es el oído y la pronunciación, no el vocabulario.</div>
+  </section>
+
+  <!-- FASES -->
+  <section id="fases">
+    <div class="eyebrow">El camino</div>
+    <h2 class="title">Las 5 fases del aprendizaje</h2>
+    <p class="intro">Este es el orden que realmente funciona. No saltes fases: cada una construye la base de la
+    siguiente. Los tiempos son orientativos con ~30-45 min diarios.</p>
+
+    <div class="phase">
+      <div class="node"><div class="dot"></div><div class="line"></div></div>
+      <div class="phase-card">
+        <div class="when">Fase 0 · Semanas 1–4 · Cimientos</div>
+        <h3>Oído y sonidos antes que reglas</h3>
+        <div class="cols">
+          <div><h4>Qué aprender</h4><ul>
+            <li>Alfabeto y sonidos del francés (vocales nasales, la "r" francesa, "u" vs "ou")</li>
+            <li>Saludos, presentarte, números 0–100</li>
+            <li>Verbos <i>être</i>, <i>avoir</i>, <i>aller</i>, <i>faire</i> en presente</li>
+            <li>Artículos (le/la/les, un/une) y género de los sustantivos</li>
+          </ul></div>
+          <div><h4>Cómo aprender</h4><ul>
+            <li>15 min diarios de fonética antes que gramática</li>
+            <li>Repetición en voz alta (shadowing) desde el día 1</li>
+            <li>Una app de vocabulario básico (Duolingo o similar) para crear hábito</li>
+          </ul></div>
+        </div>
+        <div class="note hand">No te obsesiones con escribir bien todavía — entrena el oído, el resto viene solo.</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="node"><div class="dot"></div><div class="line"></div></div>
+      <div class="phase-card">
+        <div class="when">Fase 1 · Mes 2–4 · Supervivencia (A1→A2)</div>
+        <h3>Frases útiles del día a día</h3>
+        <div class="cols">
+          <div><h4>Qué aprender</h4><ul>
+            <li>Presente regular (-er, -ir, -re) e irregulares frecuentes</li>
+            <li>Negación (ne...pas), preguntas (est-ce que, inversión)</li>
+            <li>Vocabulario: comida, familia, ciudad, compras, clima</li>
+            <li>Introducción al <i>passé composé</i></li>
+          </ul></div>
+          <div><h4>Cómo aprender</h4><ul>
+            <li>Anki con tarjetas propias (no listas genéricas)</li>
+            <li>Ver 10 min diarios de un canal para principiantes</li>
+            <li>Escribir 3 frases al día sobre tu rutina</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="node"><div class="dot"></div><div class="line"></div></div>
+      <div class="phase-card">
+        <div class="when">Fase 2 · Mes 4–8 · Construcción (A2→B1)</div>
+        <h3>Empiezas a contar historias</h3>
+        <div class="cols">
+          <div><h4>Qué aprender</h4><ul>
+            <li><i>Passé composé</i> vs <i>imparfait</i> (el gran dolor de cabeza)</li>
+            <li><i>Futur simple</i>, condicional, pronombres COD/COI, "y" / "en"</li>
+            <li>Subjuntivo: primeros usos (il faut que...)</li>
+            <li>Vocabulario temático amplio: trabajo, opiniones, salud</li>
+          </ul></div>
+          <div><h4>Cómo aprender</h4><ul>
+            <li>1ª clase con tutor/intercambio (italki o tándem) — ya tienes con qué hablar</li>
+            <li>Podcasts lentos para nivel intermedio</li>
+            <li>Empiezas a cambiar el idioma del móvil/redes a francés</li>
+          </ul></div>
+        </div>
+        <div class="note hand">Aquí es donde mucha gente abandona: la gramática se pone densa. Baja el ritmo, no la constancia.</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="node"><div class="dot"></div><div class="line"></div></div>
+      <div class="phase-card">
+        <div class="when">Fase 3 · Mes 8–14 · Consolidación (B1→B2)</div>
+        <h3>Matices y francés "real"</h3>
+        <div class="cols">
+          <div><h4>Qué aprender</h4><ul>
+            <li>Subjuntivo completo, discurso indirecto</li>
+            <li>Conectores de argumentación (cependant, néanmoins, dès lors)</li>
+            <li>Registros formal/informal, francés hablado ("j'sais pas", "chuis")</li>
+          </ul></div>
+          <div><h4>Cómo aprender</h4><ul>
+            <li>Series y podcasts sin subtítulos (o subtítulos en francés)</li>
+            <li>Escritura semanal corregida por un tutor o IA</li>
+            <li>Empiezas a leer novelas cortas o prensa fácil</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="node"><div class="dot"></div></div>
+      <div class="phase-card">
+        <div class="when">Fase 4 · 12+ meses · Fluidez (B2→C1)</div>
+        <h3>Inmersión total</h3>
+        <div class="cols">
+          <div><h4>Qué aprender</h4><ul>
+            <li>Humor, referencias culturales, expresiones idiomáticas</li>
+            <li>Vocabulario especializado según tus intereses o trabajo</li>
+          </ul></div>
+          <div><h4>Cómo aprender</h4><ul>
+            <li>Vive en francés: libros, radio, amistades francófonas</li>
+            <li>Deja de traducir mentalmente — piensa directamente en francés</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILARES -->
+  <section id="pilares">
+    <div class="eyebrow">Las destrezas</div>
+    <h2 class="title">Los 6 pilares que hay que entrenar por separado</h2>
+    <p class="intro">Es un error común estudiar solo gramática y esperar hablar bien. Cada pilar necesita su propia práctica.</p>
+    <div class="grid-pilares">
+      <div class="pilar"><h3>👂 Escucha</h3><p>El músculo que más tarda en desarrollarse. Escucha aunque no entiendas todo — el oído se entrena por exposición, no por comprensión perfecta.</p></div>
+      <div class="pilar"><h3>🗣️ Habla</h3><p>Habla solo/a en voz alta desde el primer mes (narra lo que haces). No esperes a "estar listo" para tu primera conversación real.</p></div>
+      <div class="pilar"><h3>📖 Lectura</h3><p>Empieza con lecturas graduadas (adaptadas a tu nivel) antes de saltar a libros para nativos. Subraya, no traduzcas todo.</p></div>
+      <div class="pilar"><h3>✍️ Escritura</h3><p>Escribe poco pero seguido: 3–5 frases al día valen más que un ensayo semanal. Pide corrección siempre que puedas.</p></div>
+      <div class="pilar"><h3>🔤 Gramática</h3><p>Estúdiala para entender, no para memorizar reglas sueltas. Cada regla nueva, practícala en frases propias inmediatamente.</p></div>
+      <div class="pilar"><h3>🎤 Pronunciación</h3><p>El francés no se lee como se escribe. Aprende las reglas de pronunciación y liaison desde el día 1, no al final.</p></div>
+    </div>
+  </section>
+
+  <!-- YOUTUBE -->
+  <section id="youtube">
+    <div class="eyebrow">La pregunta obligada</div>
+    <h2 class="title">¿Puedo aprender francés solo con YouTube?</h2>
+    <div class="verdict"><b>Respuesta corta: sí, pero no solo.</b> YouTube es excelente para vocabulario, oído,
+    gramática explicada y cultura — y es gratis. Lo que NO te da por sí solo es <b>práctica de habla real</b>
+    con corrección. Combínalo con conversación (tándem o tutor) desde la fase 2 y te llevará mucho más lejos.</div>
+    <div class="yt-groups">
+      <div class="yt-group">
+        <h4>Para empezar desde cero (en español)</h4>
+        <div class="yt-list">
+          <div class="yt-card"><b>Learn French with Alexa</b>Lecciones estructuradas, ritmo pausado, ideal para el primer año.</div>
+          <div class="yt-card"><b>Français avec Pierre</b>Uno de los catálogos más completos, incluye preparación para el DELF.</div>
+          <div class="yt-card"><b>Pariseando</b>Pareja franco-hispanohablante, explica en español con mucha cultura práctica.</div>
+          <div class="yt-card"><b>Aprender Francés con Judy</b>Pensado para hispanohablantes desde nivel A1.</div>
+        </div>
+      </div>
+      <div class="yt-group">
+        <h4>Para oído e input comprensible (nivel A2–B1 en adelante)</h4>
+        <div class="yt-list">
+          <div class="yt-card"><b>Français Authentique</b>Francés hablado a ritmo natural, vocabulario del día a día.</div>
+          <div class="yt-card"><b>InnerFrench</b>Historias narradas lento y claro, pensadas para comprensión progresiva.</div>
+          <div class="yt-card"><b>Easy French</b>Entrevistas en la calle con subtítulos en francés e inglés.</div>
+        </div>
+      </div>
+      <div class="yt-group">
+        <h4>Para cultura, expresiones y sonar más natural (B1+)</h4>
+        <div class="yt-list">
+          <div class="yt-card"><b>Comme une Française</b>Expresiones auténticas, matices culturales, muy bien estructurado.</div>
+          <div class="yt-card"><b>Piece of French</b>Vida cotidiana en Francia con un tono cercano y actual.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECURSOS -->
+  <section id="recursos">
+    <div class="eyebrow">La caja de herramientas</div>
+    <h2 class="title">Recursos por tipo</h2>
+    <div class="res-grid">
+      <div class="res-card"><h4>Apps</h4><ul>
+        <li><b>Anki</b> — repetición espaciada para vocabulario que de verdad se queda</li>
+        <li><b>Duolingo</b> — bueno para hábito diario, insuficiente por sí solo</li>
+        <li><b>italki / Preply</b> — clases y conversación con profesores nativos</li>
+        <li><b>Tandem / HelloTalk</b> — intercambio de idiomas gratis</li>
+        <li><b>LingQ</b> — leer y escuchar con vocabulario integrado</li>
+      </ul></div>
+      <div class="res-card"><h4>Podcasts</h4><ul>
+        <li><b>Journal en français facile</b> (RFI) — noticias a ritmo lento, diario</li>
+        <li><b>InnerFrench (podcast)</b> — para nivel intermedio</li>
+        <li><b>Coffee Break French</b> — lecciones estructuradas por episodio</li>
+        <li><b>News in Slow French</b> — actualidad con vocabulario explicado</li>
+      </ul></div>
+      <div class="res-card"><h4>Series y películas</h4><ul>
+        <li><b>Extra French</b> — sitcom hecha para estudiantes, ideal A1–A2</li>
+        <li><b>Dix pour cent (Call My Agent)</b> — francés cotidiano, B1+</li>
+        <li><b>Amélie / Intouchables</b> — clásicos accesibles con subtítulos en francés</li>
+      </ul></div>
+      <div class="res-card"><h4>Lecturas</h4><ul>
+        <li>Lecturas graduadas por nivel (busca "lectures faciles A1/A2")</li>
+        <li>Cuentos cortos y cómics (<i>bandes dessinées</i>) para A2–B1</li>
+        <li>Prensa fácil: 1jour1actu, Le Monde en français facile</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- TRUCOS -->
+  <section id="trucos">
+    <div class="eyebrow">Estrategias que funcionan</div>
+    <h2 class="title">Trucos y técnicas de estudio</h2>
+    <div class="trucos">
+      <div class="truco"><span class="num">01</span><h4>Shadowing</h4><p>Escucha una frase corta y repítela imitando entonación y ritmo, no solo las palabras.</p></div>
+      <div class="truco"><span class="num">02</span><h4>Repetición espaciada</h4><p>Usa Anki con tarjetas hechas por ti (frases, no palabras sueltas) — se recuerdan mejor en contexto.</p></div>
+      <div class="truco"><span class="num">03</span><h4>Cambia tu entorno</h4><p>Pon el teléfono, redes sociales y hasta la lista de compras en francés desde A2.</p></div>
+      <div class="truco"><span class="num">04</span><h4>Habla solo/a</h4><p>Narra tu día en voz alta en francés. No necesitas a nadie para practicar producción oral.</p></div>
+      <div class="truco"><span class="num">05</span><h4>Vocabulario por frecuencia</h4><p>Las 1000 palabras más usadas cubren cerca del 80% de una conversación cotidiana. Empieza por ahí.</p></div>
+      <div class="truco"><span class="num">06</span><h4>Diario en francés</h4><p>Cinco líneas al día sobre lo que hiciste. Consolidas gramática que ya viste sin darte cuenta.</p></div>
+      <div class="truco"><span class="num">07</span><h4>Un tándem real</h4><p>Nada acelera más que hablar cada semana con alguien que corrija tus errores con paciencia.</p></div>
+      <div class="truco"><span class="num">08</span><h4>Tolera la ambigüedad</h4><p>No pares un audio o video cada palabra que no entiendes. Sigue, el cerebro rellena con contexto.</p></div>
+    </div>
+  </section>
+
+  <!-- TEMARIO -->
+  <section id="temario">
+    <div class="eyebrow">El temario, nivel por nivel</div>
+    <h2 class="title">Gramática y vocabulario detallados</h2>
+    <p class="intro">Haz clic para desplegar cada nivel — úsalo como checklist.</p>
+
+    <details open>
+      <summary>Nivel A1</summary>
+      <div class="det-body">
+        <div><h5>Gramática</h5><ul>
+          <li>Être, avoir, aller, faire (presente)</li>
+          <li>Verbos regulares -er en presente</li>
+          <li>Artículos definidos/indefinidos y género</li>
+          <li>Negación simple (ne...pas)</li>
+          <li>Preguntas básicas (est-ce que, qué/dónde/cuándo)</li>
+          <li>Adjetivos posesivos y demostrativos</li>
+        </ul></div>
+        <div><h5>Vocabulario</h5><ul>
+          <li>Saludos, presentación personal</li>
+          <li>Números, días, meses, hora</li>
+          <li>Familia, colores, comida básica</li>
+          <li>Objetos y lugares cotidianos</li>
+        </ul></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Nivel A2</summary>
+      <div class="det-body">
+        <div><h5>Gramática</h5><ul>
+          <li>Passé composé (avoir/être + participio)</li>
+          <li>Imparfait (introducción)</li>
+          <li>Futur proche y futur simple</li>
+          <li>Comparativos y superlativos</li>
+          <li>Pronombres complemento directo/indirecto (básico)</li>
+        </ul></div>
+        <div><h5>Vocabulario</h5><ul>
+          <li>Ciudad, transporte, direcciones</li>
+          <li>Compras, ropa, restaurante</li>
+          <li>Salud básica, clima, viajes</li>
+        </ul></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Nivel B1</summary>
+      <div class="det-body">
+        <div><h5>Gramática</h5><ul>
+          <li>Passé composé vs imparfait (uso avanzado)</li>
+          <li>Condicional presente</li>
+          <li>Subjuntivo presente (usos frecuentes)</li>
+          <li>Pronombres "y" / "en"</li>
+          <li>Pronombres relativos (qui, que, où, dont)</li>
+        </ul></div>
+        <div><h5>Vocabulario</h5><ul>
+          <li>Trabajo, estudios, opiniones</li>
+          <li>Emociones y relaciones</li>
+          <li>Medio ambiente, actualidad simple</li>
+        </ul></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Nivel B2 y más allá</summary>
+      <div class="det-body">
+        <div><h5>Gramática</h5><ul>
+          <li>Subjuntivo completo (todos los usos)</li>
+          <li>Discurso indirecto y concordancia de tiempos</li>
+          <li>Voz pasiva, gerundio, conectores de argumentación</li>
+          <li>Registros formal/informal y francés hablado</li>
+        </ul></div>
+        <div><h5>Vocabulario</h5><ul>
+          <li>Vocabulario abstracto y de opinión</li>
+          <li>Expresiones idiomáticas y humor</li>
+          <li>Terminología de tu área de interés/trabajo</li>
+        </ul></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ERRORES -->
+  <section id="errores">
+    <div class="eyebrow">Cuidado con esto</div>
+    <h2 class="title">Errores comunes de un hispanohablante</h2>
+    <p class="intro">Algunos <i>faux amis</i> (falsos amigos) que engañan por el parecido con el español:</p>
+    <table class="fa">
+      <tr><th>Palabra francesa</th><th>Parece decir</th><th>Realmente significa</th></tr>
+      <tr><td>Attendre</td><td>Atender</td><td>Esperar</td></tr>
+      <tr><td>Librairie</td><td>Librería (biblioteca)</td><td>Tienda de libros (librería en el sentido comercial)</td></tr>
+      <tr><td>Sensible</td><td>Sensato</td><td>Sensible (emocionalmente)</td></tr>
+      <tr><td>Assister à</td><td>Ayudar</td><td>Asistir a (un evento)</td></tr>
+      <tr><td>Blesser</td><td>Bendecir</td><td>Herir, lastimar</td></tr>
+      <tr><td>Journée</td><td>Jornada laboral únicamente</td><td>El día (en general)</td></tr>
+    </table>
+    <div class="note hand" style="margin-top:16px;">Otros tropiezos típicos: el género de los sustantivos no
+    siempre coincide con el español (la table pero le fromage), las letras finales suelen ser mudas, y el
+    "ne" de la negación se pierde al hablar rápido ("j'sais pas" en vez de "je ne sais pas").</div>
+  </section>
+
+  <!-- PLAN SEMANAL -->
+  <section id="plan">
+    <div class="eyebrow">Ponlo en práctica</div>
+    <h2 class="title">Ejemplo de rutina semanal (30–45 min/día)</h2>
+    <div class="week">
+      <div class="day"><span class="d">Lun</span>Vocabulario + Anki</div>
+      <div class="day"><span class="d">Mar</span>Gramática + ejercicios</div>
+      <div class="day"><span class="d">Mié</span>Escucha (podcast/YouTube)</div>
+      <div class="day"><span class="d">Jue</span>Escritura (diario)</div>
+      <div class="day"><span class="d">Vie</span>Conversación / tándem</div>
+      <div class="day"><span class="d">Sáb</span>Lectura o serie</div>
+      <div class="day"><span class="d">Dom</span>Repaso libre + descanso</div>
+    </div>
+  </section>
+
+  <div class="closing">
+    <span class="hand">Bon courage — continue ainsi 📝</span>
+    <small>Lo único que de verdad predice tu nivel de francés en un año es la constancia, no el método perfecto.</small>
+  </div>
+
+</div>
+</body>
+</html>

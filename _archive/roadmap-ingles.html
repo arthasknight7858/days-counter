@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap: Aprende Inglés desde 0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161d;
+    --bg3: #1a1e28;
+    --accent: #4fffb0;
+    --accent2: #7c6aff;
+    --accent3: #ff6a6a;
+    --accent4: #ffca6a;
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --border: #252a38;
+    --card: #161a24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(76,255,176,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(124,106,255,0.07) 0%, transparent 70%),
+      var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(79,255,176,0.25);
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    max-width: 780px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 48px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,15,20,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-tabs::-webkit-scrollbar { display: none; }
+
+  .nav-tab {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 16px 20px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .nav-tab:hover, .nav-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* SECTIONS */
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 72px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-eye {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  section > h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  section > p.intro {
+    color: var(--muted);
+    margin-bottom: 40px;
+    max-width: 640px;
+    font-size: 0.97rem;
+  }
+
+  /* CARDS GRID */
+  .grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    border-color: rgba(79,255,176,0.2);
+    transform: translateY(-2px);
+  }
+
+  .card-icon {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .card p, .card li {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .card ul {
+    padding-left: 16px;
+    margin-top: 8px;
+  }
+
+  .card li { margin-bottom: 4px; }
+
+  .card .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+
+  .tag-a1 { background: rgba(79,255,176,0.12); color: var(--accent); }
+  .tag-a2 { background: rgba(255,202,106,0.12); color: var(--accent4); }
+  .tag-b1 { background: rgba(124,106,255,0.12); color: var(--accent2); }
+  .tag-b2 { background: rgba(255,106,106,0.12); color: var(--accent3); }
+  .tag-c  { background: rgba(255,255,255,0.08); color: #ccc; }
+
+  /* ROADMAP TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+    opacity: 0.4;
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: -34px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+    transition: background 0.2s;
+  }
+
+  .tl-item:hover .tl-dot { background: var(--accent); }
+
+  .tl-phase {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .tl-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .tl-time {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+    background: rgba(79,255,176,0.1);
+    color: var(--accent);
+  }
+
+  .tl-body {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .tl-body ul { padding-left: 16px; margin-top: 8px; }
+  .tl-body li { margin-bottom: 4px; }
+
+  .tl-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .topic-chip {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  /* RESOURCE CARDS */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .resource-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+
+  .resource-card:hover { border-color: rgba(124,106,255,0.3); }
+
+  .resource-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .resource-info h4 {
+    font-weight: 600;
+    font-size: 0.92rem;
+    margin-bottom: 3px;
+  }
+
+  .resource-info p {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .free-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    border: 1px solid rgba(79,255,176,0.3);
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 4px;
+  }
+
+  /* TIPS */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  .tip-card {
+    background: var(--bg2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+  }
+
+  .tip-card.purple { border-left-color: var(--accent2); }
+  .tip-card.red    { border-left-color: var(--accent3); }
+  .tip-card.yellow { border-left-color: var(--accent4); }
+
+  .tip-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .tip-card p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* YOUTUBE SECTION */
+  .yt-hero {
+    background: linear-gradient(135deg, rgba(255,0,0,0.08), rgba(124,106,255,0.06));
+    border: 1px solid rgba(255,0,0,0.15);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .yt-icon { font-size: 3rem; }
+
+  .yt-text h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .yt-text p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-width: 540px;
+  }
+
+  /* MISTAKES */
+  .mistake-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mistake-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .mistake-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent3);
+    opacity: 0.5;
+    line-height: 1;
+  }
+
+  .mistake-content h4 {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--accent3);
+    font-size: 0.95rem;
+  }
+
+  .mistake-content p {
+    font-size: 0.86rem;
+    color: var(--muted);
+  }
+
+  /* HACKS */
+  .hacks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  .hack-card {
+    background: var(--bg3);
+    border-radius: 12px;
+    padding: 22px;
+    border: 1px solid var(--border);
+  }
+
+  .hack-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 0.98rem;
+  }
+
+  .hack-card p {
+    font-size: 0.86rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* SCHEDULE TABLE */
+  .schedule {
+    background: var(--card);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .schedule-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .schedule-row:last-child { border-bottom: none; }
+
+  .schedule-row.header {
+    background: var(--bg3);
+  }
+
+  .s-cell {
+    padding: 14px 20px;
+    font-size: 0.88rem;
+  }
+
+  .s-cell.day {
+    font-weight: 600;
+    color: var(--accent);
+    border-right: 1px solid var(--border);
+  }
+
+  .s-cell.act { color: var(--muted); }
+
+  .s-cell.header-cell {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 80px 24px;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(79,255,176,0.06) 0%, transparent 70%),
+      var(--bg);
+    border-bottom: none;
+  }
+
+  .cta-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    color: var(--muted);
+    margin-bottom: 36px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0d0f14;
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 0 24px;
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: rgba(79,255,176,0.05);
+    border: 1px solid rgba(79,255,176,0.15);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+
+  .highlight-box p {
+    font-size: 0.92rem;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  /* BIG QUOTE */
+  .big-quote {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.45;
+    color: var(--text);
+    border-left: 3px solid var(--accent);
+    padding-left: 24px;
+    margin: 32px 0;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero-stats { gap: 28px; }
+    .nav-tab { padding: 14px 14px; font-size: 12px; }
+    .schedule-row { grid-template-columns: 100px 1fr; }
+    .yt-hero { flex-direction: column; }
+  }
+
+  /* SCROLL ANIMATION */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Guía completa 2025</div>
+  <h1>Aprende inglés<br><span>desde cero</span></h1>
+  <p class="hero-sub">Un roadmap honesto, práctico y sin rodeos para llevar tu inglés de 0 a conversacional. Sin cursos caros necesarios.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">6</span>
+      <span class="stat-label">Fases claras</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">+40</span>
+      <span class="stat-label">Recursos gratis</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">12</span>
+      <span class="stat-label">Meses estimados</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav-tabs">
+  <a class="nav-tab active" href="#roadmap">🗺 Roadmap</a>
+  <a class="nav-tab" href="#temario">📚 Temario</a>
+  <a class="nav-tab" href="#youtube">▶️ YouTube</a>
+  <a class="nav-tab" href="#recursos">🔧 Recursos</a>
+  <a class="nav-tab" href="#estrategias">🧠 Estrategias</a>
+  <a class="nav-tab" href="#horario">📅 Horario</a>
+  <a class="nav-tab" href="#errores">❌ Errores</a>
+  <a class="nav-tab" href="#trucos">⚡ Trucos</a>
+</nav>
+
+<!-- ROADMAP -->
+<section id="roadmap" class="fade-up">
+  <span class="section-eye">De 0 a fluido</span>
+  <h2>El Roadmap completo</h2>
+  <p class="intro">Seis fases progresivas que siguen el Marco Europeo de Referencia (CEFR). No saltes fases: cada una construye sobre la anterior.</p>
+
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-phase">Fase 1 · A1</div>
+      <div class="tl-title">Cimientos absolutos</div>
+      <span class="tl-time">Meses 1–2 · 30 min/día</span>
+      <div class="tl-body">
+        <p>Tu único objetivo aquí es sobrevivir. Aprende las estructuras mínimas para presentarte y entender instrucciones básicas. <strong>No te preocupes por el acento todavía.</strong></p>
+        <ul>
+          <li>Alfabeto y pronunciación de los 44 fonemas del inglés</li>
+          <li>Números, colores, días, meses, saludos</li>
+          <li>Verbo "to be" + pronombres (I, you, he, she…)</li>
+          <li>Presente simple con verbos cotidianos (have, go, like, work)</li>
+          <li>Vocabulario: las 500 palabras más comunes</li>
+        </ul>
+        <div class="tl-topics">
+          <span class="topic-chip">Verb to be</span>
+          <span class="topic-chip">Presente simple</span>
+          <span class="topic-chip">Saludos</span>
+          <span class="topic-chip">Números</span>
+          <span class="topic-chip">Preguntas WH</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color: var(--accent4);"></div>
+      <div class="tl-phase">Fase 2 · A2</div>
+      <div class="tl-title">Supervivencia diaria</div>
+      <span class="tl-time" style="background: rgba(255,202,106,0.1); color: var(--accent4);">Meses 3–4 · 45 min/día</span>
+      <div class="tl-body">
+        <p>Empiezas a tener conversaciones simples sobre tu vida. Puedes comprar algo en una tienda o pedir indicaciones. Entiendes un poco de inglés lento y claro.</p>
+        <ul>
+          <li>Presente continuo (I am reading)</li>
+          <li>Pasado simple — verbos regulares e irregulares</li>
+          <li>Futuro con "will" y "going to"</li>
+          <li>Vocabulario: familia, casa, comida, trabajo, ropa</li>
+          <li>Artículos (a, an, the) y plurales</li>
+        </ul>
+        <div class="tl-topics">
+          <span class="topic-chip">Pasado simple</span>
+          <span class="topic-chip">Presente continuo</span>
+          <span class="topic-chip">Futuro básico</span>
+          <span class="topic-chip">Adjetivos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color: var(--accent2);"></div>
+      <div class="tl-phase">Fase 3 · B1</div>
+      <div class="tl-title">Conversación real</div>
+      <span class="tl-time" style="background: rgba(124,106,255,0.1); color: var(--accent2);">Meses 5–7 · 1 hora/día</span>
+      <div class="tl-body">
+        <p>Aquí empieza lo emocionante. Puedes ver series con subtítulos en inglés y entender la mayoría. Puedes tener conversaciones aunque cometas errores.</p>
+        <ul>
+          <li>Present perfect (I have seen / I have been)</li>
+          <li>Modal verbs (can, could, should, must, might)</li>
+          <li>Condicionales 0 y 1 (If it rains, I will…)</li>
+          <li>Vocabulario: 1000–2000 palabras más comunes</li>
+          <li>Phrasal verbs básicos (give up, look for, turn on)</li>
+          <li>Inicia el speaking con intercambios de idiomas</li>
+        </ul>
+        <div class="tl-topics">
+          <span class="topic-chip">Present perfect</span>
+          <span class="topic-chip">Modales</span>
+          <span class="topic-chip">Conditionals</span>
+          <span class="topic-chip">Phrasal verbs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color: var(--accent3);"></div>
+      <div class="tl-phase">Fase 4 · B2</div>
+      <div class="tl-title">Fluidez funcional</div>
+      <span class="tl-time" style="background: rgba(255,106,106,0.1); color: var(--accent3);">Meses 8–10 · 1–2 horas/día</span>
+      <div class="tl-body">
+        <p>El nivel más buscado por empleadores. Puedes trabajar o estudiar en inglés. Entiendes películas sin subtítulos y escribes emails profesionales.</p>
+        <ul>
+          <li>Past perfect, future perfect</li>
+          <li>Condicionales 2 y 3 (If I were you… / If I had known…)</li>
+          <li>Passive voice (The letter was sent by John)</li>
+          <li>Reported speech (She said that she was tired)</li>
+          <li>Vocabulario temático: negocios, ciencia, cultura</li>
+          <li>Practica con hablantes nativos regularmente</li>
+        </ul>
+        <div class="tl-topics">
+          <span class="topic-chip">Passive voice</span>
+          <span class="topic-chip">Reported speech</span>
+          <span class="topic-chip">Conditionals 2&3</span>
+          <span class="topic-chip">Collocations</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color: #ccc;"></div>
+      <div class="tl-phase">Fase 5 · C1</div>
+      <div class="tl-title">Dominio avanzado</div>
+      <span class="tl-time" style="background: rgba(255,255,255,0.06); color: #ccc;">Meses 11–14 · Inmersión total</span>
+      <div class="tl-body">
+        <p>Piensas en inglés. Te expresas con matices y humor. Entiendes acentos regionales. Ideal para profesionales del área de negocios, tecnología o academia.</p>
+        <ul>
+          <li>Inversiones y énfasis estilístico (Never had I seen…)</li>
+          <li>Idioms y expresiones idiomáticas</li>
+          <li>Inglés académico y profesional</li>
+          <li>Acento y entonación avanzada</li>
+          <li>Leer libros y periódicos originales (NYT, BBC)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color: var(--accent); background: var(--accent);"></div>
+      <div class="tl-phase">Fase 6 · C2</div>
+      <div class="tl-title">Nivel nativo / Maestría</div>
+      <span class="tl-time">Mes 15 en adelante · Estilo de vida</span>
+      <div class="tl-body">
+        <p>No es un destino, es un modo de vida. El inglés ya no es un idioma que "estudias", es uno que simplemente usas. Pocas personas lo necesitan, B2 es más que suficiente para el 95% de los casos.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TEMARIO -->
+<section id="temario" class="fade-up">
+  <span class="section-eye">Contenido detallado</span>
+  <h2>Temario completo por área</h2>
+  <p class="intro">El inglés tiene cuatro pilares. No descuides ninguno: la mayoría falla porque solo estudia gramática y olvida el speaking.</p>
+
+  <div class="grid grid-2" style="margin-bottom: 24px;">
+
+    <div class="card">
+      <span class="card-icon">🔤</span>
+      <h3>Gramática esencial</h3>
+      <ul>
+        <li>Tiempos verbales: todos los presentes, pasados y futuros</li>
+        <li>Verbos modales y semi-modales</li>
+        <li>Condicionales (0, 1, 2, 3, mixed)</li>
+        <li>Voz pasiva y reported speech</li>
+        <li>Preposiciones de tiempo y lugar</li>
+        <li>Artículos determinados e indeterminados</li>
+        <li>Comparativos y superlativos</li>
+        <li>Cláusulas relativas (who, which, that)</li>
+        <li>Gerundios e infinitivos</li>
+        <li>Phrasal verbs (200+ comunes)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">📖</span>
+      <h3>Vocabulario por niveles</h3>
+      <ul>
+        <li><strong>A1–A2:</strong> 500–1000 palabras más frecuentes</li>
+        <li><strong>B1:</strong> 2000 palabras core</li>
+        <li><strong>B2:</strong> 4000–5000 palabras</li>
+        <li><strong>C1–C2:</strong> 8000+ palabras activas</li>
+        <li>Vocabulario por campos: trabajo, viajes, salud, tecnología</li>
+        <li>Collocations (make a decision, take a break)</li>
+        <li>Idioms y expresiones fijas</li>
+        <li>Falsos cognados (embarrassed ≠ embarazada)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">👂</span>
+      <h3>Comprensión auditiva (Listening)</h3>
+      <ul>
+        <li>Fonética inglesa: los 44 fonemas</li>
+        <li>Entonación y ritmo del inglés</li>
+        <li>Linking words (connected speech)</li>
+        <li>Reducción de palabras (gonna, wanna, lemme)</li>
+        <li>Acentos: americano, británico, australiano</li>
+        <li>Práctica con podcasts, series y canciones</li>
+        <li>Dictados y transcripción</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">🗣️</span>
+      <h3>Producción oral (Speaking)</h3>
+      <ul>
+        <li>Pronunciación fonema por fonema</li>
+        <li>Shadowing (imitación de nativos)</li>
+        <li>Filler words (well, you know, I mean…)</li>
+        <li>Hablar solo en voz alta (monólogos)</li>
+        <li>Intercambios con nativos (iTalki, Tandem)</li>
+        <li>Conversaciones guiadas sobre temas específicos</li>
+        <li>Grabarse y escucharse para autocorregir</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">✍️</span>
+      <h3>Escritura (Writing)</h3>
+      <ul>
+        <li>Puntuación y mayúsculas en inglés</li>
+        <li>Emails formales e informales</li>
+        <li>Conectores y cohesión (however, moreover, therefore)</li>
+        <li>Párrafos con idea principal y soporte</li>
+        <li>Redacción académica y profesional</li>
+        <li>Uso de herramientas: Grammarly, LanguageTool</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="card-icon">📚</span>
+      <h3>Comprensión lectora (Reading)</h3>
+      <ul>
+        <li>Lectura de textos por niveles (graded readers)</li>
+        <li>Inferencia de significado por contexto</li>
+        <li>Vocabulario académico (Academic Word List)</li>
+        <li>Artículos de noticias (BBC, The Guardian)</li>
+        <li>Libros simplificados → libros originales</li>
+        <li>Lectura extensiva vs. intensiva</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="highlight-box">
+    <p>⚡ <strong>Regla del 80/20:</strong> el 20% del vocabulario cubre el 80% del inglés que usarás. Domina las 2000 palabras más frecuentes antes de perseguir palabras raras. Usa la <strong>lista de frecuencia Oxford 3000</strong> como guía.</p>
+  </div>
+</section>
+
+<!-- YOUTUBE -->
+<section id="youtube" class="fade-up">
+  <span class="section-eye">¿Se puede aprender sin pagar?</span>
+  <h2>¿YouTube es suficiente?</h2>
+
+  <div class="yt-hero">
+    <div class="yt-icon">▶️</div>
+    <div class="yt-text">
+      <h3>Sí, YouTube puede llevarte a B2 sin gastar un peso.</h3>
+      <p>La respuesta corta es sí, con condiciones. YouTube tiene contenido de clase mundial gratis. El problema no es la calidad del contenido: es que YouTube solo no te da estructura, práctica de speaking ni retroalimentación. Úsalo como tu fuente principal, combínalo con apps y práctica activa.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+
+    <div class="card">
+      <h3>✅ Lo que YouTube sí puede darte</h3>
+      <ul>
+        <li>Gramática explicada mejor que muchos libros</li>
+        <li>Pronunciación y fonética visualizada</li>
+        <li>Vocabulario en contexto real</li>
+        <li>Exposición masiva al inglés nativo</li>
+        <li>Explicaciones en español para principiantes</li>
+        <li>Series, documentales, películas en inglés</li>
+        <li>Inmersión auditiva sin costo</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>❌ Lo que YouTube NO puede darte</h3>
+      <ul>
+        <li>Práctica de speaking (nadie te escucha)</li>
+        <li>Corrección de errores en tiempo real</li>
+        <li>Estructura progresiva automática</li>
+        <li>Evaluación de tu nivel real</li>
+        <li>Motivación cuando te aburres de buscar</li>
+      </ul>
+      <br>
+      <p style="color: var(--accent); font-weight: 600; font-size: 0.85rem;">→ Complementa con: Anki + iTalki/Tandem + 1 app de estructura</p>
+    </div>
+
+  </div>
+
+  <br>
+
+  <span class="section-eye" style="margin-top: 16px;">Canales recomendados</span>
+  <h2 style="font-size: 1.4rem; margin-bottom: 20px;">Los mejores canales de YouTube</h2>
+
+  <div class="resource-grid">
+    <div class="resource-card">
+      <div class="resource-icon">📺</div>
+      <div class="resource-info">
+        <h4>EngVid</h4>
+        <p>Profesores reales explicando gramática. Ideal para A1–B2. Cientos de lecciones organizadas.</p>
+        <span class="free-badge">GRATIS</span>
+      </div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">📺</div>
+      <div class="resource-info">
+        <h4>BBC Learning English</h4>
+        <p>El canal oficial de la BBC para aprendices. Pronunciación, vocabulario, gramática y cultura. Ultra confiable.</p>
+        <span class="free-badge">GRATIS</span>
+      </div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">📺</div>
+      <div class="resource-info">
+        <h4>English with Lucy</h4>
+        <p>Pronunciación británica, vocabulario, expresiones del día a día. Muy clara y estructurada.</p>
+        <span class="free-badge">GRATIS</span>
+      </div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">📺</div>
+      <div class="resource-info">
+        <h4>Speak English with Vanessa</h4>
+        <p>Especializada en conversación real y expresiones naturales. Perfecta para B1 en adelante.</p>
+        <span class="free-badge">GRATIS</span>
+      </div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">📺</div>
+      <div class="resource-info">
+        <h4>JamesESL English Lessons</h4>
+        <p>Lecciones dinámicas y entretenidas. Excelente para phrasal verbs e idioms.</p>
+        <span class="free-badge">GRATIS</span>
+      </div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">📺</div>
+      <div class="resource-info">
+        <h4>Spanish to American (o similares)</h4>
+        <p>Canales de hispanohablantes que aprendieron inglés. Te dan perspectiva real del proceso.</p>
+        <span class="free-badge">GRATIS</span>
+      </div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">📺</div>
+      <div class="resource-info">
+        <h4>Easy English (para escucha)</h4>
+        <p>Entrevistas en la calle con subtítulos. Inglés real, no de estudio. Ideal para B1+.</p>
+        <span class="free-badge">GRATIS</span>
+      </div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">📺</div>
+      <div class="resource-info">
+        <h4>Dreaming Spanish (comprensión)</h4>
+        <p>Si quieres entender el método de "input comprensible", este canal te lo demuestra en acción.</p>
+        <span class="free-badge">GRATIS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECURSOS -->
+<section id="recursos" class="fade-up">
+  <span class="section-eye">Herramientas y plataformas</span>
+  <h2>Recursos esenciales</h2>
+  <p class="intro">Muchos se pierden probando mil apps. Elige 3 máximo y úsalas consistentemente. Menos herramientas, más tiempo de práctica.</p>
+
+  <div style="margin-bottom: 32px;">
+    <h3 style="font-family: 'Syne', sans-serif; margin-bottom: 16px; font-size: 1.1rem; color: var(--accent);">📱 Apps y plataformas</h3>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-icon">🃏</div>
+        <div class="resource-info">
+          <h4>Anki (flashcards)</h4>
+          <p>La herramienta de repetición espaciada más poderosa. Aprende vocabulario para siempre. Descarga mazos listos o crea los tuyos.</p>
+          <span class="free-badge">GRATIS</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🦉</div>
+        <div class="resource-info">
+          <h4>Duolingo</h4>
+          <p>Bueno para crear el hábito diario, no para aprender en serio. Úsalo los primeros 2 meses como warmup, luego reemplázalo.</p>
+          <span class="free-badge">GRATIS</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">📡</div>
+        <div class="resource-info">
+          <h4>iTalki</h4>
+          <p>Tutores y hablantes nativos por videollamada. Desde $5/hora con tutores comunitarios. Imprescindible para el speaking.</p>
+          <span class="free-badge">desde $5/h</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🤝</div>
+        <div class="resource-info">
+          <h4>Tandem / HelloTalk</h4>
+          <p>Intercambios de idiomas: tú enseñas español, ellos te enseñan inglés. 100% gratis y muy efectivo.</p>
+          <span class="free-badge">GRATIS</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🎯</div>
+        <div class="resource-info">
+          <h4>Elsa Speak</h4>
+          <p>IA que evalúa tu pronunciación fonema por fonema. Ideal para identificar exactamente dónde fallas.</p>
+          <span class="free-badge">versión gratis</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">📰</div>
+        <div class="resource-info">
+          <h4>LingQ / ReadLang</h4>
+          <p>Lee textos en inglés con traducción instantánea al hacer clic. Convierte cualquier web en lección de vocabulario.</p>
+          <span class="free-badge">versión gratis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 32px;">
+    <h3 style="font-family: 'Syne', sans-serif; margin-bottom: 16px; font-size: 1.1rem; color: var(--accent2);">🎧 Podcasts para aprender</h3>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-icon">🎙️</div>
+        <div class="resource-info">
+          <h4>6 Minute English (BBC)</h4>
+          <p>6 minutos de conversación nativa sobre un tema con vocabulario explicado. Perfecto para A2–B1.</p>
+          <span class="free-badge">GRATIS</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🎙️</div>
+        <div class="resource-info">
+          <h4>English Learning for Curious Minds</h4>
+          <p>Temas interesantes de historia, ciencia y cultura. Para B1–C1. Muy adictivo.</p>
+          <span class="free-badge">GRATIS</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🎙️</div>
+        <div class="resource-info">
+          <h4>All Ears English</h4>
+          <p>Dos americanas hablan de la vida diaria y enseñan expresiones naturales. Muy accesible para B1.</p>
+          <span class="free-badge">GRATIS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="font-family: 'Syne', sans-serif; margin-bottom: 16px; font-size: 1.1rem; color: var(--accent4);">📖 Libros y webs</h3>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-icon">🌐</div>
+        <div class="resource-info">
+          <h4>British Council — LearnEnglish</h4>
+          <p>Material gratuito organizado por nivel. Ejercicios de gramática, listening, reading y writing.</p>
+          <span class="free-badge">GRATIS</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🌐</div>
+        <div class="resource-info">
+          <h4>Perfect English Grammar</h4>
+          <p>La web más clara para entender gramática. Sin publicidad exagerada, va directo al punto.</p>
+          <span class="free-badge">GRATIS</span>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">📕</div>
+        <div class="resource-info">
+          <h4>English Grammar in Use (Murphy)</h4>
+          <p>El libro de gramática más recomendado del mundo. Existen versiones para cada nivel (Basic, Intermediate, Advanced).</p>
+          <span class="free-badge">~$15–25</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESTRATEGIAS -->
+<section id="estrategias" class="fade-up">
+  <span class="section-eye">Métodos que funcionan de verdad</span>
+  <h2>Estrategias de aprendizaje</h2>
+  <p class="intro">No todas las formas de estudiar son igual de efectivas. Estas estrategias están respaldadas por evidencia científica y por miles de personas que las han usado.</p>
+
+  <div class="big-quote">
+    "El mejor método de aprendizaje es el que usas todos los días.<br>La consistencia supera a la intensidad."
+  </div>
+
+  <div class="tips-grid">
+    <div class="tip-card">
+      <h4>🔁 Repetición espaciada (SRS)</h4>
+      <p>Revisar vocabulario justo antes de olvidarlo multiplica la retención. Anki lo hace automáticamente. 15 minutos al día > 2 horas los domingos. El olvido es parte del proceso.</p>
+    </div>
+    <div class="tip-card purple">
+      <h4>📥 Input comprensible (i+1)</h4>
+      <p>El lingüista Stephen Krashen descubrió que aprendes cuando el 95% del input lo entiendes. Busca contenido que sea ligeramente por encima de tu nivel, no material perfecto ni imposible.</p>
+    </div>
+    <div class="tip-card red">
+      <h4>🪞 Shadowing</h4>
+      <p>Escucha un audio nativo y repite inmediatamente, imitando ritmo, entonación y sonidos. Es el método más rápido para mejorar el acento y la fluidez. Hazlo 10 minutos al día.</p>
+    </div>
+    <div class="tip-card yellow">
+      <h4>🗺️ Inmersión total</h4>
+      <p>Cambia el idioma de tu teléfono, redes sociales, películas y música a inglés. Tu cerebro empieza a asociar el inglés con momentos de placer, no de obligación.</p>
+    </div>
+    <div class="tip-card">
+      <h4>📓 Diario en inglés</h4>
+      <p>Escribe 5–10 oraciones al día sobre lo que hiciste. No importa si tienes errores: el acto de producir texto activa el vocabulario pasivo y te obliga a buscar palabras que necesitas.</p>
+    </div>
+    <div class="tip-card purple">
+      <h4>🎯 Output forzado</h4>
+      <p>Hablar y escribir te muestra exactamente qué no sabes. Las brechas de conocimiento son más visibles cuando intentas producir que cuando solo consumes. Habla aunque cometas errores.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 32px;">
+    <p>🧠 <strong>El secreto de los que aprenden rápido:</strong> no estudian más horas, estudian con más atención. 30 minutos de práctica activa (hablar, escribir, producir) valen más que 3 horas de ver videos pasivamente.</p>
+  </div>
+</section>
+
+<!-- HORARIO -->
+<section id="horario" class="fade-up">
+  <span class="section-eye">Organización semanal</span>
+  <h2>Horario semanal recomendado</h2>
+  <p class="intro">Para un adulto con trabajo o estudios, 45–60 minutos al día es realista y suficiente para llegar a B2 en 10–12 meses.</p>
+
+  <div class="schedule">
+    <div class="schedule-row header">
+      <div class="s-cell header-cell">Día</div>
+      <div class="s-cell header-cell">Actividad sugerida (45–60 min)</div>
+    </div>
+    <div class="schedule-row">
+      <div class="s-cell day">Lunes</div>
+      <div class="s-cell act">📚 Gramática nueva (30 min) + Anki / vocabulario (15 min)</div>
+    </div>
+    <div class="schedule-row">
+      <div class="s-cell day">Martes</div>
+      <div class="s-cell act">👂 Listening + shadowing (30 min) + Anki (15 min)</div>
+    </div>
+    <div class="schedule-row">
+      <div class="s-cell day">Miércoles</div>
+      <div class="s-cell act">📖 Lectura extensiva (30 min) + repaso de gramática (15 min)</div>
+    </div>
+    <div class="schedule-row">
+      <div class="s-cell day">Jueves</div>
+      <div class="s-cell act">🗣️ Speaking: sesión con tutor en iTalki / práctica con Tandem (45 min)</div>
+    </div>
+    <div class="schedule-row">
+      <div class="s-cell day">Viernes</div>
+      <div class="s-cell act">✍️ Writing: diario + ejercicio de escritura (30 min) + Anki (15 min)</div>
+    </div>
+    <div class="schedule-row">
+      <div class="s-cell day">Sábado</div>
+      <div class="s-cell act">🎬 Inmersión libre: serie, película o podcast en inglés (60 min+)</div>
+    </div>
+    <div class="schedule-row">
+      <div class="s-cell day">Domingo</div>
+      <div class="s-cell act">🔄 Repaso de la semana + Anki + planificación de la próxima semana (30 min)</div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 24px;">
+    <p>💡 <strong>Tip de consistencia:</strong> lo más importante es hacer <strong>algo</strong> cada día, aunque sean 10 minutos. Perder el hábito 3 días seguidos es más dañino que hacer sesiones cortas. Usa el modo de racha de Duolingo solo como alarma diaria.</p>
+  </div>
+</section>
+
+<!-- ERRORES COMUNES -->
+<section id="errores" class="fade-up">
+  <span class="section-eye">Lo que frena a la mayoría</span>
+  <h2>Errores que debes evitar</h2>
+  <p class="intro">Estos son los errores que cometen el 90% de las personas que no logran aprender inglés. Reconocerlos es la mitad de la solución.</p>
+
+  <div class="mistake-list">
+    <div class="mistake-item">
+      <div class="mistake-num">01</div>
+      <div class="mistake-content">
+        <h4>Esperar a "estar listo" para hablar</h4>
+        <p>La mayoría espera entender el 100% de la gramática antes de hablar. Eso nunca llega. Empieza a hablar desde el mes 1, aunque sea con errores. El speaking solo mejora hablando, no estudiando.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-num">02</div>
+      <div class="mistake-content">
+        <h4>Traducir mentalmente todo al español</h4>
+        <p>Si piensas en español y luego traduces, siempre serás lento. El objetivo es pensar directamente en inglés. Práctica: cuando veas un objeto, di su nombre en inglés sin pasar por el español.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-num">03</div>
+      <div class="mistake-content">
+        <h4>Cambiar de método constantemente</h4>
+        <p>Hoy Duolingo, mañana un curso online, pasado mañana otro método. La inconsistencia es el enemigo #1. Elige un método principal y dale al menos 3 meses antes de juzgarlo.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-num">04</div>
+      <div class="mistake-content">
+        <h4>Estudiar gramática de forma aislada</h4>
+        <p>Memorizar reglas sin usarlas en contexto no sirve. Aprende gramática leyendo, escuchando y hablando. Usa la gramática como referencia cuando tengas dudas, no como libro de texto principal.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-num">05</div>
+      <div class="mistake-content">
+        <h4>Solo consumir, nunca producir</h4>
+        <p>Ver videos en inglés es pasivo. Tu cerebro puede estar en "modo sofa". Sin writing ni speaking, el inglés entra pero no sale. La producción es lo que realmente consolida el aprendizaje.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-num">06</div>
+      <div class="mistake-content">
+        <h4>Compararse con hablantes nativos</h4>
+        <p>Los nativos llevan 20–30 años de exposición. Tu objetivo no es sonar como un nativo, es comunicarte con fluidez y claridad. Muchos hispanohablantes con acento trabajan en empresas internacionales sin problema.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-num">07</div>
+      <div class="mistake-content">
+        <h4>No usar el idioma fuera de las "sesiones de estudio"</h4>
+        <p>Si el inglés solo existe en tus horas de estudio, progresarás lento. Cambia el idioma de tu cel, sigue cuentas en inglés, escucha música en inglés mientras cocinas. El idioma debe colarse en tu vida.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUCOS -->
+<section id="trucos" class="fade-up">
+  <span class="section-eye">Hacks probados</span>
+  <h2>Trucos que aceleran el aprendizaje</h2>
+  <p class="intro">No son atajos mágicos, son pequeñas optimizaciones que, sumadas, hacen una diferencia enorme.</p>
+
+  <div class="hacks-grid">
+    <div class="hack-card">
+      <h4>🏷️ Etiqueta tu casa en inglés</h4>
+      <p>Pega post-its en cada objeto de tu casa con su nombre en inglés. Tu cerebro los verá decenas de veces al día sin esfuerzo consciente. En 2 semanas los recordarás para siempre.</p>
+    </div>
+    <div class="hack-card">
+      <h4>🚿 Piensa en inglés en la ducha</h4>
+      <p>El monólogo interno en inglés es gratis y lo puedes hacer en cualquier momento. Describe lo que ves, planifica tu día, resuelve problemas. Tu cerebro empieza a "hablar" en inglés sin darte cuenta.</p>
+    </div>
+    <div class="hack-card">
+      <h4>📺 Subtítulos estratégicos</h4>
+      <p>A1: subtítulos en español. A2: subtítulos en inglés y español. B1: solo subtítulos en inglés. B2: sin subtítulos. Baja el nivel cuando sea muy difícil, sube cuando sea muy fácil.</p>
+    </div>
+    <div class="hack-card">
+      <h4>🎵 Aprende letras de canciones</h4>
+      <p>Busca las letras de tus canciones favoritas en inglés, entiende lo que dicen y cántalas. La música activa partes del cerebro que la gramática no activa y fija el vocabulario de forma emocional.</p>
+    </div>
+    <div class="hack-card">
+      <h4>🤖 Usa IA como tutor</h4>
+      <p>Habla por escrito con ChatGPT o Claude en inglés. Pídele que corrija tus errores, que explique gramática, que simule conversaciones. Es tutor 24/7 disponible cuando quieras.</p>
+    </div>
+    <div class="hack-card">
+      <h4>🎮 Videojuegos en inglés</h4>
+      <p>Cambia el idioma de tus juegos favoritos a inglés. Es vocabulario en contexto, con repetición natural y sin que se sienta como "estudiar". Especialmente efectivo para vocabulario técnico y conversacional.</p>
+    </div>
+    <div class="hack-card">
+      <h4>📞 Llama a tu cerebro con alarmas</h4>
+      <p>Pon alarmas con nombres en inglés (Morning routinе, Anki time, English break). Pequeñas exposiciones durante el día activan el idioma y lo mantienen "caliente" en tu memoria.</p>
+    </div>
+    <div class="hack-card">
+      <h4>🎙️ Grábate hablando</h4>
+      <p>Una vez a la semana, graba 2–3 minutos hablando en inglés sobre cualquier tema. Guarda los videos. Ver tu progreso al mes 6 vs. el mes 1 es el mayor motivador que existe.</p>
+    </div>
+    <div class="hack-card">
+      <h4>🌐 Cambia Google a inglés</h4>
+      <p>Busca tus temas favoritos directamente en inglés. "How to cook pasta" en vez de "cómo hacer pasta". Las respuestas de la web en inglés son mejores y de paso aprendes vocabulario específico.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 32px; border-color: rgba(124,106,255,0.2); background: rgba(124,106,255,0.04);">
+    <p>🚀 <strong>El stack mínimo que funciona:</strong> Anki (vocabulario) + YouTube/Podcasts (input) + iTalki/Tandem (speaking) + diario escrito (writing). Con eso y consistencia llegas a B2 en menos de un año.</p>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <h2>El mejor momento para empezar<br>fue ayer. El segundo mejor<br><span style="background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">es ahora.</span></h2>
+  <p>No necesitas dinero, solo consistencia. 30 minutos al día, todos los días. En 12 meses no vas a reconocer tu propio nivel.</p>
+  <div class="btn-group">
+    <a class="btn btn-primary" href="#roadmap">Empezar desde el inicio</a>
+    <a class="btn btn-secondary" href="#recursos">Ver todos los recursos</a>
+  </div>
+</section>
+
+<script>
+  // Smooth scroll for nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Active nav tab on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const tabs = document.querySelectorAll('.nav-tab');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tabs.forEach(t => t.classList.remove('active'));
+        const active = document.querySelector(`.nav-tab[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Fade-up animation
+  const fadeObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
+</script>
+
+</body>
+</html>

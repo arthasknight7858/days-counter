@@ -1,13 +1,17 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 export default function Albums() {
   const [openAlbum, setOpenAlbum] = useState<string | null>(null);
   const [lightbox, setLightbox] = useState<{ albumId: string, imageIndex: number } | null>(null);
+  
+  // Touch tracking para swipe en móvil
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const albums = [
     {
@@ -44,7 +48,7 @@ export default function Albums() {
         "axel1.jpeg", "axel2.jpeg", "axel3.jpeg", "axel4.jpeg", "axel5.jpeg", 
         "axel6.jpeg", "axel7.jpeg", "axel8.jpeg", "axel9.jpeg", "axel10.jpeg", 
         "axel11.jpeg", "axel12.jpeg", "axel13.jpeg", "axel14.jpeg", "axel15.jpeg",
-        "axel16.jpeg", "axel17.jpeg", "axel18.jpeg"
+        "axel16.jpeg", "axel17.jpeg", "axel18.jpeg", "axel19.jpeg"
       ]
     },
     {
@@ -102,16 +106,48 @@ export default function Albums() {
 
   const currentAlbum = lightbox ? albums.find(a => a.id === lightbox.albumId) : null;
 
+  const goToNextImage = () => {
+    if (!currentAlbum) return;
+    setLightbox((prev) => prev ? { ...prev, imageIndex: (prev.imageIndex + 1) % currentAlbum.images.length } : null);
+  };
+
+  const goToPrevImage = () => {
+    if (!currentAlbum) return;
+    setLightbox((prev) => prev ? { ...prev, imageIndex: (prev.imageIndex - 1 + currentAlbum.images.length) % currentAlbum.images.length } : null);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+    touchEndX.current = null;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 45;
+
+    if (distance > minSwipeDistance) {
+      // Swipe a la izquierda -> siguiente
+      goToNextImage();
+    } else if (distance < -minSwipeDistance) {
+      // Swipe a la derecha -> anterior
+      goToPrevImage();
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!lightbox || !currentAlbum) return;
       if (e.key === "Escape") setLightbox(null);
-      if (e.key === "ArrowRight") {
-        setLightbox((prev: { albumId: string, imageIndex: number } | null) => prev ? { ...prev, imageIndex: (prev.imageIndex + 1) % currentAlbum.images.length } : null);
-      }
-      if (e.key === "ArrowLeft") {
-        setLightbox((prev: { albumId: string, imageIndex: number } | null) => prev ? { ...prev, imageIndex: (prev.imageIndex - 1 + currentAlbum.images.length) % currentAlbum.images.length } : null);
-      }
+      if (e.key === "ArrowRight") goToNextImage();
+      if (e.key === "ArrowLeft") goToPrevImage();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -148,7 +184,7 @@ export default function Albums() {
             >
               <button
                 onClick={() => setOpenAlbum(openAlbum === album.id ? null : album.id)}
-                className="w-full flex items-center justify-between p-5 sm:p-6 text-left transition-colors"
+                className="w-full flex items-center justify-between p-5 sm:p-6 text-left transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-4">
                   <span className="text-2xl sm:text-3xl inline-block animate-heartbeat">{album.icon}</span>
@@ -182,8 +218,8 @@ export default function Albums() {
                             key={i}
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: (i % 10) * 0.05, duration: 0.3 }}
-                            className="aspect-square relative rounded-xl overflow-hidden group cursor-pointer"
+                            transition={{ delay: (i % 8) * 0.04, duration: 0.3 }}
+                            className="aspect-square relative rounded-xl overflow-hidden group cursor-pointer bg-purple-950/30"
                             onClick={() => setLightbox({ albumId: album.id, imageIndex: i })}
                           >
                             <img 
@@ -191,6 +227,7 @@ export default function Albums() {
                               alt={`${album.title} photo ${i + 1}`}
                               className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500 ease-out"
                               loading="lazy"
+                              decoding="async"
                             />
                             <div className="absolute inset-0 bg-purple-900/0 group-hover:bg-purple-900/20 transition-colors duration-300" />
                           </motion.div>
@@ -205,44 +242,50 @@ export default function Albums() {
         </div>
       </section>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal with Touch Swipe Support */}
       <AnimatePresence>
         {lightbox && currentAlbum && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-100 flex items-center justify-center bg-black/90 p-4 sm:p-8 backdrop-blur-md"
+            className="fixed inset-0 z-100 flex items-center justify-center bg-black/92 p-4 sm:p-8 backdrop-blur-md select-none"
             onClick={() => setLightbox(null)}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             {/* Close button */}
             <button 
-              className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all z-10"
+              className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all z-10 cursor-pointer"
               onClick={() => setLightbox(null)}
+              aria-label="Cerrar visor"
             >
-              <X className="w-6 h-6 sm:w-8 sm:h-8 animate-heartbeat" />
+              <X className="w-6 h-6 sm:w-8 sm:h-8" />
             </button>
 
             {/* Prev button */}
             <button 
-              className="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all z-10"
+              className="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all z-10 cursor-pointer"
               onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 e.stopPropagation();
-                setLightbox((prev: { albumId: string, imageIndex: number } | null) => prev ? { ...prev, imageIndex: (prev.imageIndex - 1 + currentAlbum.images.length) % currentAlbum.images.length } : null);
+                goToPrevImage();
               }}
+              aria-label="Foto anterior"
             >
-              <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 animate-heartbeat" />
+              <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8" />
             </button>
 
             {/* Next button */}
             <button 
-              className="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all z-10"
+              className="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all z-10 cursor-pointer"
               onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 e.stopPropagation();
-                setLightbox((prev: { albumId: string, imageIndex: number } | null) => prev ? { ...prev, imageIndex: (prev.imageIndex + 1) % currentAlbum.images.length } : null);
+                goToNextImage();
               }}
+              aria-label="Foto siguiente"
             >
-              <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 animate-heartbeat" />
+              <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8" />
             </button>
 
             {/* Image container */}
@@ -259,11 +302,13 @@ export default function Albums() {
                 src={`/assets/${currentAlbum.folder}/${currentAlbum.images[lightbox.imageIndex]}`}
                 alt={`${currentAlbum.title} photo ${lightbox.imageIndex + 1}`}
                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                decoding="async"
               />
               
-              {/* Image counter */}
-              <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-sm tracking-wide bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-md">
-                {lightbox.imageIndex + 1} / {currentAlbum.images.length}
+              {/* Image counter & hint */}
+              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-white/80 text-xs sm:text-sm tracking-wide bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-md flex items-center gap-2">
+                <span>{lightbox.imageIndex + 1} / {currentAlbum.images.length}</span>
+                <span className="text-purple-300/60 hidden sm:inline">· Desliza o usa las flechas</span>
               </div>
             </motion.div>
           </motion.div>
