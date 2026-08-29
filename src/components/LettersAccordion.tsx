@@ -29,8 +29,27 @@ export default function LettersAccordion() {
           </div>
         </div>
       )
+    },
+    {
+      id: "mes-2",
+      title: "Carta del Segundo Mes",
+      date: "8 de Septiembre de 2026",
+      content: (
+        <div className="space-y-3 sm:space-y-4 text-purple-100/90 leading-relaxed font-serif text-base sm:text-lg">
+          <p>Sofi, mi amor.</p>
+          <p>Cada día que pasa me enamoro más y más de ti. Haces que mi vida sea mucho más feliz y te amo más de lo que cualquier palabra podría llegar a expresar. Cada momento que pasamos juntos es maravilloso, y quiero que sepas que atesoro cada uno de ellos muchísimo.</p>
+          <p>Como siempre te digo, me encantas y me fascinas, y nunca me voy a cansar de decírtelo. Eres perfecta, hermosa y maravillosa. Simplemente eres tú, y no hay nadie que se te compare.</p>
+          <p>Cuando me miras y sonríes, me quitas el aliento. Me dejas completamente maravillado con tu hermosura, tu ternura y esa forma tan especial que tienes de hacerme sentir. Y es en esos pequeños momentos cuando vuelvo a darme cuenta de lo afortunado que soy de tenerte y de que eres el amor de mi vida.</p>
+          <p>Quiero que recuerdes que siempre voy a estar para ti. Voy a apoyarte, ayudarte y acompañarte de la mejor manera que pueda siempre que lo necesites. No importa lo que pase, quiero que sepas que no tienes que enfrentarlo todo sola, porque ahora somos un equipo y quiero estar a tu lado en cada paso que demos juntos.</p>
+          <p>Gracias por estar conmigo, por hacerme tan feliz y por permitirme compartir mi vida contigo.</p>
+          <p>Te amo muchísimo, mi vida. Feliz segundo mes juntos, mi amor :3</p>
+          <p>Te amo con toda mi alma, hoy y siempre.</p>
+          <div className="pt-6 text-right font-bold text-pink-300 not-italic">
+            — Tu novio, Axel :3
+          </div>
+        </div>
+      )
     }
-    // Puedes agregar más cartas aquí para el mes 2, mes 3, copiando el bloque de arriba y pegándolo debajo.
   ];
 
   const [openLetterId, setOpenLetterId] = useState<string | null>(

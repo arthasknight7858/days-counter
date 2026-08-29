@@ -21,6 +21,7 @@ import {
   Search,
   X,
   Sparkles,
+  Calculator,
 } from "lucide-react";
 
 // Skeletons de carga dinámicos para reducir el bundle JS inicial
@@ -97,6 +98,10 @@ const SalesRoadmap = dynamic(() => import("./educational/SalesRoadmap"), {
   loading: () => <RoadmapSkeleton title="Ventas & Negociación" />,
 });
 
+const MathRoadmap = dynamic(() => import("./educational/MathRoadmap"), {
+  loading: () => <RoadmapSkeleton title="Matemáticas" />,
+});
+
 export type EducationalTopic =
   | "ingles"
   | "coreano"
@@ -113,7 +118,8 @@ export type EducationalTopic =
   | "medicina"
   | "pensamiento"
   | "oratoria"
-  | "ventas";
+  | "ventas"
+  | "matematicas";
 
 type CategoryFilter = "all" | "idiomas" | "tecnologia" | "negocios" | "salud" | "academia";
 
@@ -244,6 +250,13 @@ export default function EducationalSection() {
       keywords: "negociar clientes persuadir acuerdos cierres comercio",
       icon: TrendingUp,
     },
+    {
+      id: "matematicas" as EducationalTopic,
+      label: "📐 Matemáticas",
+      category: "academia",
+      keywords: "matematicas calculo algebra geometria trigonometria formulas funciones derivadas integrales aritmetica numeros precision",
+      icon: Calculator,
+    },
   ], []);
 
   const filteredTopics = useMemo(() => {
@@ -276,7 +289,7 @@ export default function EducationalSection() {
           <span className="text-purple-400 italic font-serif tracking-wide">Educativo</span>
         </h2>
         <p className="text-purple-200/70 text-base sm:text-lg tracking-wide">
-          16 guías interactivas, hojas de ruta y recursos preparados con amor para tu crecimiento continuo
+          17 guías interactivas, hojas de ruta y recursos preparados con amor para tu crecimiento continuo
         </p>
       </motion.div>
 
@@ -553,6 +566,18 @@ export default function EducationalSection() {
             transition={{ duration: 0.4 }}
           >
             <SalesRoadmap />
+          </motion.div>
+        )}
+
+        {activeTopic === "matematicas" && (
+          <motion.div
+            key="matematicas"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4 }}
+          >
+            <MathRoadmap />
           </motion.div>
         )}
       </AnimatePresence>
