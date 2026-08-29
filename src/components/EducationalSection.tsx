@@ -22,6 +22,7 @@ import {
   X,
   Sparkles,
   Calculator,
+  Coins,
 } from "lucide-react";
 
 // Skeletons de carga dinámicos para reducir el bundle JS inicial
@@ -102,6 +103,10 @@ const MathRoadmap = dynamic(() => import("./educational/MathRoadmap"), {
   loading: () => <RoadmapSkeleton title="Matemáticas" />,
 });
 
+const CryptoTradingRoadmap = dynamic(() => import("./educational/CryptoTradingRoadmap"), {
+  loading: () => <RoadmapSkeleton title="Cripto & Trading" />,
+});
+
 export type EducationalTopic =
   | "ingles"
   | "coreano"
@@ -119,7 +124,8 @@ export type EducationalTopic =
   | "pensamiento"
   | "oratoria"
   | "ventas"
-  | "matematicas";
+  | "matematicas"
+  | "cripto";
 
 type CategoryFilter = "all" | "idiomas" | "tecnologia" | "negocios" | "salud" | "academia";
 
@@ -257,6 +263,13 @@ export default function EducationalSection() {
       keywords: "matematicas calculo algebra geometria trigonometria formulas funciones derivadas integrales aritmetica numeros precision",
       icon: Calculator,
     },
+    {
+      id: "cripto" as EducationalTopic,
+      label: "🪙 Cripto & Trading",
+      category: "negocios",
+      keywords: "cripto criptomonedas trading bitcoin btc eth blockchain velas gestion riesgo patrones smart money futuros finanzas bolsa analisis tecnico",
+      icon: Coins,
+    },
   ], []);
 
   const filteredTopics = useMemo(() => {
@@ -289,7 +302,7 @@ export default function EducationalSection() {
           <span className="text-purple-400 italic font-serif tracking-wide">Educativo</span>
         </h2>
         <p className="text-purple-200/70 text-base sm:text-lg tracking-wide">
-          17 guías interactivas, hojas de ruta y recursos preparados con amor para tu crecimiento continuo
+          18 guías interactivas, hojas de ruta y recursos preparados con amor para tu crecimiento continuo
         </p>
       </motion.div>
 
@@ -578,6 +591,18 @@ export default function EducationalSection() {
             transition={{ duration: 0.4 }}
           >
             <MathRoadmap />
+          </motion.div>
+        )}
+
+        {activeTopic === "cripto" && (
+          <motion.div
+            key="cripto"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4 }}
+          >
+            <CryptoTradingRoadmap />
           </motion.div>
         )}
       </AnimatePresence>
