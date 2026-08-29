@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Compass,
-  BookOpen,
   Wrench,
   Brain,
   AlertOctagon,
@@ -14,9 +13,6 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
-  Volume2,
-  Heart,
-  Tv,
 } from "lucide-react";
 
 const YouTubeIcon = ({ className }: { className?: string }) => (
@@ -380,7 +376,7 @@ export default function KoreanRoadmap() {
               { char: "한", roman: "Han", desc: "Corea" },
               { char: "국", roman: "Guk", desc: "País" },
               { char: "어", roman: "Eo", desc: "Idioma" },
-            ].map((block, i) => (
+            ].map((block) => (
               <motion.div
                 key={block.char}
                 whileHover={{ y: -6, scale: 1.08 }}
@@ -516,7 +512,7 @@ export default function KoreanRoadmap() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {resources.map((rec, idx) => (
+            {resources.map((rec) => (
               <div
                 key={rec.title}
                 className="rounded-2xl bg-white/5 border border-purple-500/20 p-5 sm:p-6 backdrop-blur-md flex flex-col justify-between hover:border-purple-400/40 transition-all duration-200"
@@ -556,7 +552,7 @@ export default function KoreanRoadmap() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {youtubeChannels.map((ch, idx) => (
+            {youtubeChannels.map((ch) => (
               <div
                 key={ch.name}
                 className="rounded-2xl bg-white/5 border border-purple-500/20 p-5 backdrop-blur-md flex flex-col justify-between hover:border-rose-400/40 transition-colors"
@@ -595,7 +591,7 @@ export default function KoreanRoadmap() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {strategies.map((st, i) => (
+            {strategies.map((st) => (
               <div
                 key={st.title}
                 className={`rounded-2xl bg-white/5 border border-purple-500/20 border-l-4 ${st.color} p-5 backdrop-blur-md hover:bg-white/8 transition-all`}

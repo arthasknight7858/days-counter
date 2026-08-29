@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import {
   Compass,
   Building2,
@@ -2166,16 +2166,15 @@ const INITIAL_CHECKLIST = [
 export default function ArchitectureRoadmap() {
   const [activeSubTab, setActiveSubTab] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [completedItems, setCompletedItems] = useState<Record<number, boolean>>({});
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("sofi_arch_checklist");
-      if (saved) {
-        setCompletedItems(JSON.parse(saved));
-      }
-    } catch {}
-  }, []);
+  const [completedItems, setCompletedItems] = useState<Record<number, boolean>>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("sofi_arch_checklist");
+        if (saved) return JSON.parse(saved);
+      } catch {}
+    }
+    return {};
+  });
 
   const toggleCheck = (id: number) => {
     setCompletedItems((prev) => {

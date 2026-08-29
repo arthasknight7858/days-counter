@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ciberseguridad desde cero</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #07080b;
+  --s1: #0e1016;
+  --s2: #13151e;
+  --border: #1c1f2b;
+  --border2: #252838;
+  --accent: #c8ff00;
+  --accent2: #00d4ff;
+  --accent3: #ff6b35;
+  --accent4: #a78bfa;
+  --text: #b8bdd0;
+  --muted: #454960;
+  --white: #e2e5f0;
+  --done: #c8ff00;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  padding: 0 16px 100px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 56px;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -16px; right: -16px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(32px, 7vw, 58px);
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+  position: relative;
+}
+.hero p {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 520px;
+  font-weight: 300;
+}
+.hero-stats {
+  display: flex;
+  gap: 0;
+  margin-top: 36px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  width: fit-content;
+}
+.stat {
+  padding: 14px 24px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.stat:last-child { border-right: none; }
+.stat-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--accent);
+  display: block;
+}
+.stat-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ── AVISO IMPORTANTE ── */
+.aviso {
+  background: linear-gradient(135deg, #0f1a0f, #0a120a);
+  border: 1px solid #2a4a2a;
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 18px 20px;
+  margin-bottom: 48px;
+  font-size: 13px;
+  color: var(--text);
+}
+.aviso strong { color: var(--accent); }
+.aviso p + p { margin-top: 8px; }
+
+/* ── SEMANA CARD ── */
+.week-group {
+  margin-bottom: 48px;
+}
+.week-group-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.wg-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 24px;
+}
+.wg-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--white);
+  flex: 1;
+}
+.wg-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.tag-a { background: #1a2a0a; color: var(--accent); border: 1px solid #3a5a10; }
+.tag-b { background: #0a1a2a; color: var(--accent2); border: 1px solid #103a5a; }
+.tag-c { background: #2a1a0a; color: var(--accent3); border: 1px solid #5a300a; }
+.tag-d { background: #1a0a2a; color: var(--accent4); border: 1px solid #3a1a5a; }
+
+.weeks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.week-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.week-card:hover { border-color: var(--border2); }
+
+.wc-head {
+  padding: 12px 16px;
+  background: var(--s2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wc-week {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+.wc-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  margin-top: 2px;
+}
+.wc-hours {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.wc-body { padding: 14px 16px; }
+
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+.task-list li {
+  display: flex;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.45;
+}
+.task-list li::before {
+  content: '○';
+  color: var(--border2);
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-size: 11px;
+}
+
+.wc-resource {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 8px 10px;
+  margin-top: 4px;
+}
+.wr-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 3px;
+}
+.wr-name {
+  font-size: 12px;
+  color: var(--accent2);
+  font-weight: 500;
+}
+.wr-free {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--accent);
+  margin-left: 6px;
+}
+.wr-paid {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--accent3);
+  margin-left: 6px;
+}
+
+/* ── REGLAS FUNDAMENTALES ── */
+.rules {
+  margin-bottom: 48px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.rules-header {
+  background: var(--s2);
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.rules-body {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.rule-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.rule-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.rule-text {
+  font-size: 13px;
+  color: var(--text);
+}
+.rule-text strong { color: var(--white); display: block; margin-bottom: 2px; }
+
+/* ── MAPA MENTAL ── */
+.mental-map {
+  margin-bottom: 48px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.mm-header {
+  background: var(--s2);
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--accent2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.mm-body { padding: 20px; }
+.mm-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mm-row:last-child { border-bottom: none; }
+.mm-q {
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 180px;
+  flex-shrink: 0;
+  font-style: italic;
+}
+.mm-a {
+  font-size: 13px;
+  color: var(--text);
+}
+.mm-a strong { color: var(--white); }
+
+/* ── PROGRESO VISUAL ── */
+.progress-map {
+  margin-bottom: 56px;
+}
+.progress-map h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+.prog-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.prog-track::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: var(--border);
+}
+.prog-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 8px 0;
+  position: relative;
+}
+.prog-dot {
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: var(--s1);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  z-index: 1;
+}
+.prog-dot.accent { border-color: var(--accent); color: var(--accent); background: #0e1a05; }
+.prog-dot.blue   { border-color: var(--accent2); color: var(--accent2); background: #05101a; }
+.prog-dot.orange { border-color: var(--accent3); color: var(--accent3); background: #1a0d05; }
+.prog-dot.purple { border-color: var(--accent4); color: var(--accent4); background: #0f0a1a; }
+.prog-content { padding-top: 2px; }
+.prog-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 2px;
+}
+.prog-sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+.prog-milestone {
+  display: inline-block;
+  margin-top: 4px;
+  background: var(--s2);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 2px 8px;
+  color: var(--accent);
+}
+
+/* ── HERRAMIENTAS ESENCIALES ── */
+.tools-section {
+  margin-bottom: 48px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.tools-header {
+  background: var(--s2);
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--accent3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.tools-grid {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.tool-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+.tool-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--white);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.tool-desc {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.tool-when {
+  font-size: 11px;
+  color: var(--text);
+}
+.tool-when span {
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--accent3);
+  font-size: 10px;
+}
+
+@media (max-width: 560px) {
+  .hero-stats { flex-wrap: wrap; }
+  .stat { flex: 1 1 40%; border-right: none; border-bottom: 1px solid var(--border); }
+  .weeks-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">// desde cero absoluto → bug bounty hunter</div>
+  <h1>No sabes nada.<br><em>Perfecto.</em></h1>
+  <p>Esta ruta asume que partes de cero: sin redes, sin Linux, sin hacking, sin nada. Cada semana tiene tareas concretas, cuántas horas dedicarle, y exactamente dónde aprender.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-val">52</span>
+      <span class="stat-label">semanas</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">1–2h</span>
+      <span class="stat-label">por día</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">~$0</span>
+      <span class="stat-label">para empezar</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">H1</span>
+      <span class="stat-label">destino</span>
+    </div>
+  </div>
+</div>
+
+<div class="aviso">
+  <p><strong>Antes de empezar, lee esto.</strong> El hacking ético es legal solo cuando tienes permiso explícito del dueño del sistema. HackerOne y plataformas similares otorgan ese permiso formalmente. Nunca practiques en sistemas reales sin autorización — usa siempre los laboratorios que esta ruta te indica. No es solo ética: es lo que separa a un bug bounty hunter de alguien con problemas legales.</p>
+  <p>Esta ruta asume <strong>1–2 horas diarias</strong>. Si puedes más, avanzarás más rápido. Si puedes menos, extiende los plazos — no hay carrera. Lo que importa es la consistencia, no la velocidad.</p>
+</div>
+
+<!-- ── REGLAS ── -->
+<div class="rules">
+  <div class="rules-header">// las 6 reglas del autodidacta que sí llega</div>
+  <div class="rules-body">
+    <div class="rule-item">
+      <div class="rule-icon">⚡</div>
+      <div class="rule-text"><strong>Haz antes de leer</strong> Instala, rompe, experimenta. Los tutoriales sin práctica no entran. Cada concepto nuevo: hazlo tú mismo ese mismo día.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-icon">📓</div>
+      <div class="rule-text"><strong>Documenta todo</strong> Crea un Notion o carpeta local. Escribe con tus palabras lo que aprendiste cada día. Tu documentación es tu certificado.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-icon">🔍</div>
+      <div class="rule-text"><strong>Google es tu primer recurso</strong> Antes de rendirte, busca el error exacto. La habilidad de buscar bien es una habilidad técnica en sí misma.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-icon">🧩</div>
+      <div class="rule-text"><strong>No saltes fases</strong> Es tentador ir directo a hacking. Pero sin redes y Linux, quedarás bloqueado en las primeras semanas de práctica real.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-icon">🌐</div>
+      <div class="rule-text"><strong>Únete a comunidades</strong> Discord de TryHackMe, Reddit r/netsec, r/bugbounty. Ver a otros aprender es motivación y fuente de respuestas.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-icon">💀</div>
+      <div class="rule-text"><strong>El error es el maestro</strong> Si algo no funciona, no lo saltes. Entiende por qué falló. Los bugs que más enseñan son los que te bloquearon media hora.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BLOQUE 1 — ORIENTACIÓN
+═══════════════════════════════════════════ -->
+<div class="week-group">
+  <div class="week-group-header">
+    <span class="wg-num">I</span>
+    <span class="wg-title">Orientación — entiende el territorio</span>
+    <span class="wg-tag tag-a">Semanas 1–2</span>
+  </div>
+
+  <div class="weeks-grid">
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 1</div>
+          <div class="wc-title">¿Qué es esto y cómo funciona?</div>
+        </div>
+        <div class="wc-hours">7–10h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Mira el documental "Zero Days" o "Hacker" en YouTube — entiende la cultura antes del técnico</li>
+          <li>Lee qué es un bug bounty y cómo funciona HackerOne (su blog oficial)</li>
+          <li>Crea cuenta gratis en TryHackMe.com</li>
+          <li>Lee sobre los tipos de hackers: white hat, black hat, grey hat</li>
+          <li>Entiende qué es una IP, qué es un puerto, qué es un servidor — solo conceptos, sin profundidad</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso principal</div>
+          <div class="wr-name">TryHackMe — "Pre-Security" path<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 2</div>
+          <div class="wc-title">Configura tu entorno de trabajo</div>
+        </div>
+        <div class="wc-hours">8–12h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Instala VirtualBox (gratis) en tu computador</li>
+          <li>Descarga e instala Kali Linux como máquina virtual — sigue un tutorial en YouTube paso a paso</li>
+          <li>Arranca Kali por primera vez, explora el escritorio</li>
+          <li>Abre la terminal por primera vez — no le tengas miedo</li>
+          <li>Aprende a navegar: pwd, ls, cd, mkdir, rm, cp, mv</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Tutorial de instalación</div>
+          <div class="wr-name">YouTube: "Kali Linux VirtualBox 2024 install"<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BLOQUE 2 — LINUX
+═══════════════════════════════════════════ -->
+<div class="week-group">
+  <div class="week-group-header">
+    <span class="wg-num">II</span>
+    <span class="wg-title">Linux — tu nuevo idioma nativo</span>
+    <span class="wg-tag tag-a">Semanas 3–6</span>
+  </div>
+
+  <div class="weeks-grid">
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 3</div>
+          <div class="wc-title">Terminal básica</div>
+        </div>
+        <div class="wc-hours">7–10h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Comandos de archivos: cat, less, head, tail, file, find</li>
+          <li>Permisos: chmod, chown — qué significa rwxr-xr-x</li>
+          <li>Usuarios y grupos: whoami, id, su, sudo</li>
+          <li>Pipes y redirección: | , &gt;, &gt;&gt;, 2&gt;&amp;1</li>
+          <li>Practica en TryHackMe: módulo "Linux Fundamentals Part 1"</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso</div>
+          <div class="wr-name">TryHackMe — Linux Fundamentals 1, 2, 3<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 4</div>
+          <div class="wc-title">Terminal avanzada</div>
+        </div>
+        <div class="wc-hours">7–10h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>grep: buscar texto en archivos y outputs</li>
+          <li>awk y sed: transformar texto — básico suficiente</li>
+          <li>Procesos: ps, top, htop, kill, &amp; y fg/bg</li>
+          <li>Servicios: systemctl start/stop/status</li>
+          <li>Cron jobs: qué son y cómo se configuran</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Lectura</div>
+          <div class="wr-name">The Linux Command Line — William Shotts (PDF gratis oficial)<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 5</div>
+          <div class="wc-title">Bash scripting básico</div>
+        </div>
+        <div class="wc-hours">8–12h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Variables, echo, read — tu primer script "hola mundo"</li>
+          <li>Condicionales if/else, operadores de comparación</li>
+          <li>Bucles for y while con ejemplos reales</li>
+          <li>Funciones básicas en bash</li>
+          <li>Script práctico: automatizar la creación de carpetas de proyecto</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso</div>
+          <div class="wr-name">YouTube: "Bash Scripting Full Course" — NetworkChuck<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 6</div>
+          <div class="wc-title">Consolidación Linux</div>
+        </div>
+        <div class="wc-hours">7–10h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Completa TryHackMe "Linux Fundamentals Part 3"</li>
+          <li>Juega Bandit en OverTheWire.org — 10 primeros niveles</li>
+          <li>Repasa todo lo que no te quedó claro de las semanas 3–5</li>
+          <li>Escribe en tu Notion un "cheat sheet" personal de comandos</li>
+          <li>Sin avanzar al bloque siguiente si no te sientes cómodo en la terminal</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Juego de terminal</div>
+          <div class="wr-name">OverTheWire — Bandit (wargame Linux)<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BLOQUE 3 — REDES
+═══════════════════════════════════════════ -->
+<div class="week-group">
+  <div class="week-group-header">
+    <span class="wg-num">III</span>
+    <span class="wg-title">Redes — cómo se comunican las máquinas</span>
+    <span class="wg-tag tag-b">Semanas 7–11</span>
+  </div>
+
+  <div class="weeks-grid">
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 7</div>
+          <div class="wc-title">Conceptos core de redes</div>
+        </div>
+        <div class="wc-hours">7–10h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Qué es una IP (IPv4 e IPv6) y cómo se asigna</li>
+          <li>Qué es una MAC address y por qué existe</li>
+          <li>Qué es una subnet, máscara, y gateway</li>
+          <li>Qué son los puertos — los más importantes: 22, 80, 443, 21, 25, 3306</li>
+          <li>Diferencia entre TCP y UDP — cuándo se usa cada uno</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso</div>
+          <div class="wr-name">TryHackMe — "Pre-Security: Network Fundamentals"<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 8</div>
+          <div class="wc-title">DNS y HTTP</div>
+        </div>
+        <div class="wc-hours">7–10h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>DNS: qué es un dominio, cómo se resuelve, tipos de registros (A, CNAME, MX, TXT)</li>
+          <li>HTTP: qué es un request y una response</li>
+          <li>Métodos HTTP: GET, POST, PUT, DELETE, PATCH — qué hace cada uno</li>
+          <li>HTTP headers importantes: Host, Cookie, Authorization, Content-Type</li>
+          <li>Códigos de estado: 200, 301, 401, 403, 404, 500 — qué significa cada uno</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso</div>
+          <div class="wr-name">TryHackMe — "How The Web Works"<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 9</div>
+          <div class="wc-title">Wireshark — ver el tráfico real</div>
+        </div>
+        <div class="wc-hours">8–12h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Instala Wireshark en Kali (ya viene incluido)</li>
+          <li>Captura tu propio tráfico al navegar en HTTP</li>
+          <li>Identifica en los paquetes: IPs origen/destino, puertos, payload</li>
+          <li>Usa filtros básicos: ip.addr, tcp.port, http</li>
+          <li>Abre un archivo .pcap de muestra y analiza qué pasó</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso</div>
+          <div class="wr-name">YouTube: "Wireshark Tutorial for Beginners" — David Bombal<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 10</div>
+          <div class="wc-title">nmap — escanear redes</div>
+        </div>
+        <div class="wc-hours">7–10h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Qué es el port scanning y para qué sirve</li>
+          <li>nmap -sV: detectar versiones de servicios</li>
+          <li>nmap -sC: scripts básicos de enumeración</li>
+          <li>nmap -O: detectar sistema operativo</li>
+          <li>Practica escaneando tu propia red local (siempre legal)</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso</div>
+          <div class="wr-name">TryHackMe — "Nmap" room<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 11</div>
+          <div class="wc-title">Consolidación de redes</div>
+        </div>
+        <div class="wc-hours">7–10h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Completa el path "Pre-Security" completo en TryHackMe</li>
+          <li>Explica con tus palabras qué pasa desde que escribes una URL hasta que ves la página</li>
+          <li>Documenta en tu Notion: conceptos de redes que debes tener siempre a mano</li>
+          <li>Si algo no quedó claro, esta semana es para resolverlo — no avances con huecos</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Checkpoint</div>
+          <div class="wr-name">TryHackMe — completa "Pre-Security" path completo<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BLOQUE 4 — WEB HACKING
+═══════════════════════════════════════════ -->
+<div class="week-group">
+  <div class="week-group-header">
+    <span class="wg-num">IV</span>
+    <span class="wg-title">Web Hacking — donde está el dinero en H1</span>
+    <span class="wg-tag tag-c">Semanas 12–28</span>
+  </div>
+
+  <div class="weeks-grid">
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 12–13</div>
+          <div class="wc-title">Burp Suite — tu arma principal</div>
+        </div>
+        <div class="wc-hours">10–14h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Instala Burp Suite Community (gratis) en Kali</li>
+          <li>Configura el proxy en el browser — intercepta tu primer request</li>
+          <li>Burp Repeater: modificar y reenviar requests manualmente</li>
+          <li>Burp Intruder: fuerza bruta de parámetros básica</li>
+          <li>Practica interceptando el tráfico de DVWA (app vulnerable local)</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso</div>
+          <div class="wr-name">PortSwigger Web Academy — "Burp Suite Essentials"<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 14–15</div>
+          <div class="wc-title">XSS — Cross-Site Scripting</div>
+        </div>
+        <div class="wc-hours">12–16h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Qué es XSS y por qué es peligroso — robo de cookies, session hijacking</li>
+          <li>XSS Reflected: el payload va en la URL, ejecuta en el browser de la víctima</li>
+          <li>XSS Stored: el payload queda guardado en el servidor</li>
+          <li>XSS DOM-based: la vulnerabilidad está en el JavaScript del frontend</li>
+          <li>Practica todos los labs de XSS en PortSwigger Academy</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Labs interactivos</div>
+          <div class="wr-name">PortSwigger Academy — XSS (17 labs)<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 16–17</div>
+          <div class="wc-title">SQL Injection</div>
+        </div>
+        <div class="wc-hours">12–16h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Qué es una base de datos SQL y cómo interactúa con el backend</li>
+          <li>SQLi básico: ' OR 1=1-- y por qué funciona</li>
+          <li>UNION-based SQLi: extraer datos de otras tablas</li>
+          <li>Blind SQLi: cuando no hay output visible, usas condiciones true/false</li>
+          <li>sqlmap: la herramienta automática — entiende qué hace por detrás</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Labs</div>
+          <div class="wr-name">PortSwigger Academy — SQL Injection (18 labs)<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 18–19</div>
+          <div class="wc-title">IDOR y Broken Auth</div>
+        </div>
+        <div class="wc-hours">10–14h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>IDOR: cambiar /api/users/123 por /api/users/124 y acceder a datos ajenos</li>
+          <li>Identificar parámetros de referencia directa en URLs, bodies y headers</li>
+          <li>Broken Auth: tokens predecibles, sesiones que no expiran, fuerza bruta de login</li>
+          <li>JWT mal implementado: none algorithm, weak secret — cómo falsificar tokens</li>
+          <li>Password reset flaws: links que no expiran, tokens predecibles</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Labs</div>
+          <div class="wr-name">PortSwigger Academy — Access Control + Authentication<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 20–21</div>
+          <div class="wc-title">SSRF y CSRF</div>
+        </div>
+        <div class="wc-hours">10–14h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>SSRF: hacer que el servidor haga requests internos por ti — acceder a 169.254.169.254 (AWS metadata)</li>
+          <li>SSRF ciega: no hay respuesta visible, la detectas con Burp Collaborator</li>
+          <li>CSRF: forjar requests en nombre de un usuario autenticado desde otro sitio</li>
+          <li>SameSite cookies, tokens CSRF — cómo se mitigan y cuándo fallan</li>
+          <li>Encadenar CSRF + XSS para mayor impacto</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Labs</div>
+          <div class="wr-name">PortSwigger Academy — SSRF + CSRF<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 22–23</div>
+          <div class="wc-title">File Upload e Injections</div>
+        </div>
+        <div class="wc-hours">10–14h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>File upload: subir un .php disfrazado de imagen para ejecutar código</li>
+          <li>Bypasses de validación: Content-Type spoofing, doble extensión, null byte</li>
+          <li>Command injection: pasar comandos del OS a través de inputs del formulario</li>
+          <li>Path traversal: leer /etc/passwd a través de ../../ en parámetros de archivo</li>
+          <li>XXE: XML External Entity — leer archivos internos del servidor</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Labs</div>
+          <div class="wr-name">PortSwigger Academy — File Upload + OS Command Injection<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 24–26</div>
+          <div class="wc-title">API Security y Business Logic</div>
+        </div>
+        <div class="wc-hours">15–20h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>APIs REST: cómo se estructura, qué es un endpoint, autenticación con Bearer token</li>
+          <li>Mass assignment: enviar parámetros que el dev no esperaba (isAdmin: true)</li>
+          <li>Rate limiting ausente: intentos infinitos sin bloqueo</li>
+          <li>Business logic: flujos rotos — pagar $0, comprar más de lo permitido, omitir pasos</li>
+          <li>GraphQL: introspection, batching attacks, variables no sanitizadas</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Labs + recurso</div>
+          <div class="wr-name">PortSwigger Academy — Business Logic + API Testing<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 27–28</div>
+          <div class="wc-title">Consolidación web hacking</div>
+        </div>
+        <div class="wc-hours">12–16h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Completa DVWA (Damn Vulnerable Web App) de nivel Low a High en todas las categorías</li>
+          <li>Instala y hackea OWASP Juice Shop localmente — tiene 100+ desafíos</li>
+          <li>Escribe tu metodología personal: cómo testeas cada tipo de vulnerabilidad</li>
+          <li>Lee 20 reportes públicos en HackerOne Hacktivity — toma notas de cada uno</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Apps vulnerables</div>
+          <div class="wr-name">DVWA + OWASP Juice Shop (instalación local)<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BLOQUE 5 — RECON
+═══════════════════════════════════════════ -->
+<div class="week-group">
+  <div class="week-group-header">
+    <span class="wg-num">V</span>
+    <span class="wg-title">Reconocimiento — encontrar lo que otros no ven</span>
+    <span class="wg-tag tag-b">Semanas 29–34</span>
+  </div>
+
+  <div class="weeks-grid">
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 29–30</div>
+          <div class="wc-title">OSINT y recon pasivo</div>
+        </div>
+        <div class="wc-hours">10–14h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Google Dorks: site:, filetype:, inurl:, intitle: — encontrar info expuesta</li>
+          <li>Shodan.io: buscar servidores, cámaras, dispositivos expuestos al internet</li>
+          <li>crt.sh: ver certificados TLS para mapear subdominios de un dominio</li>
+          <li>Wayback Machine: endpoints viejos que ya no aparecen pero siguen vivos</li>
+          <li>theHarvester: recolección de emails y subdominios desde fuentes públicas</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso</div>
+          <div class="wr-name">TryHackMe — "Google Dorking" + "OSINT" rooms<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 31–32</div>
+          <div class="wc-title">Enumeración de subdominios</div>
+        </div>
+        <div class="wc-hours">10–14h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>subfinder: enumerar subdominios desde APIs públicas — instalar y usar</li>
+          <li>amass: más completo, más lento — para targets importantes</li>
+          <li>httprobe: de todos los subdominios, cuáles están vivos y respondiendo</li>
+          <li>aquatone / gowitness: tomar screenshots automáticos de todos los vivos</li>
+          <li>Construye tu primer pipeline recon: subfinder | httprobe | gowitness</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Referencia</div>
+          <div class="wr-name">Bug Hunter's Methodology — Jason Haddix (YouTube / slides)<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 33–34</div>
+          <div class="wc-title">Fuzzing y descubrimiento de endpoints</div>
+        </div>
+        <div class="wc-hours">10–14h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>ffuf: herramienta de fuzzing HTTP — directorios, parámetros, subdominios</li>
+          <li>SecLists: repositorio GitHub con wordlists para todo — descárgalo completo</li>
+          <li>Fuzzing de directorios: /admin, /api, /v1, /backup — lo que no está en el sitemap</li>
+          <li>Fuzzing de parámetros: descubrir parámetros ocultos que procesan input</li>
+          <li>Automatiza: script bash que corre ffuf en una lista de subdominios</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Recurso</div>
+          <div class="wr-name">GitHub: danielmiessler/SecLists (wordlists)<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BLOQUE 6 — HACKERONE
+═══════════════════════════════════════════ -->
+<div class="week-group">
+  <div class="week-group-header">
+    <span class="wg-num">VI</span>
+    <span class="wg-title">HackerOne — primeros reportes reales</span>
+    <span class="wg-tag tag-d">Semanas 35–52</span>
+  </div>
+
+  <div class="weeks-grid">
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 35–36</div>
+          <div class="wc-title">Crear tu perfil y entender la plataforma</div>
+        </div>
+        <div class="wc-hours">8–10h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Crea tu cuenta en HackerOne con nombre profesional</li>
+          <li>Completa el tutorial de HackerOne ("Hacker101") — gratis y oficial</li>
+          <li>Entiende el sistema de reputación: cómo sube, cómo baja, para qué sirve</li>
+          <li>Lee los términos de 5 programas VDP (sin bounty) para entender el scope</li>
+          <li>Encuentra la sección Hacktivity — lee 10 reportes divulgados esta semana</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Plataforma oficial</div>
+          <div class="wr-name">Hacker101 — curso oficial de HackerOne<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 37–38</div>
+          <div class="wc-title">Cómo escribir un buen reporte</div>
+        </div>
+        <div class="wc-hours">8–12h</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Estructura: título claro, resumen, pasos exactos, evidencia (screenshots/video), impacto</li>
+          <li>El título debe decir: tipo de vuln + componente + impacto en 1 línea</li>
+          <li>Los pasos de reproducción: alguien sin contexto debe poder reproducirlo exacto</li>
+          <li>El impacto: qué puede hacer un atacante real — sé concreto, no teórico</li>
+          <li>Escribe 3 reportes de práctica sobre vulns que encontraste en tus labs</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Referencia</div>
+          <div class="wr-name">HackerOne Hacktivity — estudia la estructura de reportes reales<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 39–44</div>
+          <div class="wc-title">Tus primeros targets reales</div>
+        </div>
+        <div class="wc-hours">12–16h/semana</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Selecciona 2–3 programas VDP con scope amplio — sin presión de bounty</li>
+          <li>Haz recon completo de cada target: subdominios, endpoints, tecnologías</li>
+          <li>Testea metodicamente: cada endpoint, cada parámetro, cada formulario</li>
+          <li>Si encuentras algo — aunque sea Low — repórtalo bien</li>
+          <li>Estudia los duplicados y N/A que recibas: aprenden más que los aceptados</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Estrategia</div>
+          <div class="wr-name">Empieza con VDPs: Uber, Shopify, Twitter tienen programas grandes<span class="wr-free">GRATIS</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <div class="wc-head">
+        <div>
+          <div class="wc-week">Semana 45–52</div>
+          <div class="wc-title">Escalar — bounties reales</div>
+        </div>
+        <div class="wc-hours">12–20h/semana</div>
+      </div>
+      <div class="wc-body">
+        <ul class="task-list">
+          <li>Transiciona a programas con bounty — empieza por los de menor competencia</li>
+          <li>Especialízate en lo que mejor te sale: si encontraste IDORs, busca más IDORs</li>
+          <li>Construye tu pipeline de recon automatizado que corre sin ti</li>
+          <li>Lee 1 reporte de Hacktivity por día como ritual permanente</li>
+          <li>Conecta con otros hunters — comparte metodología, aprende de sus enfoques</li>
+        </ul>
+        <div class="wc-resource">
+          <div class="wr-label">Libro esencial</div>
+          <div class="wr-name">Real-World Bug Hunting — Peter Yaworski<span class="wr-paid">~$30 USD</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── HERRAMIENTAS ── -->
+<div class="tools-section">
+  <div class="tools-header">// herramientas que usarás — cuándo y para qué</div>
+  <div class="tools-grid">
+    <div class="tool-card">
+      <div class="tool-name">Burp Suite</div>
+      <div class="tool-desc">Proxy para interceptar y modificar tráfico HTTP</div>
+      <div class="tool-when"><span>Desde semana 12</span> — tu herramienta principal de por vida</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">nmap</div>
+      <div class="tool-desc">Escáner de puertos y servicios de red</div>
+      <div class="tool-when"><span>Semana 10+</span> — recon de infraestructura en cada target</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">ffuf</div>
+      <div class="tool-desc">Fuzzer HTTP — descubrir directorios y parámetros</div>
+      <div class="tool-when"><span>Semana 33+</span> — parte de tu pipeline de recon</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">subfinder</div>
+      <div class="tool-desc">Enumeración de subdominios desde fuentes pasivas</div>
+      <div class="tool-when"><span>Semana 31+</span> — primer paso en cualquier target nuevo</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Wireshark</div>
+      <div class="tool-desc">Análisis de tráfico de red en tiempo real</div>
+      <div class="tool-when"><span>Semana 9+</span> — aprendizaje de protocolos, luego referencia</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">sqlmap</div>
+      <div class="tool-desc">Detección y explotación automática de SQLi</div>
+      <div class="tool-when"><span>Semana 16+</span> — confirmar y explotar SQLi, no buscar</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Kali Linux</div>
+      <div class="tool-desc">Distro con todas las herramientas preinstaladas</div>
+      <div class="tool-when"><span>Desde semana 2</span> — tu sistema operativo de trabajo</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Nuclei</div>
+      <div class="tool-desc">Scanner de vulnerabilidades basado en templates</div>
+      <div class="tool-when"><span>Semana 40+</span> — automatizar detección de vulns comunes</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAPA MENTAL ── -->
+<div class="mental-map">
+  <div class="mm-header">// preguntas que te harás — respuestas honestas</div>
+  <div class="mm-body">
+    <div class="mm-row">
+      <div class="mm-q">¿Cuánto tiempo hasta ganar dinero?</div>
+      <div class="mm-a">Siendo realista: <strong>8–14 meses</strong> si eres consistente. Los primeros 6 meses son de aprendizaje puro. No es raro que los primeros 10 reportes sean duplicados o N/A — eso es normal y es aprendizaje.</div>
+    </div>
+    <div class="mm-row">
+      <div class="mm-q">¿Necesito inglés?</div>
+      <div class="mm-a"><strong>Sí, básico-intermedio como mínimo.</strong> Los reportes en HackerOne son en inglés. Puedes usar herramientas de traducción, pero debes poder escribir claramente. Es una habilidad que debes desarrollar en paralelo.</div>
+    </div>
+    <div class="mm-row">
+      <div class="mm-q">¿Qué hago si me bloqueo?</div>
+      <div class="mm-a"><strong>Googlea el error exacto.</strong> Si sigues bloqueado, pregunta en el Discord de TryHackMe o en r/netsec. No hay pregunta tonta cuando estás aprendiendo. Bloquearse 2 horas en algo y resolverlo enseña más que 10 tutoriales.</div>
+    </div>
+    <div class="mm-row">
+      <div class="mm-q">¿Necesito gastar dinero?</div>
+      <div class="mm-a">Los primeros <strong>6 meses son $0</strong>. Eventualmente vale la pena: TryHackMe premium ($14/mes), un libro ($30). El único gasto casi obligatorio tarde es Burp Suite Pro ($449/año) — pero puedes empezar con Community gratis.</div>
+    </div>
+    <div class="mm-row">
+      <div class="mm-q">¿Y si nunca encuentro nada en H1?</div>
+      <div class="mm-a">El conocimiento que adquieres tiene valor independiente: <strong>puedes trabajar como pentester, consultor de seguridad, o developer con conocimiento de seguridad</strong> — eso es diferencial en cualquier empresa tech.</div>
+    </div>
+    <div class="mm-row">
+      <div class="mm-q">¿Cómo cobro desde Colombia?</div>
+      <div class="mm-a">HackerOne paga vía <strong>PayPal</strong> (lo más común desde Colombia), transferencia bancaria o check. PayPal funciona bien. Recuerda declarar esos ingresos al DIAN como persona natural — son ingresos del exterior.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROGRESO ── -->
+<div class="progress-map">
+  <h2>Tu progreso en hitos reales</h2>
+  <div class="prog-track">
+    <div class="prog-item">
+      <div class="prog-dot accent">1</div>
+      <div class="prog-content">
+        <div class="prog-label">Semana 2 — Kali Linux corriendo</div>
+        <div class="prog-sub">Puedes navegar la terminal sin miedo. Tu entorno de trabajo está listo.</div>
+        <span class="prog-milestone">✓ primer hito</span>
+      </div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-dot accent">2</div>
+      <div class="prog-content">
+        <div class="prog-label">Semana 6 — Bandit nivel 10</div>
+        <div class="prog-sub">Linux no te da miedo. Puedes automatizar tareas básicas con bash.</div>
+      </div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-dot blue">3</div>
+      <div class="prog-content">
+        <div class="prog-label">Semana 11 — Pre-Security completado</div>
+        <div class="prog-sub">Entiendes redes. Puedes explicar HTTP, DNS y TCP/IP con tus palabras.</div>
+        <span class="prog-milestone">✓ checkpoint redes</span>
+      </div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-dot orange">4</div>
+      <div class="prog-content">
+        <div class="prog-label">Semana 20 — Burp Suite + XSS + SQLi dominados</div>
+        <div class="prog-sub">Puedes interceptar tráfico, modificar requests, y explotar las 2 vulns más comunes.</div>
+      </div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-dot orange">5</div>
+      <div class="prog-content">
+        <div class="prog-label">Semana 28 — OWASP Top 10 completado</div>
+        <div class="prog-sub">Conoces todas las vulnerabilidades web principales. DVWA y Juice Shop terminados.</div>
+        <span class="prog-milestone">✓ listo para recon real</span>
+      </div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-dot blue">6</div>
+      <div class="prog-content">
+        <div class="prog-label">Semana 34 — Pipeline de recon automatizado</div>
+        <div class="prog-sub">Puedes mapear la superficie de un target en minutos. Tu pipeline corre solo.</div>
+      </div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-dot accent">7</div>
+      <div class="prog-content">
+        <div class="prog-label">Semana 40 — Primer reporte aceptado</div>
+        <div class="prog-sub">Aunque sea Low severity. Es validación real de que tu metodología funciona.</div>
+        <span class="prog-milestone">🎯 primer ingreso</span>
+      </div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-dot accent">8</div>
+      <div class="prog-content">
+        <div class="prog-label">Semana 52 — Bug bounty hunter activo</div>
+        <div class="prog-sub">Ingresos consistentes, metodología propia, pipeline automatizado, reputación en H1.</div>
+        <span class="prog-milestone">🚀 objetivo cumplido</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

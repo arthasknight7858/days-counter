@@ -1,43 +1,82 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import {
   Flame,
   HeartPulse,
   Activity,
-  Droplets,
-  Moon,
-  Sparkles,
   CheckCircle2,
   Square,
   Timer,
-  Smile,
-  Zap,
-  Footprints,
-  Apple,
   Home,
-  Target,
-  Sun,
-  ShieldCheck,
   ExternalLink,
   Tv,
-  Dumbbell,
+  Apple,
   Music,
+  Play,
+  Pause,
+  RotateCcw,
+  Sparkles,
+  Trophy,
 } from "lucide-react";
 
 export default function ExerciseSection() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [completedHabits, setCompletedHabits] = useState<Record<string, boolean>>({});
+
+  // Lazy state initialization for completed habits
+  const [completedHabits, setCompletedHabits] = useState<Record<string, boolean>>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("sofi_exercise_habits");
+        if (saved) return JSON.parse(saved);
+      } catch {}
+    }
+    return {};
+  });
+
+  // Interactive Workout Stopwatch / HIIT Timer
+  const [timerSeconds, setTimerSeconds] = useState(30);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerPreset, setTimerPreset] = useState<number | null>(30);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("sofi_exercise_habits");
-      if (saved) {
-        setCompletedHabits(JSON.parse(saved));
-      }
-    } catch {}
-  }, []);
+    if (timerRunning) {
+      timerRef.current = setInterval(() => {
+        setTimerSeconds((prev) => {
+          if (prev <= 1) {
+            setTimerRunning(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [timerRunning]);
+
+  const handleStartTimer = () => setTimerRunning(true);
+  const handlePauseTimer = () => setTimerRunning(false);
+  const handleResetTimer = (seconds?: number) => {
+    setTimerRunning(false);
+    setTimerSeconds(seconds ?? (timerPreset || 30));
+  };
+  const setPresetTime = (sec: number) => {
+    setTimerPreset(sec);
+    setTimerSeconds(sec);
+    setTimerRunning(false);
+  };
+
+  const formatTimer = (sec: number) => {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  };
 
   const toggleHabit = (id: string) => {
     setCompletedHabits((prev) => {
@@ -49,8 +88,16 @@ export default function ExerciseSection() {
     });
   };
 
+  const resetAllHabits = () => {
+    setCompletedHabits({});
+    try {
+      localStorage.removeItem("sofi_exercise_habits");
+    } catch {}
+  };
+
   const categoriesTabs = [
     { id: "all", label: "🌟 Todo el Contenido" },
+    { id: "timer", label: "⏱️ Cronómetro / HIIT" },
     { id: "baile", label: "🎵 Cardio Dance & Coreos" },
     { id: "fullbody", label: "✨ Full Body (Cuerpo Completo)" },
     { id: "cintura", label: "⏳ Cintura Pequeña en Casa" },
@@ -278,6 +325,9 @@ export default function ExerciseSection() {
     { id: "sleep", label: "Dormir 8 Horas Reparadoras", cat: "Descanso" },
   ];
 
+  const completedCount = dailyHabits.filter((h) => completedHabits[h.id]).length;
+  const habitPercentage = Math.round((completedCount / dailyHabits.length) * 100);
+
   const weeklySchedule = [
     { day: "Lunes", routine: "🎵 Cardio Dance K-Pop/Pop + ⏳ Cintura Fina (18 min)", focus: "Baile & Cintura" },
     { day: "Martes", routine: "✨ Full Body (Cuerpo Completo) en colchoneta (15 min)", focus: "Tonificación Total" },
@@ -341,7 +391,7 @@ export default function ExerciseSection() {
         </div>
       </motion.div>
 
-      {/* Sub-navigation Tabs (Wrapped & Responsive) */}
+      {/* Sub-navigation Tabs */}
       <div className="w-full flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 px-2">
         {categoriesTabs.map((tab) => {
           const isActive = activeCategory === tab.id;
@@ -360,6 +410,92 @@ export default function ExerciseSection() {
           );
         })}
       </div>
+
+      {/* Interactive Workout Stopwatch / HIIT Timer Card */}
+      {(activeCategory === "all" || activeCategory === "timer") && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-3xl bg-linear-to-br from-purple-950/40 via-pink-950/30 to-slate-900/60 border border-pink-500/30 p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-pink-400 flex items-center gap-1.5">
+                <Timer className="w-4 h-4 text-pink-400" />
+                Temporizador & Cronómetro de Entrenamiento
+              </span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
+                Controla tus descansos y series al entrenar
+              </h3>
+            </div>
+
+            {/* Presets */}
+            <div className="flex flex-wrap items-center gap-1.5">
+              {[
+                { label: "20s", sec: 20 },
+                { label: "30s", sec: 30 },
+                { label: "45s", sec: 45 },
+                { label: "60s", sec: 60 },
+                { label: "15 min", sec: 15 * 60 },
+                { label: "20 min", sec: 20 * 60 },
+              ].map((p) => (
+                <button
+                  key={p.sec}
+                  onClick={() => setPresetTime(p.sec)}
+                  className={`px-2.5 py-1 text-xs font-mono font-bold rounded-lg border transition-all cursor-pointer ${
+                    timerPreset === p.sec
+                      ? "bg-pink-500 text-white border-pink-400 shadow-[0_0_10px_rgba(236,72,153,0.4)]"
+                      : "bg-white/5 text-purple-200/80 border-purple-500/20 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Clock Display & Controls */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 py-4">
+            <div className="relative flex items-center justify-center">
+              <div
+                className={`w-36 h-36 sm:w-44 sm:h-44 rounded-full border-4 flex flex-col items-center justify-center bg-black/30 backdrop-blur-md shadow-2xl transition-all duration-300 ${
+                  timerRunning
+                    ? "border-pink-400 shadow-[0_0_30px_rgba(236,72,153,0.5)] animate-pulse"
+                    : timerSeconds === 0
+                    ? "border-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.5)]"
+                    : "border-purple-500/30"
+                }`}
+              >
+                <span className="text-3xl sm:text-4xl font-bold font-mono text-white tracking-wider">
+                  {formatTimer(timerSeconds)}
+                </span>
+                <span className="text-[10px] text-purple-300/70 uppercase font-semibold mt-1">
+                  {timerSeconds === 0 ? "¡Listo! 🎉" : timerRunning ? "Entrenando 🔥" : "Pausado"}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={timerRunning ? handlePauseTimer : handleStartTimer}
+                className="px-6 py-3 rounded-2xl bg-linear-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(236,72,153,0.4)] flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
+              >
+                {timerRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
+                <span>{timerRunning ? "Pausar" : "Iniciar"}</span>
+              </button>
+
+              <button
+                onClick={() => handleResetTimer()}
+                className="p-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 text-white transition-all active:scale-95 cursor-pointer"
+                title="Reiniciar temporizador"
+                aria-label="Reiniciar temporizador"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Routine Cards Grid */}
       {(activeCategory === "all" ||
@@ -464,7 +600,7 @@ export default function ExerciseSection() {
                       {ch.badge}
                     </span>
                   </div>
-                  <h4 className="font-bold text-white text-base font-bold mb-0.5">{ch.name}</h4>
+                  <h4 className="font-bold text-white text-base mb-0.5">{ch.name}</h4>
                   <span className="text-xs text-purple-300/80 font-medium block mb-2">{ch.creator}</span>
                   <p className="text-xs text-purple-200/75 leading-relaxed">{ch.desc}</p>
                 </div>
@@ -526,13 +662,51 @@ export default function ExerciseSection() {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-6"
         >
-          <div className="flex flex-col gap-1">
-            <span className="text-xs font-bold uppercase tracking-widest text-pink-400">Tracker Diario</span>
-            <h3 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2">
-              <HeartPulse className="w-6 h-6 text-pink-400" />
-              Checklist de Bienestar de Sofi en Casa
-            </h3>
-            <p className="text-purple-200/70 text-sm">Toca cada casilla para registrar tus logros del día.</p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <span className="text-xs font-bold uppercase tracking-widest text-pink-400">Tracker Diario</span>
+              <h3 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2">
+                <HeartPulse className="w-6 h-6 text-pink-400" />
+                Checklist de Bienestar de Sofi en Casa
+              </h3>
+              <p className="text-purple-200/70 text-sm">Toca cada casilla para registrar tus logros del día.</p>
+            </div>
+
+            {/* Reset button */}
+            {completedCount > 0 && (
+              <button
+                onClick={resetAllHabits}
+                className="self-start sm:self-auto text-xs text-pink-300/70 hover:text-pink-200 bg-pink-500/10 hover:bg-pink-500/20 px-3.5 py-1.5 rounded-full border border-pink-500/20 transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reiniciar hoy</span>
+              </button>
+            )}
+          </div>
+
+          {/* Progress Bar */}
+          <div className="p-4 rounded-2xl bg-purple-950/40 border border-purple-500/20 backdrop-blur-md space-y-2">
+            <div className="flex items-center justify-between text-xs sm:text-sm">
+              <span className="text-purple-200 font-medium flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-amber-300" />
+                Progreso del día: <strong className="text-white font-bold">{completedCount} de {dailyHabits.length} completados</strong>
+              </span>
+              <span className="font-mono font-bold text-pink-300">{habitPercentage}%</span>
+            </div>
+            <div className="w-full h-2.5 bg-black/40 rounded-full overflow-hidden border border-purple-500/20 p-0.5">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${habitPercentage}%` }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="h-full bg-linear-to-r from-purple-500 via-pink-500 to-emerald-400 rounded-full"
+              />
+            </div>
+            {habitPercentage === 100 && (
+              <div className="pt-2 text-center text-xs text-emerald-300 font-bold flex items-center justify-center gap-1.5">
+                <Trophy className="w-4 h-4 text-emerald-400" />
+                ¡Completaste todos tus hábitos de hoy! ¡Eres increíble mi vida! 🎉
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

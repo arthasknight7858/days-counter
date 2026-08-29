@@ -3,7 +3,22 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Pause, SkipForward, SkipBack, Heart, Music, ChevronDown, Volume2, VolumeX, Volume1, Shuffle, Repeat, Repeat1 } from "lucide-react";
+import {
+  Play,
+  Pause,
+  SkipForward,
+  SkipBack,
+  Heart,
+  Music,
+  ChevronDown,
+  Volume2,
+  VolumeX,
+  Volume1,
+  Shuffle,
+  Repeat,
+  Repeat1,
+  Keyboard,
+} from "lucide-react";
 import { useMusic } from "@/context/MusicContext";
 
 export default function MusicPlayer() {
@@ -32,6 +47,7 @@ export default function MusicPlayer() {
   } = useMusic();
 
   const [showPlaylist, setShowPlaylist] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
 
   const handleSelectSong = (index: number) => {
     playSong(index);
@@ -104,7 +120,7 @@ export default function MusicPlayer() {
             </div>
 
             {/* Song Info with slide animation */}
-            <div className="text-center w-full mb-6 min-h-16">
+            <div className="text-center w-full mb-6 min-h-18 flex flex-col items-center justify-center">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={currentIndex}
@@ -118,19 +134,44 @@ export default function MusicPlayer() {
                   animate="center"
                   exit="exit"
                   transition={{ duration: 0.35 }}
+                  className="w-full"
                 >
-                  <h4 className="text-2xl font-bold text-white mb-2 tracking-wide drop-shadow-md">
+                  <h4 className="text-2xl font-bold text-white mb-1.5 tracking-wide drop-shadow-md truncate px-2">
                     {currentSong.title}
                   </h4>
-                  <p className="text-purple-300/90 font-medium tracking-widest uppercase text-sm flex items-center justify-center gap-2">
-                    <Music className="w-4 h-4 animate-heartbeat" /> Para mi amor
-                  </p>
+                  <div className="flex items-center justify-center gap-2 text-purple-300/90 font-medium tracking-widest uppercase text-xs sm:text-sm">
+                    <Music className="w-3.5 h-3.5 animate-heartbeat text-purple-400" />
+                    <span>Para mi amor</span>
+
+                    {/* Dynamic Equalizer Waveform */}
+                    <div className="flex items-end gap-0.5 h-3.5 ml-1">
+                      {[1, 2, 3, 4, 5].map((bar) => (
+                        <motion.span
+                          key={bar}
+                          animate={
+                            isPlaying
+                              ? {
+                                  height: ["20%", "100%", "40%", "85%", "30%"],
+                                }
+                              : { height: "20%" }
+                          }
+                          transition={{
+                            duration: 0.8,
+                            repeat: Infinity,
+                            delay: bar * 0.12,
+                            ease: "easeInOut",
+                          }}
+                          className="w-1 bg-linear-to-t from-purple-500 to-pink-400 rounded-full"
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
 
             {/* Song counter hint */}
-            <div className="flex items-center gap-2 mb-5">
+            <div className="flex items-center gap-1.5 mb-5 flex-wrap justify-center max-w-[280px]">
               {songs.map((_, i) => (
                 <button
                   key={i}
@@ -212,14 +253,20 @@ export default function MusicPlayer() {
                 }`}
                 onClick={toggleRepeat}
                 aria-label="Repetir"
-                title={repeatMode === "all" ? "Repetir todo" : repeatMode === "one" ? "Repetir esta canción" : "Repetir: Desactivado"}
+                title={
+                  repeatMode === "all"
+                    ? "Repetir todo"
+                    : repeatMode === "one"
+                    ? "Repetir esta canción"
+                    : "Repetir: Desactivado"
+                }
               >
                 {repeatMode === "one" ? <Repeat1 className="w-4 h-4" /> : <Repeat className="w-4 h-4" />}
               </button>
             </div>
 
             {/* Volume Control Bar */}
-            <div className="flex items-center gap-3 w-full max-w-[240px] px-2 py-1.5 rounded-full bg-white/5 border border-purple-500/10 mb-6">
+            <div className="flex items-center gap-3 w-full max-w-[240px] px-3 py-1.5 rounded-full bg-white/5 border border-purple-500/10 mb-4">
               <button
                 onClick={toggleMute}
                 className="text-purple-300/70 hover:text-white transition-colors cursor-pointer"
@@ -248,17 +295,57 @@ export default function MusicPlayer() {
               </span>
             </div>
 
-            {/* Show playlist button */}
-            <button
-              onClick={() => setShowPlaylist(!showPlaylist)}
-              className="flex items-center gap-2 text-purple-400/70 hover:text-purple-300 text-xs tracking-widest uppercase font-medium transition-all hover:gap-3 cursor-pointer"
-              aria-label="Ver lista de canciones"
-            >
-              <span>Ver playlist</span>
-              <motion.div animate={{ rotate: showPlaylist ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                <ChevronDown className="w-4 h-4" />
-              </motion.div>
-            </button>
+            {/* Playlist & Shortcuts toggle buttons */}
+            <div className="flex items-center justify-between w-full pt-2 border-t border-purple-500/10">
+              <button
+                onClick={() => setShowShortcuts(!showShortcuts)}
+                className="flex items-center gap-1.5 text-[11px] text-purple-400/60 hover:text-purple-300 transition-colors cursor-pointer"
+                title="Atajos de teclado"
+              >
+                <Keyboard className="w-3.5 h-3.5" />
+                <span>Atajos</span>
+              </button>
+
+              <button
+                onClick={() => setShowPlaylist(!showPlaylist)}
+                className="flex items-center gap-2 text-purple-400/80 hover:text-purple-300 text-xs tracking-wider uppercase font-medium transition-all hover:gap-3 cursor-pointer"
+                aria-label="Ver lista de canciones"
+              >
+                <span>Playlist ({songs.length})</span>
+                <motion.div animate={{ rotate: showPlaylist ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                  <ChevronDown className="w-4 h-4" />
+                </motion.div>
+              </button>
+            </div>
+
+            {/* Shortcuts info dropdown */}
+            <AnimatePresence>
+              {showShortcuts && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="w-full mt-3 p-3 bg-purple-950/40 border border-purple-500/20 rounded-xl text-[11px] text-purple-200/80 space-y-1 font-mono"
+                >
+                  <p className="flex justify-between">
+                    <span>Espacio:</span>
+                    <span className="text-purple-300 font-bold">Play / Pausa</span>
+                  </p>
+                  <p className="flex justify-between">
+                    <span>M:</span>
+                    <span className="text-purple-300 font-bold">Silenciar</span>
+                  </p>
+                  <p className="flex justify-between">
+                    <span>Shift + ➔:</span>
+                    <span className="text-purple-300 font-bold">Siguiente</span>
+                  </p>
+                  <p className="flex justify-between">
+                    <span>Shift + ⬅:</span>
+                    <span className="text-purple-300 font-bold">Anterior</span>
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
@@ -270,21 +357,33 @@ export default function MusicPlayer() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.97 }}
               transition={{ duration: 0.3 }}
-              className="w-full mt-3 bg-white/5 backdrop-blur-xl border border-purple-500/20 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(168,85,247,0.12)]"
+              className="w-full mt-3 bg-white/5 backdrop-blur-xl border border-purple-500/20 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(168,85,247,0.12)] max-h-80 overflow-y-auto"
             >
               {songs.map((song, index) => (
                 <button
                   key={index}
                   onClick={() => handleSelectSong(index)}
                   className={`w-full flex items-center gap-4 px-5 py-3.5 text-left transition-all duration-200 hover:bg-purple-500/10 cursor-pointer ${
-                    index === currentIndex ? "bg-purple-500/15 border-l-2 border-purple-400" : "border-l-2 border-transparent"
+                    index === currentIndex
+                      ? "bg-purple-500/15 border-l-2 border-purple-400"
+                      : "border-l-2 border-transparent"
                   } ${index !== songs.length - 1 ? "border-b border-purple-500/10" : ""}`}
                 >
                   <span className="text-xs text-purple-500/60 font-mono w-5 shrink-0">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <div className={`w-2 h-2 rounded-full shrink-0 ${index === currentIndex && isPlaying ? "bg-purple-400 animate-pulse" : "bg-purple-700/40"}`} />
-                  <span className={`text-sm font-medium tracking-wide ${index === currentIndex ? "text-purple-200" : "text-purple-300/60"}`}>
+                  <div
+                    className={`w-2 h-2 rounded-full shrink-0 ${
+                      index === currentIndex && isPlaying
+                        ? "bg-purple-400 animate-pulse"
+                        : "bg-purple-700/40"
+                    }`}
+                  />
+                  <span
+                    className={`text-sm font-medium tracking-wide truncate ${
+                      index === currentIndex ? "text-purple-200" : "text-purple-300/60"
+                    }`}
+                  >
                     {song.title}
                   </span>
                   {index === currentIndex && isPlaying && (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Mail, Heart } from "lucide-react";
 
@@ -33,15 +33,9 @@ export default function LettersAccordion() {
     // Puedes agregar más cartas aquí para el mes 2, mes 3, copiando el bloque de arriba y pegándolo debajo.
   ];
 
-  const [mounted, setMounted] = useState(false);
-  const [openLetterId, setOpenLetterId] = useState<string | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-    if (letters.length > 0) {
-      setOpenLetterId(letters[letters.length - 1].id);
-    }
-  }, []);
+  const [openLetterId, setOpenLetterId] = useState<string | null>(
+    letters.length > 0 ? letters[letters.length - 1].id : null
+  );
 
   const toggleLetter = (id: string) => {
     setOpenLetterId(openLetterId === id ? null : id);

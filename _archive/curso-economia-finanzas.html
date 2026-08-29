@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economía & Inversión — Curso Completo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #16161f;
+    --border: #1e1e2e;
+    --accent: #7c6af7;
+    --accent2: #4fd1c5;
+    --accent3: #f6ad55;
+    --accent4: #fc8181;
+    --text: #e2e8f0;
+    --muted: #718096;
+    --dim: #2d3748;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(124,106,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(79,209,197,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(42px, 8vw, 96px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+
+  .hero h1 .line1 { display: block; color: var(--text); }
+  .hero h1 .line2 { display: block; color: var(--accent); }
+  .hero h1 .line3 { display: block; color: var(--muted); font-weight: 400; font-size: 0.55em; margin-top: 12px; }
+
+  .hero-desc {
+    max-width: 540px;
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* NAV ÍNDICE */
+  .toc {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 40px;
+  }
+
+  .toc-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .toc-item:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(124,106,247,0.06);
+  }
+
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    min-width: 24px;
+  }
+
+  /* SECCIONES */
+  .section {
+    padding: 80px 40px;
+    border-bottom: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    padding: 6px 12px;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    min-width: fit-content;
+    margin-top: 4px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .section-title .accent { color: var(--accent); }
+  .section-title .accent2 { color: var(--accent2); }
+  .section-title .accent3 { color: var(--accent3); }
+  .section-title .accent4 { color: var(--accent4); }
+
+  /* CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+  }
+
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* PROSE */
+  .prose {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .prose strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .prose .highlight {
+    color: var(--accent2);
+    font-weight: 500;
+  }
+
+  /* CONCEPT BLOCKS */
+  .concept {
+    border-left: 2px solid var(--accent);
+    padding: 16px 20px;
+    background: rgba(124,106,247,0.05);
+    border-radius: 0 8px 8px 0;
+    margin: 24px 0;
+  }
+
+  .concept.teal { border-left-color: var(--accent2); background: rgba(79,209,197,0.05); }
+  .concept.gold { border-left-color: var(--accent3); background: rgba(246,173,85,0.05); }
+  .concept.red { border-left-color: var(--accent4); background: rgba(252,129,129,0.05); }
+
+  .concept-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .concept.teal .concept-label { color: var(--accent2); }
+  .concept.gold .concept-label { color: var(--accent3); }
+  .concept.red .concept-label { color: var(--accent4); }
+
+  .concept p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* FORMULA */
+  .formula {
+    background: var(--bg);
+    border: 1px solid var(--dim);
+    border-radius: 8px;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent2);
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  /* STEPS */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    position: relative;
+  }
+
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 44px;
+    width: 2px;
+    height: calc(100% - 24px);
+    background: var(--border);
+  }
+
+  .step-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    flex-shrink: 0;
+    background: var(--bg);
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-content {
+    padding-bottom: 32px;
+  }
+
+  .step-content h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    padding-top: 8px;
+  }
+
+  .step-content p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* TABLA INVERSIONES */
+  .inv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px 0;
+  }
+
+  .inv-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .inv-table td {
+    padding: 14px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .inv-table tr:hover td {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .tag.low { background: rgba(79,209,197,0.15); color: var(--accent2); }
+  .tag.med { background: rgba(246,173,85,0.15); color: var(--accent3); }
+  .tag.high { background: rgba(252,129,129,0.15); color: var(--accent4); }
+
+  /* CALLOUT */
+  .callout {
+    background: linear-gradient(135deg, rgba(124,106,247,0.1), rgba(79,209,197,0.1));
+    border: 1px solid rgba(124,106,247,0.3);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+
+  .callout-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .callout p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* PORTFOLIO */
+  .portfolio {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 28px 0;
+  }
+
+  .portfolio-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .portfolio-pct {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .portfolio-label {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* REGLA */
+  .rule-box {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px 20px;
+    align-items: start;
+    padding: 24px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 20px 0;
+  }
+
+  .rule-icon {
+    font-size: 24px;
+    padding-top: 2px;
+  }
+
+  .rule-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .rule-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* DIVIDER */
+  .div-line {
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 60px 40px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer strong { color: var(--accent); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero, .section, .toc { padding: 48px 20px; }
+    .hero-stats { gap: 24px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .portfolio { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* SCROLL ANIMATION */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">// Curso completo · Axel Edition</div>
+  <h1>
+    <span class="line1">Economía</span>
+    <span class="line2">& Inversión</span>
+    <span class="line3">de cero a portfolio real</span>
+  </h1>
+  <p class="hero-desc">Todo lo que necesitas saber para entender cómo funciona el dinero, los mercados y cómo hacer que tu capital trabaje por ti.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">7</span>
+      <span class="stat-label">Módulos</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">40+</span>
+      <span class="stat-label">Conceptos clave</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">Retorno potencial</span>
+    </div>
+  </div>
+</section>
+
+<!-- ÍNDICE -->
+<nav class="toc">
+  <div class="toc-title">// índice del curso</div>
+  <div class="toc-grid">
+    <a href="#m1" class="toc-item"><span class="toc-num">01</span> Fundamentos de economía</a>
+    <a href="#m2" class="toc-item"><span class="toc-num">02</span> Sistema financiero</a>
+    <a href="#m3" class="toc-item"><span class="toc-num">03</span> Finanzas personales</a>
+    <a href="#m4" class="toc-item"><span class="toc-num">04</span> Mercados e inversión</a>
+    <a href="#m5" class="toc-item"><span class="toc-num">05</span> Tipos de activos</a>
+    <a href="#m6" class="toc-item"><span class="toc-num">06</span> Guía para empezar</a>
+    <a href="#m7" class="toc-item"><span class="toc-num">07</span> Estrategia & portafolio</a>
+  </div>
+</nav>
+
+<!-- MÓDULO 1 -->
+<section class="section fade-in" id="m1">
+  <div class="section-header">
+    <div class="section-number">01</div>
+    <h2 class="section-title">Fundamentos de <span class="accent">Economía</span></h2>
+  </div>
+
+  <p class="prose" style="margin-bottom:32px">La economía es la ciencia que estudia cómo las personas, empresas y gobiernos toman decisiones sobre el uso de <strong>recursos escasos</strong>. Todo lo demás — los mercados, las inversiones, las crisis — es consecuencia de estos principios base.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-icon">📊</span>
+      <h3>Microeconomía</h3>
+      <p>Estudia el comportamiento de agentes individuales: consumidores, empresas, mercados específicos. Oferta, demanda y formación de precios.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🌐</span>
+      <h3>Macroeconomía</h3>
+      <p>Analiza la economía como un todo: PIB, inflación, desempleo, tasas de interés, política monetaria y fiscal.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">💱</span>
+      <h3>Economía Internacional</h3>
+      <p>Comercio entre países, tipos de cambio, balanza de pagos. Crucial para invertir en activos en dólares desde Colombia.</p>
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-label">Concepto clave — Oferta y Demanda</div>
+    <p>Cuando la demanda sube y la oferta se mantiene, el precio sube. Cuando la oferta aumenta sin más demanda, el precio cae. Esto aplica a acciones, crypto, inmuebles, y cualquier activo.</p>
+  </div>
+
+  <div class="concept teal">
+    <div class="concept-label">Concepto clave — Inflación</div>
+    <p>Pérdida del poder adquisitivo del dinero con el tiempo. Si tu dinero está en efectivo y la inflación es del 10% anual, pierdes el 10% de poder de compra cada año. <strong>Invertir es la respuesta.</strong></p>
+  </div>
+
+  <div class="concept gold">
+    <div class="concept-label">Concepto clave — Interés Compuesto</div>
+    <p>El fenómeno más poderoso en finanzas. Los rendimientos generan nuevos rendimientos. Einstein lo llamó "la octava maravilla del mundo". Funciona a tu favor cuando inviertes, y en tu contra cuando tienes deudas.</p>
+  </div>
+
+  <div class="formula">
+    Valor Futuro = P × (1 + r)ⁿ<br>
+    <span style="color:var(--muted);font-size:12px">P = capital inicial · r = tasa de rendimiento · n = años</span>
+  </div>
+
+  <div class="concept red">
+    <div class="concept-label">Concepto clave — Costo de Oportunidad</div>
+    <p>Todo lo que decides hacer tiene un costo: lo que dejas de hacer. Si tienes $1,000 USD guardados en el colchón, el costo de oportunidad es lo que habrían rendido invertidos al 8% anual.</p>
+  </div>
+</section>
+
+<!-- MÓDULO 2 -->
+<section class="section fade-in" id="m2">
+  <div class="section-header">
+    <div class="section-number">02</div>
+    <h2 class="section-title">El <span class="accent2">Sistema Financiero</span></h2>
+  </div>
+
+  <p class="prose" style="margin-bottom:32px">El sistema financiero es el conjunto de instituciones, mercados e instrumentos que canalizan el ahorro hacia la inversión. Entenderlo es entender las reglas del juego.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-icon">🏦</span>
+      <h3>Bancos Centrales</h3>
+      <p>Controlan la política monetaria. La Fed (EE.UU.) y el Banco de la República (Colombia) fijan las tasas de interés, que afectan todo: créditos, bonos, acciones, crypto.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🏛️</span>
+      <h3>Bancos Comerciales</h3>
+      <p>Reciben depósitos y otorgan créditos. La diferencia entre lo que pagan (depósitos) y lo que cobran (préstamos) es su margen. Tu CDT rinde menos que lo que ganas invirtiendo directamente.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📈</span>
+      <h3>Bolsas de Valores</h3>
+      <p>Mercados organizados donde se compran y venden activos: acciones, ETFs, futuros. NYSE, NASDAQ, BVC (Colombia).</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🔄</span>
+      <h3>Brokers / Corredores</h3>
+      <p>Intermediarios que te dan acceso a los mercados. Hoy existen brokers 100% digitales con 0 comisiones para el inversor retail.</p>
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-label">¿Cómo afecta la Fed a tu portafolio?</div>
+    <p>Cuando la Fed sube tasas → el dinero "seguro" (bonos) rinde más → las acciones y crypto se vuelven menos atractivos → bajan los precios. Cuando la Fed baja tasas → el dinero fluye hacia activos de riesgo → suben acciones y crypto. Este ciclo se repite constantemente.</p>
+  </div>
+</section>
+
+<!-- MÓDULO 3 -->
+<section class="section fade-in" id="m3">
+  <div class="section-header">
+    <div class="section-number">03</div>
+    <h2 class="section-title">Finanzas <span class="accent3">Personales</span></h2>
+  </div>
+
+  <p class="prose" style="margin-bottom:32px">Antes de invertir, necesitas que tus finanzas personales estén en orden. No puedes construir riqueza sobre una base rota.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-dot">1</div>
+      <div class="step-content">
+        <h3>Conoce tu flujo de caja</h3>
+        <p>Ingresos − Gastos = Lo que puedes invertir. Si no sabes exactamente cuánto entra y cuánto sale, es imposible planificar. Lleva un registro aunque sea en una hoja de Google Sheets.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-dot">2</div>
+      <div class="step-content">
+        <h3>Fondo de emergencia</h3>
+        <p>Antes de invertir un peso, ten entre 3 y 6 meses de gastos en una cuenta de ahorros o CDT de alta liquidez. Sin esto, cualquier emergencia te obliga a vender inversiones en mal momento.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-dot">3</div>
+      <div class="step-content">
+        <h3>Elimina deudas de alto interés</h3>
+        <p>Si tienes deudas al 25%+ anual (tarjetas de crédito), pagarlas es la mejor inversión posible: rendimiento garantizado del 25%. Ningún activo te da eso sin riesgo.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-dot">4</div>
+      <div class="step-content">
+        <h3>Regla del 50/30/20</h3>
+        <p>50% necesidades · 30% deseos · 20% ahorro e inversión. Adapta los porcentajes a tu realidad, pero siempre que el 20% exista y crezca con el tiempo.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-dot">5</div>
+      <div class="step-content">
+        <h3>Diversifica tus ingresos</h3>
+        <p>Una sola fuente de ingresos es fragilidad. Tus proyectos (dropshipping, UGC, apps) son exactamente lo correcto: construir múltiples fuentes que eventualmente generen ingresos pasivos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÓDULO 4 -->
+<section class="section fade-in" id="m4">
+  <div class="section-header">
+    <div class="section-number">04</div>
+    <h2 class="section-title">Mercados e <span class="accent">Inversión</span></h2>
+  </div>
+
+  <p class="prose" style="margin-bottom:32px">Invertir es poner tu capital a trabajar para generar más capital. Los mercados financieros son el vehículo. Entender cómo funcionan te da ventaja sobre el 95% de las personas.</p>
+
+  <div class="rule-box">
+    <div class="rule-icon">⚖️</div>
+    <div>
+      <div class="rule-title">Riesgo vs. Rendimiento</div>
+      <div class="rule-desc">Siempre van juntos. Mayor rendimiento potencial = mayor riesgo. No existe inversión de alto rendimiento y bajo riesgo (si alguien te la ofrece, es una estafa). Tu trabajo como inversor es maximizar el rendimiento para el nivel de riesgo que puedes tolerar.</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-icon">⏳</div>
+    <div>
+      <div class="rule-title">El tiempo es el activo más valioso</div>
+      <div class="rule-desc">$1,000 USD invertidos a los 25 años al 8% anual = ~$21,700 a los 65. Los mismos $1,000 invertidos a los 35 = ~$10,000. La diferencia de 10 años cuesta $11,700. Empezar tarde es el error más caro.</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-icon">🎯</div>
+    <div>
+      <div class="rule-title">Diversificación</div>
+      <div class="rule-desc">No pongas todos los huevos en una canasta. Un portafolio diversificado reduce el riesgo sin sacrificar mucho rendimiento. Diversificar entre activos, sectores, geografías y monedas.</div>
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-label">Los 2 tipos de análisis</div>
+    <p><strong>Análisis Fundamental:</strong> valoras un activo por sus fundamentos reales — ganancias, modelo de negocio, deuda, equipo. ¿Cuánto vale de verdad? <br><br><strong>Análisis Técnico:</strong> estudias los patrones en el gráfico de precios para predecir movimientos futuros. Más usado en el corto plazo. Ninguno es infalible; los mejores inversores combinan ambos.</p>
+  </div>
+</section>
+
+<!-- MÓDULO 5 -->
+<section class="section fade-in" id="m5">
+  <div class="section-header">
+    <div class="section-number">05</div>
+    <h2 class="section-title">Tipos de <span class="accent2">Activos</span></h2>
+  </div>
+
+  <table class="inv-table">
+    <thead>
+      <tr>
+        <th>Activo</th>
+        <th>Riesgo</th>
+        <th>Rendimiento histórico</th>
+        <th>Liquidez</th>
+        <th>Ideal para</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Acciones (S&P 500)</strong></td>
+        <td><span class="tag med">Medio</span></td>
+        <td>~10% anual</td>
+        <td>Alta</td>
+        <td>Largo plazo, base del portafolio</td>
+      </tr>
+      <tr>
+        <td><strong>ETFs de índice</strong></td>
+        <td><span class="tag low">Bajo</span></td>
+        <td>~8-10% anual</td>
+        <td>Alta</td>
+        <td>Principiantes, diversificación automática</td>
+      </tr>
+      <tr>
+        <td><strong>Bonos del Tesoro</strong></td>
+        <td><span class="tag low">Muy bajo</span></td>
+        <td>4-5% actual</td>
+        <td>Alta</td>
+        <td>Estabilidad, reserva segura en USD</td>
+      </tr>
+      <tr>
+        <td><strong>Bitcoin</strong></td>
+        <td><span class="tag high">Alto</span></td>
+        <td>>100% años buenos, -70% años malos</td>
+        <td>Alta</td>
+        <td>Posición pequeña especulativa</td>
+      </tr>
+      <tr>
+        <td><strong>Altcoins</strong></td>
+        <td><span class="tag high">Muy alto</span></td>
+        <td>Variable extremo</td>
+        <td>Media</td>
+        <td>Solo capital que puedes perder</td>
+      </tr>
+      <tr>
+        <td><strong>Bienes raíces</strong></td>
+        <td><span class="tag med">Medio</span></td>
+        <td>6-12% (alquiler + valorización)</td>
+        <td>Baja</td>
+        <td>Mediano/largo plazo con capital mayor</td>
+      </tr>
+      <tr>
+        <td><strong>REITs</strong></td>
+        <td><span class="tag med">Medio</span></td>
+        <td>7-10% + dividendos</td>
+        <td>Alta</td>
+        <td>Exposición a bienes raíces sin comprar</td>
+      </tr>
+      <tr>
+        <td><strong>CDT / Renta fija CO</strong></td>
+        <td><span class="tag low">Bajo</span></td>
+        <td>10-14% en COP (depreciación incluida)</td>
+        <td>Baja-media</td>
+        <td>Fondo de emergencia en COP</td>
+      </tr>
+      <tr>
+        <td><strong>Tu propio negocio</strong></td>
+        <td><span class="tag high">Alto</span></td>
+        <td>Ilimitado</td>
+        <td>Baja</td>
+        <td>Mayor ROI potencial si tienes control</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="concept gold">
+    <div class="concept-label">Nota importante para inversores colombianos</div>
+    <p>Invertir en activos denominados en USD es protección natural contra la devaluación del peso. Si el dólar sube un 10% y tu inversión rinde un 8% en USD, en COP estás ganando ~18%. Prioriza siempre tener una parte de tu portafolio en dólares.</p>
+  </div>
+</section>
+
+<!-- MÓDULO 6 -->
+<section class="section fade-in" id="m6">
+  <div class="section-header">
+    <div class="section-number">06</div>
+    <h2 class="section-title">Guía para <span class="accent3">Empezar</span></h2>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">La verdad que nadie dice</div>
+    <p>No necesitas mucho dinero para empezar. Plataformas como Interactive Brokers o incluso Robinhood permiten empezar con $1 USD. Lo que sí necesitas es consistencia: invertir aunque sea $20-50 USD cada mes de forma automática, sin falta.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-dot">1</div>
+      <div class="step-content">
+        <h3>Define tu perfil de riesgo</h3>
+        <p>¿Cuánto puedes perder sin perder el sueño? ¿Tienes horizonte de 5+ años? Responder esto determina tu mezcla de activos. Joven + largo plazo = más riesgo permitido.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-dot">2</div>
+      <div class="step-content">
+        <h3>Abre una cuenta en un broker internacional</h3>
+        <p><strong>Interactive Brokers</strong> es el mejor para colombianos: regulado, sin mínimo de inversión, acceso a bolsas mundiales, baja comisión. Alternativas: Charles Schwab, Tastytrade. Para crypto: Binance o Kraken.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-dot">3</div>
+      <div class="step-content">
+        <h3>Empieza con ETFs de índice</h3>
+        <p>El ETF <strong>VOO</strong> (sigue el S&P 500) o <strong>VTI</strong> (mercado total EE.UU.) son el punto de entrada perfecto. Bajo costo (~0.03% anual), diversificación automática en 500 empresas, historial probado.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-dot">4</div>
+      <div class="step-content">
+        <h3>Automatiza aportes mensuales (DCA)</h3>
+        <p><strong>Dollar Cost Averaging</strong>: invertir una cantidad fija cada mes sin importar si el mercado sube o baja. Elimina el riesgo de entrar en el peor momento y disciplina el hábito. Es la estrategia de Warren Buffett para el inversor promedio.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-dot">5</div>
+      <div class="step-content">
+        <h3>No toques el dinero</h3>
+        <p>La mayor trampa: vender en pánico cuando el mercado cae. Las caídas son normales y temporales. El S&P 500 ha caído un 50% dos veces en los últimos 25 años y siempre ha recuperado y superado máximos históricos.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-dot">6</div>
+      <div class="step-content">
+        <h3>Escala gradualmente</h3>
+        <p>Cuando tengas más capital y conocimiento, diversifica: agrega acciones individuales, algo de crypto, REITs. Pero siempre con los ETFs como base sólida.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-label">Plataformas recomendadas para Colombia</div>
+    <p>
+      <strong>Acciones / ETFs:</strong> Interactive Brokers (mejor opción), Charles Schwab International<br>
+      <strong>Crypto:</strong> Binance, Kraken, Coinbase<br>
+      <strong>Renta fija COP:</strong> Tyba, Daviplata (CDTs digitales), Fondo Occidente<br>
+      <strong>Educación:</strong> Investopedia, The Motley Fool, YouTube: Graham Stephan, Andrei Jikh
+    </p>
+  </div>
+</section>
+
+<!-- MÓDULO 7 -->
+<section class="section fade-in" id="m7">
+  <div class="section-header">
+    <div class="section-number">07</div>
+    <h2 class="section-title">Estrategia & <span class="accent">Portafolio</span></h2>
+  </div>
+
+  <p class="prose" style="margin-bottom:32px">Una estrategia concreta adaptada a tu situación: emprendedor colombiano, generando ingresos en COP y USD, horizonte largo plazo, tolerancia media-alta al riesgo.</p>
+
+  <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:600;margin-bottom:20px">Portafolio sugerido (perfil ofensivo-moderado)</h3>
+
+  <div class="portfolio">
+    <div class="portfolio-item">
+      <span class="portfolio-pct" style="color:var(--accent)">40%</span>
+      <div class="portfolio-label">ETFs S&P 500<br>(VOO / VTI)</div>
+    </div>
+    <div class="portfolio-item">
+      <span class="portfolio-pct" style="color:var(--accent2)">20%</span>
+      <div class="portfolio-label">Acciones<br>individuales</div>
+    </div>
+    <div class="portfolio-item">
+      <span class="portfolio-pct" style="color:var(--accent3)">20%</span>
+      <div class="portfolio-label">Bitcoin<br>(BTC)</div>
+    </div>
+    <div class="portfolio-item">
+      <span class="portfolio-pct" style="color:#a78bfa)">10%</span>
+      <div class="portfolio-label">Bonos / Renta<br>fija USD</div>
+    </div>
+    <div class="portfolio-item">
+      <span class="portfolio-pct" style="color:var(--accent4)">10%</span>
+      <div class="portfolio-label">Reinversión<br>en negocio</div>
+    </div>
+  </div>
+
+  <div class="div-line"></div>
+
+  <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:600;margin-bottom:20px">Las 5 reglas de oro del inversor inteligente</h3>
+
+  <div class="rule-box">
+    <div class="rule-icon">🧠</div>
+    <div>
+      <div class="rule-title">Nunca inviertas en lo que no entiendes</div>
+      <div class="rule-desc">Si no puedes explicar en 2 minutos por qué ese activo debería subir de valor, no inviertas. La complejidad no es sinónimo de oportunidad.</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-icon">📅</div>
+    <div>
+      <div class="rule-title">Piensa en décadas, no en días</div>
+      <div class="rule-desc">El 90% de las personas pierden dinero intentando hacer trading activo. El 10% que gana de verdad son los que invirtieron en activos sólidos y no vendieron. Jeff Bezos le preguntó a Buffett por qué nadie copiaba su estrategia. Respondió: "porque nadie quiere enriquecerse lentamente."</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-icon">🚨</div>
+    <div>
+      <div class="rule-title">Desconfía del FOMO</div>
+      <div class="rule-desc">Cuando todos hablan de una inversión (tu tío, el taxi, Twitter), generalmente es demasiado tarde. Las mejores oportunidades se toman cuando nadie quiere el activo. Comprar en pánico, vender en euforia.</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-icon">💰</div>
+    <div>
+      <div class="rule-title">Solo invierte lo que puedes permitirte no tocar</div>
+      <div class="rule-desc">Los mejores retornos vienen del tiempo en el mercado, no del timing. Si necesitas el dinero en menos de 3 años, no debería estar en acciones.</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-icon">📚</div>
+    <div>
+      <div class="rule-title">Tu mayor activo eres tú mismo</div>
+      <div class="rule-desc">Invertir en habilidades que generan más ingresos tiene el ROI más alto de todos. Cada skill que aprendes (desarrollo, marketing, ventas, IA) multiplica tu capacidad de generar y después invertir más capital.</div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:48px">
+    <div class="callout-title">🎯 Tu primer paso esta semana</div>
+    <p>1. Abre una cuenta en <strong>Interactive Brokers</strong> (es gratis). 2. Transfiere $50–100 USD. 3. Compra una fracción de <strong>VOO</strong>. 4. Configura un aporte mensual automático. Eso es todo. No esperes tener más dinero, más conocimiento, o el "momento perfecto". El mejor momento para empezar fue hace 10 años. El segundo mejor momento es hoy.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Curso construido para <strong>Axel</strong> — La riqueza no es un evento, es un sistema.<br>
+  <span style="font-size:11px;color:var(--dim)">Esto no es asesoría financiera. Toda inversión conlleva riesgo. Haz tu propia investigación.</span></p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

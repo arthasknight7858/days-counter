@@ -25,8 +25,7 @@ export default function FloatingMiniPlayer({ activeSection, onGoToMusic }: Float
     formatTime,
   } = useMusic();
 
-  // Solo mostrar el mini player si no estamos en la sección "para-ti" (donde ya está el reproductor completo)
-  // y si la canción está reproduciéndose o tiene progreso
+  // Solo mostrar el mini player si no estamos en la sección "para-ti"
   const shouldShow = activeSection !== "para-ti";
 
   return (
@@ -37,9 +36,9 @@ export default function FloatingMiniPlayer({ activeSection, onGoToMusic }: Float
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 80, opacity: 0, scale: 0.95 }}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          className="fixed bottom-4 sm:bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 pointer-events-auto"
+          className="fixed bottom-4 sm:bottom-6 left-3 right-3 sm:left-auto sm:right-6 sm:max-w-md z-50 pointer-events-auto"
         >
-          <div className="bg-slate-950/85 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-3 sm:p-3.5 shadow-[0_10px_35px_rgba(168,85,247,0.3)] flex items-center justify-between gap-3 text-white">
+          <div className="bg-slate-950/90 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-2.5 sm:p-3.5 shadow-[0_10px_35px_rgba(168,85,247,0.35)] flex items-center justify-between gap-3 text-white">
             {/* Left: Album cover with spinning disc + info */}
             <div
               className="flex items-center gap-3 cursor-pointer group min-w-0 flex-1"
@@ -74,12 +73,33 @@ export default function FloatingMiniPlayer({ activeSection, onGoToMusic }: Float
                 <div className="flex items-center gap-1.5 text-[11px] text-purple-300/70 font-medium">
                   <Music className="w-3 h-3 text-purple-400 animate-pulse" />
                   <span className="truncate">{formatTime(progress)} / {formatTime(duration)}</span>
+
+                  {/* Dynamic mini equalizer */}
+                  <div className="flex items-end gap-0.5 h-2.5 ml-1">
+                    {[1, 2, 3].map((b) => (
+                      <motion.span
+                        key={b}
+                        animate={
+                          isPlaying
+                            ? { height: ["20%", "100%", "30%"] }
+                            : { height: "20%" }
+                        }
+                        transition={{
+                          duration: 0.6,
+                          repeat: Infinity,
+                          delay: b * 0.15,
+                          ease: "easeInOut",
+                        }}
+                        className="w-0.5 bg-purple-400 rounded-full"
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Right: Controls */}
-            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
               <button
                 onClick={toggleMute}
                 className="p-1.5 text-purple-300/60 hover:text-white rounded-full transition-colors cursor-pointer hidden xs:flex"

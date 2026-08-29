@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Map: Administración Empresarial & Marco Legal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --negro: #0A0A0B;
+    --gris-oscuro: #141416;
+    --gris-panel: #1C1C1F;
+    --gris-borde: #2A2A2E;
+    --gris-medio: #3F3F46;
+    --gris-texto: #A1A1AA;
+    --blanco: #FAFAFA;
+    --acento-admin: #F59E0B;      /* ámbar — mundo empresarial */
+    --acento-legal: #6366F1;      /* índigo — mundo legal/jurídico */
+    --acento-estrategia: #10B981; /* esmeralda — estrategia/trucos */
+    --acento-youtube: #EF4444;    /* rojo — recursos YouTube */
+    --acento-extra: #EC4899;      /* rosa — tips extra */
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    background: var(--negro);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%, rgba(245,158,11,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 80% 50%, rgba(99,102,241,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; text-align: center; max-width: 860px; }
+  .hero-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--acento-admin);
+    border: 1px solid rgba(245,158,11,0.3);
+    padding: .35rem 1rem;
+    border-radius: 999px;
+    margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 span.gold { color: var(--acento-admin); }
+  .hero h1 span.indigo { color: var(--acento-legal); }
+  .hero-sub {
+    color: var(--gris-texto);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    display: block;
+  }
+  .stat-lbl {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--gris-texto);
+  }
+
+  /* ── NAV LATERAL ──────────────────────────────────── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,11,.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--gris-borde);
+    padding: .75rem 1.5rem;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .sticky-nav a {
+    font-size: .78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--gris-texto);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color .2s;
+  }
+  .sticky-nav a:hover { color: var(--blanco); }
+
+  /* ── LAYOUT MAIN ──────────────────────────────────── */
+  main { max-width: 1100px; margin: 0 auto; padding: 4rem 1.5rem 8rem; }
+
+  /* ── SECCIÓN ──────────────────────────────────────── */
+  section { margin-bottom: 6rem; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: .25rem .75rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .tag-admin    { background: rgba(245,158,11,.15); color: var(--acento-admin); border: 1px solid rgba(245,158,11,.3); }
+  .tag-legal    { background: rgba(99,102,241,.15); color: var(--acento-legal); border: 1px solid rgba(99,102,241,.3); }
+  .tag-est      { background: rgba(16,185,129,.15); color: var(--acento-estrategia); border: 1px solid rgba(16,185,129,.3); }
+  .tag-yt       { background: rgba(239,68,68,.15);  color: var(--acento-youtube);   border: 1px solid rgba(239,68,68,.3); }
+  .tag-extra    { background: rgba(236,72,153,.15); color: var(--acento-extra);    border: 1px solid rgba(236,72,153,.3); }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+  }
+
+  /* ── FASE TIMELINE ────────────────────────────────── */
+  .phase-grid { display: grid; gap: 1.5rem; }
+  .phase-card {
+    background: var(--gris-panel);
+    border: 1px solid var(--gris-borde);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .25s, transform .25s;
+  }
+  .phase-card:hover { border-color: var(--gris-medio); transform: translateY(-2px); }
+  .phase-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 4px 0 0 4px;
+  }
+  .phase-card.gold::before  { background: var(--acento-admin); }
+  .phase-card.indigo::before { background: var(--acento-legal); }
+  .phase-card.green::before  { background: var(--acento-estrategia); }
+  .phase-card.red::before    { background: var(--acento-youtube); }
+  .phase-card.pink::before   { background: var(--acento-extra); }
+
+  .phase-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    color: var(--gris-texto);
+    margin-bottom: .5rem;
+  }
+  .phase-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: .5rem;
+  }
+  .phase-duration {
+    font-size: .78rem;
+    color: var(--gris-texto);
+    margin-bottom: 1.2rem;
+  }
+  .phase-body { color: #C4C4CC; font-size: .92rem; }
+
+  /* ── TEMA CARDS ───────────────────────────────────── */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+  .topic-card {
+    background: var(--gris-panel);
+    border: 1px solid var(--gris-borde);
+    border-radius: 14px;
+    padding: 1.5rem;
+    transition: border-color .2s;
+  }
+  .topic-card:hover { border-color: var(--gris-medio); }
+  .topic-icon { font-size: 1.8rem; margin-bottom: .75rem; }
+  .topic-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: .5rem;
+  }
+  .topic-desc { font-size: .85rem; color: var(--gris-texto); margin-bottom: 1rem; }
+  .topic-items { list-style: none; }
+  .topic-items li {
+    font-size: .82rem;
+    color: #9CA3AF;
+    padding: .25rem 0;
+    border-bottom: 1px solid var(--gris-borde);
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
+  }
+  .topic-items li:last-child { border-bottom: none; }
+  .topic-items li::before { content: '—'; color: var(--gris-medio); flex-shrink: 0; }
+
+  /* ── ESTRATEGIA ───────────────────────────────────── */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .strategy-card {
+    background: var(--gris-panel);
+    border: 1px solid var(--gris-borde);
+    border-radius: 14px;
+    padding: 1.5rem;
+  }
+  .strategy-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--acento-estrategia);
+    margin-bottom: .5rem;
+  }
+  .strategy-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    margin-bottom: .6rem;
+  }
+  .strategy-body { font-size: .85rem; color: var(--gris-texto); }
+
+  /* ── YOUTUBE ──────────────────────────────────────── */
+  .yt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .yt-card {
+    background: var(--gris-panel);
+    border: 1px solid var(--gris-borde);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
+  .yt-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--acento-youtube);
+    background: rgba(239,68,68,.12);
+    border: 1px solid rgba(239,68,68,.25);
+    border-radius: 999px;
+    padding: .2rem .65rem;
+    width: fit-content;
+  }
+  .yt-channel { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; }
+  .yt-desc { font-size: .83rem; color: var(--gris-texto); }
+  .yt-topics { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: auto; }
+  .yt-pill {
+    font-size: .72rem;
+    background: var(--gris-oscuro);
+    border: 1px solid var(--gris-borde);
+    border-radius: 999px;
+    padding: .15rem .55rem;
+    color: var(--gris-texto);
+  }
+
+  /* ── TIPS TABLE ───────────────────────────────────── */
+  .tips-table { width: 100%; border-collapse: collapse; }
+  .tips-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gris-texto);
+    text-align: left;
+    padding: .75rem 1rem;
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .tips-table td {
+    font-size: .86rem;
+    padding: .9rem 1rem;
+    border-bottom: 1px solid var(--gris-borde);
+    color: #C4C4CC;
+    vertical-align: top;
+  }
+  .tips-table tr:last-child td { border-bottom: none; }
+  .tips-table td:first-child {
+    font-weight: 600;
+    color: var(--blanco);
+    white-space: nowrap;
+  }
+  .check { color: var(--acento-estrategia); font-weight: 700; }
+  .cross { color: var(--acento-youtube); font-weight: 700; }
+
+  /* ── TIMELINE VISUAL ──────────────────────────────── */
+  .timeline { position: relative; padding-left: 2.5rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: .65rem;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--acento-admin), var(--acento-legal), var(--acento-estrategia));
+    border-radius: 2px;
+  }
+  .tl-item { position: relative; margin-bottom: 2.5rem; }
+  .tl-dot {
+    position: absolute;
+    left: -2.5rem;
+    top: .35rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--negro);
+  }
+  .tl-dot.gold   { background: var(--acento-admin); box-shadow: 0 0 10px var(--acento-admin); }
+  .tl-dot.indigo { background: var(--acento-legal); box-shadow: 0 0 10px var(--acento-legal); }
+  .tl-dot.green  { background: var(--acento-estrategia); box-shadow: 0 0 10px var(--acento-estrategia); }
+  .tl-month {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gris-texto);
+    margin-bottom: .35rem;
+  }
+  .tl-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; margin-bottom: .4rem; }
+  .tl-body { font-size: .87rem; color: var(--gris-texto); }
+
+  /* ── CALLOUT ──────────────────────────────────────── */
+  .callout {
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0;
+    font-size: .9rem;
+  }
+  .callout.gold   { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.25); }
+  .callout.indigo { background: rgba(99,102,241,.08); border: 1px solid rgba(99,102,241,.25); }
+  .callout.green  { background: rgba(16,185,129,.08); border: 1px solid rgba(16,185,129,.25); }
+  .callout-icon { font-size: 1.25rem; margin-bottom: .5rem; }
+  .callout strong { display: block; margin-bottom: .35rem; font-family: 'Syne', sans-serif; }
+
+  /* ── SKILLS MATRIX ────────────────────────────────── */
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .9rem 0;
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .skill-row:last-child { border-bottom: none; }
+  .skill-name { flex: 0 0 200px; font-size: .88rem; font-weight: 500; }
+  .skill-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: var(--gris-borde);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .skill-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--acento-admin), var(--acento-legal));
+  }
+  .skill-pct { font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--gris-texto); flex: 0 0 35px; text-align: right; }
+
+  /* ── FOOTER ───────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 3rem 1.5rem 5rem;
+    border-top: 1px solid var(--gris-borde);
+    color: var(--gris-texto);
+    font-size: .82rem;
+  }
+  footer strong { color: var(--blanco); font-family: 'Syne', sans-serif; }
+
+  @media (max-width: 640px) {
+    .topic-grid, .strategy-grid, .yt-grid { grid-template-columns: 1fr; }
+    .skill-name { flex: 0 0 140px; font-size: .8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Road Map Completo · Desde Cero</div>
+    <h1>
+      <span class="gold">Administración</span><br>
+      Empresarial &<br>
+      <span class="indigo">Marco Legal</span>
+    </h1>
+    <p class="hero-sub">
+      Todo lo que necesitas saber: qué aprender, cómo aprenderlo, en qué orden,
+      y qué recursos usar — incluyendo YouTube — para ir de cero a competente.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num" style="color:var(--acento-admin)">12</span>
+        <span class="stat-lbl">Áreas Admin</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" style="color:var(--acento-legal)">10</span>
+        <span class="stat-lbl">Áreas Legales</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" style="color:var(--acento-estrategia)">18–24</span>
+        <span class="stat-lbl">Meses aprox.</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="sticky-nav">
+  <a href="#roadmap">🗺 Road Map</a>
+  <a href="#admin">📊 Administración</a>
+  <a href="#legal">⚖️ Marco Legal</a>
+  <a href="#estrategia">🧠 Cómo Aprender</a>
+  <a href="#youtube">▶️ YouTube</a>
+  <a href="#trucos">⚡ Trucos</a>
+  <a href="#errores">🚫 Errores Comunes</a>
+  <a href="#habilidades">💡 Habilidades Clave</a>
+</nav>
+
+<main>
+
+<!-- ═══════════════ SECCIÓN 1: ROADMAP VISUAL ═══════════════ -->
+<section id="roadmap">
+  <div class="section-header">
+    <span class="section-tag tag-admin">Fase 0</span>
+    <h2 class="section-title">El Road Map Completo</h2>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-icon">🎯</div>
+    <strong>¿Por dónde empezar?</strong>
+    Antes de entrar en detalle, aquí tienes la visión completa del recorrido.
+    El orden importa: las bases de administración primero, el marco legal en paralelo
+    a partir del mes 3, y la práctica real desde el día 1.
+  </div>
+
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot gold"></div>
+      <div class="tl-month">Mes 1 – 2</div>
+      <div class="tl-title">Fundamentos: Cómo funciona una empresa</div>
+      <div class="tl-body">Qué es una empresa, sus áreas funcionales, tipos de organizaciones, diferencia entre emprender y administrar. Mentalidad empresarial básica. No estudias para memorizar: estudias para entender la lógica.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot gold"></div>
+      <div class="tl-month">Mes 2 – 4</div>
+      <div class="tl-title">Finanzas Básicas & Contabilidad</div>
+      <div class="tl-body">Balance general, estado de resultados, flujo de caja. Cómo leer un estado financiero. No necesitas ser contador, pero sí entender los números de un negocio.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot indigo"></div>
+      <div class="tl-month">Mes 3 – 5</div>
+      <div class="tl-title">Introducción al Marco Legal Empresarial</div>
+      <div class="tl-body">Tipos de personas jurídicas, constitución de empresas, contratos básicos, obligaciones tributarias. En paralelo con las finanzas, ya que están profundamente conectados.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot gold"></div>
+      <div class="tl-month">Mes 4 – 7</div>
+      <div class="tl-title">Marketing, Ventas & Estrategia Comercial</div>
+      <div class="tl-body">Cómo vende una empresa, segmentación de mercado, propuesta de valor, canales de distribución, funnel de ventas. El área que más impacta el ingreso de una empresa.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot gold"></div>
+      <div class="tl-month">Mes 6 – 9</div>
+      <div class="tl-title">Gestión de Personas & Liderazgo</div>
+      <div class="tl-body">Cómo contratar, gestionar equipos, motivar, dar retroalimentación, diseñar cultura organizacional. Derecho laboral básico en paralelo.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot indigo"></div>
+      <div class="tl-month">Mes 7 – 10</div>
+      <div class="tl-title">Derecho Comercial & Contratos Avanzados</div>
+      <div class="tl-body">Contratos de compraventa, arrendamientos, cláusulas de protección, propiedad intelectual, responsabilidad civil, resolución de conflictos.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot gold"></div>
+      <div class="tl-month">Mes 8 – 12</div>
+      <div class="tl-title">Estrategia Empresarial & Planificación</div>
+      <div class="tl-body">Análisis FODA, modelo de negocio (Canvas), planeación estratégica, KPIs, OKRs, proyecciones. Cómo tomar decisiones de largo plazo.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot green"></div>
+      <div class="tl-month">Mes 10 – 14</div>
+      <div class="tl-title">Operaciones, Procesos & Tecnología</div>
+      <div class="tl-body">Gestión de operaciones, cadena de suministro, automatización de procesos, herramientas digitales (CRM, ERP básico, Excel avanzado).</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot indigo"></div>
+      <div class="tl-month">Mes 12 – 16</div>
+      <div class="tl-title">Derecho Tributario & Cumplimiento Fiscal</div>
+      <div class="tl-body">IVA, impuesto de renta, retenciones, obligaciones ante la DIAN (Colombia) o autoridad fiscal local. Planeación tributaria básica.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot green"></div>
+      <div class="tl-month">Mes 14 – 18</div>
+      <div class="tl-title">Proyecto Integrador & Práctica Real</div>
+      <div class="tl-body">Crea o analiza un negocio real o ficticio: plan de negocio, estructura jurídica, proyecciones financieras, estrategia y plan de marketing. Aquí todo converge.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot green"></div>
+      <div class="tl-month">Mes 18 – 24</div>
+      <div class="tl-title">Especialización & Profundidad</div>
+      <div class="tl-body">Elige una rama para profundizar: finanzas corporativas, derecho corporativo, estrategia digital, operaciones, o emprendimiento. Aquí decides tu camino.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ SECCIÓN 2: ADMINISTRACIÓN ═══════════════ -->
+<section id="admin">
+  <div class="section-header">
+    <span class="section-tag tag-admin">Administración</span>
+    <h2 class="section-title">Las 12 Áreas de la Administración Empresarial</h2>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-icon">📌</div>
+    <strong>¿Cómo funciona una empresa?</strong>
+    Una empresa es un sistema de áreas interconectadas. Ninguna trabaja sola.
+    El administrador es quien entiende cómo encajan todas y toma decisiones considerando el todo.
+  </div>
+
+  <div class="topic-grid">
+
+    <div class="topic-card">
+      <div class="topic-icon">🏛️</div>
+      <div class="topic-name">1. Fundamentos de Administración</div>
+      <div class="topic-desc">La base de todo. Entender qué es administrar, los procesos gerenciales y la historia del pensamiento administrativo.</div>
+      <ul class="topic-items">
+        <li>Funciones: Planear, Organizar, Dirigir, Controlar (PODC)</li>
+        <li>Escuelas administrativas: Taylor, Fayol, Mayo, Drucker</li>
+        <li>Tipos de organizaciones: pyme, corporación, ONG, cooperativa</li>
+        <li>Estructura organizacional: jerarquía, roles, organigramas</li>
+        <li>Misión, visión y valores corporativos</li>
+        <li>Cultura organizacional</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">💰</div>
+      <div class="topic-name">2. Finanzas Empresariales</div>
+      <div class="topic-desc">Entender los números del negocio. Sin esto, no puedes tomar decisiones. Es el área más crítica para un administrador.</div>
+      <ul class="topic-items">
+        <li>Balance general (activos, pasivos, patrimonio)</li>
+        <li>Estado de resultados (ingresos, costos, utilidades)</li>
+        <li>Flujo de caja (cash flow) — el más importante del día a día</li>
+        <li>Indicadores financieros: ROI, ROE, margen bruto y neto</li>
+        <li>Presupuesto y proyecciones financieras</li>
+        <li>Costo de capital y financiamiento</li>
+        <li>Valor del dinero en el tiempo: VPN, TIR</li>
+        <li>Punto de equilibrio</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">📒</div>
+      <div class="topic-name">3. Contabilidad Básica</div>
+      <div class="topic-desc">No necesitas ser contador, pero sí entender el lenguaje contable para leer reportes y no depender de terceros en decisiones clave.</div>
+      <ul class="topic-items">
+        <li>Ecuación contable fundamental</li>
+        <li>Registros contables: débito y crédito</li>
+        <li>Tipos de cuentas: activo, pasivo, patrimonio, ingresos, gastos</li>
+        <li>Plan de cuentas</li>
+        <li>Diferencia entre contabilidad financiera y gerencial</li>
+        <li>Normas NIIF (estándar internacional)</li>
+        <li>Depreciación y amortización</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">📣</div>
+      <div class="topic-name">4. Marketing & Mercadeo</div>
+      <div class="topic-desc">Cómo una empresa entiende a su cliente, crea valor y comunica su oferta. Sin marketing no hay ventas, sin ventas no hay empresa.</div>
+      <ul class="topic-items">
+        <li>Investigación de mercado y segmentación</li>
+        <li>Comportamiento del consumidor</li>
+        <li>Las 4P: Producto, Precio, Plaza, Promoción</li>
+        <li>Propuesta de valor y posicionamiento</li>
+        <li>Branding y construcción de marca</li>
+        <li>Marketing digital: SEO, redes sociales, email, pauta</li>
+        <li>Funnel de ventas y embudo de conversión</li>
+        <li>CRM y gestión de clientes</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">🤝</div>
+      <div class="topic-name">5. Ventas & Gestión Comercial</div>
+      <div class="topic-desc">El área que genera los ingresos. Un administrador debe entender cómo funciona la fuerza de ventas y cómo se mide su desempeño.</div>
+      <ul class="topic-items">
+        <li>Proceso de ventas (prospecting → cierre)</li>
+        <li>Técnicas de negociación</li>
+        <li>Gestión de cartera de clientes</li>
+        <li>Métricas de ventas: tasa de cierre, ticket promedio, LTV</li>
+        <li>Estrategia B2B vs B2C</li>
+        <li>Pronóstico de ventas</li>
+        <li>Estructura y compensación del equipo comercial</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">👥</div>
+      <div class="topic-name">6. Gestión del Talento Humano</div>
+      <div class="topic-desc">Las personas son el activo más importante. Esta área cubre desde contratar hasta retener y desarrollar equipos de alto desempeño.</div>
+      <ul class="topic-items">
+        <li>Reclutamiento y selección de personal</li>
+        <li>Inducción y onboarding</li>
+        <li>Evaluación de desempeño</li>
+        <li>Compensación y beneficios</li>
+        <li>Clima organizacional y engagement</li>
+        <li>Capacitación y desarrollo</li>
+        <li>Liderazgo: estilos y situacional</li>
+        <li>Desvinculación laboral</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">⚙️</div>
+      <div class="topic-name">7. Operaciones & Procesos</div>
+      <div class="topic-desc">Cómo una empresa produce y entrega su producto o servicio de manera eficiente. Es la ingeniería del negocio.</div>
+      <ul class="topic-items">
+        <li>Diseño de procesos y flujogramas</li>
+        <li>Gestión de la cadena de suministro</li>
+        <li>Control de calidad (ISO básico)</li>
+        <li>Gestión de inventarios</li>
+        <li>Productividad y eficiencia operacional</li>
+        <li>Lean management y eliminación de desperdicios</li>
+        <li>KPIs operacionales</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">🧩</div>
+      <div class="topic-name">8. Estrategia Empresarial</div>
+      <div class="topic-desc">Pensar el negocio a largo plazo. La diferencia entre sobrevivir y liderar un mercado está aquí.</div>
+      <ul class="topic-items">
+        <li>Análisis FODA (Fortalezas, Oportunidades, Debilidades, Amenazas)</li>
+        <li>Las 5 fuerzas de Porter</li>
+        <li>Canvas de modelo de negocio</li>
+        <li>Estrategias competitivas: liderazgo en costos, diferenciación, nicho</li>
+        <li>Planeación estratégica: OKRs y KPIs</li>
+        <li>Balanced Scorecard (BSC)</li>
+        <li>Innovación y adaptación estratégica</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">📦</div>
+      <div class="topic-name">9. Emprendimiento & Plan de Negocio</div>
+      <div class="topic-desc">Crear un negocio desde cero: validar la idea, estructurar el modelo y presentarlo con un plan sólido.</div>
+      <ul class="topic-items">
+        <li>Ideación y validación de ideas (Lean Startup)</li>
+        <li>MVP (Producto Mínimo Viable)</li>
+        <li>Investigación de mercado para nuevos negocios</li>
+        <li>Estructura del plan de negocio</li>
+        <li>Fuentes de financiamiento: deuda, equity, bootstrapping</li>
+        <li>Pitch para inversionistas</li>
+        <li>Escalabilidad y crecimiento</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">💻</div>
+      <div class="topic-name">10. Tecnología & Transformación Digital</div>
+      <div class="topic-desc">El administrador moderno debe entender qué tecnología usa su empresa y cómo la tecnología puede ser una ventaja competitiva.</div>
+      <ul class="topic-items">
+        <li>Sistemas ERP básicos (SAP, Odoo, Siigo)</li>
+        <li>CRM: qué es y para qué sirve</li>
+        <li>Excel y análisis de datos básico</li>
+        <li>E-commerce y canales digitales</li>
+        <li>Automatización de procesos (RPA básico)</li>
+        <li>Ciberseguridad para no técnicos</li>
+        <li>IA aplicada a negocios</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">🌍</div>
+      <div class="topic-name">11. Comercio Internacional</div>
+      <div class="topic-desc">Para empresas que exportan, importan o aspiran a internacionalizarse. Entender el entorno global del negocio.</div>
+      <ul class="topic-items">
+        <li>Barreras arancelarias y no arancelarias</li>
+        <li>Incoterms: FOB, CIF, DDP y demás</li>
+        <li>Documentación de exportación/importación</li>
+        <li>Acuerdos comerciales y tratados (TLC)</li>
+        <li>Tipo de cambio y riesgo cambiario</li>
+        <li>Logística internacional</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">🌱</div>
+      <div class="topic-name">12. Sostenibilidad & Ética Empresarial</div>
+      <div class="topic-desc">Las empresas del siglo XXI tienen responsabilidades más allá del lucro. Esto incluye gobierno corporativo y ESG.</div>
+      <ul class="topic-items">
+        <li>Responsabilidad Social Empresarial (RSE)</li>
+        <li>Criterios ESG (Ambiental, Social, Gobernanza)</li>
+        <li>Ética en los negocios y dilemas morales</li>
+        <li>Gobierno corporativo y juntas directivas</li>
+        <li>Reputación corporativa y gestión de crisis</li>
+        <li>Economía circular e impacto ambiental</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ SECCIÓN 3: MARCO LEGAL ═══════════════ -->
+<section id="legal">
+  <div class="section-header">
+    <span class="section-tag tag-legal">Marco Legal</span>
+    <h2 class="section-title">Las 10 Áreas del Derecho Empresarial</h2>
+  </div>
+
+  <div class="callout indigo">
+    <div class="callout-icon">⚖️</div>
+    <strong>¿Por qué el derecho empresarial importa aunque no seas abogado?</strong>
+    Porque firmas contratos, contratas personas, pagas impuestos, proteges tu marca y
+    tomas decisiones que tienen consecuencias legales todos los días. Entender el marco legal
+    te protege, te da poder de negociación y te evita errores costosos.
+  </div>
+
+  <div class="topic-grid">
+
+    <div class="topic-card">
+      <div class="topic-icon">🏢</div>
+      <div class="topic-name">1. Constitución de Empresas</div>
+      <div class="topic-desc">El primer paso legal al crear un negocio: qué tipo de estructura jurídica elegir y cómo constituirla.</div>
+      <ul class="topic-items">
+        <li>Tipos: persona natural, SAS, S.A., LTDA, cooperativa</li>
+        <li>Responsabilidad limitada vs ilimitada</li>
+        <li>Registro ante la Cámara de Comercio</li>
+        <li>Estatutos sociales: qué incluir</li>
+        <li>Socios, acciones y porcentajes de participación</li>
+        <li>Matrícula mercantil y renovación anual</li>
+        <li>Ventajas de la SAS en Colombia</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">📝</div>
+      <div class="topic-name">2. Derecho de Contratos</div>
+      <div class="topic-desc">El contrato es el instrumento básico de toda relación comercial. Entender su estructura protege al negocio.</div>
+      <ul class="topic-items">
+        <li>Elementos del contrato: partes, objeto, causa, consentimiento</li>
+        <li>Tipos de contratos: compraventa, arrendamiento, prestación de servicios</li>
+        <li>Cláusulas esenciales: confidencialidad, no competencia, penalidades</li>
+        <li>Contratos verbales vs escritos</li>
+        <li>Nulidad e ineficacia de contratos</li>
+        <li>Cesión de contratos</li>
+        <li>Fuerza mayor y caso fortuito</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">👷</div>
+      <div class="topic-name">3. Derecho Laboral</div>
+      <div class="topic-desc">Todo lo que debes saber para contratar y despedir bien, evitar demandas y cumplir con la ley en tu relación con empleados.</div>
+      <ul class="topic-items">
+        <li>Contrato de trabajo: tipos y elementos</li>
+        <li>Salario mínimo, prestaciones y seguridad social</li>
+        <li>Jornada laboral y horas extra</li>
+        <li>Licencias: maternidad, paternidad, enfermedad</li>
+        <li>Causales de terminación justa e injusta</li>
+        <li>Indemnizaciones y liquidación</li>
+        <li>Trabajo independiente (contratista vs empleado)</li>
+        <li>Sindicatos y negociación colectiva</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">🧾</div>
+      <div class="topic-name">4. Derecho Tributario</div>
+      <div class="topic-desc">Obligaciones fiscales de una empresa: qué impuestos paga, cuándo, cómo y cómo planear para pagar menos de manera legal.</div>
+      <ul class="topic-items">
+        <li>IVA: causación, tarifas, declaración</li>
+        <li>Impuesto de Renta: personas naturales y jurídicas</li>
+        <li>Retención en la fuente (RTE FTE)</li>
+        <li>ICA (impuesto de industria y comercio)</li>
+        <li>Régimen simple de tributación</li>
+        <li>Planeación tributaria: diferir vs evitar</li>
+        <li>Obligaciones ante la DIAN (Colombia)</li>
+        <li>Sanciones tributarias</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">™️</div>
+      <div class="topic-name">5. Propiedad Intelectual</div>
+      <div class="topic-desc">Proteger lo que creas — marca, software, diseño — es tan importante como crearlo. La PI es un activo invisible pero valiosísimo.</div>
+      <ul class="topic-items">
+        <li>Tipos de PI: derechos de autor, marcas, patentes, secretos industriales</li>
+        <li>Registro de marcas ante la SIC (Colombia)</li>
+        <li>Clases nizzas: cómo registrar correctamente</li>
+        <li>Derechos de autor sobre software y contenido</li>
+        <li>Contratos de licencia y cesión de derechos</li>
+        <li>Infracciones y acciones legales</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">🔒</div>
+      <div class="topic-name">6. Protección de Datos (Habeas Data)</div>
+      <div class="topic-desc">En la era digital, manejar datos de clientes y empleados tiene implicaciones legales muy concretas.</div>
+      <ul class="topic-items">
+        <li>Ley 1581 de 2012 en Colombia</li>
+        <li>Titular, responsable y encargado del dato</li>
+        <li>Autorización para tratamiento de datos</li>
+        <li>Política de privacidad: cómo redactarla</li>
+        <li>Derechos del titular: acceso, corrección, supresión</li>
+        <li>Sanciones por incumplimiento</li>
+        <li>GDPR europeo: qué aplica si vendes a Europa</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">🏪</div>
+      <div class="topic-name">7. Derecho Comercial</div>
+      <div class="topic-desc">El código que regula las relaciones entre comerciantes. La columna vertebral del derecho empresarial.</div>
+      <ul class="topic-items">
+        <li>Código de Comercio: estructura y principios</li>
+        <li>Actos de comercio</li>
+        <li>Registro mercantil y obligaciones del comerciante</li>
+        <li>Libros de comercio: cuáles llevar</li>
+        <li>Compraventa mercantil vs civil</li>
+        <li>Títulos valores: cheques, pagarés, letras</li>
+        <li>Competencia desleal</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">🏦</div>
+      <div class="topic-name">8. Derecho Societario</div>
+      <div class="topic-desc">La dinámica interna de una empresa con socios: quién manda, cómo se reparten utilidades y qué pasa cuando hay conflictos.</div>
+      <ul class="topic-items">
+        <li>Asamblea de accionistas y junta directiva</li>
+        <li>Derechos y deberes de los socios</li>
+        <li>Distribución de utilidades y dividendos</li>
+        <li>Reformas estatutarias</li>
+        <li>Fusiones, escisiones y liquidación</li>
+        <li>Acuerdo de accionistas (shareholders agreement)</li>
+        <li>Valoración de acciones</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">⚔️</div>
+      <div class="topic-name">9. Resolución de Conflictos & Litigios</div>
+      <div class="topic-desc">Cuando hay disputas con clientes, proveedores o socios, conocer los mecanismos de resolución puede ahorrarte tiempo y dinero.</div>
+      <ul class="topic-items">
+        <li>Negociación directa como primera opción</li>
+        <li>Conciliación y mediación extrajudicial</li>
+        <li>Cláusula arbitral en contratos</li>
+        <li>Arbitraje comercial nacional e internacional</li>
+        <li>Proceso verbal sumario (demandas pequeñas)</li>
+        <li>Proceso ejecutivo (cobros)</li>
+        <li>Cuándo sí contratar un abogado</li>
+      </ul>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon">🌐</div>
+      <div class="topic-name">10. Regulaciones Sectoriales & Compliance</div>
+      <div class="topic-desc">Cada industria tiene normas específicas. Conocerlas es obligatorio para operar legalmente.</div>
+      <ul class="topic-items">
+        <li>Normas SARLAFT (prevención lavado de activos)</li>
+        <li>Regulación financiera (Superfinanciera)</li>
+        <li>Normas de salud para alimentos y farmacia</li>
+        <li>Licencias ambientales</li>
+        <li>Regulación para plataformas digitales</li>
+        <li>Normativa de comercio electrónico</li>
+        <li>Cumplimiento anticorrupción (Ley 1778)</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ SECCIÓN 4: CÓMO APRENDER ═══════════════ -->
+<section id="estrategia">
+  <div class="section-header">
+    <span class="section-tag tag-est">Estrategia</span>
+    <h2 class="section-title">Cómo Aprender Realmente — Metodología</h2>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-icon">🧠</div>
+    <strong>El error #1: acumular información sin aplicarla</strong>
+    Ver 200 videos y leer 20 libros sin aplicar nada es tiempo perdido.
+    El conocimiento en administración y derecho se construye sobre la práctica.
+    Aplica cada concepto que aprendes, aunque sea en ejercicios hipotéticos.
+  </div>
+
+  <div class="strategy-grid">
+
+    <div class="strategy-card">
+      <div class="strategy-label">Método de Aprendizaje</div>
+      <div class="strategy-title">Aprendizaje en Espiral</div>
+      <div class="strategy-body">No aprendas un tema de forma lineal hasta "dominarlo" y pasar al siguiente. En cambio, aprende lo básico de varios temas al mismo tiempo, luego vuelve con más profundidad. Las áreas se retroalimentan entre sí: las finanzas te ayudan a entender los impuestos, los contratos te ayudan a entender las sociedades.</div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Técnica de Estudio</div>
+      <div class="strategy-title">Aprende → Enseña → Aplica</div>
+      <div class="strategy-body">Estudia un concepto. Luego explícalo en voz alta como si le enseñaras a alguien que no sabe nada. Luego aplícalo: busca un ejemplo real, crea un ejercicio, analiza un caso. Este ciclo multiplica la retención por 4x comparado con solo leer o ver videos.</div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Estructura Semanal</div>
+      <div class="strategy-title">Sistema 60/30/10</div>
+      <div class="strategy-body">60% del tiempo estudiando contenido nuevo (libros, videos, cursos). 30% aplicando: ejercicios, análisis de casos, simulaciones. 10% revisando y repasando lo anterior. Si inviertes 10 horas a la semana, serían: 6h nueva teoría, 3h práctica, 1h repaso.</div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Herramienta Clave</div>
+      <div class="strategy-title">Caso de Estudio Propio</div>
+      <div class="strategy-body">Elige una empresa real (una pyme local, una que conozcas, o la tuya) y úsala como laboratorio. Cada tema que aprendas, aplícalo a ese caso: haz su análisis financiero básico, analiza sus contratos, identifica sus riesgos legales. Todo aterriza con esto.</div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Gestión del Tiempo</div>
+      <div class="strategy-title">Bloques de 90 minutos</div>
+      <div class="strategy-body">El cerebro aprende mejor en bloques de 90 minutos de enfoque profundo, seguidos de 20 minutos de descanso. Evita sesiones de 4-5 horas continuas. Dos bloques de 90 minutos bien enfocados valen más que 5 horas de estudio disperso.</div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Retención a Largo Plazo</div>
+      <div class="strategy-title">Repetición Espaciada</div>
+      <div class="strategy-body">Usa herramientas como Anki para crear tarjetas de conceptos clave. La repetición espaciada hace que la información pase de tu memoria de trabajo a tu memoria de largo plazo. Especialmente útil para terminología legal y fórmulas financieras.</div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Comunidad</div>
+      <div class="strategy-title">Aprendizaje Social</div>
+      <div class="strategy-body">Busca grupos de estudio, comunidades de emprendedores, foros de LinkedIn, eventos de networking. Hablar de lo que aprendes con otros que también están aprendiendo acelera mucho el proceso y te expone a perspectivas que ningún libro tiene.</div>
+    </div>
+
+    <div class="strategy-card">
+      <div class="strategy-label">Errores Productivos</div>
+      <div class="strategy-title">Simula Antes de Tener</div>
+      <div class="strategy-body">Practica haciendo cosas que todavía no haces en la vida real: redacta contratos de práctica, arma estados financieros ficticios, diseña un plan de negocio. Cuando llegue el momento real, no será la primera vez. El error en simulación cuesta cero.</div>
+    </div>
+
+  </div>
+
+  <div class="callout green" style="margin-top:2rem;">
+    <div class="callout-icon">📚</div>
+    <strong>Libros esenciales (no todos, solo los mejores)</strong>
+    <strong>Admin:</strong> "El Administrador" de J. Stoner · "Estrategia Competitiva" de M. Porter · "El Hombre Más Rico de Babilonia" (finanzas personales de base) · "Good to Great" de Jim Collins · "Lean Startup" de Eric Ries.<br><br>
+    <strong>Legal:</strong> El Código de Comercio de tu país · "Derecho Empresarial" de Narváez García · "Introducción al Derecho" de Norberto Bobbio (para conceptos base) · La Constitución Política (solo los artículos económicos).
+  </div>
+</section>
+
+<!-- ═══════════════ SECCIÓN 5: YOUTUBE ═══════════════ -->
+<section id="youtube">
+  <div class="section-header">
+    <span class="section-tag tag-yt">YouTube</span>
+    <h2 class="section-title">¿Puedo aprender por YouTube? — Sí, pero con método</h2>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-icon">▶️</div>
+    <strong>YouTube SÍ funciona — si sabes cómo usarlo</strong>
+    YouTube no reemplaza la profundidad de un curso estructurado o un libro, pero es
+    perfecto para: conceptos visuales, casos prácticos, ejemplos del mundo real y mantener
+    la motivación. Úsalo como complemento, no como única fuente.
+  </div>
+
+  <div class="yt-grid">
+
+    <div class="yt-card">
+      <span class="yt-badge">▶ YouTube</span>
+      <div class="yt-channel">Platzi</div>
+      <div class="yt-desc">Cursos en español sobre negocios, marketing digital, finanzas y tecnología. Tienen tanto canal gratuito como plataforma de pago. Muy bien producido y actualizado.</div>
+      <div class="yt-topics">
+        <span class="yt-pill">Marketing</span>
+        <span class="yt-pill">Negocios</span>
+        <span class="yt-pill">Tecnología</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <span class="yt-badge">▶ YouTube</span>
+      <div class="yt-channel">Economía Simple</div>
+      <div class="yt-desc">Canal colombiano excelente para entender conceptos económicos y financieros desde cero. Explicaciones claras, sin jerga innecesaria. Ideal para principiantes.</div>
+      <div class="yt-topics">
+        <span class="yt-pill">Economía</span>
+        <span class="yt-pill">Finanzas básicas</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <span class="yt-badge">▶ YouTube</span>
+      <div class="yt-channel">Khan Academy en Español</div>
+      <div class="yt-desc">El mejor recurso gratuito para aprender contabilidad y finanzas desde los fundamentos absolutos. Progresivo, claro y con ejercicios integrados.</div>
+      <div class="yt-topics">
+        <span class="yt-pill">Contabilidad</span>
+        <span class="yt-pill">Finanzas</span>
+        <span class="yt-pill">Estadística</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <span class="yt-badge">▶ YouTube</span>
+      <div class="yt-channel">Neil Patel (inglés)</div>
+      <div class="yt-desc">El mejor canal del mundo para marketing digital, SEO y estrategia de contenido. Vale la pena aunque sea en inglés — las ideas son directamente aplicables.</div>
+      <div class="yt-topics">
+        <span class="yt-pill">Marketing digital</span>
+        <span class="yt-pill">SEO</span>
+        <span class="yt-pill">Crecimiento</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <span class="yt-badge">▶ YouTube</span>
+      <div class="yt-channel">Abogado Responde</div>
+      <div class="yt-desc">Canal de derecho en español con enfoque práctico en contratos, derecho laboral y empresarial. Habla de la ley de forma que un no-abogado puede entender y aplicar.</div>
+      <div class="yt-topics">
+        <span class="yt-pill">Derecho laboral</span>
+        <span class="yt-pill">Contratos</span>
+        <span class="yt-pill">Legal básico</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <span class="yt-badge">▶ YouTube</span>
+      <div class="yt-channel">Harvard Business Review</div>
+      <div class="yt-desc">Contenido de estrategia empresarial y liderazgo de altísimo nivel. Mucho es en inglés pero hay subtítulos. Aprende a pensar como piensan los ejecutivos globales.</div>
+      <div class="yt-topics">
+        <span class="yt-pill">Estrategia</span>
+        <span class="yt-pill">Liderazgo</span>
+        <span class="yt-pill">Management</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <span class="yt-badge">▶ YouTube</span>
+      <div class="yt-channel">Emprender Fácil</div>
+      <div class="yt-desc">Canal en español enfocado en emprendimiento, plan de negocios y administración de pymes. Ideal para quien quiere aplicar los conceptos en un negocio pequeño o propio.</div>
+      <div class="yt-topics">
+        <span class="yt-pill">Emprendimiento</span>
+        <span class="yt-pill">Pymes</span>
+        <span class="yt-pill">Plan de negocio</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <span class="yt-badge">▶ YouTube</span>
+      <div class="yt-channel">Finanzas para Mortales</div>
+      <div class="yt-desc">Finanzas personales y empresariales explicadas de forma increíblemente sencilla. Ideal para desarrollar intuición financiera antes de entrar a conceptos más técnicos.</div>
+      <div class="yt-topics">
+        <span class="yt-pill">Finanzas</span>
+        <span class="yt-pill">Inversión</span>
+        <span class="yt-pill">Contabilidad</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:2rem;">
+    <h3 style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:1.5rem;">¿YouTube vs Curso Pagado? La guía honesta</h3>
+    <table class="tips-table">
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th>YouTube (Gratis)</th>
+          <th>Curso Estructurado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Costo</td>
+          <td><span class="check">✓</span> Gratis</td>
+          <td>Inversión necesaria</td>
+        </tr>
+        <tr>
+          <td>Profundidad</td>
+          <td>Superficial — buen punto de entrada</td>
+          <td><span class="check">✓</span> Profundo y estructurado</td>
+        </tr>
+        <tr>
+          <td>Estructura</td>
+          <td><span class="cross">✗</span> Sin secuencia lógica</td>
+          <td><span class="check">✓</span> Progresión ordenada</td>
+        </tr>
+        <tr>
+          <td>Actualización</td>
+          <td><span class="check">✓</span> Muy frecuente</td>
+          <td>Varía según la plataforma</td>
+        </tr>
+        <tr>
+          <td>Certificación</td>
+          <td><span class="cross">✗</span> No aplica</td>
+          <td><span class="check">✓</span> Sí (depende del curso)</td>
+        </tr>
+        <tr>
+          <td>Casos prácticos</td>
+          <td>Básicos</td>
+          <td><span class="check">✓</span> Más desarrollados</td>
+        </tr>
+        <tr>
+          <td>Uso ideal</td>
+          <td>Exploración, motivación, conceptos</td>
+          <td>Fundamento profundo, especialización</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout indigo" style="margin-top:1.5rem;">
+    <div class="callout-icon">💡</div>
+    <strong>Recomendación real:</strong>
+    Empieza con YouTube para entender de qué trata cada tema (2–4 semanas). Luego entra a un curso estructurado (Coursera, edX, Platzi o universidad) para profundizar. Usa YouTube para complementar mientras estudias, no para sustituir el estudio estructurado en derecho y finanzas.
+  </div>
+</section>
+
+<!-- ═══════════════ SECCIÓN 6: TRUCOS ═══════════════ -->
+<section id="trucos">
+  <div class="section-header">
+    <span class="section-tag tag-extra">Trucos</span>
+    <h2 class="section-title">Trucos, Atajos y Estrategias que Nadie Te Dice</h2>
+  </div>
+
+  <div class="phase-grid">
+
+    <div class="phase-card gold">
+      <div class="phase-num">Truco 01</div>
+      <div class="phase-title">Lee casos reales, no solo teoría</div>
+      <div class="phase-body">La ley y la administración se entienden mejor con ejemplos reales. Lee sentencias judiciales resumidas, estudia el fracaso de empresas reales (Blockbuster, Kodak), analiza el modelo de negocio de empresas exitosas. El caso real ancla la teoría en la memoria de una forma que ningún libro puede.</div>
+    </div>
+
+    <div class="phase-card indigo">
+      <div class="phase-num">Truco 02</div>
+      <div class="phase-title">Empieza a leer documentos reales desde el día 1</div>
+      <div class="phase-body">Consigue contratos de arrendamiento, estatutos de una SAS, un estado financiero de una empresa que los publique (muchas empresas listadas en bolsa los publican gratis). Leer el documento real, aunque al principio no lo entiendas, te da contexto que ningún video da. Luego, cuando estudias el concepto, ya tienes la referencia.</div>
+    </div>
+
+    <div class="phase-card green">
+      <div class="phase-num">Truco 03</div>
+      <div class="phase-title">Usa la IA como tutor personal</div>
+      <div class="phase-body">Herramientas como Claude, ChatGPT o Gemini son tutores infinitamente pacientes. Puedes pedir que te expliquen conceptos complejos en lenguaje simple, que te hagan preguntas de repaso, que te corrijan un ejercicio de contabilidad, o que te expliquen una cláusula de contrato. Úsalos como complemento activo de tu estudio.</div>
+    </div>
+
+    <div class="phase-card gold">
+      <div class="phase-num">Truco 04</div>
+      <div class="phase-title">El "hack" del glosario propio</div>
+      <div class="phase-body">Crea tu propio diccionario de términos técnicos en un documento. Cada vez que encuentres un término nuevo (ROE, habeas data, NIIF, fideicomiso, etc.), escríbelo con tu propia definición. Esto obliga al procesamiento activo y al final tienes un recurso de referencia personalizado. 100 términos al año es 1,200 conceptos en 10 años.</div>
+    </div>
+
+    <div class="phase-card pink">
+      <div class="phase-num">Truco 05</div>
+      <div class="phase-title">Aprendizaje por inmersión contextual</div>
+      <div class="phase-body">Lee noticias de negocios todos los días (15 minutos): El Tiempo Economía, Portafolio, Bloomberg en Español, La República. Cada noticia toca un tema de administración o derecho. Cuando aprendes que una empresa fue sancionada por la SIC, ya tienes contexto de propiedad intelectual. Cuando lees de una fusión, ya entiendes el derecho societario.</div>
+    </div>
+
+    <div class="phase-card gold">
+      <div class="phase-num">Truco 06</div>
+      <div class="phase-title">El "proyecto sombra"</div>
+      <div class="phase-body">Consigue una pasantía, trabajo part-time o volunteering en una empresa, aunque sea pequeña. Ofrece trabajar gratis 10 horas a la semana a cambio de aprender. En 6 meses de exposición a un negocio real aprenderás más que en 2 años de solo estudiar teoría. La administración se aprende administrando.</div>
+    </div>
+
+    <div class="phase-card indigo">
+      <div class="phase-num">Truco 07</div>
+      <div class="phase-title">Plantillas antes que fórmulas</div>
+      <div class="phase-body">En derecho y finanzas, antes de entender la fórmula teórica al 100%, consigue plantillas de trabajo: una plantilla de contrato de servicios, una hoja de cálculo de flujo de caja, un modelo de plan de negocio. Rellenarlas te enseña más sobre su estructura que leer sobre ellas. Luego entiendes el porqué.</div>
+    </div>
+
+    <div class="phase-card green">
+      <div class="phase-num">Truco 08</div>
+      <div class="phase-title">Cuantifica todo lo que aprendes</div>
+      <div class="phase-body">Cada concepto que aprendas, busca ponerle un número. No "las finanzas son importantes", sino "una empresa con margen neto del 8% vs 3% puede sobrevivir una crisis que la otra no". No "los contratos protegen", sino "un contrato sin cláusula penal puede dejarte sin mecanismo de cobro ante un incumplimiento de $10M". Los números anclan el concepto en la realidad.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ SECCIÓN 7: ERRORES COMUNES ═══════════════ -->
+<section id="errores">
+  <div class="section-header">
+    <span class="section-tag tag-yt">Errores</span>
+    <h2 class="section-title">Errores Comunes que Debes Evitar</h2>
+  </div>
+
+  <table class="tips-table">
+    <thead>
+      <tr>
+        <th>Error</th>
+        <th>Por Qué Ocurre</th>
+        <th>Qué Hacer en Cambio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Estudiar solo teoría sin aplicar</td>
+        <td>Sentirse "preparado" leyendo, sin enfrentar la incomodidad de la práctica</td>
+        <td>Aplica cada concepto en un ejercicio, caso o proyecto aunque sea ficticio</td>
+      </tr>
+      <tr>
+        <td>Querer aprender todo al mismo tiempo</td>
+        <td>Ansiedad por no saber suficiente, síndrome del impostor</td>
+        <td>Sigue el roadmap por fases. Profundidad antes que amplitud al principio</td>
+      </tr>
+      <tr>
+        <td>Depender de YouTube como única fuente</td>
+        <td>Es gratis, fácil y entretenido</td>
+        <td>Complementa con libros, cursos y documentos reales. YT es entrada, no fondo</td>
+      </tr>
+      <tr>
+        <td>Ignorar el derecho hasta "necesitarlo"</td>
+        <td>Parece aburrido y poco urgente</td>
+        <td>El error legal más costoso es el que ya cometiste. Aprende antes de necesitarlo</td>
+      </tr>
+      <tr>
+        <td>No llevar registros de lo que aprendiste</td>
+        <td>Confiar en la memoria</td>
+        <td>Usa Notion, Obsidian o un cuaderno. El conocimiento documentado es reutilizable</td>
+      </tr>
+      <tr>
+        <td>Pensar que un abogado/contador lo resuelve todo</td>
+        <td>Delegación sin comprensión</td>
+        <td>Sí delega, pero entiende lo suficiente para supervisar y tomar decisiones</td>
+      </tr>
+      <tr>
+        <td>No revisar las normas de tu país</td>
+        <td>Estudiar material genérico o de otro país</td>
+        <td>Siempre contrasta con la legislación local (Código de Comercio, DIAN, etc.)</td>
+      </tr>
+      <tr>
+        <td>Estudiar en orden incorrecto</td>
+        <td>Ir a estrategia avanzada sin tener base financiera</td>
+        <td>Sigue el orden: fundamentos → finanzas → legal básico → estrategia → especialización</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════════ SECCIÓN 8: HABILIDADES ═══════════════ -->
+<section id="habilidades">
+  <div class="section-header">
+    <span class="section-tag tag-admin">Habilidades</span>
+    <h2 class="section-title">Habilidades Clave a Desarrollar</h2>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-icon">💡</div>
+    <strong>No todo es conocimiento técnico</strong>
+    El administrador y el empresario con mentalidad legal exitosos combinan conocimiento técnico
+    con habilidades blandas. Estas son las habilidades más valoradas y cómo priorizarlas.
+  </div>
+
+  <div style="margin-bottom:2rem;">
+    <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1.25rem;font-size:1.1rem;">Habilidades Técnicas — Nivel Objetivo al Año 2</h3>
+    <div class="skill-row">
+      <span class="skill-name">Lectura financiera</span>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:90%"></div></div>
+      <span class="skill-pct">90%</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-name">Contratos básicos</span>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div>
+      <span class="skill-pct">80%</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-name">Planeación estratégica</span>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:75%"></div></div>
+      <span class="skill-pct">75%</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-name">Excel / análisis datos</span>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div>
+      <span class="skill-pct">70%</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-name">Marketing digital</span>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:65%"></div></div>
+      <span class="skill-pct">65%</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-name">Gestión de equipos</span>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div>
+      <span class="skill-pct">70%</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-name">Tributario básico</span>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div>
+      <span class="skill-pct">60%</span>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:1.25rem;font-size:1.1rem;">Habilidades Blandas — Igual de Importantes</h3>
+    <div class="strategy-grid">
+      <div class="strategy-card">
+        <div class="strategy-label">Habilidad Blanda</div>
+        <div class="strategy-title">Pensamiento Crítico</div>
+        <div class="strategy-body">No aceptar información sin cuestionarla. Evaluar fuentes, contrastar opiniones, buscar el dato detrás del dato. En derecho es esencial para interpretar normas; en negocios, para no caer en modas sin fundamento.</div>
+      </div>
+      <div class="strategy-card">
+        <div class="strategy-label">Habilidad Blanda</div>
+        <div class="strategy-title">Comunicación Escrita</div>
+        <div class="strategy-body">Los administradores y abogados de negocios escriben todo: contratos, informes, correos, propuestas. Aprender a escribir con claridad, precisión y persuasión es una ventaja competitiva brutal en el mundo de los negocios.</div>
+      </div>
+      <div class="strategy-card">
+        <div class="strategy-label">Habilidad Blanda</div>
+        <div class="strategy-title">Negociación</div>
+        <div class="strategy-body">Todo en los negocios es negociación: salarios, contratos, acuerdos, precios. Lee "Obtenga el sí" de Fisher y Ury. Practica en pequeñas cosas de la vida diaria. Es una habilidad que se construye solo con práctica consciente.</div>
+      </div>
+      <div class="strategy-card">
+        <div class="strategy-label">Habilidad Blanda</div>
+        <div class="strategy-title">Toma de Decisiones bajo Incertidumbre</div>
+        <div class="strategy-body">En los negocios rara vez tienes toda la información. Aprender a tomar decisiones razonables con información incompleta, evaluar escenarios y gestionar el riesgo es lo que separa a un buen administrador de uno mediocre.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECCIÓN FINAL: RECURSOS ═══════════════ -->
+<section>
+  <div class="section-header">
+    <span class="section-tag tag-est">Recursos</span>
+    <h2 class="section-title">Plataformas y Recursos Complementarios</h2>
+  </div>
+
+  <div class="phase-grid">
+    <div class="phase-card gold">
+      <div class="phase-num">Plataforma</div>
+      <div class="phase-title">Coursera / edX</div>
+      <div class="phase-body">Cursos de universidades como Yale, Michigan, IESE. Muchos son auditables gratis. Tienen especializaciones completas en Administración, Finanzas y Derecho. La certificación opcional vale si vas a mostrarla en CV o LinkedIn.</div>
+    </div>
+    <div class="phase-card indigo">
+      <div class="phase-num">Plataforma</div>
+      <div class="phase-title">Platzi</div>
+      <div class="phase-body">En español, con rutas de aprendizaje estructuradas en negocios, marketing, finanzas y tecnología. La suscripción anual es una de las mejores inversiones educativas para quien prefiere contenido en español y bien producido.</div>
+    </div>
+    <div class="phase-card green">
+      <div class="phase-num">Plataforma</div>
+      <div class="phase-title">Cámara de Comercio Local</div>
+      <div class="phase-body">Muchas cámaras de comercio ofrecen talleres, seminarios y cursos gratuitos o muy económicos sobre temas empresariales y legales básicos. Son muy prácticos y te conectan con la realidad empresarial local. Búscalos activamente.</div>
+    </div>
+    <div class="phase-card pink">
+      <div class="phase-num">Herramienta</div>
+      <div class="phase-title">Notion / Obsidian</div>
+      <div class="phase-body">Para organizar tu aprendizaje: bases de datos de conceptos, roadmap personal, notas de libros, glosario propio. Notion es más visual y amigable; Obsidian es mejor para conectar ideas como una red. Cualquiera de los dos transforma cómo estudias.</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <strong>Road Map: Administración Empresarial & Marco Legal</strong><br>
+  Un punto de partida estructurado · Actualiza este mapa a medida que avanzas · La curiosidad constante es la habilidad más importante
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Map: Aprende Medicina desde 0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg:        #0d1117;
+    --surface:   #161b22;
+    --surface2:  #1c2330;
+    --border:    #2d3748;
+    --accent:    #00b4d8;
+    --accent2:   #90e0ef;
+    --accent3:   #0077b6;
+    --green:     #2eb872;
+    --yellow:    #f59e0b;
+    --red:       #ef4444;
+    --purple:    #8b5cf6;
+    --text:      #e2e8f0;
+    --text-muted:#94a3b8;
+    --text-dim:  #64748b;
+    --serif:     'Libre Baskerville', Georgia, serif;
+    --sans:      'Inter', system-ui, sans-serif;
+    --mono:      'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #0a1628 50%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(0,180,216,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: inline-block;
+    border: 1px solid rgba(0,180,216,0.3);
+    padding: 4px 12px;
+    border-radius: 2px;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #fff;
+    max-width: 800px;
+    margin: 0 auto 24px;
+  }
+  .hero h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 580px;
+    margin: 0 auto 36px;
+    font-weight: 300;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    color: var(--accent);
+    font-weight: 500;
+    display: block;
+  }
+  .hero-stat .lbl {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 24px;
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 8px 0;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  nav a {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: all .2s;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  nav a:hover { color: var(--accent); background: rgba(0,180,216,0.08); }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* SECTION */
+  section {
+    padding: 60px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  section:last-child { border-bottom: none; }
+
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .section-intro {
+    color: var(--text-muted);
+    font-size: 1.0rem;
+    max-width: 700px;
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: rgba(0,180,216,0.4); }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .card-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .card-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .card-meta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+  .card p {
+    color: var(--text-muted);
+    font-size: 0.93rem;
+    margin-bottom: 12px;
+  }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* PHASE GRID */
+  .phase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  /* PHASE CARD */
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform .2s, border-color .2s;
+  }
+  .phase-card:hover { transform: translateY(-2px); border-color: rgba(0,180,216,0.35); }
+  .phase-card-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .phase-num {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    background: rgba(0,180,216,0.1);
+    border: 1px solid rgba(0,180,216,0.25);
+    padding: 3px 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .phase-card-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 700;
+  }
+  .phase-card-body { padding: 20px 24px; }
+  .phase-duration {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+    letter-spacing: 0.05em;
+  }
+  .phase-card-body p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px; }
+
+  /* TOPIC LIST */
+  .topic-list {
+    list-style: none;
+    margin-top: 10px;
+  }
+  .topic-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(45,55,72,0.5);
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+  .topic-list li:last-child { border-bottom: none; }
+  .topic-list li::before {
+    content: '→';
+    color: var(--accent);
+    font-size: 0.8rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* DEEP DIVE SECTIONS */
+  .deep-dive {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .deep-dive-header {
+    background: var(--surface2);
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+  }
+  .deep-dive-icon { font-size: 1.6rem; }
+  .deep-dive-title-block {}
+  .deep-dive-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: #fff;
+    font-weight: 700;
+  }
+  .deep-dive-sub {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .deep-dive-body { padding: 24px 28px; }
+
+  .subtopic {
+    margin-bottom: 24px;
+  }
+  .subtopic:last-child { margin-bottom: 0; }
+  .subtopic-title {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subtopic-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .subtopic p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .subtopic ul {
+    padding-left: 16px;
+    margin-top: 6px;
+  }
+  .subtopic ul li {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: 3px 0;
+  }
+
+  /* TAGS */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 3px;
+    border: 1px solid;
+    letter-spacing: 0.05em;
+  }
+  .tag-blue  { color: var(--accent);  border-color: rgba(0,180,216,0.3);  background: rgba(0,180,216,0.06); }
+  .tag-green { color: var(--green);   border-color: rgba(46,184,114,0.3); background: rgba(46,184,114,0.06); }
+  .tag-yellow{ color: var(--yellow);  border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.06); }
+  .tag-red   { color: var(--red);     border-color: rgba(239,68,68,0.3);  background: rgba(239,68,68,0.06); }
+  .tag-purple{ color: var(--purple);  border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.06); }
+
+  /* STRATEGY BOXES */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .strategy-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+  }
+  .strategy-box .strat-title {
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .strategy-box p { font-size: 0.87rem; color: var(--text-muted); }
+  .strategy-box ul { padding-left: 14px; margin-top: 6px; }
+  .strategy-box ul li { font-size: 0.84rem; color: var(--text-muted); padding: 2px 0; }
+
+  /* RESOURCE TABLE */
+  .resource-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.87rem;
+    margin-top: 16px;
+  }
+  .resource-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface2);
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .resource-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(45,55,72,0.4);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+  .resource-table tr:last-child td { border-bottom: none; }
+  .resource-table td:first-child { color: var(--text); font-weight: 500; }
+  .resource-table td a { color: var(--accent); text-decoration: none; }
+  .resource-table td a:hover { text-decoration: underline; }
+
+  /* CALLOUT */
+  .callout {
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin: 16px 0;
+    font-size: 0.9rem;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .callout p { margin: 0; }
+  .callout-blue   { background: rgba(0,180,216,0.08);   border: 1px solid rgba(0,180,216,0.25);   color: var(--accent2); }
+  .callout-green  { background: rgba(46,184,114,0.08);  border: 1px solid rgba(46,184,114,0.25);  color: #6ee7b7; }
+  .callout-yellow { background: rgba(245,158,11,0.08);  border: 1px solid rgba(245,158,11,0.25);  color: #fbbf24; }
+  .callout-red    { background: rgba(239,68,68,0.08);   border: 1px solid rgba(239,68,68,0.25);   color: #fca5a5; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .timeline-year {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .timeline-title {
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+  }
+  .timeline-body { font-size: 0.87rem; color: var(--text-muted); }
+
+  /* YOUTUBE SECTION */
+  .yt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .yt-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    border-left: 3px solid var(--red);
+  }
+  .yt-card .yt-name { font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .yt-card .yt-lang {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .yt-card p { font-size: 0.85rem; color: var(--text-muted); }
+
+  /* ANKI */
+  .anki-box {
+    background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(0,180,216,0.08));
+    border: 1px solid rgba(139,92,246,0.3);
+    border-radius: 8px;
+    padding: 28px;
+    margin-top: 20px;
+  }
+
+  /* TRICK CARDS */
+  .trick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .trick-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+  }
+  .trick-card .trick-num {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    color: rgba(0,180,216,0.25);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .trick-card .trick-title { font-weight: 700; color: var(--accent2); font-size: 0.9rem; margin-bottom: 6px; }
+  .trick-card p { font-size: 0.83rem; color: var(--text-muted); }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+  }
+  footer strong { color: var(--accent); }
+
+  /* PROGRESS BAR */
+  .difficulty-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .difficulty-bar .label { font-size: 0.75rem; color: var(--text-dim); width: 70px; }
+  .bar-track { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 50px 16px 40px; }
+    section { padding: 40px 0; }
+    .deep-dive-body { padding: 16px 18px; }
+    .phase-grid { grid-template-columns: 1fr; }
+    .strategy-grid { grid-template-columns: 1fr; }
+    .yt-grid { grid-template-columns: 1fr; }
+    .trick-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-label">Road Map Completo</span>
+  <h1>Aprende <em>Medicina</em><br>desde cero</h1>
+  <p class="hero-sub">Una guía exhaustiva con temarios, estrategias, recursos, trucos y todo lo que necesitas para dominar la ciencia médica.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">6–7</span><span class="lbl">Años carrera</span></div>
+    <div class="hero-stat"><span class="num">30+</span><span class="lbl">Áreas temáticas</span></div>
+    <div class="hero-stat"><span class="num">∞</span><span class="lbl">Aprendizaje continuo</span></div>
+    <div class="hero-stat"><span class="num">100%</span><span class="lbl">Guía gratuita</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#introduccion">Intro</a>
+    <a href="#roadmap">Road Map</a>
+    <a href="#ciencias-basicas">Ciencias Básicas</a>
+    <a href="#clinica">Clínica</a>
+    <a href="#especialidades">Especialidades</a>
+    <a href="#estrategias">Estrategias</a>
+    <a href="#youtube">YouTube</a>
+    <a href="#recursos">Recursos</a>
+    <a href="#trucos">Trucos</a>
+    <a href="#preguntas">FAQ</a>
+  </div>
+</nav>
+
+<!-- INTRODUCCION -->
+<section id="introduccion">
+  <div class="container">
+    <div class="section-eyebrow">Punto de partida</div>
+    <h2 class="section-title">¿Qué es realmente aprender medicina?</h2>
+    <p class="section-intro">Medicina no es memorizar datos. Es construir un mapa mental integrado del cuerpo humano, su funcionamiento y cómo falla. Esta guía te lleva desde cero absoluto.</p>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🎯</span>
+        <div>
+          <div class="card-title">La Mentalidad Correcta</div>
+          <div class="card-meta">Antes de empezar cualquier libro</div>
+        </div>
+      </div>
+      <p>La medicina moderna descansa sobre tres pilares: <strong style="color:var(--accent2)">Ciencias Básicas</strong> (anatomía, fisiología, bioquímica), <strong style="color:var(--accent2)">Ciencias Clínicas</strong> (semiología, patología, farmacología) y <strong style="color:var(--accent2)">Práctica Clínica</strong> (diagnóstico, tratamiento, prevención). Sin los básicos, la clínica no tiene sentido. Sin la clínica, los básicos no tienen aplicación.</p>
+      <p>El error más común es empezar por memorizar sin entender el "por qué". Este roadmap te enseña primero el fundamento, luego la aplicación.</p>
+      <div class="callout callout-yellow">
+        <span class="callout-icon">⚡</span>
+        <p><strong>Regla de oro:</strong> Nunca memorices lo que puedes razonar. Si entiendes la fisiología de la célula cardíaca, puedes deducir el 80% de los fármacos cardíacos sin memorizarlos uno a uno.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-header">
+        <span class="card-icon">⏱️</span>
+        <div>
+          <div class="card-title">¿Cuánto tiempo se necesita?</div>
+          <div class="card-meta">Estimaciones reales</div>
+        </div>
+      </div>
+      <p>La carrera formal dura <strong style="color:#fff">6 a 7 años</strong> en la mayoría de países. Sin embargo, para tener una comprensión sólida autodidacta de las bases + clínica básica, estudiando 4–5 horas diarias:</p>
+      <ul class="topic-list">
+        <li><strong>Nivel básico funcional:</strong> 18–24 meses de estudio serio</li>
+        <li><strong>Dominio de ciencias básicas:</strong> 2–3 años</li>
+        <li><strong>Comprensión clínica general:</strong> 4–5 años</li>
+        <li><strong>Competencia para práctica (con carrera formal):</strong> 6–7 años + residencia</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ROAD MAP OVERVIEW -->
+<section id="roadmap">
+  <div class="container">
+    <div class="section-eyebrow">Visión general</div>
+    <h2 class="section-title">El Road Map Completo</h2>
+    <p class="section-intro">Seis fases progresivas. Cada fase construye sobre la anterior. No saltes etapas.</p>
+
+    <div class="phase-grid">
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">FASE 01</span>
+          <div class="phase-card-title">Pre-Médico</div>
+        </div>
+        <div class="phase-card-body">
+          <div class="phase-duration">⏳ 3–6 meses</div>
+          <p>Las bases matemáticas, químicas y biológicas que necesitas antes de entrar a medicina.</p>
+          <ul class="topic-list">
+            <li>Biología celular básica</li>
+            <li>Química general e inorgánica</li>
+            <li>Química orgánica (básica)</li>
+            <li>Estadística básica</li>
+            <li>Física aplicada a medicina</li>
+            <li>Método científico</li>
+          </ul>
+          <div class="tags">
+            <span class="tag tag-green">Base</span>
+            <span class="tag tag-blue">Obligatorio</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">FASE 02</span>
+          <div class="phase-card-title">Ciencias Básicas I</div>
+        </div>
+        <div class="phase-card-body">
+          <div class="phase-duration">⏳ 12–18 meses</div>
+          <p>El corazón del estudio pre-clínico. Anatomía, histología, embriología y bioquímica.</p>
+          <ul class="topic-list">
+            <li>Anatomía humana completa</li>
+            <li>Histología y citología</li>
+            <li>Embriología</li>
+            <li>Bioquímica médica</li>
+            <li>Biología molecular y genética</li>
+          </ul>
+          <div class="tags">
+            <span class="tag tag-yellow">Difícil</span>
+            <span class="tag tag-blue">Largo plazo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">FASE 03</span>
+          <div class="phase-card-title">Ciencias Básicas II</div>
+        </div>
+        <div class="phase-card-body">
+          <div class="phase-duration">⏳ 12–18 meses</div>
+          <p>Fisiología, microbiología, inmunología y farmacología general. La conexión entre lo normal y lo patológico.</p>
+          <ul class="topic-list">
+            <li>Fisiología médica por sistemas</li>
+            <li>Microbiología y parasitología</li>
+            <li>Inmunología</li>
+            <li>Farmacología general</li>
+            <li>Patología general</li>
+          </ul>
+          <div class="tags">
+            <span class="tag tag-red">Muy extenso</span>
+            <span class="tag tag-purple">Integrador</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">FASE 04</span>
+          <div class="phase-card-title">Clínica Básica</div>
+        </div>
+        <div class="phase-card-body">
+          <div class="phase-duration">⏳ 12–18 meses</div>
+          <p>Semiología, propedéutica, patología por sistemas y farmacología clínica. Cómo se manifiesta la enfermedad.</p>
+          <ul class="topic-list">
+            <li>Semiología médica</li>
+            <li>Patología sistémica</li>
+            <li>Farmacología clínica</li>
+            <li semiología>Imagenología básica</li>
+            <li>Laboratorio clínico</li>
+          </ul>
+          <div class="tags">
+            <span class="tag tag-yellow">Pivote</span>
+            <span class="tag tag-blue">Aplicado</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">FASE 05</span>
+          <div class="phase-card-title">Especialidades Clínicas</div>
+        </div>
+        <div class="phase-card-body">
+          <div class="phase-duration">⏳ 18–24 meses</div>
+          <p>Medicina interna, cirugía, pediatría, ginecología, psiquiatría, y el resto de especialidades mayores.</p>
+          <ul class="topic-list">
+            <li>Medicina interna</li>
+            <li>Cirugía general</li>
+            <li>Pediatría</li>
+            <li>Ginecología y obstetricia</li>
+            <li>Psiquiatría y neurología</li>
+            <li>Urgencias y emergencias</li>
+          </ul>
+          <div class="tags">
+            <span class="tag tag-red">Avanzado</span>
+            <span class="tag tag-purple">Integrador</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">FASE 06</span>
+          <div class="phase-card-title">Práctica e Investigación</div>
+        </div>
+        <div class="phase-card-body">
+          <div class="phase-duration">⏳ Continuo</div>
+          <p>Internado, residencia, lectura de papers, medicina basada en evidencia y actualización continua.</p>
+          <ul class="topic-list">
+            <li>Medicina basada en evidencia</li>
+            <li>Epidemiología clínica</li>
+            <li>Ética médica</li>
+            <li>Investigación científica</li>
+            <li>Especialización / Residencia</li>
+          </ul>
+          <div class="tags">
+            <span class="tag tag-green">Toda la vida</span>
+            <span class="tag tag-blue">Real</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /phase-grid -->
+  </div>
+</section>
+
+<!-- CIENCIAS BASICAS -->
+<section id="ciencias-basicas">
+  <div class="container">
+    <div class="section-eyebrow">Fase 2 & 3 — Deep Dive</div>
+    <h2 class="section-title">Ciencias Básicas en Profundidad</h2>
+    <p class="section-intro">Cada materia desglosada: qué estudiar, cómo estudiarlo y por qué importa.</p>
+
+    <!-- ANATOMIA -->
+    <div class="deep-dive">
+      <div class="deep-dive-header">
+        <span class="deep-dive-icon">🦴</span>
+        <div class="deep-dive-title-block">
+          <div class="deep-dive-title">Anatomía Humana</div>
+          <div class="deep-dive-sub">El mapa del cuerpo · Duración recomendada: 6–9 meses</div>
+        </div>
+      </div>
+      <div class="deep-dive-body">
+        <div class="subtopic">
+          <div class="subtopic-title">¿Qué es y por qué es fundamental?</div>
+          <p>La anatomía describe la estructura del cuerpo humano: huesos, músculos, órganos, vasos y nervios. Sin anatomía no puedes entender ninguna otra disciplina médica. Un cirujano que no sabe anatomía no puede operar. Un clínico que no sabe anatomía no puede examinar.</p>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Temario completo</div>
+          <ul>
+            <li><strong>Sistema osteológico:</strong> 206 huesos, clasificación, articulaciones, biomecánica</li>
+            <li><strong>Sistema miológico:</strong> músculos esqueléticos, lisos, cardíaco; origen, inserción, acción, inervación</li>
+            <li><strong>Sistema cardiovascular:</strong> corazón, grandes vasos, arterias, venas, linfáticos</li>
+            <li><strong>Sistema nervioso:</strong> SNC (cerebro, cerebelo, tronco, médula), SNP (nervios craneales y espinales), SNA</li>
+            <li><strong>Aparato digestivo:</strong> boca, esófago, estómago, intestino delgado/grueso, hígado, páncreas</li>
+            <li><strong>Aparato respiratorio:</strong> vías aéreas, pulmones, pleura, diafragma</li>
+            <li><strong>Aparato urogenital:</strong> riñones, uréteres, vejiga, uretra; órganos reproductores masc/fem</li>
+            <li><strong>Sistema endocrino:</strong> hipófisis, tiroides, suprarrenales, páncreas endocrino</li>
+            <li><strong>Órganos de los sentidos:</strong> ojo, oído, nariz</li>
+            <li><strong>Anatomía topográfica:</strong> regiones del cuerpo, proyecciones de órganos</li>
+            <li><strong>Anatomía de superficie:</strong> palpación de referencias óseas y vasculares</li>
+          </ul>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Cómo estudiarla</div>
+          <p>La anatomía se aprende con imágenes, no solo leyendo. Usa atlas (Netter, Gray, Sobotta) junto con el texto. Técnica recomendada: estudia una región (ej. el hombro), dibújala de memoria, luego verifica con el atlas. El modelado en 3D en apps como Complete Anatomy acelera dramáticamente la comprensión espacial.</p>
+        </div>
+        <div class="callout callout-blue">
+          <span class="callout-icon">💡</span>
+          <p><strong>Truco pro:</strong> Estudia por sistemas, no por regiones, en una primera pasada. Luego integra región por región. Así no pierdes el hilo funcional.</p>
+        </div>
+        <div class="tags">
+          <span class="tag tag-blue">Netter Atlas</span>
+          <span class="tag tag-blue">Gray's Anatomy</span>
+          <span class="tag tag-blue">Complete Anatomy App</span>
+          <span class="tag tag-green">YouTube: Armando Hasudungan</span>
+          <span class="tag tag-green">YouTube: AnatomyZone</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FISIOLOGIA -->
+    <div class="deep-dive">
+      <div class="deep-dive-header">
+        <span class="deep-dive-icon">⚡</span>
+        <div class="deep-dive-title-block">
+          <div class="deep-dive-title">Fisiología Médica</div>
+          <div class="deep-dive-sub">El cuerpo en funcionamiento · Duración recomendada: 8–12 meses</div>
+        </div>
+      </div>
+      <div class="deep-dive-body">
+        <div class="subtopic">
+          <div class="subtopic-title">¿Qué es?</div>
+          <p>La fisiología estudia cómo funciona el cuerpo: los mecanismos que mantienen la homeostasis, cómo cada sistema cumple su función y cómo se integran. Es la disciplina más importante de las ciencias básicas porque todo lo clínico es "fisiología alterada".</p>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Temario por sistemas</div>
+          <ul>
+            <li><strong>Fisiología celular:</strong> potencial de membrana, transporte, señalización, ciclo celular</li>
+            <li><strong>Sangre y sistema hematológico:</strong> eritrocitos, leucocitos, plaquetas, hemostasia, grupos sanguíneos</li>
+            <li><strong>Sistema cardiovascular:</strong> electrofisiología cardíaca (potencial de acción), ciclo cardíaco, gasto cardíaco, presión arterial, regulación</li>
+            <li><strong>Sistema respiratorio:</strong> mecánica ventilatoria, intercambio gaseoso, transporte de O₂ y CO₂, control de la respiración</li>
+            <li><strong>Sistema renal:</strong> filtración glomerular, reabsorción, secreción, regulación del equilibrio ácido-base y electrolitos</li>
+            <li><strong>Sistema nervioso:</strong> neurotransmisión, sinapsis, vías sensoriales y motoras, reflejos, SNA</li>
+            <li><strong>Sistema endocrino:</strong> síntesis, secreción y mecanismo de acción de cada hormona</li>
+            <li><strong>Sistema digestivo:</strong> secreciones, motilidad, absorción de nutrientes, función hepática</li>
+            <li><strong>Termorregulación y metabolismo energético</strong></li>
+            <li><strong>Reproducción:</strong> ciclo menstrual, embarazo, fisiología neonatal</li>
+          </ul>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Cómo estudiarla</div>
+          <p>Fisiología requiere COMPRENSIÓN, no memorización. Usa Guyton & Hall como texto base (el más completo), pero complementa con videos. Para cada concepto, hazte la pregunta: "¿qué pasaría si esto falla?" — eso te lleva directamente a la fisiopatología. Haz esquemas de los mecanismos de feedback.</p>
+        </div>
+        <div class="callout callout-green">
+          <span class="callout-icon">🧠</span>
+          <p><strong>Estrategia:</strong> Para el sistema cardiovascular, dibuja el circuito completo de regulación de la PA una y otra vez hasta que fluya de memoria. Ese solo ejercicio cubre cardiología, renal y endocrinología de golpe.</p>
+        </div>
+        <div class="tags">
+          <span class="tag tag-blue">Guyton & Hall</span>
+          <span class="tag tag-blue">Berne & Levy</span>
+          <span class="tag tag-green">YouTube: Ninja Nerd</span>
+          <span class="tag tag-green">YouTube: Dr. Najeeb Lectures</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIOQUIMICA -->
+    <div class="deep-dive">
+      <div class="deep-dive-header">
+        <span class="deep-dive-icon">🔬</span>
+        <div class="deep-dive-title-block">
+          <div class="deep-dive-title">Bioquímica Médica</div>
+          <div class="deep-dive-sub">La química de la vida · Duración recomendada: 6–9 meses</div>
+        </div>
+      </div>
+      <div class="deep-dive-body">
+        <div class="subtopic">
+          <div class="subtopic-title">Temario</div>
+          <ul>
+            <li><strong>Biomoléculas:</strong> carbohidratos, lípidos, proteínas, ácidos nucleicos</li>
+            <li><strong>Enzimología:</strong> cinética enzimática, inhibición, regulación alostérica</li>
+            <li><strong>Metabolismo de carbohidratos:</strong> glucólisis, ciclo de Krebs, cadena respiratoria, fosforilación oxidativa, gluconeogénesis, glucogenólisis</li>
+            <li><strong>Metabolismo lipídico:</strong> β-oxidación, síntesis de ácidos grasos, cuerpos cetónicos, colesterol y lipoproteínas</li>
+            <li><strong>Metabolismo de proteínas:</strong> transaminación, ciclo de la urea, aminoácidos esenciales</li>
+            <li><strong>Biología molecular:</strong> replicación del ADN, transcripción, traducción, regulación génica, mutaciones</li>
+            <li><strong>Vitaminas y coenzimas:</strong> hidrosolubles (complejo B, C) y liposolubles (A, D, E, K)</li>
+            <li><strong>Integración metabólica:</strong> estados de ayuno, saciado, diabetes, cetoacidosis</li>
+          </ul>
+        </div>
+        <div class="callout callout-yellow">
+          <span class="callout-icon">⚡</span>
+          <p><strong>Atención:</strong> La bioquímica es la materia que más estudiantes abandonan. La clave es verla siempre conectada a la clínica: estudia glucólisis pensando en el músculo durante el ejercicio, estudia cuerpos cetónicos pensando en la diabetes tipo 1.</p>
+        </div>
+        <div class="tags">
+          <span class="tag tag-blue">Harper's Biochemistry</span>
+          <span class="tag tag-blue">Lehninger</span>
+          <span class="tag tag-green">YouTube: Biochemistry Denver</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTOLOGIA -->
+    <div class="deep-dive">
+      <div class="deep-dive-header">
+        <span class="deep-dive-icon">🔭</span>
+        <div class="deep-dive-title-block">
+          <div class="deep-dive-title">Histología y Citología</div>
+          <div class="deep-dive-sub">La anatomía microscópica · Duración: 3–5 meses</div>
+        </div>
+      </div>
+      <div class="deep-dive-body">
+        <div class="subtopic">
+          <div class="subtopic-title">Temario</div>
+          <ul>
+            <li><strong>La célula:</strong> organelos, membrana, núcleo, ciclo celular, mitosis/meiosis</li>
+            <li><strong>Tejido epitelial:</strong> tipos, funciones, uniones celulares, glándulas</li>
+            <li><strong>Tejido conjuntivo:</strong> fibras, células, tipos especializados (cartílago, hueso, sangre)</li>
+            <li><strong>Tejido muscular:</strong> esquelético, liso y cardíaco a nivel ultraestructural</li>
+            <li><strong>Tejido nervioso:</strong> neuronas, tipos de neuroglía, sinapsis</li>
+            <li><strong>Histología de cada órgano y sistema</strong></li>
+          </ul>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Cómo estudiarla</div>
+          <p>La histología requiere práctica visual. Usa preparados digitales (plataformas como HistoWeb o Virtual Microscopy). Para cada tejido: identifica los 3 elementos característicos que lo hacen único. Con eso puedes reconocer cualquier preparado en examen.</p>
+        </div>
+        <div class="tags">
+          <span class="tag tag-blue">Junqueira's Basic Histology</span>
+          <span class="tag tag-blue">Ross Histology</span>
+          <span class="tag tag-green">YouTube: Histology Guide</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MICROBIOLOGIA -->
+    <div class="deep-dive">
+      <div class="deep-dive-header">
+        <span class="deep-dive-icon">🦠</span>
+        <div class="deep-dive-title-block">
+          <div class="deep-dive-title">Microbiología e Inmunología</div>
+          <div class="deep-dive-sub">Los enemigos y los defensores · Duración: 6–8 meses</div>
+        </div>
+      </div>
+      <div class="deep-dive-body">
+        <div class="subtopic">
+          <div class="subtopic-title">Microbiología — Temario</div>
+          <ul>
+            <li><strong>Bacteriología:</strong> estructura bacteriana, reproducción, patogenicidad, clasificación Gram+/Gram-, cocos, bacilos, espiroquetas, micobacterias. Para cada bacteria: morfología, tinción, patología que causa, tratamiento</li>
+            <li><strong>Virología:</strong> estructura viral, ciclo replicativo, virus ADN (herpesvirus, adenovirus, hepatitis B) y ARN (VIH, influenza, coronavirus, dengue). Mecanismos de latencia y oncogénesis viral</li>
+            <li><strong>Micología:</strong> hongos patógenos superficiales y sistémicos (Candida, Aspergillus, Cryptococcus, dermatofitos)</li>
+            <li><strong>Parasitología:</strong> protozoos (Plasmodium, Entamoeba, Giardia, Leishmania, Trypanosoma), helmintos (nematodos, trematodos, cestodos)</li>
+            <li><strong>Antibióticos:</strong> mecanismos de acción, espectro, resistencia bacteriana</li>
+          </ul>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Inmunología — Temario</div>
+          <ul>
+            <li><strong>Inmunidad innata:</strong> barreras físicas, fagocitos, células NK, complemento, citoquinas</li>
+            <li><strong>Inmunidad adaptativa:</strong> linfocitos T (CD4, CD8, Treg), linfocitos B, anticuerpos (IgG, IgM, IgA, IgE, IgD)</li>
+            <li><strong>Complejo Mayor de Histocompatibilidad (MHC/HLA):</strong> clases I y II, presentación antigénica</li>
+            <li><strong>Hipersensibilidades:</strong> tipos I (alérgica), II (citotóxica), III (inmunocomplejos), IV (retardada)</li>
+            <li><strong>Autoinmunidad:</strong> tolerancia, mecanismos de ruptura, enfermedades autoinmunes principales</li>
+            <li><strong>Inmunodeficiencias:</strong> primarias y secundarias (VIH/SIDA)</li>
+            <li><strong>Vacunas:</strong> tipos, mecanismos de inmunización</li>
+          </ul>
+        </div>
+        <div class="callout callout-red">
+          <span class="callout-icon">🚨</span>
+          <p><strong>Estrategia crítica:</strong> Para microbiología, crea una tabla para cada microorganismo con columnas: Morfología | Tinción | Virulencia | Enfermedad | Tratamiento. Esa tabla es tu arma principal. No intentes estudiar bacterias sin ella.</p>
+        </div>
+        <div class="tags">
+          <span class="tag tag-blue">Murray's Medical Microbiology</span>
+          <span class="tag tag-blue">Abbas Immunology</span>
+          <span class="tag tag-green">YouTube: Osmosis</span>
+          <span class="tag tag-green">Sketchy Micro (pago)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FARMACOLOGIA -->
+    <div class="deep-dive">
+      <div class="deep-dive-header">
+        <span class="deep-dive-icon">💊</span>
+        <div class="deep-dive-title-block">
+          <div class="deep-dive-title">Farmacología</div>
+          <div class="deep-dive-sub">La ciencia de los medicamentos · Duración: 8–12 meses</div>
+        </div>
+      </div>
+      <div class="deep-dive-body">
+        <div class="subtopic">
+          <div class="subtopic-title">Farmacología General (primero)</div>
+          <ul>
+            <li><strong>Farmacocinética:</strong> absorción, distribución, metabolismo (P450), excreción. Parámetros: Vd, vida media, biodisponibilidad, clearance</li>
+            <li><strong>Farmacodinamia:</strong> receptores, agonistas/antagonistas, dosis-respuesta, EC50, índice terapéutico</li>
+            <li><strong>Vías de administración</strong> y su impacto en la farmacocinética</li>
+            <li><strong>Interacciones farmacológicas</strong> y polimorfismo genético</li>
+          </ul>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Farmacología por sistemas (después)</div>
+          <ul>
+            <li><strong>SNA:</strong> colinérgicos, anticolinérgicos, adrenérgicos, bloqueantes adrenérgicos</li>
+            <li><strong>Cardiovascular:</strong> antihipertensivos (IECA, ARA II, betabloqueantes, calcioantagonistas), antiarrítmicos, diuréticos, hipolipemiantes</li>
+            <li><strong>SNC:</strong> antidepresivos, antipsicóticos, ansiolíticos, antiepilépticos, anestésicos, opioides</li>
+            <li><strong>Antimicrobianos:</strong> antibióticos (beta-lactámicos, macrólidos, fluoroquinolonas, aminoglucósidos), antivirales, antifúngicos, antiparasitarios</li>
+            <li><strong>Endocrino:</strong> insulinas, hipoglucemiantes orales, corticoides, hormonas tiroideas, anticonceptivos</li>
+            <li><strong>Antiinflamatorios:</strong> AINES, corticosteroides, inmunosupresores, biológicos</li>
+            <li><strong>Oncología:</strong> quimioterapia, terapia dirigida, inmunoterapia</li>
+          </ul>
+        </div>
+        <div class="callout callout-blue">
+          <span class="callout-icon">💡</span>
+          <p><strong>Método para fármacos:</strong> Para cada fármaco aprende: Mecanismo → Indicación → Efectos adversos → Contraindicaciones. Los efectos adversos los puedes deducir del mecanismo si entiendes la fisiología bien.</p>
+        </div>
+        <div class="tags">
+          <span class="tag tag-blue">Goodman & Gilman</span>
+          <span class="tag tag-blue">Katzung Farmacología</span>
+          <span class="tag tag-green">YouTube: Ninja Nerd Pharmacology</span>
+          <span class="tag tag-purple">Sketchy Pharm</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PATOLOGIA -->
+    <div class="deep-dive">
+      <div class="deep-dive-header">
+        <span class="deep-dive-icon">🩸</span>
+        <div class="deep-dive-title-block">
+          <div class="deep-dive-title">Patología</div>
+          <div class="deep-dive-sub">Cómo falla el cuerpo · Duración: 8–12 meses</div>
+        </div>
+      </div>
+      <div class="deep-dive-body">
+        <div class="subtopic">
+          <div class="subtopic-title">Patología General (primero)</div>
+          <ul>
+            <li><strong>Lesión y muerte celular:</strong> necrosis, apoptosis, tipos de necrosis (coagulativa, licuefactiva, caseosa, gangrenosa)</li>
+            <li><strong>Inflamación aguda y crónica:</strong> mediadores, fases, exudados, granuloma</li>
+            <li><strong>Reparación y cicatrización:</strong> regeneración, fibrosis, queloides</li>
+            <li><strong>Trastornos hemodinámicos:</strong> edema, hiperemia, hemorragia, trombosis, embolia, infarto, shock</li>
+            <li><strong>Neoplasia:</strong> oncogenes, genes supresores, carcinogénesis, clasificación, estadificación TNM, metástasis</li>
+            <li><strong>Patología ambiental y nutricional</strong></li>
+          </ul>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Patología Sistémica (después)</div>
+          <p>Patología de cada órgano y sistema: cardiovascular, pulmonar, hepática, renal, gastrointestinal, neurológica, endocrina, musculoesquelética, hematológica, ginecológica y de mama.</p>
+          <p>Para cada enfermedad: etiología → patogenia → morfología macro/micro → manifestaciones clínicas → complicaciones → pronóstico.</p>
+        </div>
+        <div class="tags">
+          <span class="tag tag-blue">Robbins & Cotran</span>
+          <span class="tag tag-blue">Rubin's Pathology</span>
+          <span class="tag tag-green">YouTube: Strong Medicine</span>
+          <span class="tag tag-green">YouTube: Pathology Made Easy</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CLINICA -->
+<section id="clinica">
+  <div class="container">
+    <div class="section-eyebrow">Fase 4 — Deep Dive</div>
+    <h2 class="section-title">Clínica Básica</h2>
+    <p class="section-intro">La transición entre la teoría y el paciente real. Aquí aprendes a reconocer, razonar y actuar.</p>
+
+    <!-- SEMIOLOGIA -->
+    <div class="deep-dive">
+      <div class="deep-dive-header">
+        <span class="deep-dive-icon">🩺</span>
+        <div class="deep-dive-title-block">
+          <div class="deep-dive-title">Semiología Médica</div>
+          <div class="deep-dive-sub">El lenguaje del cuerpo enfermo · Duración: 6–9 meses</div>
+        </div>
+      </div>
+      <div class="deep-dive-body">
+        <div class="subtopic">
+          <div class="subtopic-title">¿Qué es?</div>
+          <p>La semiología es el arte y la ciencia de identificar síntomas (lo que relata el paciente) y signos (lo que el médico observa, palpa, percute y ausculta). Es la base del examen físico y la historia clínica.</p>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Temario completo</div>
+          <ul>
+            <li><strong>Historia clínica:</strong> anamnesis, motivo de consulta, enfermedad actual, antecedentes, revisión por sistemas</li>
+            <li><strong>Examen físico general:</strong> inspección, palpación, percusión, auscultación. Signos vitales</li>
+            <li><strong>Semiología cardiovascular:</strong> pulsos, auscultación cardíaca, soplos, ruidos cardíacos, ingurgitación yugular</li>
+            <li><strong>Semiología respiratoria:</strong> tórax, murmullo vesicular, estertores, sibilancias, signo de condensación, derrame pleural</li>
+            <li><strong>Semiología abdominal:</strong> inspección, palpación de órganos, percusión, auscultación de ruidos hidroaéreos, signos peritoneales</li>
+            <li><strong>Semiología neurológica:</strong> nivel de conciencia, pares craneales, fuerza, tono, reflejos, coordinación, sensibilidad, signos meníngeos</li>
+            <li><strong>Semiología del aparato locomotor</strong></li>
+            <li><strong>Síntomas principales:</strong> dolor (características SOCRATES), fiebre, disnea, edema, ictericia, cianosis, síncope, convulsiones</li>
+          </ul>
+        </div>
+        <div class="callout callout-green">
+          <span class="callout-icon">🎯</span>
+          <p><strong>Regla SOCRATES para el dolor:</strong> Site (sitio), Onset (inicio), Character (carácter), Radiation (irradiación), Associated symptoms, Time course, Exacerbating/relieving factors, Severity. Úsala con cada dolor que estudies.</p>
+        </div>
+        <div class="tags">
+          <span class="tag tag-blue">Argente & Álvarez Semiología</span>
+          <span class="tag tag-blue">Bates' Guide to Physical Examination</span>
+          <span class="tag tag-green">YouTube: Geeky Medics</span>
+          <span class="tag tag-green">YouTube: Clinical Examination</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIAGNOSTICO -->
+    <div class="deep-dive">
+      <div class="deep-dive-header">
+        <span class="deep-dive-icon">🧪</span>
+        <div class="deep-dive-title-block">
+          <div class="deep-dive-title">Laboratorio Clínico e Imagenología</div>
+          <div class="deep-dive-sub">Leer los resultados · Duración: 3–5 meses</div>
+        </div>
+      </div>
+      <div class="deep-dive-body">
+        <div class="subtopic">
+          <div class="subtopic-title">Laboratorio Clínico</div>
+          <ul>
+            <li><strong>Hemograma completo:</strong> eritrocitos, leucocitos, plaquetas, índices eritrocitarios (VCM, HCM, CHCM)</li>
+            <li><strong>Química sanguínea:</strong> glucosa, urea, creatinina, ácido úrico, perfil lipídico, transaminasas, bilirrubinas</li>
+            <li><strong>Perfil de coagulación:</strong> TP, TTP, INR, dímero D</li>
+            <li><strong>Gasometría arterial:</strong> pH, PO₂, PCO₂, HCO₃, interpretación ácido-base</li>
+            <li><strong>Uroanálisis:</strong> sedimento, proteínas, glucosa, cetonas</li>
+            <li><strong>Marcadores:</strong> troponina, BNP, PCR, procalcitonina, marcadores tumorales</li>
+          </ul>
+        </div>
+        <div class="subtopic">
+          <div class="subtopic-title">Imagenología Básica</div>
+          <ul>
+            <li><strong>Radiografía de tórax:</strong> lectura sistemática (huesos, corazón, hilios, parénquima, diafragma)</li>
+            <li><strong>Radiografía simple de abdomen</strong></li>
+            <li><strong>Ecografía básica (POCUS):</strong> principios, indicaciones básicas</li>
+            <li><strong>TC y RM:</strong> principios básicos, indicaciones, lectura de imágenes por sistemas</li>
+            <li><strong>Electrocardiograma (ECG):</strong> lectura sistemática, ritmo, eje, bloqueos, infartos, arritmias</li>
+          </ul>
+        </div>
+        <div class="callout callout-yellow">
+          <span class="callout-icon">⚡</span>
+          <p><strong>El ECG es vital:</strong> Aprende a leer un ECG desde el primer año de clínica. Existen recursos específicos y no tarda tanto. Un médico que no lee ECGs tiene un punto ciego enorme.</p>
+        </div>
+        <div class="tags">
+          <span class="tag tag-blue">ECG Made Easy</span>
+          <span class="tag tag-green">YouTube: Dr. Smith's ECG</span>
+          <span class="tag tag-green">YouTube: Radiology Masterclass</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ESPECIALIDADES -->
+<section id="especialidades">
+  <div class="container">
+    <div class="section-eyebrow">Fase 5 — Deep Dive</div>
+    <h2 class="section-title">Especialidades Clínicas</h2>
+    <p class="section-intro">Las grandes ramas de la práctica médica. Cada especialidad tiene su propia lógica, su propio lenguaje y sus propias herramientas.</p>
+
+    <div class="phase-grid">
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">🫀</span>
+          <div class="phase-card-title">Medicina Interna</div>
+        </div>
+        <div class="phase-card-body">
+          <p>El tronco del árbol clínico. Cubre las enfermedades del adulto desde la perspectiva no quirúrgica.</p>
+          <ul class="topic-list">
+            <li>Cardiología: IC, cardiopatía isquémica, arritmias, valvulopatías, HTA</li>
+            <li>Neumología: EPOC, asma, neumonía, TEP, cáncer de pulmón, fibrosis</li>
+            <li>Nefrología: IRA, IRC, síndrome nefrótico/nefrítico, trastornos electrolíticos</li>
+            <li>Gastroenterología: úlcera péptica, hepatitis, cirrosis, EII, pancreatitis</li>
+            <li>Endocrinología: DM1/DM2, hipotiroidismo/hipertiroidismo, Cushing, Addison</li>
+            <li>Reumatología: AR, LES, artritis gotosa, espondiloartropatías</li>
+            <li>Infectología: sepsis, endocarditis, meningitis, VIH</li>
+            <li>Hematología: anemias, leucemias, linfomas, trombofilia</li>
+          </ul>
+          <div class="tags"><span class="tag tag-blue">Harrison's</span><span class="tag tag-blue">Cecil Medicine</span></div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">🔪</span>
+          <div class="phase-card-title">Cirugía General</div>
+        </div>
+        <div class="phase-card-body">
+          <p>No solo técnica quirúrgica — también juicio clínico sobre cuándo operar y cómo manejar al paciente perioperatorio.</p>
+          <ul class="topic-list">
+            <li>Principios de cirugía: asepsia, anestesia, cicatrización</li>
+            <li>Abdomen agudo: apendicitis, colecistitis, peritonitis, obstrucción intestinal</li>
+            <li>Hernias: inguinal, femoral, umbilical, incisional</li>
+            <li>Cirugía colorrectal: cáncer colon/recto, enfermedad diverticular</li>
+            <li>Cirugía hepatobiliar: litiasis, cáncer hepático, trasplante</li>
+            <li>Trauma: ATLS, politrauma, manejo de heridas</li>
+            <li>Cirugía vascular periférica</li>
+            <li>Manejo perioperatorio, nutrición, sepsis quirúrgica</li>
+          </ul>
+          <div class="tags"><span class="tag tag-blue">Schwartz Principles of Surgery</span></div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">👶</span>
+          <div class="phase-card-title">Pediatría</div>
+        </div>
+        <div class="phase-card-body">
+          <p>La medicina del niño tiene su propia fisiología, dosis, enfermedades y rangos normales. No es medicina de adultos en miniatura.</p>
+          <ul class="topic-list">
+            <li>Neonatología: RN normal, prematuridad, distrés respiratorio, ictericia neonatal</li>
+            <li>Crecimiento y desarrollo: percentiles, hitos, vacunas</li>
+            <li>Nutrición pediátrica: lactancia, ablactación, desnutrición</li>
+            <li>Enfermedades infecciosas pediátricas: exantemas, otitis, IVU, meningitis</li>
+            <li>Respiratorio pediátrico: bronquiolitis, croup, asma</li>
+            <li>Cardiología pediátrica: cardiopatías congénitas</li>
+            <li>Urgencias pediátricas: fiebre, deshidratación, convulsiones febriles</li>
+          </ul>
+          <div class="tags"><span class="tag tag-blue">Nelson Textbook of Pediatrics</span></div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">🤰</span>
+          <div class="phase-card-title">Ginecología y Obstetricia</div>
+        </div>
+        <div class="phase-card-body">
+          <p>La salud de la mujer en todas sus etapas, y el embarazo como estado fisiológico único con sus complicaciones.</p>
+          <ul class="topic-list">
+            <li>Obstetricia: embarazo normal, control prenatal, parto y puerperio</li>
+            <li>Complicaciones del embarazo: preeclampsia, diabetes gestacional, RCIU, placenta previa</li>
+            <li>Trabajo de parto: mecanismo, distocias, cesárea</li>
+            <li>Ginecología: ciclo menstrual, SOP, endometriosis, miomas</li>
+            <li>Infecciones ginecológicas: EPI, vaginitis, ITS</li>
+            <li>Oncología ginecológica: cáncer cérvix, endometrio, ovario</li>
+            <li>Menopausia y climaterio</li>
+          </ul>
+          <div class="tags"><span class="tag tag-blue">Williams Obstetrics</span></div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">🧠</span>
+          <div class="phase-card-title">Neurología y Psiquiatría</div>
+        </div>
+        <div class="phase-card-body">
+          <p>El sistema nervioso es el más complejo del cuerpo. Su estudio requiere dominar primero la neuroanatomía funcional.</p>
+          <ul class="topic-list">
+            <li>Neurología: ACV isquémico/hemorrágico, epilepsia, demencias (Alzheimer, Parkinson), esclerosis múltiple, neuropatías</li>
+            <li>Cefalea: migraña, cefalea tensional, en racimos</li>
+            <li>Síndrome meníngeo: meningitis, encefalitis</li>
+            <li>Psiquiatría: depresión, trastorno bipolar, esquizofrenia, ansiedad, TOC, trastornos de personalidad</li>
+            <li>Adicciones y síndrome de abstinencia</li>
+            <li>Urgencias psiquiátricas</li>
+          </ul>
+          <div class="tags"><span class="tag tag-blue">Adams & Victor Neurology</span><span class="tag tag-blue">Kaplan Psychiatry</span></div>
+        </div>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <span class="phase-num">🚑</span>
+          <div class="phase-card-title">Urgencias y Emergencias</div>
+        </div>
+        <div class="phase-card-body">
+          <p>La medicina de las situaciones límite. Primero la estabilización, luego el diagnóstico.</p>
+          <ul class="topic-list">
+            <li>RCP y soporte vital básico/avanzado (ACLS, BLS)</li>
+            <li>Manejo de la vía aérea</li>
+            <li>Shock: hipovolémico, distributivo, cardiogénico, obstructivo</li>
+            <li>Politrauma: ATLS, manejo inicial</li>
+            <li>Urgencias cardíacas: SCA, arritmias, TEP</li>
+            <li>Urgencias neurológicas: ACV, convulsiones, TCE</li>
+            <li>Intoxicaciones y envenenamientos</li>
+            <li>Quemaduras y trauma</li>
+          </ul>
+          <div class="tags"><span class="tag tag-red">Urgente aprender ACLS</span></div>
+        </div>
+      </div>
+
+    </div><!-- /phase-grid especialidades -->
+
+    <div class="card" style="margin-top:24px">
+      <div class="card-header">
+        <span class="card-icon">📚</span>
+        <div>
+          <div class="card-title">Otras Especialidades Importantes</div>
+          <div class="card-meta">Que no debes ignorar</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:8px">
+        <div>
+          <div style="color:var(--accent2);font-weight:600;font-size:0.85rem;margin-bottom:4px">🦷 Salud Pública</div>
+          <p style="font-size:0.83rem;color:var(--text-muted)">Epidemiología, bioestadística, medicina preventiva, vacunación, determinantes sociales</p>
+        </div>
+        <div>
+          <div style="color:var(--accent2);font-weight:600;font-size:0.85rem;margin-bottom:4px">🦴 Traumatología</div>
+          <p style="font-size:0.83rem;color:var(--text-muted)">Fracturas, luxaciones, ortopedia, artroplastias</p>
+        </div>
+        <div>
+          <div style="color:var(--accent2);font-weight:600;font-size:0.85rem;margin-bottom:4px">👁️ Oftalmología</div>
+          <p style="font-size:0.83rem;color:var(--text-muted)">Ojo rojo, retinopatía diabética, glaucoma, catarata</p>
+        </div>
+        <div>
+          <div style="color:var(--accent2);font-weight:600;font-size:0.85rem;margin-bottom:4px">👂 ORL</div>
+          <p style="font-size:0.83rem;color:var(--text-muted)">Otitis, sinusitis, vértigo, hipoacusia, patología laríngea</p>
+        </div>
+        <div>
+          <div style="color:var(--accent2);font-weight:600;font-size:0.85rem;margin-bottom:4px">🧬 Oncología</div>
+          <p style="font-size:0.83rem;color:var(--text-muted)">Estadificación, quimioterapia, radioterapia, cuidados paliativos</p>
+        </div>
+        <div>
+          <div style="color:var(--accent2);font-weight:600;font-size:0.85rem;margin-bottom:4px">🩻 Dermatología</div>
+          <p style="font-size:0.83rem;color:var(--text-muted)">Lesiones elementales, dermatitis, psoriasis, melanoma, infecciones cutáneas</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ESTRATEGIAS -->
+<section id="estrategias">
+  <div class="container">
+    <div class="section-eyebrow">Metodología</div>
+    <h2 class="section-title">Cómo Estudiar Medicina</h2>
+    <p class="section-intro">Las técnicas que separan a los estudiantes que realmente aprenden de los que solo pasan exámenes.</p>
+
+    <!-- METODOS -->
+    <div class="strategy-grid">
+
+      <div class="strategy-box">
+        <div class="strat-title">🧠 Active Recall</div>
+        <p>En lugar de releer, cierra el libro y trata de recordar lo que acabas de estudiar. Escríbelo, dilo en voz alta, dibújalo. Es el método más eficaz científicamente para retención a largo plazo.</p>
+        <ul>
+          <li>Después de cada tema, cierra el libro 10 min</li>
+          <li>Escribe todo lo que recuerdas sin mirar</li>
+          <li>Revisa lo que faltó y repite</li>
+        </ul>
+      </div>
+
+      <div class="strategy-box">
+        <div class="strat-title">⏰ Spaced Repetition</div>
+        <p>Revisa el material en intervalos crecientes: 1 día, 3 días, 7 días, 21 días. Así el cerebro consolida la memoria a largo plazo con el mínimo esfuerzo. Herramienta: Anki.</p>
+        <ul>
+          <li>Crea tarjetas Anki para cada concepto clave</li>
+          <li>Haz tus repasos diarios sin saltarte días</li>
+          <li>Usa mazos prediseñados (Anking, Zanki)</li>
+        </ul>
+      </div>
+
+      <div class="strategy-box">
+        <div class="strat-title">✏️ La Técnica Feynman</div>
+        <p>Explica el concepto que acabas de estudiar como si se lo explicaras a alguien que no sabe nada. Si no puedes hacerlo con palabras simples, no lo entiendes aún. Vuelve a la fuente.</p>
+        <ul>
+          <li>Elige un concepto (ej. "¿qué es el potencial de acción?")</li>
+          <li>Explícalo en voz alta en términos simples</li>
+          <li>Identifica los vacíos y rellénalos estudiando</li>
+        </ul>
+      </div>
+
+      <div class="strategy-box">
+        <div class="strat-title">🗺️ Mapas Mentales</div>
+        <p>Para temas con muchas ramificaciones (ej. clasificación de antibióticos o tipos de anemia), los mapas mentales activan el procesamiento visual y la memoria asociativa.</p>
+        <ul>
+          <li>Usa papel y lápiz (es más efectivo que digital)</li>
+          <li>El concepto central en el medio, ramas hacia afuera</li>
+          <li>Usa colores para categorizar</li>
+        </ul>
+      </div>
+
+      <div class="strategy-box">
+        <div class="strat-title">📋 PBL (Problem-Based Learning)</div>
+        <p>Estudia a través de casos clínicos reales desde el principio. Antes de aprender una enfermedad, lee cómo se presenta en un paciente. Eso activa el contexto y la memoria.</p>
+        <ul>
+          <li>Usa apps como Amboss o UWorld</li>
+          <li>Lee el caso antes de estudiar la teoría</li>
+          <li>Después de la teoría, regresa al caso</li>
+        </ul>
+      </div>
+
+      <div class="strategy-box">
+        <div class="strat-title">🔗 Integración Vertical</div>
+        <p>Estudia cada enfermedad siguiendo el hilo: Anatomía → Fisiología → Patología → Clínica → Tratamiento. Así construyes el razonamiento médico completo, no compartimentos aislados.</p>
+        <ul>
+          <li>Para cada enfermedad: traza todo el hilo</li>
+          <li>Empieza por la fisiopatología, no los síntomas</li>
+          <li>Los síntomas se deducen del mecanismo</li>
+        </ul>
+      </div>
+
+    </div><!-- /strategy-grid -->
+
+    <!-- ANKI -->
+    <div class="anki-box" style="margin-top:32px">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+        <span style="font-size:2rem">🃏</span>
+        <div>
+          <div style="font-family:var(--serif);font-size:1.3rem;color:#fff;font-weight:700">Anki: Tu arma secreta</div>
+          <div style="font-size:0.82rem;color:var(--text-dim)">El programa de repetición espaciada más poderoso para medicina</div>
+        </div>
+      </div>
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:16px">Anki es una app gratuita de tarjetas con algoritmo de repetición espaciada. Los mejores estudiantes de medicina (especialmente en EE.UU. para el USMLE) hacen cientos de tarjetas al día. Con 2 años de Anki consistente, puedes cubrir toda la medicina básica.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+        <div style="background:rgba(0,0,0,0.3);border-radius:6px;padding:14px">
+          <div style="color:var(--accent2);font-weight:600;font-size:0.85rem;margin-bottom:6px">🃏 Mazos recomendados</div>
+          <ul style="padding-left:14px;font-size:0.83rem;color:var(--text-muted)">
+            <li>AnKing (USMLE Step 1 — más completo)</li>
+            <li>Zanki (fisiología y patología)</li>
+            <li>Pixorize (bioquímica visual)</li>
+            <li>Sketchy (micro y farmaco)</li>
+          </ul>
+        </div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:6px;padding:14px">
+          <div style="color:var(--accent2);font-weight:600;font-size:0.85rem;margin-bottom:6px">⚙️ Configuración óptima</div>
+          <ul style="padding-left:14px;font-size:0.83rem;color:var(--text-muted)">
+            <li>Nuevas tarjetas/día: 50–100</li>
+            <li>Repasos: lo que el algoritmo diga</li>
+          </ul>
+        </div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:6px;padding:14px">
+          <div style="color:var(--accent2);font-weight:600;font-size:0.85rem;margin-bottom:6px">🧠 Cómo crear tus tarjetas</div>
+          <ul style="padding-left:14px;font-size:0.83rem;color:var(--text-muted)">
+            <li>Una sola pregunta por tarjeta</li>
+            <li>Frente: pregunta; Dorso: respuesta corta</li>
+            <li>Añade imágenes cuando sea posible</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- RUTINA DIARIA -->
+    <div class="card" style="margin-top:28px">
+      <div class="card-header">
+        <span class="card-icon">📅</span>
+        <div>
+          <div class="card-title">Rutina Diaria Ideal (5–6 horas)</div>
+          <div class="card-meta">Diseñada para máxima retención</div>
+        </div>
+      </div>
+      <div class="timeline" style="margin-top:16px">
+        <div class="timeline-item">
+          <div class="timeline-year">07:00 — 07:30</div>
+          <div class="timeline-title">Anki — Repasos del día</div>
+          <div class="timeline-body">Antes de cualquier cosa nueva, completa tus repasos pendientes. Nunca te saltes este paso.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">07:30 — 09:30</div>
+          <div class="timeline-title">Estudio activo — Materia nueva</div>
+          <div class="timeline-body">Lee / ve un video del tema del día. Toma notas esquemáticas. No copies: resume con tus palabras.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">09:30 — 09:45</div>
+          <div class="timeline-title">Descanso (Técnica Pomodoro)</div>
+          <div class="timeline-body">25 min trabajo + 5 min descanso. El cerebro consolida durante los descansos.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">09:45 — 11:00</div>
+          <div class="timeline-title">Active Recall y Feynman</div>
+          <div class="timeline-body">Cierra el libro. Explica el tema en voz alta. Dibuja esquemas de memoria. Identifica vacíos.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">11:00 — 12:00</div>
+          <div class="timeline-title">Preguntas y casos clínicos</div>
+          <div class="timeline-body">Amboss, UWorld, o libros de preguntas. Aplica lo que estudiaste en el contexto de un paciente.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">15:00 — 16:30</div>
+          <div class="timeline-title">Repaso del día anterior + nuevas tarjetas Anki</div>
+          <div class="timeline-body">Crea tarjetas con lo aprendido hoy. Revisa el tema de ayer con active recall breve.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">16:30 — 17:30</div>
+          <div class="timeline-title">Video complementario o lectura libre</div>
+          <div class="timeline-body">Un video de Osmosis, Ninja Nerd o similar. Diferente ángulo del mismo tema. O exploración libre de temas que te interesan.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- YOUTUBE -->
+<section id="youtube">
+  <div class="container">
+    <div class="section-eyebrow">¿Puedo aprender medicina por YouTube?</div>
+    <h2 class="section-title">YouTube: Sí, pero con estrategia</h2>
+    <p class="section-intro">La respuesta corta es <strong style="color:var(--green)">sí</strong>, YouTube puede ser una herramienta extraordinaria. Pero tiene limitaciones que debes entender.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px">
+      <div class="callout callout-green" style="margin:0">
+        <span class="callout-icon">✅</span>
+        <div>
+          <p><strong>YouTube ES útil para:</strong></p>
+          <ul style="padding-left:16px;margin-top:6px;font-size:0.87rem">
+            <li>Entender conceptos difíciles visualmente</li>
+            <li>Fisiología, patología y farmacología explicadas</li>
+            <li>Complementar el estudio del libro</li>
+            <li>Motivación y comunidad médica</li>
+            <li>Procedimientos y técnicas clínicas</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout callout-red" style="margin:0">
+        <span class="callout-icon">❌</span>
+        <div>
+          <p><strong>YouTube NO reemplaza:</strong></p>
+          <ul style="padding-left:16px;margin-top:6px;font-size:0.87rem">
+            <li>Los libros de texto (rigor y profundidad)</li>
+            <li>El active recall y Anki</li>
+            <li>La práctica clínica real</li>
+            <li>El razonamiento diagnóstico propio</li>
+            <li>Un programa formal de medicina</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--serif);color:#fff;font-size:1.2rem;margin-bottom:20px">Los mejores canales por categoría</h3>
+    <div class="yt-grid">
+      <div class="yt-card">
+        <div class="yt-name">🌍 Ninja Nerd</div>
+        <div class="yt-lang">INGLÉS | Fisiología, Patología, Farmacología</div>
+        <p>El canal más completo para ciencias básicas. Explicaciones de pizarrón extremadamente detalladas. Indispensable para fisiología y farmacología. Nivel: intermedio-avanzado.</p>
+      </div>
+      <div class="yt-card">
+        <div class="yt-name">🌍 Osmosis</div>
+        <div class="yt-lang">INGLÉS | Patología y Clínica</div>
+        <p>Videos de alta calidad visual. Excelente para patología sistémica y enfermedades clínicas. Tienen videos en español también. Muy bueno para comenzar un nuevo tema.</p>
+      </div>
+      <div class="yt-card">
+        <div class="yt-name">🌍 Dr. Najeeb Lectures</div>
+        <div class="yt-lang">INGLÉS | Básicas completas</div>
+        <p>El profesor más querido por estudiantes de medicina mundialmente. Neuroanatomía, histología, bioquímica y fisiología son sus puntos fuertes. Horas y horas de contenido.</p>
+      </div>
+      <div class="yt-card">
+        <div class="yt-name">🌍 Armando Hasudungan</div>
+        <div class="yt-lang">INGLÉS | Fisiología y Patología Visual</div>
+        <p>Videos dibujados a mano que explican mecanismos de enfermedad y fisiopatología de forma muy visual y comprensible. Ideal para aprendices visuales.</p>
+      </div>
+      <div class="yt-card">
+        <div class="yt-name">🌍 Geeky Medics</div>
+        <div class="yt-lang">INGLÉS | Habilidades clínicas y examen físico</div>
+        <p>El mejor para aprender el examen físico, la historia clínica y las habilidades de comunicación médica. Fundamental para la fase clínica. Videos cortos y muy prácticos.</p>
+      </div>
+      <div class="yt-card">
+        <div class="yt-name">🇪🇸 Medicina Interna Online</div>
+        <div class="yt-lang">ESPAÑOL | Medicina interna clínica</div>
+        <p>Clases magistrales en español sobre temas de medicina interna, cardiología y neumología. Muy bueno para hispanohablantes que prefieren aprender en su idioma nativo.</p>
+      </div>
+      <div class="yt-card">
+        <div class="yt-name">🇪🇸 Dr. Enrique Méndez</div>
+        <div class="yt-lang">ESPAÑOL | Farmacología</div>
+        <p>Farmacología en español con un enfoque didáctico y muy claro. Bueno para complementar el estudio de fármacos cuando el inglés representa una barrera.</p>
+      </div>
+      <div class="yt-card">
+        <div class="yt-name">🌍 StrongMedicine</div>
+        <div class="yt-lang">INGLÉS | Patología</div>
+        <p>Clases de patología por un patólogo real. Muy detallado para quien quiere profundizar en patología sistémica. Complemento perfecto para Robbins.</p>
+      </div>
+      <div class="yt-card">
+        <div class="yt-name">🌍 Dirty Medicine</div>
+        <div class="yt-lang">INGLÉS | Repaso rápido USMLE</div>
+        <p>Videos de repaso rápido de conceptos clave. Excelente para consolidar y hacer repasos de temas ya estudiados. No es para aprender desde cero.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-blue" style="margin-top:24px">
+      <span class="callout-icon">🎯</span>
+      <p><strong>Estrategia correcta:</strong> Ver el video primero (20–30 min) → Leer el libro sobre ese tema (40–60 min) → Active recall → Anki → Preguntas. El video abre el tema, el libro lo profundiza, el active recall lo fija.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- RECURSOS -->
+<section id="recursos">
+  <div class="container">
+    <div class="section-eyebrow">Bibliografía y plataformas</div>
+    <h2 class="section-title">Recursos Esenciales</h2>
+    <p class="section-intro">Los libros, apps y plataformas que todo estudiante de medicina debería conocer.</p>
+
+    <h3 style="font-family:var(--serif);color:#fff;margin-bottom:16px;font-size:1.1rem">📚 Libros por materia</h3>
+    <div style="overflow-x:auto;border-radius:8px;border:1px solid var(--border)">
+      <table class="resource-table">
+        <thead>
+          <tr>
+            <th>Materia</th>
+            <th>Libro básico</th>
+            <th>Libro avanzado</th>
+            <th>Nivel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Anatomía</td><td>Netter Atlas</td><td>Gray's Anatomy</td><td><span class="tag tag-yellow">Base</span></td></tr>
+          <tr><td>Fisiología</td><td>Guyton & Hall (14ed)</td><td>Berne & Levy</td><td><span class="tag tag-yellow">Base</span></td></tr>
+          <tr><td>Bioquímica</td><td>Harper's Biochemistry</td><td>Lehninger</td><td><span class="tag tag-yellow">Base</span></td></tr>
+          <tr><td>Histología</td><td>Junqueira's</td><td>Ross Histology</td><td><span class="tag tag-yellow">Base</span></td></tr>
+          <tr><td>Microbiología</td><td>Murray's Medical Micro</td><td>Mandell's</td><td><span class="tag tag-yellow">Base</span></td></tr>
+          <tr><td>Inmunología</td><td>Abbas & Lichtman</td><td>Janeway's Immunobiology</td><td><span class="tag tag-yellow">Base</span></td></tr>
+          <tr><td>Patología</td><td>Robbins & Cotran (básico)</td><td>Robbins & Cotran (completo)</td><td><span class="tag tag-red">Pivote</span></td></tr>
+          <tr><td>Farmacología</td><td>Katzung (básico)</td><td>Goodman & Gilman</td><td><span class="tag tag-yellow">Base</span></td></tr>
+          <tr><td>Semiología</td><td>Argente & Álvarez (español)</td><td>Bates' Guide</td><td><span class="tag tag-blue">Clínica</span></td></tr>
+          <tr><td>Medicina Interna</td><td>Harrison's Manual</td><td>Harrison's Principles (completo)</td><td><span class="tag tag-blue">Clínica</span></td></tr>
+          <tr><td>Cirugía</td><td>Surgical Recall</td><td>Schwartz Principles</td><td><span class="tag tag-blue">Clínica</span></td></tr>
+          <tr><td>Pediatría</td><td>Nelson Essentials</td><td>Nelson Textbook (completo)</td><td><span class="tag tag-blue">Clínica</span></td></tr>
+          <tr><td>Ginecología/Obstetricia</td><td>Williams Obstetrics (resumen)</td><td>Williams Obstetrics (completo)</td><td><span class="tag tag-blue">Clínica</span></td></tr>
+          <tr><td>ECG</td><td>ECG Made Easy</td><td>Marriott's Practical ECG</td><td><span class="tag tag-green">Esencial</span></td></tr>
+          <tr><td>Repaso integrado</td><td>First Aid for USMLE Step 1</td><td>Amboss</td><td><span class="tag tag-purple">Repaso</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--serif);color:#fff;margin:28px 0 16px;font-size:1.1rem">📱 Apps y plataformas digitales</h3>
+    <div class="strategy-grid">
+      <div class="strategy-box">
+        <div class="strat-title">🃏 Anki (gratis)</div>
+        <p>Repetición espaciada. La plataforma más importante de este lista. PC gratis, iOS de pago (vale cada peso). Úsalo todos los días sin excepción.</p>
+      </div>
+      <div class="strategy-box">
+        <div class="strat-title">🎯 Amboss</div>
+        <p>Plataforma premium con más de 10,000 preguntas clínicas y un sistema de conocimiento enciclopédico. La mejor para preparar exámenes clínicos. Tiene versión de prueba.</p>
+      </div>
+      <div class="strategy-box">
+        <div class="strat-title">📱 Complete Anatomy</div>
+        <p>Modelo 3D del cuerpo humano interactivo. Indispensable para anatomía. Puedes diseccionar virtualmente capas del cuerpo. Freemium.</p>
+      </div>
+      <div class="strategy-box">
+        <div class="strat-title">🎨 Sketchy Medical</div>
+        <p>Plataforma de pago que enseña microbiología y farmacología mediante historias visuales memorables. Muy popular en estudiantes USMLE.</p>
+      </div>
+      <div class="strategy-box">
+        <div class="strat-title">🧬 Pixorize</div>
+        <p>Bioquímica y biología molecular en tarjetas visuales con mnemotécnicos. Excelente para hacer memorable lo más árido de la bioquímica.</p>
+      </div>
+      <div class="strategy-box">
+        <div class="strat-title">📖 Lecturio / Aquifer</div>
+        <p>Plataformas de cursos en video con preguntas integradas. Lecturio tiene contenido en español. Buenas para quienes prefieren el formato curso estructurado.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TRUCOS -->
+<section id="trucos">
+  <div class="container">
+    <div class="section-eyebrow">Hacks y mnemotécnicos</div>
+    <h2 class="section-title">Trucos, Mnemotécnicos y Atajos</h2>
+    <p class="section-intro">Los que llevan años estudiando medicina han descubierto patrones. Aquí están los más útiles.</p>
+
+    <div class="trick-grid">
+      <div class="trick-card">
+        <div class="trick-num">01</div>
+        <div class="trick-title">Estudia la fisiopatología, no los síntomas</div>
+        <p>Si entiendes por qué una enfermedad hace lo que hace, los síntomas, signos y tratamiento son consecuencias lógicas. Olvida memorizar listas de síntomas en bruto.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">02</div>
+        <div class="trick-title">El "¿y si falla?" para farmacología</div>
+        <p>Para aprender efectos adversos: pregúntate qué pasaría si el mecanismo del fármaco se exagera o va al órgano equivocado. El efecto adverso usualmente es obvi.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">03</div>
+        <div class="trick-title">Mnemotécnico AEIOU para causas</div>
+        <p>Muchas enumeraciones médicas se organizan por: <strong>A</strong>utoimmune, <strong>E</strong>ndocrino, <strong>I</strong>nfeccioso, <strong>O</strong>ncológico, <strong>U</strong>remia (tóxico/metabólico). Aplica a casi cualquier diagnóstico diferencial.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">04</div>
+        <div class="trick-title">Historia + Video + Libro (en ese orden)</div>
+        <p>Para cada enfermedad nueva: busca un caso clínico real o ficticio → ve un video de Osmosis → lee el capítulo del libro. El contexto narrativo fija la información.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">05</div>
+        <div class="trick-title">Regla del Maestro para ECG</div>
+        <p>Aprende el ECG normal perfecto. Cualquier desviación de ese patrón es patología. Memoriza un solo ECG normal y usa el contraste para reconocer todo lo demás.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">06</div>
+        <div class="trick-title">Tablas de antibióticos por mecanismo</div>
+        <p>Agrupa los antibióticos por mecanismo (inhibidores pared celular, síntesis proteínas 30S, 50S, ADN, membrana). Así entiendes por qué funcionan y cuáles tienen resistencia cruzada.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">07</div>
+        <div class="trick-title">MUDPILES para acidosis metabólica</div>
+        <p><strong>M</strong>etanol, <strong>U</strong>remia, <strong>D</strong>iabetes (CAD), <strong>P</strong>ropilen glicol, <strong>I</strong>soniazida, <strong>L</strong>actato, <strong>E</strong>tilenglicol, <strong>S</strong>alicilatos. El mnemotécnico clásico que cada internista tiene grabado.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">08</div>
+        <div class="trick-title">FAST para ACV (ictus)</div>
+        <p><strong>F</strong>ace drooping, <strong>A</strong>rm weakness, <strong>S</strong>peech difficulty, <strong>T</strong>ime to call. Lo primero que cualquier médico (y ciudadano) debería saber sobre el ACV.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">09</div>
+        <div class="trick-title">Grupos de riesgo antes de estudiar infecciosas</div>
+        <p>Para cada enfermedad infecciosa, primero identifica: ¿quién se infecta? (inmunosupresos, viajeros, niños, adultos mayores). El huésped define la presentación y el tratamiento.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">10</div>
+        <div class="trick-title">Dibuja, no copies</div>
+        <p>En vez de copiar esquemas del libro, ciérralo y dibuja el esquema de memoria. Cada error que cometes al dibujar es un punto débil que tu cerebro registra y refuerza.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">11</div>
+        <div class="trick-title">Usa el síntoma como punto de partida</div>
+        <p>Al estudiar un sistema, elige un síntoma principal (ej. "disnea") y construye hacia afuera: ¿qué órganos/enfermedades lo causan? Así aprendes diagnóstico diferencial de forma natural.</p>
+      </div>
+      <div class="trick-card">
+        <div class="trick-num">12</div>
+        <div class="trick-title">La "Regla 3-3" para laboratorio</div>
+        <p>Para cada prueba de laboratorio aprende: 3 causas de que esté elevada, 3 de que esté baja, y 3 errores de interpretación. Con eso tienes cubierto el 90% de los casos.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="preguntas">
+  <div class="container">
+    <div class="section-eyebrow">Preguntas frecuentes</div>
+    <h2 class="section-title">Dudas Comunes</h2>
+    <p class="section-intro">Las preguntas que todo el que empieza a estudiar medicina se hace.</p>
+
+    <div class="card">
+      <div style="font-family:var(--serif);color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px">¿Puedo estudiar medicina de forma autodidacta sin ir a la universidad?</div>
+      <p style="color:var(--text-muted);font-size:0.9rem">Puedes adquirir el <strong>conocimiento</strong> de medicina de forma autodidacta — y muy sólidamente. Sin embargo, para <strong>ejercer la medicina</strong> legalmente necesitas un título oficial en casi todos los países. Lo autodidacta puede ser para complementar tu carrera, satisfacer curiosidad intelectual profunda, o prepararte para la carrera formal con enorme ventaja.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-family:var(--serif);color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px">¿Cuál es el idioma que debo aprender: español o inglés?</div>
+      <p style="color:var(--text-muted);font-size:0.9rem">Ambos. Pero el inglés es indispensable. La gran mayoría de los mejores recursos — libros, revistas científicas, plataformas online — están en inglés. Con un inglés B2 puedes acceder a todo el conocimiento médico global. El español es tu idioma de comunicación con pacientes hispanos; el inglés es tu idioma de estudio.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-family:var(--serif);color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px">¿Por dónde empiezo absolutamente desde cero?</div>
+      <p style="color:var(--text-muted);font-size:0.9rem">Orden recomendado: (1) Biología celular básica — cualquier manual de bachillerato sirve. (2) Química básica (orgánica e inorgánica). (3) Luego entra directamente a Anatomía + Fisiología en paralelo. Son las dos columnas vertebrales. No intentes empezar por Patología o Farmacología; sin base, no te sustentarán.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-family:var(--serif);color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px">¿Cuántas horas al día necesito estudiar?</div>
+      <p style="color:var(--text-muted);font-size:0.9rem">En la carrera formal, los estudiantes promedian 4–8 horas diarias incluyendo clases. Para un autodidacta comprometido, 4–5 horas diarias de estudio <em>eficaz</em> (active recall, no lectura pasiva) son suficientes para progresar. La calidad importa más que la cantidad: 3 horas de active recall valen más que 8 horas de lectura pasiva subrayando.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-family:var(--serif);color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px">¿El USMLE Step 1 es útil si no estudio en EE.UU.?</div>
+      <p style="color:var(--text-muted);font-size:0.9rem">Sí, enormemente. El Step 1 (y el sistema de preparación de First Aid + Anki + UWorld) es uno de los sistemas de estudio de medicina más rigurosos y bien estructurados del mundo. Usarlo como framework para las ciencias básicas —aunque nunca te examines— mejora dramáticamente la forma en que integras el conocimiento médico.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-family:var(--serif);color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px">¿Cómo mantengo la motivación en un camino tan largo?</div>
+      <p style="color:var(--text-muted);font-size:0.9rem">Cinco estrategias probadas: (1) Define tu "por qué" con claridad. (2) Celebra los hitos pequeños: terminar un sistema, entender un mecanismo difícil. (3) Estudia con compañeros (estudio en grupo, discord médico, grupos de Anki). (4) Alterna materias para no quemarte. (5) Lleva un diario de progreso: ver cuánto has avanzado en 6 meses es el mejor combustible.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p style="margin-bottom:8px"><strong>Road Map: Aprende Medicina desde 0</strong></p>
+    <p>Esta guía es un recurso educativo de referencia. No reemplaza la educación médica formal. Para ejercer la medicina se requiere titulación oficial reconocida.</p>
+    <p style="margin-top:12px;color:var(--text-dim)">La medicina es una ciencia en constante evolución · Actualiza siempre con las últimas guías clínicas · Estudia con pasión</p>
+  </div>
+</footer>
+
+</body>
+</html>

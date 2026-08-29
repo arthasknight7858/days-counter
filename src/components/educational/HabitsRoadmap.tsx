@@ -1,39 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import {
-  Brain,
   Sparkles,
   Zap,
   CheckCircle2,
-  Clock,
   CheckSquare,
   Square,
   Sun,
   Moon,
   Timer,
   Target,
-  Layers,
   BookOpen,
-  ArrowRight,
-  Flame,
   ShieldCheck,
-  Lightbulb,
 } from "lucide-react";
 
 export default function HabitsRoadmap() {
   const [activeSubTab, setActiveSubTab] = useState<string>("all");
-  const [completedHabits, setCompletedHabits] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("sofi_habits_tracker");
-      if (saved) {
-        setCompletedHabits(JSON.parse(saved));
-      }
-    } catch {}
-  }, []);
+  const [completedHabits, setCompletedHabits] = useState<Record<string, boolean>>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("sofi_habits_tracker");
+        if (saved) return JSON.parse(saved);
+      } catch {}
+    }
+    return {};
+  });
 
   const toggleHabit = (id: string) => {
     setCompletedHabits((prev) => {

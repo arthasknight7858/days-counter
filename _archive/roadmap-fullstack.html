@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap Full Stack & Ingeniería en Sistemas</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #161b27;
+    --surface2: #1e2535;
+    --surface3: #252d3f;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8eaf0;
+    --muted: #8891a8;
+    --faint: #4a5268;
+    --accent: #4f8ef7;
+    --accent-dim: rgba(79,142,247,0.12);
+    --accent-border: rgba(79,142,247,0.3);
+    --green: #34d399;
+    --green-dim: rgba(52,211,153,0.1);
+    --green-border: rgba(52,211,153,0.25);
+    --amber: #fbbf24;
+    --amber-dim: rgba(251,191,36,0.1);
+    --amber-border: rgba(251,191,36,0.25);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.1);
+    --purple-border: rgba(167,139,250,0.25);
+    --coral: #f87171;
+    --coral-dim: rgba(248,113,113,0.1);
+    --coral-border: rgba(248,113,113,0.25);
+    --teal: #22d3ee;
+    --teal-dim: rgba(34,211,238,0.1);
+    --teal-border: rgba(34,211,238,0.25);
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    padding: 72px 24px 56px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center, rgba(79,142,247,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #e8eaf0 0%, #8891a8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── NAVIGATION ── */
+  .nav-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    padding: 14px 16px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: var(--font);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .phase { display: none; }
+  .phase.active { display: block; }
+
+  /* ── PHASE HEADER ── */
+  .phase-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .phase-meta { flex: 1; }
+  .phase-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .phase-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    margin-bottom: 8px;
+  }
+  .phase-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 620px;
+  }
+  .phase-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .badge {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid;
+    font-weight: 500;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border: 1px solid;
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .callout-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 44px; }
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── TOPIC GRID ── */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    transition: border-color .2s, background .2s;
+  }
+  .topic-card:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+  }
+  .topic-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .topic-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .topic-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .05em;
+    display: block;
+    margin-bottom: 1px;
+  }
+  .topic-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .topic-items { list-style: none; }
+  .topic-item {
+    font-size: 13.5px;
+    color: var(--muted);
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.45;
+  }
+  .topic-item:last-child { border-bottom: none; }
+  .topic-item::before {
+    content: '▸';
+    font-size: 10px;
+    margin-top: 3px;
+    flex-shrink: 0;
+    opacity: .5;
+  }
+  .topic-item strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── CODE EXAMPLE ── */
+  .code-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: #a8b4d8;
+    overflow-x: auto;
+    margin: 12px 0;
+    line-height: 1.7;
+    white-space: pre;
+  }
+  .code-block .c-green { color: #34d399; }
+  .code-block .c-blue  { color: #7eb8f7; }
+  .code-block .c-amber { color: #fbbf24; }
+  .code-block .c-purple { color: #c4b5fd; }
+  .code-block .c-muted { color: #4a5268; }
+
+  /* ── RESOURCES ── */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .resource-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: border-color .2s;
+  }
+  .resource-card:hover { border-color: var(--border2); }
+  .res-emoji { font-size: 20px; flex-shrink: 0; }
+  .res-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .res-desc {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .res-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    margin-top: 5px;
+    font-weight: 500;
+  }
+
+  /* ── TIMELINE BAR ── */
+  .timeline-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin-bottom: 36px;
+  }
+  .timeline-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .timeline-track {
+    height: 6px;
+    background: var(--surface3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .timeline-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width .6s ease;
+  }
+  .timeline-phases {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+  .timeline-phase-label {
+    font-size: 10px;
+    color: var(--faint);
+    font-family: var(--mono);
+  }
+
+  /* ── CONCEPT EXPLAIN ── */
+  .concept {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid;
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin: 10px 0;
+  }
+  .concept-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .concept-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ── FOOTER NAV ── */
+  .phase-nav-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .fnav-btn {
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .fnav-btn:hover { background: var(--surface2); }
+  .fnav-btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 500;
+  }
+  .fnav-btn.primary:hover { opacity: .9; }
+  .fnav-progress {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero { padding: 48px 20px 40px; }
+    .phase-head { flex-direction: column; }
+    .topic-grid { grid-template-columns: 1fr; }
+    .resources-grid { grid-template-columns: 1fr; }
+    .main { padding: 32px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">Guía completa · Desde cero</div>
+  <h1>Full Stack &amp;<br>Ingeniería en Sistemas</h1>
+  <p class="hero-sub">Temario completo, conceptos explicados y recursos para pasar de cero conocimiento a trabajar profesionalmente.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">7</div><div class="stat-label">Fases</div></div>
+    <div class="stat"><div class="stat-num">18–30</div><div class="stat-label">Meses estimados</div></div>
+    <div class="stat"><div class="stat-num">120+</div><div class="stat-label">Temas cubiertos</div></div>
+    <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Recursos gratuitos</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ NAV ══════════════════════ -->
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="show(0)" id="nb0">
+      <span class="nav-dot" style="background:#4a5268"></span>Fase 0 · Fundamentos
+    </button>
+    <button class="nav-btn" onclick="show(1)" id="nb1">
+      <span class="nav-dot" style="background:#4f8ef7"></span>Fase 1 · Programación
+    </button>
+    <button class="nav-btn" onclick="show(2)" id="nb2">
+      <span class="nav-dot" style="background:#34d399"></span>Fase 2 · Frontend
+    </button>
+    <button class="nav-btn" onclick="show(3)" id="nb3">
+      <span class="nav-dot" style="background:#fbbf24"></span>Fase 3 · Backend
+    </button>
+    <button class="nav-btn" onclick="show(4)" id="nb4">
+      <span class="nav-dot" style="background:#f87171"></span>Fase 4 · DevOps
+    </button>
+    <button class="nav-btn" onclick="show(5)" id="nb5">
+      <span class="nav-dot" style="background:#a78bfa"></span>Fase 5 · Sistemas
+    </button>
+    <button class="nav-btn" onclick="show(6)" id="nb6">
+      <span class="nav-dot" style="background:#22d3ee"></span>Fase 6 · Empleo
+    </button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════════════════
+     FASE 0 — FUNDAMENTOS COMPUTACIONALES
+══════════════════════════════════════════════════ -->
+<div class="phase active" id="phase0">
+
+  <div class="phase-head">
+    <div class="phase-icon" style="background:rgba(74,82,104,0.2);border:1px solid rgba(74,82,104,0.4)">🖥️</div>
+    <div class="phase-meta">
+      <div class="phase-eyebrow" style="color:#8891a8">Fase 0</div>
+      <div class="phase-title">Fundamentos computacionales</div>
+      <div class="phase-desc">Antes de escribir código necesitas entender cómo funciona el mundo digital: computadoras, redes, sistemas operativos y herramientas del día a día de un desarrollador.</div>
+      <div class="phase-badges">
+        <span class="badge" style="color:#8891a8;border-color:rgba(136,145,168,0.3);background:rgba(136,145,168,0.08)">⏱ 2–4 semanas</span>
+        <span class="badge" style="color:#34d399;border-color:var(--green-border);background:var(--green-dim)">Punto de partida</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="background:var(--amber-dim);border-color:var(--amber-border);color:var(--amber)">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>No te saltes esta fase.</strong> Muchos principiantes saltan directo a HTML y luego no entienden por qué las cosas fallan. Conocer la base te ahorra semanas de confusión más adelante.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Cómo funciona una computadora</div>
+    <div class="topic-grid">
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:rgba(74,82,104,0.2)">⚙️</div>
+          <div>
+            <span class="topic-label">Hardware</span>
+            <span class="topic-name">Componentes físicos</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>CPU (procesador)</strong> — ejecuta instrucciones, es el "cerebro". Medido en GHz y núcleos</li>
+          <li><strong>RAM (memoria)</strong> — almacenamiento temporal y rápido para programas en ejecución</li>
+          <li><strong>Disco duro / SSD</strong> — almacenamiento permanente. SSD es mucho más rápido</li>
+          <li><strong>GPU</strong> — procesador gráfico; hoy clave también para IA</li>
+          <li><strong>Buses y motherboard</strong> — conectan todos los componentes entre sí</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:rgba(74,82,104,0.2)">🔢</div>
+          <div>
+            <span class="topic-label">Representación de datos</span>
+            <span class="topic-name">Bits y bytes</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>Bit</strong> — la unidad mínima: 0 o 1 (apagado o encendido)</li>
+          <li><strong>Byte</strong> — 8 bits. Ejemplo: la letra "A" es el byte 01000001</li>
+          <li><strong>Sistema binario</strong> — base 2. Todo en la computadora es binario</li>
+          <li><strong>Hexadecimal</strong> — base 16. Más compacto para representar binario</li>
+          <li><strong>ASCII / UTF-8</strong> — estándares para codificar texto en bytes</li>
+          <li><strong>Unidades:</strong> KB = 1024 bytes, MB, GB, TB</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:rgba(74,82,104,0.2)">🖱️</div>
+          <div>
+            <span class="topic-label">Software de base</span>
+            <span class="topic-name">Sistema operativo</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>¿Qué es?</strong> — software que administra el hardware y permite ejecutar programas</li>
+          <li><strong>Windows / macOS / Linux</strong> — los tres principales. Linux domina los servidores</li>
+          <li><strong>Kernel</strong> — núcleo del SO; habla directamente con el hardware</li>
+          <li><strong>Procesos e hilos</strong> — un programa en ejecución es un proceso; los hilos son tareas dentro de él</li>
+          <li><strong>Sistema de archivos</strong> — cómo el SO organiza archivos y carpetas</li>
+          <li><strong>Permisos</strong> — quién puede leer/escribir/ejecutar cada archivo</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Internet y redes básicas</div>
+    <div class="topic-grid">
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:rgba(79,142,247,0.1)">🌐</div>
+          <div>
+            <span class="topic-label">Redes</span>
+            <span class="topic-name">Cómo funciona internet</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>IP (Internet Protocol)</strong> — dirección única de cada dispositivo en la red</li>
+          <li><strong>DNS</strong> — traduce nombres (google.com) a direcciones IP</li>
+          <li><strong>TCP/IP</strong> — protocolo que garantiza que los datos lleguen completos y en orden</li>
+          <li><strong>HTTP</strong> — protocolo para transferir páginas web. HTTPS es la versión segura</li>
+          <li><strong>Puertos</strong> — "puertas" del servidor: 80=HTTP, 443=HTTPS, 22=SSH</li>
+          <li><strong>Router / modem</strong> — tu puerta de entrada a internet</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:rgba(79,142,247,0.1)">↔️</div>
+          <div>
+            <span class="topic-label">Arquitectura web</span>
+            <span class="topic-name">Cliente y servidor</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>Cliente</strong> — tu navegador o app. Hace peticiones (requests)</li>
+          <li><strong>Servidor</strong> — computadora que recibe peticiones y responde</li>
+          <li><strong>Request/Response</strong> — el ciclo básico de toda comunicación web</li>
+          <li><strong>URL</strong> — dirección de un recurso: protocolo + dominio + ruta</li>
+          <li><strong>API</strong> — interfaz que expone funcionalidades de un servidor</li>
+          <li><strong>Frontend vs Backend</strong> — código del cliente vs código del servidor</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Herramientas del desarrollador</div>
+    <div class="topic-grid">
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:rgba(52,211,153,0.1)">💻</div>
+          <div>
+            <span class="topic-label">Terminal</span>
+            <span class="topic-name">Línea de comandos</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>¿Qué es?</strong> — interfaz de texto para controlar la computadora sin mouse</li>
+          <li><code>ls / dir</code> — listar archivos</li>
+          <li><code>cd carpeta</code> — entrar a una carpeta</li>
+          <li><code>mkdir nombre</code> — crear carpeta</li>
+          <li><code>cp / mv / rm</code> — copiar, mover, eliminar archivos</li>
+          <li><code>cat archivo</code> — mostrar contenido de un archivo</li>
+          <li><strong>Rutas relativas vs absolutas</strong> — <code>./</code> vs <code>/home/user/</code></li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:rgba(52,211,153,0.1)">📦</div>
+          <div>
+            <span class="topic-label">Control de versiones</span>
+            <span class="topic-name">Git esencial</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>¿Para qué?</strong> — guardar el historial de cambios de tu código</li>
+          <li><code>git init</code> — iniciar un repositorio</li>
+          <li><code>git add .</code> — preparar cambios para guardar</li>
+          <li><code>git commit -m "mensaje"</code> — guardar los cambios</li>
+          <li><code>git push</code> — subir a GitHub</li>
+          <li><code>git pull</code> — descargar cambios del servidor</li>
+          <li><strong>Rama (branch)</strong> — línea paralela de desarrollo</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:rgba(52,211,153,0.1)">✏️</div>
+          <div>
+            <span class="topic-label">Entorno</span>
+            <span class="topic-name">Editor y productividad</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>VS Code</strong> — editor gratuito, extensible, el más usado hoy</li>
+          <li><strong>Extensiones esenciales:</strong> Prettier, ESLint, GitLens</li>
+          <li><strong>Markdown</strong> — lenguaje de formato para documentación (.md)</li>
+          <li><strong>GitHub</strong> — plataforma para alojar repositorios Git</li>
+          <li><strong>Cómo googlear bien</strong> — usar site:, "" y operadores de búsqueda</li>
+          <li><strong>Stack Overflow</strong> — cómo leer y preguntar correctamente</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recursos recomendados para esta fase</div>
+    <div class="resources-grid">
+      <div class="resource-card"><div class="res-emoji">🎓</div><div><div class="res-name">CS50 de Harvard</div><div class="res-desc">El mejor curso introductorio de computación. Gratis en edX.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">📖</div><div><div class="res-name">MDN Web Docs</div><div class="res-desc">Documentación de referencia para web. Siempre confiable.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🎬</div><div><div class="res-name">freeCodeCamp YouTube</div><div class="res-desc">Cursos completos en video, muchos en español.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🗺️</div><div><div class="res-name">roadmap.sh</div><div class="res-desc">Mapas visuales de qué aprender y en qué orden.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+    </div>
+  </div>
+
+  <div class="phase-nav-footer">
+    <span class="fnav-progress">Fase 1 / 7</span>
+    <button class="fnav-btn primary" onclick="show(1)">Fase 1: Programación →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     FASE 1 — PROGRAMACIÓN DESDE CERO
+══════════════════════════════════════════════════ -->
+<div class="phase" id="phase1">
+
+  <div class="phase-head">
+    <div class="phase-icon" style="background:rgba(79,142,247,0.15);border:1px solid rgba(79,142,247,0.3)">🧠</div>
+    <div class="phase-meta">
+      <div class="phase-eyebrow" style="color:var(--accent)">Fase 1</div>
+      <div class="phase-title">Programación desde cero</div>
+      <div class="phase-desc">Aprende a pensar como programador: lógica, estructuras de datos y algoritmos. Elige un lenguaje (Python o JavaScript) y no cambies hasta dominar los fundamentos.</div>
+      <div class="phase-badges">
+        <span class="badge" style="color:var(--accent);border-color:var(--accent-border);background:var(--accent-dim)">⏱ 6–10 semanas</span>
+        <span class="badge" style="color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim)">Python o JS</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="background:var(--accent-dim);border-color:var(--accent-border);color:#a0c4ff">
+    <span class="callout-icon">💡</span>
+    <div><strong>Consejo clave:</strong> No aprendas syntax de memoria, aprende lógica. La sintaxis la buscarás siempre; el pensamiento lógico no se busca, se desarrolla. Escribe código todos los días aunque sea 30 minutos.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Conceptos fundamentales de programación</div>
+    <div class="topic-grid">
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:var(--accent-dim)">📦</div>
+          <div>
+            <span class="topic-label">Variables y tipos</span>
+            <span class="topic-name">Datos básicos</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>Variable</strong> — contenedor con nombre que guarda un valor</li>
+          <li><strong>String</strong> — texto entre comillas: <code>"Hola mundo"</code></li>
+          <li><strong>Integer / Float</strong> — números enteros y decimales</li>
+          <li><strong>Boolean</strong> — solo <code>true</code> o <code>false</code></li>
+          <li><strong>Null / undefined</strong> — ausencia de valor</li>
+          <li><strong>Tipado dinámico vs estático</strong> — JS/Python vs Java/TypeScript</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:var(--accent-dim)">🔀</div>
+          <div>
+            <span class="topic-label">Control de flujo</span>
+            <span class="topic-name">Decisiones y repetición</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>if / else if / else</strong> — ejecutar código según condición</li>
+          <li><strong>switch / match</strong> — elegir entre múltiples casos</li>
+          <li><strong>for</strong> — repetir N veces o recorrer una lista</li>
+          <li><strong>while</strong> — repetir mientras una condición sea verdadera</li>
+          <li><strong>break / continue</strong> — salir o saltar en un bucle</li>
+          <li><strong>Operadores:</strong> <code>==, ===, &gt;, &lt;, &&, ||, !</code></li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:var(--accent-dim)">🔧</div>
+          <div>
+            <span class="topic-label">Funciones</span>
+            <span class="topic-name">Reutilizar lógica</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>Declarar y llamar</strong> — definir y ejecutar una función</li>
+          <li><strong>Parámetros</strong> — valores de entrada que recibe la función</li>
+          <li><strong>Return</strong> — valor que devuelve la función</li>
+          <li><strong>Scope</strong> — dónde es visible una variable (local vs global)</li>
+          <li><strong>Funciones anónimas / arrow</strong> — <code>const fn = () =&gt; {}</code></li>
+          <li><strong>Recursión</strong> — función que se llama a sí misma</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 16px;">
+      <div class="code-block"><span class="c-muted">// Ejemplo: función recursiva — factorial</span>
+<span class="c-purple">function</span> <span class="c-blue">factorial</span>(<span class="c-amber">n</span>) {
+  <span class="c-purple">if</span> (n === <span class="c-green">0</span>) <span class="c-purple">return</span> <span class="c-green">1</span>;       <span class="c-muted">// caso base</span>
+  <span class="c-purple">return</span> n * <span class="c-blue">factorial</span>(n - <span class="c-green">1</span>); <span class="c-muted">// llamada recursiva</span>
+}
+
+<span class="c-blue">console</span>.<span class="c-blue">log</span>(<span class="c-blue">factorial</span>(<span class="c-green">5</span>)); <span class="c-muted">// → 120</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Estructuras de datos</div>
+    <div class="topic-grid">
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:var(--accent-dim)">📋</div>
+          <div>
+            <span class="topic-label">Colecciones</span>
+            <span class="topic-name">Arrays y objetos</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>Array / Lista</strong> — colección ordenada: <code>[1, 2, 3]</code></li>
+          <li><strong>Objeto / Diccionario</strong> — pares clave-valor: <code>{nombre: "Ana"}</code></li>
+          <li><strong>Métodos de array:</strong> <code>push, pop, map, filter, reduce, find</code></li>
+          <li><strong>Spread operator</strong> — <code>[...arr1, ...arr2]</code></li>
+          <li><strong>Destructuring</strong> — <code>const {x, y} = punto</code></li>
+          <li><strong>Cuándo usar cuál</strong> — array para listas, objeto para entidades</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:var(--accent-dim)">🗂️</div>
+          <div>
+            <span class="topic-label">Estructuras avanzadas</span>
+            <span class="topic-name">Stack, Queue, Map, Set</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>Stack (Pila)</strong> — LIFO: último en entrar, primero en salir. Ej: historial del navegador</li>
+          <li><strong>Queue (Cola)</strong> — FIFO: primero en entrar, primero en salir. Ej: cola de impresión</li>
+          <li><strong>Map</strong> — como objeto pero keys pueden ser cualquier tipo</li>
+          <li><strong>Set</strong> — colección sin duplicados</li>
+          <li><strong>Árbol binario básico</strong> — nodos con hijos izquierdo y derecho</li>
+          <li><strong>Linked List</strong> — nodos que apuntan al siguiente</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:var(--accent-dim)">📊</div>
+          <div>
+            <span class="topic-label">Complejidad</span>
+            <span class="topic-name">Big O Notation</span>
+          </div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>O(1)</strong> — constante: acceder a un elemento por índice</li>
+          <li><strong>O(log n)</strong> — logarítmico: búsqueda binaria</li>
+          <li><strong>O(n)</strong> — lineal: recorrer un array completo</li>
+          <li><strong>O(n²)</strong> — cuadrático: dos bucles anidados (evitar en datos grandes)</li>
+          <li><strong>Tiempo vs espacio</strong> — tradeoff entre velocidad y memoria</li>
+          <li><strong>Por qué importa</strong> — código lento puede ser inutilizable con muchos datos</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Algoritmos esenciales</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:var(--accent-dim)">🔍</div>
+          <div><span class="topic-label">Búsqueda</span><span class="topic-name">Encontrar datos</span></div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>Búsqueda lineal</strong> — recorrer elemento por elemento. O(n)</li>
+          <li><strong>Búsqueda binaria</strong> — en datos ordenados, divide a la mitad. O(log n)</li>
+          <li><strong>BFS (amplitud)</strong> — explorar por niveles en un árbol/grafo</li>
+          <li><strong>DFS (profundidad)</strong> — explorar hasta el fondo antes de retroceder</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:var(--accent-dim)">↕️</div>
+          <div><span class="topic-label">Ordenamiento</span><span class="topic-name">Organizar datos</span></div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>Bubble Sort</strong> — el más simple, el menos eficiente. O(n²)</li>
+          <li><strong>Merge Sort</strong> — divide y ordena mitades. O(n log n)</li>
+          <li><strong>Quick Sort</strong> — elige un pivote y particiona. O(n log n) promedio</li>
+          <li><strong>Array.sort()</strong> — en JS/Python ya incluido; úsalo en producción</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head">
+          <div class="topic-icon" style="background:var(--accent-dim)">🧩</div>
+          <div><span class="topic-label">Técnicas</span><span class="topic-name">Estrategias de resolución</span></div>
+        </div>
+        <ul class="topic-items">
+          <li><strong>Divide y vencerás</strong> — partir problema grande en subproblemas</li>
+          <li><strong>Programación dinámica</strong> — guardar resultados para no recalcular</li>
+          <li><strong>Greedy (voraz)</strong> — elegir la mejor opción local en cada paso</li>
+          <li><strong>Two pointers</strong> — dos índices que se mueven para resolver en O(n)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recursos para esta fase</div>
+    <div class="resources-grid">
+      <div class="resource-card"><div class="res-emoji">🐍</div><div><div class="res-name">CS50P (Python)</div><div class="res-desc">Curso de Python de Harvard. Gratuito.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">📚</div><div><div class="res-name">javascript.info</div><div class="res-desc">El mejor recurso de JS moderno. Completo.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🏋️</div><div><div class="res-name">Exercism.io</div><div class="res-desc">Ejercicios con mentores voluntarios.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🧮</div><div><div class="res-name">LeetCode (fáciles)</div><div class="res-desc">Practica resolución de problemas.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🎬</div><div><div class="res-name">NeetCode YouTube</div><div class="res-desc">Explicaciones claras de algoritmos.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+    </div>
+  </div>
+
+  <div class="phase-nav-footer">
+    <button class="fnav-btn" onclick="show(0)">← Fase 0</button>
+    <span class="fnav-progress">Fase 2 / 7</span>
+    <button class="fnav-btn primary" onclick="show(2)">Fase 2: Frontend →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     FASE 2 — FRONTEND
+══════════════════════════════════════════════════ -->
+<div class="phase" id="phase2">
+
+  <div class="phase-head">
+    <div class="phase-icon" style="background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.3)">🎨</div>
+    <div class="phase-meta">
+      <div class="phase-eyebrow" style="color:var(--green)">Fase 2</div>
+      <div class="phase-title">Frontend — la parte visual</div>
+      <div class="phase-desc">Construye todo lo que el usuario ve e interactúa. HTML estructura, CSS embellece, JavaScript anima, y React hace todo escalable.</div>
+      <div class="phase-badges">
+        <span class="badge" style="color:var(--green);border-color:var(--green-border);background:var(--green-dim)">⏱ 8–12 semanas</span>
+        <span class="badge" style="color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim)">HTML → CSS → JS → React</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="background:var(--green-dim);border-color:var(--green-border);color:#6ee7b7">
+    <span class="callout-icon">⚡</span>
+    <div><strong>Orden importa:</strong> HTML nativo → CSS puro → JS vanilla → React. Muchos saltan a React sin saber el DOM y luego no entienden lo que hace el framework.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">HTML — estructura de la web</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">📄</div><div><span class="topic-label">HTML</span><span class="topic-name">Etiquetas y estructura</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Etiquetas semánticas:</strong> <code>&lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;article&gt;, &lt;footer&gt;</code></li>
+          <li><strong>Encabezados:</strong> <code>&lt;h1&gt;</code> a <code>&lt;h6&gt;</code> — jerarquía de títulos</li>
+          <li><strong>Texto:</strong> <code>&lt;p&gt;, &lt;span&gt;, &lt;strong&gt;, &lt;em&gt;</code></li>
+          <li><strong>Listas:</strong> <code>&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;</code> — desordenadas y ordenadas</li>
+          <li><strong>Links e imágenes:</strong> <code>&lt;a href=""&gt;, &lt;img src="" alt=""&gt;</code></li>
+          <li><strong>Formularios:</strong> <code>&lt;form&gt;, &lt;input&gt;, &lt;button&gt;, &lt;select&gt;</code></li>
+          <li><strong>Tablas:</strong> <code>&lt;table&gt;, &lt;tr&gt;, &lt;td&gt;, &lt;th&gt;</code></li>
+          <li><strong>Accesibilidad:</strong> atributos <code>alt, aria-label, role</code></li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">🔗</div><div><span class="topic-label">HTML avanzado</span><span class="topic-name">Formularios y multimedia</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Tipos de input:</strong> text, email, password, number, date, checkbox, radio</li>
+          <li><strong>Validación HTML5:</strong> <code>required, pattern, min, max</code></li>
+          <li><strong>Audio y video:</strong> <code>&lt;video&gt;, &lt;audio&gt;</code> con controles</li>
+          <li><strong>Canvas:</strong> <code>&lt;canvas&gt;</code> para dibujo 2D con JS</li>
+          <li><strong>Meta tags:</strong> charset, viewport, description para SEO</li>
+          <li><strong>Open Graph:</strong> cómo se ve al compartir en redes sociales</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">CSS — estilos y diseño</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">📦</div><div><span class="topic-label">CSS fundamentos</span><span class="topic-name">Box model y selectores</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Box model</strong> — todo elemento es una caja: content + padding + border + margin</li>
+          <li><strong>Selectores:</strong> clase (<code>.btn</code>), ID (<code>#hero</code>), elemento (<code>p</code>), combinados</li>
+          <li><strong>Especificidad</strong> — qué regla gana cuando hay conflicto</li>
+          <li><strong>Display:</strong> block, inline, inline-block, none</li>
+          <li><strong>Position:</strong> static, relative, absolute, fixed, sticky</li>
+          <li><strong>Colores:</strong> hex, rgb(), hsl(), variables CSS</li>
+          <li><strong>Tipografía:</strong> font-family, size, weight, line-height</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">🗺️</div><div><span class="topic-label">CSS Layout</span><span class="topic-name">Flexbox y Grid</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Flexbox</strong> — layout en una dimensión (fila o columna)</li>
+          <li><code>justify-content, align-items, flex-wrap, gap</code></li>
+          <li><strong>CSS Grid</strong> — layout en dos dimensiones (filas Y columnas)</li>
+          <li><code>grid-template-columns, grid-area, repeat(), minmax()</code></li>
+          <li><strong>Cuándo usar cuál:</strong> Flex para componentes, Grid para páginas</li>
+          <li><strong>Media queries:</strong> cambiar estilos según el ancho de pantalla</li>
+          <li><strong>Mobile-first:</strong> diseñar primero para móvil, luego ampliar</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">✨</div><div><span class="topic-label">CSS moderno</span><span class="topic-name">Variables y animaciones</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Variables CSS:</strong> <code>--mi-color: #fff;</code> y <code>var(--mi-color)</code></li>
+          <li><strong>Transiciones:</strong> <code>transition: all 0.3s ease;</code></li>
+          <li><strong>Animaciones:</strong> <code>@keyframes</code> y <code>animation</code></li>
+          <li><strong>Pseudo-clases:</strong> <code>:hover, :focus, :nth-child, :not()</code></li>
+          <li><strong>Pseudo-elementos:</strong> <code>::before, ::after</code></li>
+          <li><strong>Tailwind CSS</strong> — clases utilitarias; alternativa a CSS manual</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">JavaScript en el navegador</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">🌳</div><div><span class="topic-label">DOM</span><span class="topic-name">Manipular el HTML</span></div></div>
+        <ul class="topic-items">
+          <li><strong>DOM</strong> — árbol de objetos que representa el HTML de la página</li>
+          <li><code>document.querySelector('.clase')</code> — seleccionar elementos</li>
+          <li><code>element.textContent = 'nuevo texto'</code> — cambiar contenido</li>
+          <li><code>element.style.color = 'red'</code> — cambiar estilos</li>
+          <li><code>element.classList.add/remove/toggle</code> — manejar clases</li>
+          <li><code>document.createElement / appendChild</code> — crear nodos dinámicamente</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">🖱️</div><div><span class="topic-label">Eventos</span><span class="topic-name">Interactividad</span></div></div>
+        <ul class="topic-items">
+          <li><code>addEventListener('click', fn)</code> — escuchar acciones del usuario</li>
+          <li><strong>Tipos:</strong> click, keydown, submit, scroll, resize, load</li>
+          <li><strong>Event object</strong> — info del evento: <code>event.target, event.key</code></li>
+          <li><code>event.preventDefault()</code> — evitar comportamiento por defecto</li>
+          <li><strong>Event delegation</strong> — escuchar en el padre, actuar en hijos</li>
+          <li><strong>Debounce / throttle</strong> — controlar frecuencia de eventos</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">🔄</div><div><span class="topic-label">Async JS</span><span class="topic-name">Operaciones asíncronas</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Callbacks</strong> — función que se llama cuando termina algo. El origen</li>
+          <li><strong>Promesas</strong> — objeto que representa un valor futuro</li>
+          <li><code>.then().catch().finally()</code> — encadenar promesas</li>
+          <li><strong>async/await</strong> — sintaxis más legible para promesas</li>
+          <li><code>fetch('url')</code> — hacer peticiones HTTP desde el navegador</li>
+          <li><strong>try/catch</strong> — manejar errores en código asíncrono</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">React y Next.js</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">⚛️</div><div><span class="topic-label">React core</span><span class="topic-name">Componentes y estado</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Componente</strong> — función que retorna JSX (HTML dentro de JS)</li>
+          <li><strong>Props</strong> — datos que el padre pasa al hijo (de solo lectura)</li>
+          <li><strong>useState</strong> — estado local que al cambiar re-renderiza el componente</li>
+          <li><strong>useEffect</strong> — efectos secundarios: fetch, timers, subscripciones</li>
+          <li><strong>useRef</strong> — referencia a un elemento del DOM</li>
+          <li><strong>useContext</strong> — compartir datos sin pasar props anidadas</li>
+          <li><strong>Virtual DOM</strong> — React compara el DOM real vs virtual para minimizar cambios</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--green-dim)">🚀</div><div><span class="topic-label">Next.js</span><span class="topic-name">React en producción</span></div></div>
+        <ul class="topic-items">
+          <li><strong>¿Por qué Next?</strong> — routing automático, SSR, SSG, API routes incluidas</li>
+          <li><strong>App Router</strong> — sistema de rutas basado en carpetas (Next 13+)</li>
+          <li><strong>SSR vs SSG vs CSR</strong> — renderizado en servidor, build-time o cliente</li>
+          <li><strong>Server Components</strong> — componentes que corren solo en el servidor</li>
+          <li><strong>API Routes</strong> — crear endpoints backend dentro del proyecto Next</li>
+          <li><strong>Image y Link</strong> — componentes optimizados para rendimiento</li>
+          <li><strong>Metadata</strong> — SEO desde el código de servidor</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recursos para esta fase</div>
+    <div class="resources-grid">
+      <div class="resource-card"><div class="res-emoji">📖</div><div><div class="res-name">MDN Web Docs</div><div class="res-desc">Referencia definitiva de HTML, CSS y JS.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">⚛️</div><div><div class="res-name">react.dev</div><div class="res-desc">Documentación oficial de React con tutoriales.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🎬</div><div><div class="res-name">Kevin Powell (CSS)</div><div class="res-desc">El mejor canal de YouTube para CSS avanzado.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🏫</div><div><div class="res-name">The Odin Project</div><div class="res-desc">Currículo completo de web dev. Muy práctico.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">💨</div><div><div class="res-name">Tailwind CSS docs</div><div class="res-desc">Documentación oficial con playground.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+    </div>
+  </div>
+
+  <div class="phase-nav-footer">
+    <button class="fnav-btn" onclick="show(1)">← Fase 1</button>
+    <span class="fnav-progress">Fase 3 / 7</span>
+    <button class="fnav-btn primary" onclick="show(3)">Fase 3: Backend →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     FASE 3 — BACKEND
+══════════════════════════════════════════════════ -->
+<div class="phase" id="phase3">
+
+  <div class="phase-head">
+    <div class="phase-icon" style="background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3)">⚙️</div>
+    <div class="phase-meta">
+      <div class="phase-eyebrow" style="color:var(--amber)">Fase 3</div>
+      <div class="phase-title">Backend — el servidor</div>
+      <div class="phase-desc">Aquí vive la lógica del negocio, la seguridad y la base de datos. Aprende a crear APIs REST, manejar autenticación y conectar con PostgreSQL.</div>
+      <div class="phase-badges">
+        <span class="badge" style="color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim)">⏱ 8–12 semanas</span>
+        <span class="badge" style="color:var(--accent);border-color:var(--accent-border);background:var(--accent-dim)">Node.js + Express + PostgreSQL</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="background:var(--amber-dim);border-color:var(--amber-border);color:#fde68a">
+    <span class="callout-icon">🔑</span>
+    <div><strong>Aquí te conviertes en Full Stack.</strong> Un buen backend es seguro, rápido, y bien documentado. Aprende primero sin ORM (SQL puro) para entender lo que el ORM hace por ti.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">HTTP y APIs REST</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--amber-dim)">📡</div><div><span class="topic-label">HTTP en profundidad</span><span class="topic-name">Métodos y cabeceras</span></div></div>
+        <ul class="topic-items">
+          <li><strong>GET</strong> — obtener datos (sin modificar nada)</li>
+          <li><strong>POST</strong> — crear un recurso nuevo</li>
+          <li><strong>PUT / PATCH</strong> — actualizar completo / parcial</li>
+          <li><strong>DELETE</strong> — eliminar un recurso</li>
+          <li><strong>Status codes:</strong> 200 OK, 201 Created, 400 Bad Request, 401 No auth, 404 Not found, 500 Server error</li>
+          <li><strong>Headers:</strong> Content-Type, Authorization, CORS headers</li>
+          <li><strong>Body y params:</strong> JSON en body, query strings, URL params</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--amber-dim)">🏗️</div><div><span class="topic-label">REST APIs</span><span class="topic-name">Diseño de endpoints</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Recursos:</strong> <code>/users, /products, /orders</code> — sustantivos, no verbos</li>
+          <li><strong>CRUD:</strong> GET /users (lista), GET /users/:id, POST /users, PUT /users/:id, DELETE /users/:id</li>
+          <li><strong>Anidamiento:</strong> <code>/users/:id/orders</code></li>
+          <li><strong>Paginación:</strong> <code>?page=2&limit=20</code></li>
+          <li><strong>Filtros y búsqueda:</strong> <code>?status=active&q=juan</code></li>
+          <li><strong>Versionado:</strong> <code>/api/v1/users</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Node.js y Express</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--amber-dim)">🟢</div><div><span class="topic-label">Node.js</span><span class="topic-name">JS en el servidor</span></div></div>
+        <ul class="topic-items">
+          <li><strong>¿Qué es Node?</strong> — V8 de Chrome corriendo JS fuera del navegador</li>
+          <li><strong>Event loop</strong> — cómo Node maneja múltiples peticiones sin bloquear</li>
+          <li><strong>Módulos:</strong> CommonJS (<code>require</code>) y ESM (<code>import</code>)</li>
+          <li><strong>npm / pnpm</strong> — gestores de paquetes. <code>package.json</code></li>
+          <li><strong>fs, path, os</strong> — módulos nativos de Node para archivos y sistema</li>
+          <li><strong>process.env</strong> — variables de entorno. Nunca hardcodear secretos</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--amber-dim)">🚂</div><div><span class="topic-label">Express.js</span><span class="topic-name">Framework web</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Router</strong> — organizar rutas por recurso en archivos separados</li>
+          <li><strong>Middleware</strong> — funciones que procesan request antes de llegar al handler</li>
+          <li><strong>Controller</strong> — función que maneja la lógica de un endpoint</li>
+          <li><strong>Validación:</strong> zod o express-validator para validar inputs</li>
+          <li><strong>Error handling:</strong> middleware de error con 4 parámetros</li>
+          <li><strong>CORS:</strong> configurar qué orígenes pueden consumir la API</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--amber-dim)">🔒</div><div><span class="topic-label">Autenticación</span><span class="topic-name">Seguridad de usuarios</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Hashing:</strong> bcrypt para guardar contraseñas (nunca texto plano)</li>
+          <li><strong>JWT</strong> — token firmado que viaja en el header. Sin estado en el servidor</li>
+          <li><strong>Refresh tokens</strong> — token de larga duración para renovar JWT</li>
+          <li><strong>OAuth 2.0</strong> — login con Google/GitHub. Flujo Authorization Code</li>
+          <li><strong>Sessions</strong> — alternativa a JWT; estado en servidor con cookie</li>
+          <li><strong>Rate limiting</strong> — limitar peticiones por IP para evitar abuso</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Bases de datos</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--amber-dim)">🗃️</div><div><span class="topic-label">SQL — PostgreSQL</span><span class="topic-name">Bases de datos relacionales</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Tabla</strong> — colección de filas con columnas tipadas</li>
+          <li><strong>Primary key</strong> — identificador único por fila (uuid o serial)</li>
+          <li><strong>Foreign key</strong> — columna que referencia otra tabla</li>
+          <li><code>SELECT * FROM users WHERE active = true ORDER BY name</code></li>
+          <li><code>JOIN</code> — combinar datos de múltiples tablas</li>
+          <li><strong>Índices</strong> — acelerar búsquedas frecuentes</li>
+          <li><strong>Transacciones</strong> — agrupar operaciones para que sean atómicas</li>
+          <li><strong>Migraciones</strong> — versionar cambios al esquema de la BD</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--amber-dim)">⚡</div><div><span class="topic-label">ORM — Prisma</span><span class="topic-name">BD con TypeScript</span></div></div>
+        <ul class="topic-items">
+          <li><strong>ORM</strong> — Object Relational Mapper: trabaja con objetos en vez de SQL</li>
+          <li><strong>Schema Prisma</strong> — definir modelos en <code>schema.prisma</code></li>
+          <li><code>prisma.user.findMany()</code> — consultar con tipo seguro</li>
+          <li><code>prisma.user.create({ data: {...} })</code> — insertar</li>
+          <li><strong>Relaciones:</strong> <code>include: { posts: true }</code></li>
+          <li><strong>Cuándo NO usar ORM</strong> — queries muy complejos; mejor SQL puro</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--amber-dim)">🔥</div><div><span class="topic-label">Supabase</span><span class="topic-name">Backend como servicio</span></div></div>
+        <ul class="topic-items">
+          <li><strong>¿Qué es?</strong> — PostgreSQL + Auth + Storage + Realtime en la nube</li>
+          <li><strong>Auth integrado</strong> — login con email, Google, GitHub sin código de servidor</li>
+          <li><strong>Row Level Security</strong> — cada usuario solo ve sus datos a nivel BD</li>
+          <li><strong>Storage</strong> — subir archivos (imágenes, PDFs) con permisos</li>
+          <li><strong>Realtime</strong> — suscribirse a cambios en la BD con WebSockets</li>
+          <li><strong>Edge Functions</strong> — serverless functions en Deno</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recursos para esta fase</div>
+    <div class="resources-grid">
+      <div class="resource-card"><div class="res-emoji">📗</div><div><div class="res-name">Node.js docs</div><div class="res-desc">Documentación oficial de Node.js.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🚂</div><div><div class="res-name">Express.js Guide</div><div class="res-desc">Guía oficial de Express.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🐘</div><div><div class="res-name">PostgreSQL Tutorial</div><div class="res-desc">postgresqltutorial.com — muy completo.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">▲</div><div><div class="res-name">Prisma docs</div><div class="res-desc">Documentación y ejemplos de Prisma ORM.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">⚡</div><div><div class="res-name">Supabase docs</div><div class="res-desc">Tutoriales paso a paso con ejemplos reales.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+    </div>
+  </div>
+
+  <div class="phase-nav-footer">
+    <button class="fnav-btn" onclick="show(2)">← Fase 2</button>
+    <span class="fnav-progress">Fase 4 / 7</span>
+    <button class="fnav-btn primary" onclick="show(4)">Fase 4: DevOps →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     FASE 4 — DEVOPS
+══════════════════════════════════════════════════ -->
+<div class="phase" id="phase4">
+
+  <div class="phase-head">
+    <div class="phase-icon" style="background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3)">🚀</div>
+    <div class="phase-meta">
+      <div class="phase-eyebrow" style="color:var(--coral)">Fase 4</div>
+      <div class="phase-title">DevOps y despliegue</div>
+      <div class="phase-desc">Un programa que solo corre en tu máquina no sirve de nada. Aprende a publicarlo, automatizarlo y mantenerlo vivo 24/7.</div>
+      <div class="phase-badges">
+        <span class="badge" style="color:var(--coral);border-color:var(--coral-border);background:var(--coral-dim)">⏱ 4–6 semanas</span>
+        <span class="badge" style="color:var(--green);border-color:var(--green-border);background:var(--green-dim)">Vercel · Docker · CI/CD</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="background:var(--coral-dim);border-color:var(--coral-border);color:#fca5a5">
+    <span class="callout-icon">🛡️</span>
+    <div><strong>Despliega desde el inicio.</strong> No esperes a tener la app perfecta. Desplegar desde el primer día te enseña más que cualquier tutorial. Vercel y Railway tienen tier gratuito.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Git avanzado y colaboración</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--coral-dim)">🌿</div><div><span class="topic-label">Branching</span><span class="topic-name">Estrategias de ramas</span></div></div>
+        <ul class="topic-items">
+          <li><strong>main/master</strong> — rama principal, siempre estable</li>
+          <li><strong>feature branches</strong> — una rama por funcionalidad nueva</li>
+          <li><strong>git merge</strong> — combinar ramas creando un merge commit</li>
+          <li><strong>git rebase</strong> — reescribir historial; más limpio pero peligroso en shared</li>
+          <li><strong>Pull Request</strong> — proponer cambios para revisión antes de merge</li>
+          <li><strong>Conventional Commits</strong> — formato: <code>feat:, fix:, docs:, chore:</code></li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--coral-dim)">☁️</div><div><span class="topic-label">Despliegue</span><span class="topic-name">Publicar tu app</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Vercel</strong> — ideal para Next.js. Deploy automático con cada push a GitHub</li>
+          <li><strong>Railway</strong> — para backends Node.js, Python, bases de datos</li>
+          <li><strong>Render</strong> — alternativa gratuita a Railway</li>
+          <li><strong>Variables de entorno</strong> — claves secretas en el panel, nunca en el código</li>
+          <li><strong>Dominio personalizado</strong> — conectar tu dominio al despliegue</li>
+          <li><strong>SSL automático</strong> — HTTPS gratis con Let's Encrypt</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Docker</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--coral-dim)">🐳</div><div><span class="topic-label">Contenedores</span><span class="topic-name">Docker básico</span></div></div>
+        <ul class="topic-items">
+          <li><strong>¿Para qué?</strong> — empaquetar la app con todas sus dependencias. "Funciona en mi máquina" eliminado</li>
+          <li><strong>Imagen</strong> — plantilla inmutable. Como una receta</li>
+          <li><strong>Contenedor</strong> — instancia en ejecución de una imagen</li>
+          <li><strong>Dockerfile</strong> — instrucciones para construir la imagen</li>
+          <li><code>FROM, WORKDIR, COPY, RUN, EXPOSE, CMD</code> — comandos principales</li>
+          <li><code>docker build -t mi-app .</code> — construir imagen</li>
+          <li><code>docker run -p 3000:3000 mi-app</code> — ejecutar contenedor</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--coral-dim)">🎻</div><div><span class="topic-label">Docker Compose</span><span class="topic-name">Múltiples servicios</span></div></div>
+        <ul class="topic-items">
+          <li><strong>¿Para qué?</strong> — orquestar app + base de datos + Redis con un comando</li>
+          <li><code>docker-compose up -d</code> — iniciar todos los servicios</li>
+          <li><code>docker-compose down</code> — detener y eliminar contenedores</li>
+          <li><strong>Volumes</strong> — persistir datos de la BD entre reinicios</li>
+          <li><strong>Networks</strong> — comunicación entre contenedores por nombre</li>
+          <li><strong>Health checks</strong> — verificar que un servicio está listo</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--coral-dim)">🔄</div><div><span class="topic-label">CI/CD</span><span class="topic-name">Automatización</span></div></div>
+        <ul class="topic-items">
+          <li><strong>CI (Integración Continua)</strong> — ejecutar tests automáticamente en cada push</li>
+          <li><strong>CD (Despliegue Continuo)</strong> — desplegar automáticamente si los tests pasan</li>
+          <li><strong>GitHub Actions</strong> — archivos YAML en <code>.github/workflows/</code></li>
+          <li><strong>Pipeline típico:</strong> lint → test → build → deploy</li>
+          <li><strong>Secrets en GitHub</strong> — variables de entorno para el workflow</li>
+          <li><strong>Environments</strong> — staging y production como ambientes separados</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recursos para esta fase</div>
+    <div class="resources-grid">
+      <div class="resource-card"><div class="res-emoji">🐳</div><div><div class="res-name">Docker Getting Started</div><div class="res-desc">Tutorial oficial de Docker. Paso a paso.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">▲</div><div><div class="res-name">Vercel docs</div><div class="res-desc">Deploy de Next.js en minutos.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🚂</div><div><div class="res-name">Railway docs</div><div class="res-desc">Backend y bases de datos en la nube.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">⚙️</div><div><div class="res-name">GitHub Actions docs</div><div class="res-desc">Automatizar workflows de CI/CD.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+    </div>
+  </div>
+
+  <div class="phase-nav-footer">
+    <button class="fnav-btn" onclick="show(3)">← Fase 3</button>
+    <span class="fnav-progress">Fase 5 / 7</span>
+    <button class="fnav-btn primary" onclick="show(5)">Fase 5: Sistemas →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     FASE 5 — INGENIERÍA EN SISTEMAS
+══════════════════════════════════════════════════ -->
+<div class="phase" id="phase5">
+
+  <div class="phase-head">
+    <div class="phase-icon" style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3)">🏛️</div>
+    <div class="phase-meta">
+      <div class="phase-eyebrow" style="color:var(--purple)">Fase 5</div>
+      <div class="phase-title">Ingeniería de sistemas</div>
+      <div class="phase-desc">Los temas que separan a un junior de un senior: diseño de sistemas escalables, redes, seguridad y buenas prácticas de código.</div>
+      <div class="phase-badges">
+        <span class="badge" style="color:var(--purple);border-color:var(--purple-border);background:var(--purple-dim)">⏱ Continuo</span>
+        <span class="badge" style="color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim)">Estudio en paralelo con proyectos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="background:var(--purple-dim);border-color:var(--purple-border);color:#c4b5fd">
+    <span class="callout-icon">🎯</span>
+    <div><strong>Estos temas se aprenden construyendo.</strong> Estudia la teoría y aplícala en tus proyectos reales. No tiene sentido memorizar patrones de diseño sin haberlos necesitado antes.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Diseño de sistemas (System Design)</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--purple-dim)">📐</div><div><span class="topic-label">Escalabilidad</span><span class="topic-name">Diseñar para crecer</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Escalar vertical</strong> — máquina más potente (límite físico)</li>
+          <li><strong>Escalar horizontal</strong> — más máquinas en paralelo (sin límite teórico)</li>
+          <li><strong>Load Balancer</strong> — distribuye tráfico entre servidores</li>
+          <li><strong>Caching</strong> — guardar resultados frecuentes en Redis para no recalcular</li>
+          <li><strong>CDN</strong> — servir archivos estáticos desde el servidor más cercano al usuario</li>
+          <li><strong>Database sharding</strong> — dividir la BD en múltiples instancias</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--purple-dim)">🏗️</div><div><span class="topic-label">Arquitectura</span><span class="topic-name">Microservicios vs monolito</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Monolito</strong> — todo en una app. Ideal para empezar. Fácil de debuggear</li>
+          <li><strong>Microservicios</strong> — servicios pequeños independientes. Complejidad alta</li>
+          <li><strong>API Gateway</strong> — punto de entrada único que enruta a microservicios</li>
+          <li><strong>Message queues</strong> — RabbitMQ/Kafka para comunicación asíncrona</li>
+          <li><strong>CAP Theorem</strong> — no puedes tener consistencia, disponibilidad y tolerancia a partición a la vez</li>
+          <li><strong>Event-driven</strong> — servicios que reaccionan a eventos en vez de llamadas directas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Redes y protocolos en profundidad</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--purple-dim)">🌐</div><div><span class="topic-label">Modelo OSI</span><span class="topic-name">Las 7 capas</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Capa 1 — Física:</strong> cables, señales eléctricas</li>
+          <li><strong>Capa 2 — Enlace:</strong> MAC address, switches</li>
+          <li><strong>Capa 3 — Red:</strong> IP, routers, enrutamiento</li>
+          <li><strong>Capa 4 — Transporte:</strong> TCP (confiable) vs UDP (rápido)</li>
+          <li><strong>Capa 5-6 — Sesión/Presentación:</strong> TLS/SSL, cifrado</li>
+          <li><strong>Capa 7 — Aplicación:</strong> HTTP, DNS, SMTP, FTP</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--purple-dim)">⚡</div><div><span class="topic-label">Protocolos modernos</span><span class="topic-name">HTTP/2, WebSockets, gRPC</span></div></div>
+        <ul class="topic-items">
+          <li><strong>HTTP/2</strong> — múltiples requests en una conexión (multiplexing)</li>
+          <li><strong>HTTP/3 / QUIC</strong> — basado en UDP, más rápido en redes inestables</li>
+          <li><strong>WebSockets</strong> — conexión bidireccional persistente (chats, juegos)</li>
+          <li><strong>SSE (Server-Sent Events)</strong> — servidor manda eventos al cliente (notificaciones)</li>
+          <li><strong>gRPC</strong> — RPC binario de alto rendimiento entre microservicios</li>
+          <li><strong>GraphQL</strong> — alternativa a REST que el cliente controla qué pide</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Seguridad de aplicaciones</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--purple-dim)">🛡️</div><div><span class="topic-label">OWASP Top 10</span><span class="topic-name">Vulnerabilidades comunes</span></div></div>
+        <ul class="topic-items">
+          <li><strong>SQL Injection</strong> — inyectar SQL malicioso en inputs. Prevención: queries parametrizados</li>
+          <li><strong>XSS (Cross-Site Scripting)</strong> — inyectar JS en páginas ajenas. Prevención: sanitizar outputs</li>
+          <li><strong>CSRF</strong> — acción no autorizada en nombre del usuario. Prevención: tokens CSRF</li>
+          <li><strong>Broken Authentication</strong> — sesiones mal implementadas o tokens débiles</li>
+          <li><strong>Insecure Direct Object Reference</strong> — acceder a recursos de otros por ID predecible</li>
+          <li><strong>Security Misconfiguration</strong> — defaults inseguros, errores expuestos en prod</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--purple-dim)">🔑</div><div><span class="topic-label">Buenas prácticas</span><span class="topic-name">Código seguro</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Principio de mínimo privilegio</strong> — dar solo los permisos necesarios</li>
+          <li><strong>Validación de inputs</strong> — nunca confiar en datos que vienen del cliente</li>
+          <li><strong>HTTPS siempre</strong> — sin excepciones en producción</li>
+          <li><strong>Secretos en variables de entorno</strong> — nunca en el código fuente</li>
+          <li><strong>Dependencias actualizadas</strong> — vulnerabilidades en librerías son comunes</li>
+          <li><strong>Logs sin datos sensibles</strong> — no loggear contraseñas ni tokens</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Calidad de código y buenas prácticas</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--purple-dim)">📏</div><div><span class="topic-label">Clean Code</span><span class="topic-name">Código legible</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Nombres significativos</strong> — <code>getUserById</code> no <code>fn2</code></li>
+          <li><strong>Funciones pequeñas</strong> — una función, una responsabilidad</li>
+          <li><strong>DRY (Don't Repeat Yourself)</strong> — no copiar y pegar código</li>
+          <li><strong>YAGNI</strong> — no implementar lo que no necesitas todavía</li>
+          <li><strong>Comentarios útiles</strong> — comentar el "por qué", no el "qué"</li>
+          <li><strong>Code review</strong> — otro par de ojos siempre mejora el código</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--purple-dim)">🧪</div><div><span class="topic-label">Testing</span><span class="topic-name">Código que no se rompe</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Unit tests</strong> — probar una función aislada. Vitest / Jest</li>
+          <li><strong>Integration tests</strong> — probar que partes del sistema funcionan juntas</li>
+          <li><strong>E2E tests</strong> — simular acciones del usuario en el navegador. Playwright</li>
+          <li><strong>TDD</strong> — escribir el test antes del código</li>
+          <li><strong>Mocking</strong> — simular dependencias externas (BD, APIs)</li>
+          <li><strong>Coverage</strong> — porcentaje del código cubierto por tests</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--purple-dim)">🎨</div><div><span class="topic-label">Design Patterns</span><span class="topic-name">Soluciones probadas</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Singleton</strong> — una sola instancia de una clase (conexión a BD)</li>
+          <li><strong>Observer</strong> — notificar a múltiples suscriptores cuando algo cambia</li>
+          <li><strong>Factory</strong> — crear objetos sin especificar la clase exacta</li>
+          <li><strong>Repository</strong> — capa de abstracción entre lógica y BD</li>
+          <li><strong>SOLID principles</strong> — 5 principios de diseño orientado a objetos</li>
+          <li><strong>MVC / MVVM</strong> — patrones para separar datos, lógica y vista</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recursos para esta fase</div>
+    <div class="resources-grid">
+      <div class="resource-card"><div class="res-emoji">📘</div><div><div class="res-name">Designing Data-Intensive Apps</div><div class="res-desc">El mejor libro de arquitectura de sistemas. Por Martin Kleppmann.</div><span class="res-tag" style="background:var(--amber-dim);color:var(--amber)">Libro</span></div></div>
+      <div class="resource-card"><div class="res-emoji">⭐</div><div><div class="res-name">System Design Primer</div><div class="res-desc">Repositorio GitHub con guías de system design.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🛡️</div><div><div class="res-name">OWASP.org</div><div class="res-desc">Guías de seguridad web, top 10 vulnerabilidades.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🎨</div><div><div class="res-name">refactoring.guru</div><div class="res-desc">Design patterns con ejemplos visuales y código.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">✍️</div><div><div class="res-name">Martin Fowler blog</div><div class="res-desc">Artículos de arquitectura y refactoring.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+    </div>
+  </div>
+
+  <div class="phase-nav-footer">
+    <button class="fnav-btn" onclick="show(4)">← Fase 4</button>
+    <span class="fnav-progress">Fase 6 / 7</span>
+    <button class="fnav-btn primary" onclick="show(6)">Fase 6: Empleo →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     FASE 6 — CONSEGUIR TRABAJO
+══════════════════════════════════════════════════ -->
+<div class="phase" id="phase6">
+
+  <div class="phase-head">
+    <div class="phase-icon" style="background:rgba(34,211,238,0.15);border:1px solid rgba(34,211,238,0.3)">💼</div>
+    <div class="phase-meta">
+      <div class="phase-eyebrow" style="color:var(--teal)">Fase 6</div>
+      <div class="phase-title">Conseguir trabajo</div>
+      <div class="phase-desc">Portafolio, entrevistas técnicas y cómo entrar al mercado. Tres proyectos sólidos valen más que treinta proyectos mediocres.</div>
+      <div class="phase-badges">
+        <span class="badge" style="color:var(--teal);border-color:var(--teal-border);background:var(--teal-dim)">⏱ 2–4 meses</span>
+        <span class="badge" style="color:var(--green);border-color:var(--green-border);background:var(--green-dim)">Portafolio + LeetCode + LinkedIn</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="background:var(--teal-dim);border-color:var(--teal-border);color:#67e8f9">
+    <span class="callout-icon">🏆</span>
+    <div><strong>La clave:</strong> Código público funcionando en producción. Un reclutador que ve tu app desplegada y tu repositorio limpio te considera antes que a alguien con más cursos pero sin proyectos.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Portafolio que impresiona</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--teal-dim)">🛠️</div><div><span class="topic-label">Proyectos</span><span class="topic-name">Qué construir</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Proyecto 1 — Full Stack con auth:</strong> app con login, roles, CRUD completo. Ejemplo: gestor de tareas o blog con usuarios</li>
+          <li><strong>Proyecto 2 — API REST documentada:</strong> backend con Swagger/OpenAPI, tests, manejo de errores</li>
+          <li><strong>Proyecto 3 — Algo tuyo:</strong> resuelve un problema real que tú tengas. Lo más memorable en entrevistas</li>
+          <li><strong>Desplegado:</strong> URL funcionando. Sin esto no existe</li>
+          <li><strong>README excelente:</strong> qué hace, cómo instalarlo, screenshots, tecnologías</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--teal-dim)">🌐</div><div><span class="topic-label">Presencia online</span><span class="topic-name">Ser encontrable</span></div></div>
+        <ul class="topic-items">
+          <li><strong>GitHub activo</strong> — commits regulares, perfil con README propio, green squares</li>
+          <li><strong>LinkedIn optimizado</strong> — foto profesional, headline con skills, proyectos visibles</li>
+          <li><strong>Portfolio web propio</strong> — una página simple con tus proyectos y contacto</li>
+          <li><strong>Twitter/X técnico</strong> — opcional pero ayuda al networking</li>
+          <li><strong>Blog técnico</strong> — escribir sobre lo que aprendes demuestra profundidad</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Entrevistas técnicas</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--teal-dim)">🧮</div><div><span class="topic-label">Algoritmos</span><span class="topic-name">LeetCode y resolución</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Objetivo:</strong> 50-75 problemas fáciles/medios son suficientes para la mayoría de empresas</li>
+          <li><strong>Patterns esenciales:</strong> Two Pointers, Sliding Window, BFS/DFS, Dynamic Programming básico</li>
+          <li><strong>Neetcode 150</strong> — lista curada, la más eficiente para prepararse</li>
+          <li><strong>Hablar mientras resuelves</strong> — el proceso importa tanto como la respuesta</li>
+          <li><strong>Preguntar aclaraciones</strong> — siempre antes de empezar a codear</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--teal-dim)">💬</div><div><span class="topic-label">Entrevistas técnicas</span><span class="topic-name">Preguntas comunes</span></div></div>
+        <ul class="topic-items">
+          <li><strong>JS:</strong> event loop, closures, promises vs async/await, prototypes, this</li>
+          <li><strong>React:</strong> ciclo de vida, virtual DOM, hooks, state vs props, memoización</li>
+          <li><strong>Backend:</strong> REST vs GraphQL, auth, SQL vs NoSQL, indexación</li>
+          <li><strong>System Design (juniors):</strong> diseñar un URL shortener, un chat simple</li>
+          <li><strong>Git:</strong> merge vs rebase, cómo resolver conflictos, cherry-pick</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--teal-dim)">🤝</div><div><span class="topic-label">Behavioral</span><span class="topic-name">Preguntas de comportamiento</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Método STAR:</strong> Situación, Tarea, Acción, Resultado</li>
+          <li>"¿Cuéntame de un bug difícil que resolviste?"</li>
+          <li>"¿Cómo manejas plazos apretados?"</li>
+          <li>"¿Cómo aprendes tecnologías nuevas?"</li>
+          <li>"¿Cuál ha sido tu mayor fracaso profesional?"</li>
+          <li><strong>Ten preguntas para ellos</strong> — siempre pregunta sobre el equipo y proceso</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Dónde y cómo aplicar</div>
+    <div class="topic-grid">
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--teal-dim)">🌎</div><div><span class="topic-label">Trabajo remoto</span><span class="topic-name">Desde Colombia</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Remote.co</strong> — trabajos remotos curados por categoría</li>
+          <li><strong>We Work Remotely</strong> — uno de los más grandes para remoto</li>
+          <li><strong>Toptal</strong> — plataforma premium, proceso exigente, paga bien</li>
+          <li><strong>Arc.dev</strong> — plataforma para devs latinoamericanos contratados por empresas USA</li>
+          <li><strong>LinkedIn</strong> — filtrar por "Remote" y "Latin America"</li>
+          <li><strong>Turing.com</strong> — empresa que contrata en LATAM para clientes USA</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <div class="topic-card-head"><div class="topic-icon" style="background:var(--teal-dim)">💰</div><div><span class="topic-label">Freelance</span><span class="topic-name">Trabajo independiente</span></div></div>
+        <ul class="topic-items">
+          <li><strong>Upwork</strong> — empieza con proyectos pequeños para construir reputación</li>
+          <li><strong>Fiverr</strong> — ofrece servicios específicos (landing pages, APIs)</li>
+          <li><strong>Workana</strong> — plataforma latinoamericana de freelance</li>
+          <li><strong>Networking local</strong> — startups en tu ciudad siempre buscan devs</li>
+          <li><strong>Agencias digitales</strong> — muchas contratan devs junior con proyectos reales</li>
+          <li><strong>Tarifa justa junior LATAM:</strong> $15–$35 USD/hora en plataformas internacionales</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recursos para esta fase</div>
+    <div class="resources-grid">
+      <div class="resource-card"><div class="res-emoji">🧮</div><div><div class="res-name">NeetCode.io</div><div class="res-desc">La mejor guía curada para preparar entrevistas de algoritmos.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">📋</div><div><div class="res-name">Tech Interview Handbook</div><div class="res-desc">Guía completa de todo el proceso de entrevistas.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🔗</div><div><div class="res-name">LinkedIn</div><div class="res-desc">Optimiza tu perfil y conecta con reclutadores tech.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+      <div class="resource-card"><div class="res-emoji">🌎</div><div><div class="res-name">Arc.dev</div><div class="res-desc">Plataforma para devs LATAM con empleos USD.</div><span class="res-tag" style="background:var(--green-dim);color:var(--green)">Gratis</span></div></div>
+    </div>
+  </div>
+
+  <div class="phase-nav-footer">
+    <button class="fnav-btn" onclick="show(5)">← Fase 5</button>
+    <span class="fnav-progress" style="color:var(--green)">✓ Roadmap completo</span>
+    <button class="fnav-btn primary" onclick="show(0)">↺ Volver al inicio</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+  const PHASES = 7;
+
+  function show(n) {
+    for (let i = 0; i < PHASES; i++) {
+      document.getElementById('phase' + i).classList.toggle('active', i === n);
+      document.getElementById('nb' + i).classList.toggle('active', i === n);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,6 +12,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#070514",
+};
+
 export const metadata: Metadata = {
   title: "Axel & Sofía ✨ Nuestra Historia",
   description: "Un espacio especial lleno de recuerdos, canciones, amor y metas juntos.",
@@ -24,8 +31,6 @@ export const metadata: Metadata = {
     locale: "es_ES",
     siteName: "Axel & Sofi",
   },
-  themeColor: "#070514",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 };
 
 export default function RootLayout({
@@ -39,7 +44,19 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-[#070514] text-white selection:bg-purple-500/30 selection:text-purple-200" suppressHydrationWarning>{children}</body>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{new MutationObserver(function(m){for(var i=0;i<m.length;i++){if(m[i].attributeName==='bis_skin_checked'&&m[i].target){m[i].target.removeAttribute('bis_skin_checked');}}}).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['bis_skin_checked']});}catch(e){}`,
+          }}
+        />
+      </head>
+      <body
+        className="min-h-full flex flex-col bg-[#070514] text-white selection:bg-purple-500/30 selection:text-purple-200"
+        suppressHydrationWarning
+      >
+        {children}
+      </body>
     </html>
   );
 }

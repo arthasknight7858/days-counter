@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Compass,
   BookOpen,
@@ -11,7 +11,6 @@ import {
   AlertTriangle,
   Sparkles,
   CheckCircle2,
-  Clock,
   Volume2,
   Mic,
   PenTool,
@@ -19,7 +18,6 @@ import {
   Layers,
   ChevronDown,
   ChevronUp,
-  Heart,
   Lightbulb,
 } from "lucide-react";
 

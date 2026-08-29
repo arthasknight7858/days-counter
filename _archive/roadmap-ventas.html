@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Map: Aprende a Vender desde Cero</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #252535;
+    --accent: #6c47ff;
+    --accent2: #ff6b35;
+    --accent3: #00d4aa;
+    --text: #e8e8f0;
+    --muted: #7878a0;
+    --gold: #f5c842;
+    --phase1: #6c47ff;
+    --phase2: #ff6b35;
+    --phase3: #00d4aa;
+    --phase4: #f5c842;
+    --phase5: #ff4d8d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 900px; height: 900px;
+    background: radial-gradient(circle, rgba(108,71,255,0.18) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    border: 1px solid rgba(108,71,255,0.4);
+    padding: 8px 20px;
+    border-radius: 100px;
+    display: inline-block;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 9vw, 110px);
+    line-height: 1;
+    font-weight: 900;
+    margin-bottom: 12px;
+    letter-spacing: -2px;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 22px);
+    color: var(--muted);
+    max-width: 620px;
+    margin: 24px auto 48px;
+    font-weight: 300;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  /* ── NAV TIMELINE ── */
+  .nav-timeline {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .nav-inner {
+    display: flex;
+    gap: 8px;
+    max-width: 1100px;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  .nav-phase {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    transition: all .2s;
+    white-space: nowrap;
+  }
+
+  .nav-phase:hover { color: var(--text); border-color: var(--accent); }
+  .nav-phase .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── CONTAINER ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    padding: 100px 0 60px;
+    text-align: center;
+  }
+
+  .phase-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    padding-bottom: 80px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s, border-color .2s;
+  }
+
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); }
+
+  .card-accent-line {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .card-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .card-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .card-body {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ── WIDE CARD ── */
+  .card-wide {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media (max-width: 680px) {
+    .card-wide { grid-template-columns: 1fr; }
+  }
+
+  /* ── NUMBERED LIST ── */
+  .num-list { list-style: none; }
+  .num-list li {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .num-list li .n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    background: rgba(108,71,255,0.12);
+    border: 1px solid rgba(108,71,255,0.3);
+    border-radius: 6px;
+    padding: 2px 8px;
+    min-width: 32px;
+    text-align: center;
+    align-self: flex-start;
+    margin-top: 2px;
+    font-weight: 600;
+  }
+  .num-list li strong { color: var(--text); }
+
+  /* ── CHECK LIST ── */
+  .check-list { list-style: none; }
+  .check-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list li::before {
+    content: '→';
+    color: var(--accent3);
+    font-weight: 700;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+  .check-list li strong { color: var(--text); }
+
+  /* ── QUOTE BLOCK ── */
+  .quote-block {
+    background: linear-gradient(135deg, rgba(108,71,255,0.08), rgba(0,212,170,0.05));
+    border-left: 4px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 24px 28px;
+    margin: 16px 0;
+    font-style: italic;
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .quote-block cite {
+    display: block;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ── FULL-WIDTH BAND ── */
+  .band {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 24px;
+  }
+
+  /* ── YOUTUBE SECTION ── */
+  .yt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .yt-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: border-color .2s;
+  }
+
+  .yt-card:hover { border-color: #ff0000; }
+
+  .yt-logo {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .yt-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 15px;
+  }
+
+  .yt-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .yt-tipo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #ff0000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+  }
+
+  /* ── TRICKS GRID ── */
+  .tricks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .trick-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    border-left: 4px solid;
+  }
+
+  .trick-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .trick-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .trick-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── BOOKS ── */
+  .books-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .book-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+  }
+
+  .book-cover {
+    font-size: 40px;
+    flex-shrink: 0;
+  }
+
+  .book-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+
+  .book-author {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 8px;
+  }
+
+  .book-why {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 11px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent3));
+    border-radius: 2px;
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: -32px;
+    top: 6px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+    z-index: 1;
+  }
+
+  .tl-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .tl-title {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .tl-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  /* ── COLORS PER PHASE ── */
+  .p1 { --pc: var(--phase1); }
+  .p2 { --pc: var(--phase2); }
+  .p3 { --pc: var(--phase3); }
+  .p4 { --pc: var(--phase4); }
+  .p5 { --pc: var(--phase5); }
+
+  .phase-badge { background: rgba(108,71,255,0.12); color: var(--accent); }
+  .p2 .phase-badge { background: rgba(255,107,53,0.12); color: var(--phase2); }
+  .p3 .phase-badge { background: rgba(0,212,170,0.12); color: var(--phase3); }
+  .p4 .phase-badge { background: rgba(245,200,66,0.12); color: var(--phase4); }
+  .p5 .phase-badge { background: rgba(255,77,141,0.12); color: var(--phase5); }
+
+  .card-accent-line.p1 { background: var(--phase1); }
+  .card-accent-line.p2 { background: var(--phase2); }
+  .card-accent-line.p3 { background: var(--phase3); }
+  .card-accent-line.p4 { background: var(--phase4); }
+  .card-accent-line.p5 { background: var(--phase5); }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(108,71,255,0.1), rgba(0,212,170,0.05));
+    border: 1px solid rgba(108,71,255,0.3);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 32px 0;
+  }
+
+  .highlight-box h3 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: var(--accent);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--muted);
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer strong { color: var(--text); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .card-wide { grid-template-columns: 1fr; }
+    .nav-inner { justify-content: flex-start; }
+  }
+
+  /* Scroll behavior */
+  html { scroll-behavior: smooth; }
+
+  section { scroll-margin-top: 80px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero">
+  <span class="hero-eyebrow">🗺 Road Map Completo</span>
+  <h1>Aprende a<br><span>Vender</span></h1>
+  <p class="hero-sub">De cero a vendedor profesional. Todo lo que necesitas saber, en el orden correcto, sin relleno.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">5</span><span class="stat-label">Fases</span></div>
+    <div class="stat"><span class="stat-num">40+</span><span class="stat-label">Temas</span></div>
+    <div class="stat"><span class="stat-num">30+</span><span class="stat-label">Trucos reales</span></div>
+    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Potencial</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav class="nav-timeline">
+  <div class="nav-inner">
+    <a href="#fase1" class="nav-phase"><span class="dot" style="background:#6c47ff"></span>Fase 1 · Fundamentos</a>
+    <a href="#fase2" class="nav-phase"><span class="dot" style="background:#ff6b35"></span>Fase 2 · El Proceso</a>
+    <a href="#fase3" class="nav-phase"><span class="dot" style="background:#00d4aa"></span>Fase 3 · Persuasión</a>
+    <a href="#fase4" class="nav-phase"><span class="dot" style="background:#f5c842"></span>Fase 4 · Escalado</a>
+    <a href="#fase5" class="nav-phase"><span class="dot" style="background:#ff4d8d"></span>Fase 5 · Maestría</a>
+    <a href="#recursos" class="nav-phase"><span class="dot" style="background:#a0a0c0"></span>Recursos</a>
+    <a href="#youtube" class="nav-phase"><span class="dot" style="background:#ff0000"></span>YouTube</a>
+    <a href="#trucos" class="nav-phase"><span class="dot" style="background:#00d4aa"></span>Trucos</a>
+  </div>
+</nav>
+
+<!-- ══════════════════ INTRO ══════════════════ -->
+<div class="band">
+  <div class="container">
+    <div class="cards-grid">
+      <div class="card card-wide">
+        <div>
+          <span class="card-icon">🧠</span>
+          <div class="card-title">¿Por qué aprender a vender?</div>
+          <div class="card-body">
+            Vender es la habilidad número 1 del mundo real. No importa si eres empleado, empresario, freelance o creador de contenido: <strong style="color:var(--text)">siempre estás vendiendo algo.</strong> Tu tiempo, tus ideas, tus productos, tu imagen. Quien sabe vender tiene trabajo, quien sabe vender bien tiene libertad financiera.<br><br>
+            Las ventas son parte psicología, parte sistema, parte práctica. No nacemos sabiendo vender, pero cualquiera puede aprenderlo con el mapa correcto.
+          </div>
+        </div>
+        <div>
+          <div class="quote-block">
+            "Nada sucede en los negocios hasta que alguien vende algo."
+            <cite>— Thomas Watson, fundador de IBM</cite>
+          </div>
+          <div class="quote-block" style="border-color: var(--accent3); background: linear-gradient(135deg,rgba(0,212,170,0.08),rgba(108,71,255,0.04))">
+            "La diferencia entre un vendedor mediocre y uno excelente no es el talento. Es el sistema que usan y cuánto practican deliberadamente."
+            <cite>— Filosofía de este roadmap</cite>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mentalidad previa -->
+    <div class="highlight-box">
+      <h3>⚡ Antes de empezar: La Mentalidad Correcta</h3>
+      <ul class="check-list">
+        <li><strong>Vender NO es manipular.</strong> Vender bien es ayudar a alguien a tomar una decisión que le beneficia. Si tienes ese framing, todo cambia.</li>
+        <li><strong>El rechazo es información, no fracaso.</strong> Cada "no" te acerca al "sí" y te enseña dónde mejorar.</li>
+        <li><strong>La práctica supera al talento.</strong> El vendedor más efectivo no es el más carismático, es el más preparado.</li>
+        <li><strong>Aprende el sistema primero, improvisa después.</strong> Los grandes improvisadores tienen el sistema tan interiorizado que parece espontáneo.</li>
+        <li><strong>Tu producto es importante.</strong> Es muy difícil vender algo en lo que no crees. Convíncete tú primero.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ FASE 1 ══════════════════ -->
+<section id="fase1">
+  <div class="container">
+    <div class="section-header p1">
+      <span class="phase-badge">Fase 01 · 0 a 2 meses</span>
+      <h2 class="section-title">Fundamentos &<br>Psicología de Ventas</h2>
+      <p class="section-desc">Sin esto, todo lo demás es arena movediza. Construye la base correcta desde el principio.</p>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-accent-line p1"></div>
+        <span class="card-icon">🔭</span>
+        <div class="card-title">¿Qué es realmente vender?</div>
+        <div class="card-body">
+          Vender es el proceso de <strong style="color:var(--text)">transferir confianza y ayudar a alguien a pasar de un estado de duda a una decisión.</strong><br><br>
+          <strong style="color:var(--text)">3 elementos clave:</strong><br>
+          • El vendedor (tú)<br>
+          • El comprador (su problema, deseo, contexto)<br>
+          • El producto/servicio (la solución)<br><br>
+          El error más común: enfocarse en el producto en vez del problema del cliente. Cambia esto y ya llevas ventaja.
+        </div>
+        <div class="card-tags">
+          <span class="tag">concepto base</span>
+          <span class="tag">mindset</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p1"></div>
+        <span class="card-icon">🧬</span>
+        <div class="card-title">Tipos de Ventas que Existen</div>
+        <div class="card-body">
+          <strong style="color:var(--text)">B2C (Business to Consumer):</strong> le vendes directamente a personas. Emocional, rápido, volumen alto.<br><br>
+          <strong style="color:var(--text)">B2B (Business to Business):</strong> le vendes a empresas. Más racional, más largo, más dinero por venta.<br><br>
+          <strong style="color:var(--text)">Inside Sales:</strong> vendes desde una oficina/remoto por teléfono, email, video.<br><br>
+          <strong style="color:var(--text)">Field Sales:</strong> ventas presenciales, cara a cara.<br><br>
+          <strong style="color:var(--text)">E-commerce:</strong> ventas digitales automatizadas.<br><br>
+          Elige tu campo. El proceso varía enormemente según el tipo.
+        </div>
+        <div class="card-tags">
+          <span class="tag">B2C</span><span class="tag">B2B</span><span class="tag">digital</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p1"></div>
+        <span class="card-icon">🧠</span>
+        <div class="card-title">Psicología del Comprador</div>
+        <div class="card-body">
+          La gente no compra con lógica. <strong style="color:var(--text)">Compra con emoción y justifica con lógica.</strong> Entender esto es una ventaja masiva.<br><br>
+          <strong style="color:var(--text)">Motivadores universales de compra:</strong><br>
+          • Ganar dinero / ahorrar dinero<br>
+          • Ahorrar tiempo / ganar tiempo<br>
+          • Evitar dolor / esfuerzo<br>
+          • Ganar status / reconocimiento<br>
+          • Seguridad y certeza<br>
+          • Placer / entretenimiento<br><br>
+          Identifica cuál mueve a TU cliente ideal y habla ese idioma siempre.
+        </div>
+        <div class="card-tags">
+          <span class="tag">psicología</span><span class="tag">motivadores</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p1"></div>
+        <span class="card-icon">⚡</span>
+        <div class="card-title">Los 6 Principios de Influencia (Cialdini)</div>
+        <div class="card-body">
+          El libro <em>Influence</em> de Robert Cialdini es la biblia de la persuasión. Apréndetelos:<br><br>
+          <ul class="num-list">
+            <li><span class="n">01</span><div><strong>Reciprocidad:</strong> da primero, sin condiciones. La gente se siente obligada a devolver.</div></li>
+            <li><span class="n">02</span><div><strong>Compromiso:</strong> los pequeños "síes" llevan al gran "sí".</div></li>
+            <li><span class="n">03</span><div><strong>Prueba social:</strong> si otros lo hacen/compran, debe ser bueno.</div></li>
+            <li><span class="n">04</span><div><strong>Autoridad:</strong> los expertos son más creíbles. Conviértete en referente.</div></li>
+            <li><span class="n">05</span><div><strong>Simpatía:</strong> compramos a quien nos cae bien o se parece a nosotros.</div></li>
+            <li><span class="n">06</span><div><strong>Escasez:</strong> lo que es raro o limitado se percibe como más valioso.</div></li>
+          </ul>
+        </div>
+        <div class="card-tags">
+          <span class="tag">Cialdini</span><span class="tag">persuasión</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p1"></div>
+        <span class="card-icon">🎯</span>
+        <div class="card-title">Conocer tu Producto a Fondo</div>
+        <div class="card-body">
+          Antes de vender cualquier cosa debes ser el mayor experto en ella. No para hablar todo el tiempo de características, sino para <strong style="color:var(--text)">traducir características en beneficios reales.</strong><br><br>
+          <strong style="color:var(--text)">La fórmula:</strong><br>
+          <em>Característica → Función → Beneficio → Resultado emocional</em><br><br>
+          Ejemplo:<br>
+          <em>"Tiene batería de 5000 mAh → Dura 2 días → No te quedas sin carga en momentos importantes → Nunca pierdes una llamada urgente de trabajo."</em><br><br>
+          Practica esto con cada característica de tu producto.
+        </div>
+        <div class="card-tags">
+          <span class="tag">producto</span><span class="tag">beneficios</span><span class="tag">FAB</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p1"></div>
+        <span class="card-icon">🎯</span>
+        <div class="card-title">El Cliente Ideal (ICP / Buyer Persona)</div>
+        <div class="card-body">
+          Vender a cualquiera es vender a nadie. Necesitas saber exactamente <strong style="color:var(--text)">a quién le vendes y por qué te compraría.</strong><br><br>
+          <strong style="color:var(--text)">Define tu ICP con:</strong><br>
+          • Demografía: edad, ubicación, profesión, ingresos<br>
+          • Psicografía: valores, miedos, aspiraciones, frustraciones<br>
+          • Comportamiento: dónde busca info, cómo decide comprar<br>
+          • Problema principal que resuelves<br>
+          • Qué le impediría comprarte (objeciones anticipadas)<br><br>
+          El ICP es el documento más importante que tendrás. Actualízalo constantemente.
+        </div>
+        <div class="card-tags">
+          <span class="tag">ICP</span><span class="tag">buyer persona</span><span class="tag">segmentación</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FASE 2 ══════════════════ -->
+<section id="fase2">
+  <div class="container">
+    <div class="section-header p2">
+      <span class="phase-badge" style="background:rgba(255,107,53,0.12);color:var(--phase2)">Fase 02 · 2 a 5 meses</span>
+      <h2 class="section-title">El Proceso de<br>Venta Completo</h2>
+      <p class="section-desc">El proceso de ventas es un sistema, no un talento. Domínalo paso a paso.</p>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-accent-line p2"></div>
+        <span class="card-icon">🔍</span>
+        <div class="card-title">Prospección: Cómo Encontrar Clientes</div>
+        <div class="card-body">
+          La prospección es el combustible del proceso. Sin prospectos, no hay ventas. La mayoría de vendedores fracasa aquí porque no prospecta suficiente.<br><br>
+          <strong style="color:var(--text)">Métodos de prospección:</strong><br>
+          • <strong style="color:var(--text)">Cold outreach:</strong> emails fríos, LinkedIn, llamadas en frío. Alto volumen, bajo %. Requiere sistema.<br>
+          • <strong style="color:var(--text)">Inbound:</strong> que los prospectos lleguen a ti via contenido, SEO, ads. Más cálidos.<br>
+          • <strong style="color:var(--text)">Referidos:</strong> clientes actuales te presentan otros. El de mayor tasa de cierre.<br>
+          • <strong style="color:var(--text)">Networking:</strong> eventos, comunidades online, grupos de Facebook/WhatsApp.<br>
+          • <strong style="color:var(--text)">Social selling:</strong> construir audiencia en redes y vender desde ahí.<br><br>
+          Regla de oro: <strong style="color:var(--text)">prospección diaria, todos los días, sin excepción.</strong>
+        </div>
+        <div class="card-tags">
+          <span class="tag">prospección</span><span class="tag">leads</span><span class="tag">outreach</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p2"></div>
+        <span class="card-icon">📧</span>
+        <div class="card-title">El Cold Email que Funciona</div>
+        <div class="card-body">
+          El 90% de los cold emails fracasan porque hablan del vendedor, no del cliente. La estructura ganadora:<br><br>
+          <ul class="num-list">
+            <li><span class="n">01</span><div><strong>Subject line:</strong> personal, curioso, sin spammer. Ej: "Pregunta rápida, [Nombre]"</div></li>
+            <li><span class="n">02</span><div><strong>Apertura:</strong> muestra que investigaste a esa persona específica. 1 línea.</div></li>
+            <li><span class="n">03</span><div><strong>Propuesta de valor:</strong> qué resultado puedes darle. Sé concreto. No features.</div></li>
+            <li><span class="n">04</span><div><strong>Prueba social:</strong> 1 resultado de un cliente similar.</div></li>
+            <li><span class="n">05</span><div><strong>CTA fácil:</strong> pregunta de sí/no. "¿Tiene sentido hablar 15 min esta semana?"</div></li>
+          </ul>
+          <br>Total: máximo 5-7 líneas. Menos es más en cold email.
+        </div>
+        <div class="card-tags">
+          <span class="tag">email</span><span class="tag">cold outreach</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p2"></div>
+        <span class="card-icon">📞</span>
+        <div class="card-title">La Llamada en Frío (Cold Call)</div>
+        <div class="card-body">
+          La llamada en frío da miedo pero funciona. El secreto está en no seguir un script robótico.<br><br>
+          <strong style="color:var(--text)">Estructura de los primeros 30 segundos:</strong><br>
+          1. Di tu nombre y empresa rápido<br>
+          2. Explica en 1 frase por qué llamas (resultado, no producto)<br>
+          3. Pide permiso: "¿Tengo mal momento?"<br>
+          4. Haz la pregunta de descubrimiento más importante<br><br>
+          <strong style="color:var(--text)">Errores fatales:</strong><br>
+          • Hablar demasiado al inicio<br>
+          • No investigar antes de llamar<br>
+          • Rendirse al primer "no tengo tiempo"<br><br>
+          Practica en voz alta. Grábate. Escúchate. Mejora.
+        </div>
+        <div class="card-tags">
+          <span class="tag">cold call</span><span class="tag">teléfono</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p2"></div>
+        <span class="card-icon">🔎</span>
+        <div class="card-title">El Arte del Descubrimiento (Discovery)</div>
+        <div class="card-body">
+          El discovery es la fase más importante y la más subestimada. <strong style="color:var(--text)">Quién hace las mejores preguntas, gana.</strong><br><br>
+          <strong style="color:var(--text)">Metodología SPIN Selling:</strong><br>
+          • <strong style="color:var(--text)">S - Situación:</strong> "¿Cómo funciona actualmente tu proceso de X?"<br>
+          • <strong style="color:var(--text)">P - Problema:</strong> "¿Qué dificultades encuentras con eso?"<br>
+          • <strong style="color:var(--text)">I - Implicación:</strong> "¿Y eso cómo afecta a tu equipo/ventas/tiempo?"<br>
+          • <strong style="color:var(--text)">N - Necesidad-beneficio:</strong> "Si pudieras resolver eso, ¿qué impacto tendría?"<br><br>
+          El SPIN hace que el cliente convenza a sí mismo de que necesita tu solución. Poderoso.
+        </div>
+        <div class="card-tags">
+          <span class="tag">SPIN</span><span class="tag">discovery</span><span class="tag">preguntas</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p2"></div>
+        <span class="card-icon">🎬</span>
+        <div class="card-title">La Presentación / Demo Perfecta</div>
+        <div class="card-body">
+          La mayoría presenta demasiado pronto y muestra todo sin contexto. Error.<br><br>
+          <strong style="color:var(--text)">Reglas de una demo efectiva:</strong><br>
+          • Nunca presentes sin haber hecho discovery primero<br>
+          • Muestra SÓLO lo relevante para el problema que descubriste<br>
+          • Habla de resultados, no de pasos<br>
+          • Involucra al cliente: "¿Ves cómo esto resuelve lo que me dijiste?"<br>
+          • Deja tiempo para preguntas y objeciones durante, no al final<br><br>
+          <strong style="color:var(--text)">Estructura ganadora:</strong><br>
+          Contexto → El problema de ellos → Tu solución → Prueba → Siguiente paso
+        </div>
+        <div class="card-tags">
+          <span class="tag">demo</span><span class="tag">presentación</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p2"></div>
+        <span class="card-icon">💬</span>
+        <div class="card-title">Manejo de Objeciones</div>
+        <div class="card-body">
+          Las objeciones no son rechazos. Son señales de interés + peticiones de más información.<br><br>
+          <strong style="color:var(--text)">El framework ACURA:</strong><br>
+          • <strong style="color:var(--text)">A - Acknowledge:</strong> valida la objeción sin rendirte<br>
+          • <strong style="color:var(--text)">C - Clarify:</strong> asegúrate de entender la objeción real<br>
+          • <strong style="color:var(--text)">U - Understand:</strong> explora detrás de la objeción<br>
+          • <strong style="color:var(--text)">R - Respond:</strong> responde con evidencia/historia<br>
+          • <strong style="color:var(--text)">A - Ask:</strong> confirma que resolviste la duda<br><br>
+          <strong style="color:var(--text)">Las 4 objeciones universales:</strong><br>
+          "Es muy caro" · "No tengo tiempo" · "Necesito pensarlo" · "No estoy seguro de que funcione"<br><br>
+          Prepara respuestas para cada una antes de cada llamada.
+        </div>
+        <div class="card-tags">
+          <span class="tag">objeciones</span><span class="tag">ACURA</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p2"></div>
+        <span class="card-icon">🤝</span>
+        <div class="card-title">El Cierre de Ventas</div>
+        <div class="card-body">
+          El cierre no es una táctica de presión. Es la conclusión natural de un buen proceso. Si el discovery fue bien y presentaste bien, el cierre es casi solo formalidad.<br><br>
+          <strong style="color:var(--text)">Técnicas de cierre efectivas:</strong><br>
+          • <strong style="color:var(--text)">Cierre asuntivo:</strong> "¿Cuándo quieres empezar?" (das por hecho el sí)<br>
+          • <strong style="color:var(--text)">Cierre alternativo:</strong> "¿Prefieres el plan mensual o anual?"<br>
+          • <strong style="color:var(--text)">Cierre de resumen:</strong> recapitula beneficios + pregunta directa<br>
+          • <strong style="color:var(--text)">Cierre de urgencia legítima:</strong> usa escasez real, nunca falsa<br><br>
+          <strong style="color:var(--text)">La regla más importante:</strong> pide el cierre. El error #1 es no pedirlo directamente.
+        </div>
+        <div class="card-tags">
+          <span class="tag">cierre</span><span class="tag">técnicas</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p2"></div>
+        <span class="card-icon">🔄</span>
+        <div class="card-title">Follow-Up: El Dinero está en el Seguimiento</div>
+        <div class="card-body">
+          El 80% de las ventas se cierran después del 5to contacto. La mayoría de vendedores se rinden después del 2do.<br><br>
+          <strong style="color:var(--text)">Reglas del follow-up:</strong><br>
+          • Siempre agrega valor en cada seguimiento (no solo "¿ya decidiste?")<br>
+          • Varía el canal: email → WhatsApp → LinkedIn → llamada<br>
+          • Sé persistente pero no molesto: respeta los tiempos<br>
+          • Usa un CRM para nunca olvidar hacer seguimiento<br><br>
+          <strong style="color:var(--text)">Cadencia recomendada:</strong><br>
+          Día 1 → Día 3 → Día 7 → Día 14 → Día 30 → mensual
+        </div>
+        <div class="card-tags">
+          <span class="tag">follow-up</span><span class="tag">CRM</span><span class="tag">pipeline</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FASE 3 ══════════════════ -->
+<section id="fase3">
+  <div class="container">
+    <div class="section-header p3">
+      <span class="phase-badge" style="background:rgba(0,212,170,0.12);color:var(--phase3)">Fase 03 · 4 a 8 meses</span>
+      <h2 class="section-title">Persuasión,<br>Comunicación & Storytelling</h2>
+      <p class="section-desc">La diferencia entre vender y vender bien está en cómo dices las cosas.</p>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-accent-line p3"></div>
+        <span class="card-icon">📖</span>
+        <div class="card-title">Storytelling en Ventas</div>
+        <div class="card-body">
+          Las historias venden más que los argumentos. El cerebro humano está literalmente diseñado para procesar narrativas, no datos.<br><br>
+          <strong style="color:var(--text)">La estructura de la historia vendedora:</strong><br>
+          <ul class="num-list">
+            <li><span class="n">01</span><div><strong>El personaje:</strong> tu cliente anterior (con quien el prospecto se identifica)</div></li>
+            <li><span class="n">02</span><div><strong>El problema:</strong> tenía exactamente el mismo problema que tu prospecto</div></li>
+            <li><span class="n">03</span><div><strong>El intento fallido:</strong> lo que intentó antes (y no funcionó)</div></li>
+            <li><span class="n">04</span><div><strong>La solución:</strong> descubrió tu producto/servicio</div></li>
+            <li><span class="n">05</span><div><strong>El resultado:</strong> resultado específico y medible</div></li>
+            <li><span class="n">06</span><div><strong>La vida después:</strong> cómo es su vida/negocio ahora</div></li>
+          </ul>
+          Prepara 3-5 historias de clientes reales. Son tu arma más potente.
+        </div>
+        <div class="card-tags">
+          <span class="tag">storytelling</span><span class="tag">narrativa</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p3"></div>
+        <span class="card-icon">🗣️</span>
+        <div class="card-title">Comunicación Verbal y No Verbal</div>
+        <div class="card-body">
+          La comunicación de ventas va mucho más allá de las palabras:<br><br>
+          <strong style="color:var(--text)">Lo verbal:</strong><br>
+          • Ritmo: varía la velocidad para énfasis<br>
+          • Pausas estratégicas: el silencio es poderoso<br>
+          • Palabras de poder: "imagina", "descubre", "transforma"<br>
+          • Evita: "básicamente", "como que", "ehhh"<br><br>
+          <strong style="color:var(--text)">Lo no verbal (presencial):</strong><br>
+          • Contacto visual: confianza sin intimidar<br>
+          • Postura abierta, cuerpo inclinado ligeramente hacia el cliente<br>
+          • Espejo (mirroring): imita sutilmente el lenguaje corporal<br>
+          • Sonrisa natural (la falsa se detecta siempre)
+        </div>
+        <div class="card-tags">
+          <span class="tag">comunicación</span><span class="tag">lenguaje corporal</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p3"></div>
+        <span class="card-icon">🎭</span>
+        <div class="card-title">Escucha Activa: La Habilidad Secreta</div>
+        <div class="card-body">
+          Los mejores vendedores hablan el 30% del tiempo y escuchan el 70%. La mayoría hace lo contrario.<br><br>
+          <strong style="color:var(--text)">Técnicas de escucha activa:</strong><br>
+          • <strong style="color:var(--text)">Mirroring:</strong> repite la última palabra o frase del cliente en forma de pregunta<br>
+          • <strong style="color:var(--text)">Labeling:</strong> "Parece que estás frustrado con..."<br>
+          • <strong style="color:var(--text)">Parafrasear:</strong> "Si entiendo bien, lo que me dices es que..."<br>
+          • <strong style="color:var(--text)">Silencio estratégico:</strong> después de una respuesta importante, espera 3-4 segundos. Ellos hablan más.<br><br>
+          Herramienta recomendada: grábate y mide cuánto tiempo hablas tú vs el cliente.
+        </div>
+        <div class="card-tags">
+          <span class="tag">escucha</span><span class="tag">empatía</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p3"></div>
+        <span class="card-icon">💎</span>
+        <div class="card-title">Propuesta de Valor Irresistible</div>
+        <div class="card-body">
+          Tu propuesta de valor responde en 1-2 oraciones: <strong style="color:var(--text)">¿por qué contigo y no con otro?</strong><br><br>
+          <strong style="color:var(--text)">La fórmula:</strong><br>
+          "Ayudo a [tipo de cliente] a [resultado específico] en [tiempo] sin [dolor principal] incluso si [objeción más común]."<br><br>
+          <strong style="color:var(--text)">Ejemplo malo:</strong> "Somos una agencia de marketing digital con 10 años de experiencia."<br><br>
+          <strong style="color:var(--text)">Ejemplo bueno:</strong> "Ayudo a restaurantes a llenar su local de miércoles a jueves (los días muertos) usando Instagram, sin necesidad de hacer videos ni gastar en anuncios."<br><br>
+          Específico supera a genérico siempre.
+        </div>
+        <div class="card-tags">
+          <span class="tag">propuesta de valor</span><span class="tag">posicionamiento</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p3"></div>
+        <span class="card-icon">💰</span>
+        <div class="card-title">Negociación de Precio</div>
+        <div class="card-body">
+          El precio es el tema más temido. La solución: <strong style="color:var(--text)">nunca defiendes el precio, justificas el valor.</strong><br><br>
+          <strong style="color:var(--text)">Principios de negociación:</strong><br>
+          • El primero que menciona precio pierde (cuando no es necesario)<br>
+          • Ancla alto. Es más fácil bajar que subir.<br>
+          • Nunca cedas precio sin obtener algo a cambio<br>
+          • Usa la técnica del "rango": "dependiendo de lo que necesitas, estaríamos entre X y Y"<br><br>
+          <strong style="color:var(--text)">Cuando digan "está muy caro":</strong><br>
+          Responde: "¿Muy caro en comparación con qué?" (los haces pensar)<br>
+          O: "Entiendo. ¿Qué parte del valor que te presenté no te convence?"
+        </div>
+        <div class="card-tags">
+          <span class="tag">precio</span><span class="tag">negociación</span><span class="tag">valor</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p3"></div>
+        <span class="card-icon">✍️</span>
+        <div class="card-title">Copywriting para Ventas</div>
+        <div class="card-body">
+          El copy es vender por escrito. Fundamental para emails, WhatsApp, redes, páginas web.<br><br>
+          <strong style="color:var(--text)">Fórmulas clave:</strong><br>
+          • <strong style="color:var(--text)">AIDA:</strong> Atención → Interés → Deseo → Acción<br>
+          • <strong style="color:var(--text)">PAS:</strong> Problema → Agitar → Solución<br>
+          • <strong style="color:var(--text)">BAB:</strong> Antes → Después → Puente<br><br>
+          <strong style="color:var(--text)">Reglas de copy que vende:</strong><br>
+          • Escribe como hablas, no como redactas un oficio<br>
+          • Oraciones cortas. Mucho espacio en blanco.<br>
+          • El beneficio en el título, no la característica<br>
+          • Un solo call to action por pieza<br>
+          • Habla en segunda persona: tú, tu, te
+        </div>
+        <div class="card-tags">
+          <span class="tag">copy</span><span class="tag">AIDA</span><span class="tag">PAS</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FASE 4 ══════════════════ -->
+<section id="fase4">
+  <div class="container">
+    <div class="section-header p4">
+      <span class="phase-badge" style="background:rgba(245,200,66,0.12);color:var(--phase4)">Fase 04 · 6 a 12 meses</span>
+      <h2 class="section-title">Sistemas, Escalado<br>& Ventas Digitales</h2>
+      <p class="section-desc">Deja de depender solo de ti. Construye sistemas que venden solos o con equipo.</p>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-accent-line p4"></div>
+        <span class="card-icon">⚙️</span>
+        <div class="card-title">CRM: Tu Sistema de Gestión</div>
+        <div class="card-body">
+          Un CRM (Customer Relationship Manager) es la memoria externa de tu negocio. Sin él, pierdes oportunidades constantemente.<br><br>
+          <strong style="color:var(--text)">Para empezar (gratuitos):</strong><br>
+          • HubSpot CRM (el mejor gratuito)<br>
+          • Notion (personalizable con plantillas)<br>
+          • Trello (visual, simple)<br>
+          • Google Sheets (si estás comenzando)<br><br>
+          <strong style="color:var(--text)">Qué debes trackear:</strong><br>
+          • Nombre, empresa, contacto<br>
+          • Etapa del pipeline (prospecto → calificado → propuesta → negociación → cerrado)<br>
+          • Fecha del próximo follow-up<br>
+          • Notas de cada conversación<br>
+          • Valor estimado de la venta
+        </div>
+        <div class="card-tags">
+          <span class="tag">CRM</span><span class="tag">HubSpot</span><span class="tag">pipeline</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p4"></div>
+        <span class="card-icon">📊</span>
+        <div class="card-title">Métricas de Ventas que Debes Medir</div>
+        <div class="card-body">
+          Lo que no se mide no se mejora. Estas son las métricas esenciales:<br><br>
+          • <strong style="color:var(--text)">Tasa de conversión:</strong> de prospectos a clientes (benchmark: 1-5% en cold, 15-30% en caliente)<br>
+          • <strong style="color:var(--text)">Ticket promedio:</strong> valor promedio por venta<br>
+          • <strong style="color:var(--text)">Ciclo de ventas:</strong> tiempo desde primer contacto hasta cierre<br>
+          • <strong style="color:var(--text)">CAC (Costo de Adquisición de Cliente):</strong> cuánto te cuesta conseguir un cliente<br>
+          • <strong style="color:var(--text)">LTV (Lifetime Value):</strong> cuánto vale un cliente en el tiempo<br>
+          • <strong style="color:var(--text)">Actividades diarias:</strong> llamadas, emails, demos hechos<br><br>
+          Lleva un tablero semanal con estas métricas.
+        </div>
+        <div class="card-tags">
+          <span class="tag">métricas</span><span class="tag">KPIs</span><span class="tag">analytics</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p4"></div>
+        <span class="card-icon">📱</span>
+        <div class="card-title">Social Selling: Vender en Redes Sociales</div>
+        <div class="card-body">
+          El social selling no es publicar y esperar. Es construir una presencia que atrae a compradores.<br><br>
+          <strong style="color:var(--text)">LinkedIn (B2B):</strong><br>
+          • Perfil optimizado como página de ventas, no CV<br>
+          • Publica 3-4 veces por semana contenido de valor<br>
+          • Conecta y conversa antes de vender<br>
+          • Usa el Sales Navigator para encontrar prospectos<br><br>
+          <strong style="color:var(--text)">Instagram/TikTok (B2C):</strong><br>
+          • Documenta tu proceso/resultados<br>
+          • Muestra testimonios reales<br>
+          • CTA claro en cada pieza: "DM para info"<br>
+          • Stories/Reels de valor diario
+        </div>
+        <div class="card-tags">
+          <span class="tag">LinkedIn</span><span class="tag">Instagram</span><span class="tag">social selling</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p4"></div>
+        <span class="card-icon">🤖</span>
+        <div class="card-title">Automatización de Ventas</div>
+        <div class="card-body">
+          Automatiza lo repetitivo para enfocarte en lo humano.<br><br>
+          <strong style="color:var(--text)">Qué se puede automatizar:</strong><br>
+          • Secuencias de emails de prospección (Lemlist, Apollo, Instantly)<br>
+          • Recordatorios de follow-up en CRM<br>
+          • Respuestas iniciales por WhatsApp (ManyChat, WATI)<br>
+          • Agendado de llamadas (Calendly)<br>
+          • Facturas y propuestas (PandaDoc, DocuSign)<br><br>
+          <strong style="color:var(--text)">Stack básico para empezar:</strong><br>
+          Apollo.io (prospección) + HubSpot (CRM) + Calendly (citas) + Loom (videos de venta personalizados)
+        </div>
+        <div class="card-tags">
+          <span class="tag">automatización</span><span class="tag">herramientas</span><span class="tag">stack</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p4"></div>
+        <span class="card-icon">🔁</span>
+        <div class="card-title">Upsell, Cross-sell & Retención</div>
+        <div class="card-body">
+          Conseguir un cliente nuevo cuesta 5-7x más que retener uno. El dinero real está en los clientes existentes.<br><br>
+          <strong style="color:var(--text)">Upsell:</strong> venderle más del mismo tipo de producto (versión premium, más cantidad)<br>
+          <strong style="color:var(--text)">Cross-sell:</strong> venderle productos complementarios<br>
+          <strong style="color:var(--text)">Retención:</strong> mantener al cliente activo y satisfecho<br><br>
+          <strong style="color:var(--text)">Estrategias de retención:</strong><br>
+          • Check-ins proactivos (no esperes a que se queje)<br>
+          • Programa de referidos con incentivo<br>
+          • Newsletter con valor, no solo promociones<br>
+          • Pide feedback regularmente y actúa en él
+        </div>
+        <div class="card-tags">
+          <span class="tag">upsell</span><span class="tag">retención</span><span class="tag">LTV</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p4"></div>
+        <span class="card-icon">🏗️</span>
+        <div class="card-title">Construir un Equipo de Ventas</div>
+        <div class="card-body">
+          Si quieres escalar, necesitarás delegar las ventas. Aquí el orden correcto:<br><br>
+          <ul class="num-list">
+            <li><span class="n">01</span><div><strong>Documenta tu proceso de ventas</strong> antes de contratar a alguien</div></li>
+            <li><span class="n">02</span><div><strong>Contrata primero un SDR</strong> (Sales Development Rep) para prospección</div></li>
+            <li><span class="n">03</span><div><strong>Luego un AE</strong> (Account Executive) para cerrar</div></li>
+            <li><span class="n">04</span><div><strong>Crea un playbook</strong> de ventas: scripts, objeciones, casos de uso</div></li>
+            <li><span class="n">05</span><div><strong>Mide con las mismas métricas</strong> que usabas tú</div></li>
+          </ul>
+        </div>
+        <div class="card-tags">
+          <span class="tag">equipo</span><span class="tag">SDR</span><span class="tag">escalado</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FASE 5 ══════════════════ -->
+<section id="fase5">
+  <div class="container">
+    <div class="section-header p5">
+      <span class="phase-badge" style="background:rgba(255,77,141,0.12);color:var(--phase5)">Fase 05 · 12+ meses</span>
+      <h2 class="section-title">Maestría: El Nivel<br>que Pocos Alcanzan</h2>
+      <p class="section-desc">Aquí es donde los buenos vendedores se convierten en los mejores.</p>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-accent-line p5"></div>
+        <span class="card-icon">🧘</span>
+        <div class="card-title">Inteligencia Emocional en Ventas</div>
+        <div class="card-body">
+          Los vendedores top tienen IE (inteligencia emocional) alta. Esto se aprende.<br><br>
+          <strong style="color:var(--text)">Componentes críticos:</strong><br>
+          • <strong style="color:var(--text)">Autogestión:</strong> controlar el estado emocional cuando el cliente está difícil<br>
+          • <strong style="color:var(--text)">Empatía real:</strong> sentir genuinamente el problema del cliente<br>
+          • <strong style="color:var(--text)">Resiliencia:</strong> recuperarse rápido del rechazo (10 "no" antes del siguiente "sí")<br>
+          • <strong style="color:var(--text)">Lectura emocional:</strong> detectar el estado del cliente y adaptarte<br><br>
+          Práctica: después de cada llamada, escribe cómo te sentiste y qué puedes mejorar emocionalmente.
+        </div>
+        <div class="card-tags">
+          <span class="tag">IE</span><span class="tag">empatía</span><span class="tag">resiliencia</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p5"></div>
+        <span class="card-icon">🔬</span>
+        <div class="card-title">Metodologías Avanzadas de Ventas</div>
+        <div class="card-body">
+          Una vez tengas el proceso básico, profundiza en metodologías especializadas:<br><br>
+          • <strong style="color:var(--text)">Challenger Sale:</strong> enseña, personaliza y toma control. Para B2B complejo.<br>
+          • <strong style="color:var(--text)">Gap Selling:</strong> vende el gap entre el estado actual y el deseado.<br>
+          • <strong style="color:var(--text)">MEDDIC/MEDDPICC:</strong> calificación rigurosa para ventas enterprise.<br>
+          • <strong style="color:var(--text)">Sandler Selling:</strong> técnica del "no pain, no deal". Muy honesta.<br>
+          • <strong style="color:var(--text)">Value-Based Selling:</strong> todo gira en torno al ROI y valor medible.<br><br>
+          No apliques todas. Elige la que mejor encaje con tu tipo de venta.
+        </div>
+        <div class="card-tags">
+          <span class="tag">Challenger</span><span class="tag">MEDDIC</span><span class="tag">Sandler</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p5"></div>
+        <span class="card-icon">🌐</span>
+        <div class="card-title">Personal Brand como Vendedor</div>
+        <div class="card-body">
+          Los mejores vendedores se convierten en marcas. La gente les busca a <em>ellos</em>, no a sus empresas.<br><br>
+          <strong style="color:var(--text)">Cómo construir tu marca personal:</strong><br>
+          • Elige 1-2 plataformas donde está tu cliente ideal<br>
+          • Publica consistentemente sobre tu nicho<br>
+          • Comparte resultados reales (con permiso del cliente)<br>
+          • Sé honesto sobre lo que no funciona también<br>
+          • Construye una comunidad, no solo seguidores<br><br>
+          Con una marca personal fuerte, el outreach frío ya no es necesario: los clientes llegan solos.
+        </div>
+        <div class="card-tags">
+          <span class="tag">personal brand</span><span class="tag">inbound</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent-line p5"></div>
+        <span class="card-icon">♟️</span>
+        <div class="card-title">Ventas Estratégicas & Account Management</div>
+        <div class="card-body">
+          En ventas B2B de alto valor, no vendes a una persona: vendes a un comité de decisión.<br><br>
+          <strong style="color:var(--text)">Conceptos clave:</strong><br>
+          • <strong style="color:var(--text)">Champion:</strong> tu aliado interno que te vende cuando no estás<br>
+          • <strong style="color:var(--text)">Economic Buyer:</strong> quien firma el cheque. Debes llegar a ellos.<br>
+          • <strong style="color:var(--text)">Decision Criteria:</strong> en qué se basan para elegir proveedor<br>
+          • <strong style="color:var(--text)">Mapa de poder:</strong> visualiza quién influye en la decisión<br><br>
+          Herramienta: usa la metodología MEDDIC para calificar oportunidades complejas.
+        </div>
+        <div class="card-tags">
+          <span class="tag">enterprise</span><span class="tag">account management</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TIMELINE DE APRENDIZAJE ══════════════════ -->
+<div class="band" id="plan">
+  <div class="container">
+    <div class="section-header" style="padding-top:0">
+      <span class="phase-badge">Tu Plan de Acción</span>
+      <h2 class="section-title">Semana a Semana:<br>Cómo Aprenderlo</h2>
+      <p class="section-desc">El roadmap exacto con acciones concretas para cada etapa.</p>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card card-wide">
+        <div>
+          <div class="card-title">📅 Semanas 1-4: Los Cimientos</div>
+          <br>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--accent)"></div>
+              <div class="tl-time">Semana 1</div>
+              <div class="tl-title">Lee + Define</div>
+              <div class="tl-body">Lee "Cómo ganar amigos e influir en las personas". Define tu ICP por escrito. Aprende tu producto al 100%. Escribe la propuesta de valor.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--accent)"></div>
+              <div class="tl-time">Semana 2</div>
+              <div class="tl-title">Primeros Contactos</div>
+              <div class="tl-body">Envía 20 mensajes de prospección (LinkedIn, email, WhatsApp). Sin vender todavía: solo conecta y pregunta. Aprende a escuchar.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--accent)"></div>
+              <div class="tl-time">Semana 3</div>
+              <div class="tl-title">Primeras Conversaciones</div>
+              <div class="tl-body">Agenda 5 llamadas de discovery. Usa SPIN. Grábate. Escucha la grabación. Identifica qué mejorar. Repite.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--accent)"></div>
+              <div class="tl-time">Semana 4</div>
+              <div class="tl-title">Primera Propuesta</div>
+              <div class="tl-body">Prepara tu primera propuesta/presentación. Practica el manejo de objeciones con alguien. Intenta tu primer cierre. Aprende del resultado.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card-title">📅 Meses 2-6: El Sistema</div>
+          <br>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--phase2)"></div>
+              <div class="tl-time">Mes 2</div>
+              <div class="tl-title">Establece Rutina Diaria</div>
+              <div class="tl-body">Bloquea 2 horas de prospección cada día por la mañana. Set up HubSpot. Comienza a trackear métricas semanales básicas.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--phase2)"></div>
+              <div class="tl-time">Mes 3</div>
+              <div class="tl-title">Refina el Copy</div>
+              <div class="tl-body">Estudia copywriting (PAS, AIDA). Reescribe todos tus mensajes de prospección. Testa A/B líneas de asunto. Mejora tasa de respuesta.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--phase2)"></div>
+              <div class="tl-time">Mes 4-5</div>
+              <div class="tl-title">Storytelling & Prueba Social</div>
+              <div class="tl-body">Recopila 3-5 historias de clientes. Aprende a contarlas. Pide testimonios en video. Incorpora al proceso.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--phase2)"></div>
+              <div class="tl-time">Mes 6</div>
+              <div class="tl-title">Automatiza y Delega</div>
+              <div class="tl-body">Implementa secuencias automatizadas. Crea tu playbook de ventas por escrito. Analiza qué etapa del funnel tiene mayor pérdida.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ YOUTUBE ══════════════════ -->
+<section id="youtube">
+  <div class="container">
+    <div class="section-header">
+      <span class="phase-badge">Recursos Gratuitos</span>
+      <h2 class="section-title">¿Puedo Aprender por<br>YouTube?</h2>
+      <p class="section-desc">Sí, pero con criterio. YouTube es brillante para conceptos, nulo para práctica. Aquí los mejores canales.</p>
+    </div>
+
+    <div class="highlight-box" style="margin-bottom:40px">
+      <h3>⚠️ La verdad sobre aprender ventas por YouTube</h3>
+      <ul class="check-list">
+        <li><strong>SÍ funciona para:</strong> aprender marcos teóricos, escuchar a expertos, inspirarte, entender conceptos como SPIN o Challenger Sale, ver ejemplos reales.</li>
+        <li><strong>NO funciona solo para:</strong> desarrollar la habilidad real. Las ventas son una habilidad práctica. Necesitas hacer llamadas reales, recibir rechazo real, y analizar tus propias conversaciones.</li>
+        <li><strong>La regla 70-20-10:</strong> 70% práctica real, 20% coaching/feedback, 10% teoría/YouTube. La mayoría invierte al revés.</li>
+        <li><strong>Peligro del consumo pasivo:</strong> ver 5 horas de YouTube en ventas sin hacer una sola llamada = cero avance. La sensación de aprender no es aprender.</li>
+      </ul>
+    </div>
+
+    <div class="yt-grid">
+      <div class="yt-card">
+        <div class="yt-logo">🇺🇸</div>
+        <div>
+          <div class="yt-name">Alex Hormozi</div>
+          <div class="yt-desc">Maestro en oferta, copy de ventas y cierre. Su libro "$100M Offers" es una lectura obligatoria. En YouTube: frameworks de oferta y conversión.</div>
+          <div class="yt-tipo">● Inglés · Ofertas · Cierre</div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">🇺🇸</div>
+        <div>
+          <div class="yt-name">Jeremy Miner</div>
+          <div class="yt-desc">El mejor en técnicas de preguntas (NEPQ). Sus roleplay de manejo de objeciones son de lo mejor que existe en YouTube para ventas.</div>
+          <div class="yt-tipo">● Inglés · Objeciones · Preguntas</div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">🇺🇸</div>
+        <div>
+          <div class="yt-name">Grant Cardone</div>
+          <div class="yt-desc">Motivación y mentalidad de ventas. Polarizante pero efectivo para subir la energía y atacar el miedo al rechazo. Mejor para mentalidad que técnica.</div>
+          <div class="yt-tipo">● Inglés · Mentalidad · Motivación</div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">🇺🇸</div>
+        <div>
+          <div class="yt-name">Patrick Dang</div>
+          <div class="yt-desc">Cold email, LinkedIn outreach y ventas B2B modernas. Muy práctico y accionable. Ideal para prospección digital.</div>
+          <div class="yt-tipo">● Inglés · Cold Email · LinkedIn</div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">🇪🇸</div>
+        <div>
+          <div class="yt-name">Facundo Lúquez</div>
+          <div class="yt-desc">Uno de los mejores en español para copywriting y ventas digitales. Muy práctico con frameworks aplicables directo a tus mensajes.</div>
+          <div class="yt-tipo">● Español · Copy · Ventas digitales</div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">🇪🇸</div>
+        <div>
+          <div class="yt-name">Jürgen Klaric</div>
+          <div class="yt-desc">Neuromarketing y psicología del consumidor en español. Sus charlas sobre por qué compramos la gente son fascinantes y aplicables.</div>
+          <div class="yt-tipo">● Español · Neuroventas · Psicología</div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">🇪🇸</div>
+        <div>
+          <div class="yt-name">Victor Küppers</div>
+          <div class="yt-desc">Actitud, motivación y la importancia del entusiasmo en ventas. Su charla TEDx es una de las más vistas en español. Ideal para empezar con mentalidad correcta.</div>
+          <div class="yt-tipo">● Español · Actitud · Inspiración</div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">🇺🇸</div>
+        <div>
+          <div class="yt-name">HubSpot YouTube</div>
+          <div class="yt-desc">Canal oficial con tutoriales de su CRM, estrategias inbound y process de ventas modernas. Muy educativo y gratuito.</div>
+          <div class="yt-tipo">● Inglés · CRM · Inbound · Proceso</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ LIBROS ══════════════════ -->
+<div class="band" id="recursos">
+  <div class="container">
+    <div class="section-header" style="padding-top:0">
+      <span class="phase-badge">Biblioteca Esencial</span>
+      <h2 class="section-title">Los Libros que<br>Debes Leer</h2>
+      <p class="section-desc">En orden de prioridad. No los leas todos a la vez. Lee uno, aplícalo, luego lee el siguiente.</p>
+    </div>
+
+    <div class="books-list">
+      <div class="book-card">
+        <div class="book-cover">📗</div>
+        <div>
+          <div class="book-title">Cómo Ganar Amigos e Influir en las Personas</div>
+          <div class="book-author">Dale Carnegie · Prioridad: ⭐⭐⭐⭐⭐</div>
+          <div class="book-why">El libro fundacional. Enseña la base de toda relación comercial: hacer que las personas se sientan importantes. Lectura #1 obligatoria.</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-cover">📘</div>
+        <div>
+          <div class="book-title">Influence: The Psychology of Persuasion</div>
+          <div class="book-author">Robert Cialdini · Prioridad: ⭐⭐⭐⭐⭐</div>
+          <div class="book-why">Los 6 principios de influencia que mueven a las personas a decir sí. Libro de psicología aplicada a ventas. Cambió el marketing para siempre.</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-cover">📙</div>
+        <div>
+          <div class="book-title">SPIN Selling</div>
+          <div class="book-author">Neil Rackham · Prioridad: ⭐⭐⭐⭐⭐</div>
+          <div class="book-why">Basado en 35,000 llamadas de ventas reales. La metodología de preguntas más probada para ventas consultivas y B2B.</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-cover">📕</div>
+        <div>
+          <div class="book-title">$100M Offers</div>
+          <div class="book-author">Alex Hormozi · Prioridad: ⭐⭐⭐⭐⭐</div>
+          <div class="book-why">Cómo crear una oferta tan buena que la gente se sienta estúpida diciendo no. Lectura obligatoria para cualquiera que venda servicios o productos digitales.</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-cover">📗</div>
+        <div>
+          <div class="book-title">Never Split the Difference</div>
+          <div class="book-author">Chris Voss · Prioridad: ⭐⭐⭐⭐</div>
+          <div class="book-why">Negociación de rehenes aplicada a ventas y vida. Técnicas de escucha activa, mirroring y labeling que transforman cualquier conversación difícil.</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-cover">📘</div>
+        <div>
+          <div class="book-title">The Challenger Sale</div>
+          <div class="book-author">Matthew Dixon · Prioridad: ⭐⭐⭐⭐</div>
+          <div class="book-why">Investigación con miles de vendedores: los que enseñan, personalizan y toman control de la conversación superan a los "relacionales". Ideal para B2B.</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-cover">📙</div>
+        <div>
+          <div class="book-title">Gap Selling</div>
+          <div class="book-author">Keenan · Prioridad: ⭐⭐⭐⭐</div>
+          <div class="book-why">Vender el gap entre el estado actual del cliente y donde quiere estar. Framework moderno que reemplaza el pitch tradicional por conversaciones de valor.</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-cover">📕</div>
+        <div>
+          <div class="book-title">Predictable Revenue</div>
+          <div class="book-author">Aaron Ross · Prioridad: ⭐⭐⭐</div>
+          <div class="book-why">El libro que reinventó el outbound en Salesforce. Cómo construir un sistema de prospección predecible y escalable. Para cuando quieres escalar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ TRUCOS ══════════════════ -->
+<section id="trucos">
+  <div class="container">
+    <div class="section-header">
+      <span class="phase-badge">El Arsenal</span>
+      <h2 class="section-title">30+ Trucos, Estrategias<br>& Hacks Reales</h2>
+      <p class="section-desc">Probados en ventas reales. No teoría: armas tácticas para usar hoy.</p>
+    </div>
+
+    <div class="tricks-grid">
+
+      <div class="trick-card" style="border-color:var(--accent)">
+        <div class="trick-num">TRUCO 01</div>
+        <div class="trick-title">El Silencio Vendedor</div>
+        <div class="trick-body">Después de dar el precio, cierra la boca. Quien habla primero después del precio pierde. El silencio incomoda al cliente a justificarse o aceptar.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase2)">
+        <div class="trick-num">TRUCO 02</div>
+        <div class="trick-title">La Pregunta del "¿Qué más?"</div>
+        <div class="trick-body">Cuando el cliente termina de hablar, di "¿Qué más?" o "Cuéntame más". Extraes la información real que normalmente no darían solos.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase3)">
+        <div class="trick-num">TRUCO 03</div>
+        <div class="trick-title">Ancla Alto, Ofrece Menos</div>
+        <div class="trick-body">Empieza con el paquete más completo (más caro). Luego ofrece opciones menores. El cliente compara vs el ancla, no vs el vacío.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase4)">
+        <div class="trick-num">TRUCO 04</div>
+        <div class="trick-title">Video de Prospección Personalizado</div>
+        <div class="trick-body">Graba un video de 60 segundos con Loom mostrando el perfil LinkedIn del prospecto. Tasa de respuesta 3-5x mayor que texto frío. Pocos lo hacen.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase5)">
+        <div class="trick-num">TRUCO 05</div>
+        <div class="trick-title">El "Sí" Pequeño</div>
+        <div class="trick-body">Antes de pedir el gran compromiso, pide uno pequeño. "¿Puedo enviarte algo por email?" → sí → "¿Tienes 15 min esta semana?" → sí → "¿Cuándo empezamos?"</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--accent)">
+        <div class="trick-num">TRUCO 06</div>
+        <div class="trick-title">Mencionar a un Competidor</div>
+        <div class="trick-body">Pregunta: "¿Estás hablando con otras opciones?" Si sí, muéstrate seguro. Describe tu diferencia sin atacar al competidor. La confianza es la diferencia.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase2)">
+        <div class="trick-num">TRUCO 07</div>
+        <div class="trick-title">La Revisión Post-Llamada</div>
+        <div class="trick-body">Después de cada llamada escribe: 1 cosa que hiciste bien, 1 cosa a mejorar. En 3 meses tendrás un log de mejora brutal. Los mejores hacen esto siempre.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase3)">
+        <div class="trick-num">TRUCO 08</div>
+        <div class="trick-title">El Email de Ruptura</div>
+        <div class="trick-body">Si alguien no responde después de 5 intentos, envía: "Entiendo que quizás esto no es prioridad. ¿Quieres que te elimine de mi lista?" Tasa de respuesta altísima.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase4)">
+        <div class="trick-num">TRUCO 09</div>
+        <div class="trick-title">Testimonios en el Momento Clave</div>
+        <div class="trick-body">No guardes los testimonios para el final. Úsalos justo cuando el cliente expresa una duda o miedo. "Otro cliente tenía exactamente ese miedo y mira lo que pasó..."</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase5)">
+        <div class="trick-num">TRUCO 10</div>
+        <div class="trick-title">La Regla de las 24 Horas</div>
+        <div class="trick-body">Envía siempre un resumen de lo acordado en menos de 24 horas después de una reunión. Te diferencia, crea accountability y mantiene el momentum.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--accent)">
+        <div class="trick-num">TRUCO 11</div>
+        <div class="trick-title">Investiga Antes de Cada Llamada</div>
+        <div class="trick-body">5 minutos en LinkedIn + web del prospecto antes de llamar. Menciona algo específico: "Vi que lanzaron X producto". Demuestra que no eres un bot.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase2)">
+        <div class="trick-num">TRUCO 12</div>
+        <div class="trick-title">Haz que el Cliente Diga el Valor</div>
+        <div class="trick-body">En lugar de decir "esto te ahorrará 10 horas", pregunta: "Si resolvieras este problema, ¿cuánto tiempo recuperarías?" Cuando ellos lo dicen, es más poderoso.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase3)">
+        <div class="trick-num">TRUCO 13</div>
+        <div class="trick-title">La Escasez Legítima</div>
+        <div class="trick-body">Solo usa escasez si es real: "Solo tomo 3 clientes por mes para dar atención personalizada." La escasez falsa destruye la confianza cuando se descubre.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase4)">
+        <div class="trick-num">TRUCO 14</div>
+        <div class="trick-title">Roleplay de Objeciones</div>
+        <div class="trick-body">Una vez por semana, pide a alguien que te ataque con todas las objeciones posibles. La única forma de mejorar en esto es practicarlo hasta que sea automático.</div>
+      </div>
+
+      <div class="trick-card" style="border-color:var(--phase5)">
+        <div class="trick-num">TRUCO 15</div>
+        <div class="trick-title">El "¿Qué te impediría...?"</div>
+        <div class="trick-body">Antes del cierre: "Si todo lo que te he mostrado tiene sentido, ¿qué te impediría arrancar esta semana?" Descubres la objeción real antes de que te bloquee.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ RUTINA ══════════════════ -->
+<div class="band">
+  <div class="container">
+    <div class="section-header" style="padding-top:0">
+      <span class="phase-badge">Hábitos de Élite</span>
+      <h2 class="section-title">La Rutina Diaria de un<br>Vendedor Top</h2>
+    </div>
+    <div class="cards-grid">
+      <div class="card card-wide">
+        <div>
+          <div class="card-title">🌅 Mañana (2-3 horas)</div>
+          <br>
+          <ul class="num-list">
+            <li><span class="n">AM</span><div><strong>Bloque sagrado de prospección:</strong> 20-30 contactos nuevos. Sin excusas. Esta es la hora más importante del día.</div></li>
+            <li><span class="n">AM</span><div><strong>Revisar y responder:</strong> respuestas del día anterior, reagendar, dar seguimiento activo al pipeline.</div></li>
+            <li><span class="n">AM</span><div><strong>Preparar las llamadas del día:</strong> investiga a cada prospecto antes de llamar. 5 min por persona.</div></li>
+          </ul>
+          <div class="card-title" style="margin-top:28px">📚 Noche (30 min)</div>
+          <br>
+          <ul class="check-list">
+            <li><strong>Revisa las métricas del día:</strong> ¿cuántos contactos, respuestas, citas agendadas?</li>
+            <li><strong>Escribe el aprendizaje del día:</strong> 1 cosa que salió bien, 1 cosa a mejorar</li>
+            <li><strong>Lee 10-20 páginas</strong> del libro de ventas que estés leyendo</li>
+            <li><strong>Prepara el día siguiente:</strong> lista de tareas prioritarias para mañana</li>
+          </ul>
+        </div>
+        <div>
+          <div class="card-title">🎯 Actividades Semanales</div>
+          <br>
+          <ul class="check-list">
+            <li><strong>Lunes:</strong> Revisión de pipeline completo. ¿Qué cierra esta semana? ¿Qué se eliminó?</li>
+            <li><strong>Martes-Jueves:</strong> Bloque de llamadas en frío. Es cuando más decisores están disponibles.</li>
+            <li><strong>Miércoles:</strong> Roleplay de ventas / objeciones con un compañero o mentor</li>
+            <li><strong>Viernes tarde:</strong> Análisis de métricas semanales. ¿Qué cambio hacer la próxima semana?</li>
+            <li><strong>Fin de semana (opcional):</strong> Leer, escuchar podcast de ventas, consumir contenido inspirador</li>
+          </ul>
+          <div class="quote-block" style="margin-top:20px">
+            "Los vendedores promedio esperan motivación para actuar. Los vendedores top actúan para generar motivación."
+            <cite>— Principio de ventas de alto rendimiento</cite>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ ERRORES ══════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="phase-badge">⚠️ Errores Fatales</span>
+      <h2 class="section-title">Lo que Destruye<br>Vendedores</h2>
+      <p class="section-desc">Más valioso que saber qué hacer es saber qué NO hacer. Estos son los errores que arruinan más ventas.</p>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-accent-line" style="background:#ff4040"></div>
+        <span class="card-icon">🚫</span>
+        <div class="card-title">Hablar más de lo que Escuchas</div>
+        <div class="card-body">El vendedor que más habla es el que menos vende. La regla: 30% tú, 70% el cliente. Si estás explicando más de 2 minutos seguidos sin hacer una pregunta, algo está mal. Entrena el silencio activo.</div>
+      </div>
+      <div class="card">
+        <div class="card-accent-line" style="background:#ff4040"></div>
+        <span class="card-icon">🚫</span>
+        <div class="card-title">Presentar antes de Entender el Problema</div>
+        <div class="card-body">El error más común. Muchos vendedores lanzan el pitch completo antes de saber nada del cliente. Resultado: hablan de funciones irrelevantes para el prospecto y pierden la atención.</div>
+      </div>
+      <div class="card">
+        <div class="card-accent-line" style="background:#ff4040"></div>
+        <span class="card-icon">🚫</span>
+        <div class="card-title">No Pedir el Cierre</div>
+        <div class="card-body">La gente no compra sola. Hay que pedir la venta de forma directa. "¿Cuándo empezamos?" "¿Avanzamos con esto?" No asumas que porque la conversación fue bien, el cierre llegará solo.</div>
+      </div>
+      <div class="card">
+        <div class="card-accent-line" style="background:#ff4040"></div>
+        <span class="card-icon">🚫</span>
+        <div class="card-title">Rendirse en el Primer "No"</div>
+        <div class="card-body">El primer "no" rara vez es un no definitivo. Suele significar "no convencido todavía" o "no lo suficiente claro". Investiga el no: "¿Qué te genera duda?" Luego responde esa duda.</div>
+      </div>
+      <div class="card">
+        <div class="card-accent-line" style="background:#ff4040"></div>
+        <span class="card-icon">🚫</span>
+        <div class="card-title">Bajar el Precio al Primer "Es Caro"</div>
+        <div class="card-body">Bajar el precio sin explorar la objeción destruye el valor percibido y te quita margen. Primero explora: "¿Caro en comparación con qué?" o "¿Cuál parte del valor no te convence?" Negocia desde ahí.</div>
+      </div>
+      <div class="card">
+        <div class="card-accent-line" style="background:#ff4040"></div>
+        <span class="card-icon">🚫</span>
+        <div class="card-title">No Prospectar Constantemente</div>
+        <div class="card-body">Muchos vendedores solo prospectan cuando no tienen clientes. Error: cuando llegas al pipeline vacío ya es tarde. La prospección diaria es el hábito más crítico, incluso cuando las ventas van bien.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--text);margin-bottom:16px">
+    El conocimiento sin acción<br>es entretenimiento.
+  </div>
+  <p style="max-width:500px;margin:0 auto 32px">
+    Tienes el mapa. Ahora haz la primera llamada, envía el primer mensaje, 
+    agenda la primera reunión. <strong style="color:var(--text)">El movimiento crea el momentum.</strong>
+  </p>
+  <div style="border-top:1px solid var(--border);margin:32px auto;max-width:400px"></div>
+  <p>Road Map de Ventas · Generado con ❤️ · <strong>Aplícalo. No solo lo leas.</strong></p>
+</footer>
+
+</body>
+</html>

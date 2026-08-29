@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Map: Hablar, Expresarse y Persuadir</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0d0d0f;
+    --surface: #141418;
+    --surface2: #1a1a20;
+    --border: #2a2a35;
+    --accent: #c8ff00;
+    --accent2: #7b61ff;
+    --accent3: #ff6b35;
+    --text: #e8e8f0;
+    --text-muted: #7a7a8c;
+    --text-dim: #4a4a5a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(13,13,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -20%; left: -10%;
+    width: 60vw; height: 60vh;
+    background: radial-gradient(ellipse, rgba(200,255,0,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 10%; right: 0;
+    width: 40vw; height: 50vh;
+    background: radial-gradient(ellipse, rgba(123,97,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 7vw, 7rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 2rem;
+  }
+  .hero-title span { color: var(--accent); }
+  .hero-sub {
+    max-width: 580px;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 3rem;
+  }
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .hero-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem; right: 4rem;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .scroll-hint::before {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+  }
+
+  /* SECTIONS */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+
+  section {
+    padding: 7rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: start;
+    margin-bottom: 5rem;
+  }
+  .section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 6rem;
+    font-weight: 800;
+    color: var(--border);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    user-select: none;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .section-title .hl { color: var(--accent); }
+  .section-title .hl2 { color: var(--accent2); }
+  .section-title .hl3 { color: var(--accent3); }
+  .section-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 520px;
+  }
+
+  /* PHASE TIMELINE */
+  .phases-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .phase {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    position: relative;
+  }
+  .phase-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 3rem;
+    padding-top: 0.5rem;
+    position: relative;
+  }
+  .phase-left::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 1rem;
+    bottom: -2rem;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--border) 100%);
+  }
+  .phase:last-child .phase-left::after { display: none; }
+  .phase-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    position: absolute;
+    right: -7px;
+    top: 0.75rem;
+    box-shadow: 0 0 20px rgba(200,255,0,0.5);
+    flex-shrink: 0;
+  }
+  .phase-dot.p2 { background: var(--accent2); box-shadow: 0 0 20px rgba(123,97,255,0.5); }
+  .phase-dot.p3 { background: var(--accent3); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
+  .phase-dot.p4 { background: #00d4ff; box-shadow: 0 0 20px rgba(0,212,255,0.5); }
+  .phase-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 600;
+    text-align: right;
+  }
+  .phase-duration {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 700;
+    text-align: right;
+    margin-top: 0.25rem;
+  }
+  .phase-duration.p2 { color: var(--accent2); }
+  .phase-duration.p3 { color: var(--accent3); }
+  .phase-duration.p4 { color: #00d4ff; }
+  .phase-right {
+    padding: 0 0 4rem 3rem;
+  }
+  .phase-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .phase-tagline {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .topic-card {
+    background: var(--surface);
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+  .topic-card:hover { background: var(--surface2); }
+  .topic-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+  .topic-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .topic-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .topic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+  .tag {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    background: rgba(200,255,0,0.08);
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .tag.v { background: rgba(123,97,255,0.1); color: var(--accent2); }
+  .tag.o { background: rgba(255,107,53,0.1); color: var(--accent3); }
+  .tag.c { background: rgba(0,212,255,0.1); color: #00d4ff; }
+
+  /* MODULES */
+  .module-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    transition: border-color 0.3s;
+  }
+  .module-block:hover { border-color: rgba(200,255,0,0.2); }
+  .module-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .module-icon-wrap {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: rgba(200,255,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .module-icon-wrap.v { background: rgba(123,97,255,0.1); }
+  .module-icon-wrap.o { background: rgba(255,107,53,0.1); }
+  .module-icon-wrap.c { background: rgba(0,212,255,0.1); }
+  .module-meta { flex: 1; }
+  .module-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+  }
+  .module-subtitle { color: var(--text-muted); font-size: 0.85rem; }
+  .module-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .module-col-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .checklist li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .checklist li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    margin-top: 0.15rem;
+  }
+  .checklist li.v::before { color: var(--accent2); }
+  .checklist li.o::before { color: var(--accent3); }
+  .checklist li.c::before { color: #00d4ff; }
+  .checklist li span { color: var(--text); }
+
+  /* STRATEGIES */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .strategy-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+  .strategy-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .strategy-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .strategy-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* YOUTUBE SECTION */
+  .yt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .yt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .yt-card:hover { border-color: rgba(255,0,0,0.3); transform: translateY(-2px); }
+  .yt-banner {
+    height: 6px;
+    background: #ff0000;
+  }
+  .yt-body { padding: 1.5rem; }
+  .yt-category {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+  }
+  .yt-channel {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .yt-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .yt-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .yt-topic {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255,0,0,0.08);
+    color: #ff6b6b;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  /* TRICKS */
+  .tricks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .trick-item {
+    background: var(--surface);
+    padding: 1.75rem 2rem;
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+    transition: background 0.2s;
+  }
+  .trick-item:hover { background: var(--surface2); }
+  .trick-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-dim);
+    line-height: 1.2;
+  }
+  .trick-content {}
+  .trick-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.35rem;
+  }
+  .trick-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .trick-badge {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    height: fit-content;
+  }
+  .trick-badge.pro { background: rgba(200,255,0,0.12); color: var(--accent); }
+  .trick-badge.key { background: rgba(123,97,255,0.12); color: var(--accent2); }
+  .trick-badge.fast { background: rgba(255,107,53,0.12); color: var(--accent3); }
+
+  /* MINDSET */
+  .mindset-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .mindset-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+  .mindset-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .mindset-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .mindset-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* QUOTE */
+  .quote-block {
+    border-left: 3px solid var(--accent);
+    padding: 1.5rem 2rem;
+    background: rgba(200,255,0,0.03);
+    border-radius: 0 12px 12px 0;
+    margin: 2rem 0;
+  }
+  .quote-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .quote-author { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.04em;
+    margin-bottom: 0.75rem;
+  }
+  .footer-tagline { color: var(--text-muted); font-size: 0.9rem; max-width: 400px; }
+  .footer-note {
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* UTILS */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 3rem 0;
+  }
+  .highlight-box {
+    background: rgba(200,255,0,0.05);
+    border: 1px solid rgba(200,255,0,0.15);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+  }
+  .highlight-box.v {
+    background: rgba(123,97,255,0.05);
+    border-color: rgba(123,97,255,0.15);
+  }
+  .highlight-box.o {
+    background: rgba(255,107,53,0.05);
+    border-color: rgba(255,107,53,0.15);
+  }
+  .highlight-title {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+  .highlight-title.v { color: var(--accent2); }
+  .highlight-title.o { color: var(--accent3); }
+  .highlight-body { font-size: 0.88rem; color: var(--text-muted); }
+
+  @media (max-width: 768px) {
+    .hero { padding: 5rem 1.5rem 3rem; }
+    .container { padding: 0 1.5rem; }
+    .section-header { grid-template-columns: 1fr; gap: 1rem; }
+    .section-num { font-size: 3rem; }
+    .phase { grid-template-columns: 120px 1fr; }
+    .module-body { grid-template-columns: 1fr; }
+    .strategy-grid { grid-template-columns: 1fr; }
+    .mindset-grid { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-note { text-align: left; }
+    nav .nav-links { display: none; }
+    .hero-meta { gap: 1.5rem; }
+    .trick-item { grid-template-columns: 40px 1fr; }
+    .trick-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">VOCAL ROAD MAP</div>
+  <ul class="nav-links">
+    <li><a href="#fases">Fases</a></li>
+    <li><a href="#modulos">Módulos</a></li>
+    <li><a href="#estrategias">Estrategias</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="#trucos">Trucos</a></li>
+    <li><a href="#mentalidad">Mentalidad</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Road Map Completo · Comunicación · Expresión · Persuasión</div>
+  <h1 class="hero-title">
+    Aprende a<br>
+    <span>hablar con</span><br>
+    poder real.
+  </h1>
+  <p class="hero-sub">
+    Desde cero absoluto hasta comunicador de alto impacto. Un sistema completo con fases, módulos, estrategias, recursos de YouTube y los trucos que nadie te enseña en la escuela.
+  </p>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <div class="hero-stat-num">4</div>
+      <div class="hero-stat-label">Grandes Fases</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">18</div>
+      <div class="hero-stat-label">Módulos de estudio</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">50+</div>
+      <div class="hero-stat-label">Técnicas y trucos</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">∞</div>
+      <div class="hero-stat-label">Posibilidades</div>
+    </div>
+  </div>
+  <div class="scroll-hint">Desplaza hacia abajo</div>
+</div>
+
+<!-- SECCIÓN 1: POR QUÉ -->
+<section id="intro">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">00</div>
+      <div>
+        <h2 class="section-title">¿Por qué aprender a <span class="hl">hablar bien</span> es la habilidad más rentable de tu vida?</h2>
+        <p class="section-desc">Antes de empezar, entiende qué vas a ganar. Esto no es solo "hablar bonito". Es poder.</p>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">"El que sabe pensar pero no sabe expresarlo, está al mismo nivel que el que no piensa."</div>
+      <div class="quote-author">— Principio fundamental de la comunicación</div>
+    </div>
+
+    <div class="strategy-grid">
+      <div class="strategy-card">
+        <div class="strategy-num">01</div>
+        <div class="strategy-title">Influencia social</div>
+        <div class="strategy-desc">Las personas que saben comunicarse consiguen más oportunidades, mejores trabajos, más amigos y más respeto. La percepción que los demás tienen de ti está determinada 80% por cómo te expresas.</div>
+      </div>
+      <div class="strategy-card">
+        <div class="strategy-num">02</div>
+        <div class="strategy-title">Poder económico</div>
+        <div class="strategy-desc">Negociar un salario, vender un producto, convencer a un inversor, pedir un aumento — todo depende de la comunicación. Los mejores vendedores y líderes no son los más inteligentes: son los que mejor se expresan.</div>
+      </div>
+      <div class="strategy-card">
+        <div class="strategy-num">03</div>
+        <div class="strategy-title">Autoconfianza real</div>
+        <div class="strategy-desc">Cuando sabes que puedes expresarte en cualquier situación, la ansiedad social desaparece. No se trata de ser extrovertido — se trata de tener las herramientas para cuando las necesites.</div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:2rem">
+      <div class="highlight-title">Lo que este road map cubre</div>
+      <div class="highlight-body">
+        Voz y presencia física · Vocabulario y estructura mental · Comunicación emocional · Oratoria y hablar en público · Persuasión y retórica · Storytelling · Negociación · Manejo de conflictos · Comunicación no verbal · Escucha activa · Humor e improvización · Entrevistas y networking
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 2: FASES -->
+<section id="fases">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div>
+        <h2 class="section-title">Las 4 <span class="hl">Fases</span> del aprendizaje</h2>
+        <p class="section-desc">No puedes ir del punto A al punto Z sin pasar por el camino. Aquí está el mapa completo.</p>
+      </div>
+    </div>
+
+    <div class="phases-grid">
+
+      <!-- FASE 1 -->
+      <div class="phase">
+        <div class="phase-left">
+          <div class="phase-dot"></div>
+          <div class="phase-label">Fase 1</div>
+          <div class="phase-duration">0–3 meses</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-title">Fundamentos y Consciencia</div>
+          <div class="phase-tagline">El objetivo aquí no es hablar bien todavía. Es entender qué está pasando cuando hablas y qué tienes que cambiar.</div>
+          <div class="topic-grid">
+            <div class="topic-card">
+              <div class="topic-icon">🎙️</div>
+              <div class="topic-name">Conciencia de la voz</div>
+              <div class="topic-desc">Grábate durante 5 minutos hablando de cualquier tema. Escúchate. La mayoría de personas nunca han hecho esto y quedan en shock. Identifica: ¿hablas rápido? ¿bajo? ¿dices "ehhh"? ¿tu voz es monótona?</div>
+              <div class="topic-tags"><span class="tag">Base</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🧠</div>
+              <div class="topic-name">Diagnóstico de tu estilo actual</div>
+              <div class="topic-desc">¿Eres directo o rodeas el tema? ¿Hablas de más o de menos? ¿Te quedas sin palabras? ¿Evitas el contacto visual? Necesitas un mapa real de dónde estás antes de saber hacia dónde ir.</div>
+              <div class="topic-tags"><span class="tag">Base</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">😤</div>
+              <div class="topic-name">Manejo básico del miedo</div>
+              <div class="topic-desc">El miedo a hablar en público es el número 1 del mundo. Aprende por qué ocurre (respuesta de cortisol y adrenalina) y las técnicas iniciales: respiración diafragmática, anclas mentales, y reencuadre cognitivo.</div>
+              <div class="topic-tags"><span class="tag">Base</span><span class="tag v">Mental</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">📖</div>
+              <div class="topic-name">Vocabulario activo vs. pasivo</div>
+              <div class="topic-desc">Todos entendemos más palabras de las que usamos. El vocabulario pasivo es lo que entiendes; el activo, lo que dices. El objetivo es mover palabras del pasivo al activo a través de lectura diaria y escritura.</div>
+              <div class="topic-tags"><span class="tag">Base</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🪞</div>
+              <div class="topic-name">Lenguaje no verbal inicial</div>
+              <div class="topic-desc">El 55% de comunicación es cuerpo (Mehrabian). Empieza por lo básico: postura, contacto visual y posición de los brazos. Nada de brazos cruzados, mirada perdida o espalda encorvada cuando hablas.</div>
+              <div class="topic-tags"><span class="tag">Base</span><span class="tag o">Cuerpo</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">👂</div>
+              <div class="topic-name">Escucha activa</div>
+              <div class="topic-desc">El error más grande de los comunicadores novatos: están pensando en qué van a decir mientras el otro habla. La escucha activa cambia esto: resume lo que escuchas, haz preguntas de profundización, espeja.</div>
+              <div class="topic-tags"><span class="tag">Base</span><span class="tag v">Social</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 2 -->
+      <div class="phase">
+        <div class="phase-left">
+          <div class="phase-dot p2"></div>
+          <div class="phase-label">Fase 2</div>
+          <div class="phase-duration p2">3–8 meses</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-title">Construcción de Herramientas</div>
+          <div class="phase-tagline">Aquí construyes el arsenal real: estructura mental, voz, persuasión básica y primeras experiencias en público.</div>
+          <div class="topic-grid">
+            <div class="topic-card">
+              <div class="topic-icon">🏗️</div>
+              <div class="topic-name">Estructura del discurso</div>
+              <div class="topic-desc">PREP (Punto, Razón, Ejemplo, Punto) · Regla de 3 · Pirámide invertida · SCQA (Situación, Complicación, Pregunta, Respuesta). Tener estructura mental es lo que separa a quien habla claro de quien "se pierde".</div>
+              <div class="topic-tags"><span class="tag v">Estructura</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🎚️</div>
+              <div class="topic-name">Control de la voz</div>
+              <div class="topic-desc">Ritmo, tono, volumen, pausas y resonancia. La voz es un instrumento musical. Aprende a bajar el tono para dar autoridad, a usar las pausas para generar impacto, y a variar el ritmo para no aburrir.</div>
+              <div class="topic-tags"><span class="tag v">Voz</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">📣</div>
+              <div class="topic-name">Primeras exposiciones públicas</div>
+              <div class="topic-desc">Únete a Toastmasters o un grupo de debate. Habla en reuniones de trabajo aunque no quieras. Practica en el supermercado, en el banco, en cualquier sitio. La exposición gradual es el único método real.</div>
+              <div class="topic-tags"><span class="tag v">Práctica</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">💡</div>
+              <div class="topic-name">Pensamiento rápido y respuestas</div>
+              <div class="topic-desc">El pensamiento rápido se entrena: improvisation games, leer artículos y resumirlos en voz alta al instante, técnica del "sí, y..." del impro teatral, y mapas mentales para organizar ideas al momento.</div>
+              <div class="topic-tags"><span class="tag v">Agilidad</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🔮</div>
+              <div class="topic-name">Persuasión básica (Cialdini)</div>
+              <div class="topic-desc">Los 6 principios de Robert Cialdini: Reciprocidad, Compromiso y Coherencia, Prueba Social, Autoridad, Agrado y Escasez. Estudia cada uno y empieza a identificarlos en tu vida diaria.</div>
+              <div class="topic-tags"><span class="tag v">Persuasión</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">📖</div>
+              <div class="topic-name">Storytelling básico</div>
+              <div class="topic-desc">Las historias son la forma más antigua de persuasión. Aprende la estructura: Héroe + Problema + Transformación + Resolución. Empieza a contar experiencias personales con estructura narrativa.</div>
+              <div class="topic-tags"><span class="tag v">Narrativa</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 3 -->
+      <div class="phase">
+        <div class="phase-left">
+          <div class="phase-dot p3"></div>
+          <div class="phase-label">Fase 3</div>
+          <div class="phase-duration p3">8–18 meses</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-title">Dominio e Influencia</div>
+          <div class="phase-tagline">Ya tienes las herramientas. Ahora las afilas hasta el punto donde puedes manejar cualquier conversación con intención.</div>
+          <div class="topic-grid">
+            <div class="topic-card">
+              <div class="topic-icon">⚡</div>
+              <div class="topic-name">Retórica avanzada</div>
+              <div class="topic-desc">Aprende los tropos clásicos: metáfora, analogía, antítesis, anáfora, tricolon. Estudia discursos históricos (Churchill, MLK, Mandela). La retórica no es manipulación — es el arte de hacer que la verdad sea irresistible.</div>
+              <div class="topic-tags"><span class="tag o">Avanzado</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🎭</div>
+              <div class="topic-name">Inteligencia emocional aplicada</div>
+              <div class="topic-desc">Gestión de emociones propias en tiempo real · Leer el estado emocional del interlocutor · Calibrar el mensaje según la emoción del momento · Comunicación empática en situaciones difíciles.</div>
+              <div class="topic-tags"><span class="tag o">IE</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🧲</div>
+              <div class="topic-name">Carisma y presencia</div>
+              <div class="topic-desc">El carisma es una habilidad, no un rasgo de personalidad. Elementos: warmth (calidez), competence (demostrar valor), energy (energía contagiosa) y vulnerability (mostrarte humano). Se entrena con intención.</div>
+              <div class="topic-tags"><span class="tag o">Presencia</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🤝</div>
+              <div class="topic-name">Negociación</div>
+              <div class="topic-desc">Método Harvard (ganar-ganar) · Técnicas de Chris Voss (Never Split the Difference): espejeo, etiquetado emocional, preguntas calibradas, silencio estratégico. Aplicable en trabajo, relaciones y vida diaria.</div>
+              <div class="topic-tags"><span class="tag o">Negociación</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">💣</div>
+              <div class="topic-name">Manejo de objeciones y conflictos</div>
+              <div class="topic-desc">Cómo responder a críticas sin ponerse a la defensiva · Técnica del "sí, y..." · Reencuadre de objeciones · Comunicación no violenta (CNV) de Rosenberg · Cómo dar malas noticias sin destruir relaciones.</div>
+              <div class="topic-tags"><span class="tag o">Conflicto</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🎤</div>
+              <div class="topic-name">Oratoria profesional</div>
+              <div class="topic-desc">Preparación de presentaciones con estructura TED · Diseño de apertura con gancho · Uso del espacio físico al hablar · Gesticulación intencional · Cierre memorable con llamada a la acción.</div>
+              <div class="topic-tags"><span class="tag o">Oratoria</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 4 -->
+      <div class="phase">
+        <div class="phase-left">
+          <div class="phase-dot p4"></div>
+          <div class="phase-label">Fase 4</div>
+          <div class="phase-duration p4">18 meses+</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-title">Maestría y Estilo Propio</div>
+          <div class="phase-tagline">En esta fase dejas de aplicar técnicas conscientemente y empiezan a fluir. Desarrollas un estilo único e inconfundible.</div>
+          <div class="topic-grid">
+            <div class="topic-card">
+              <div class="topic-icon">🌟</div>
+              <div class="topic-name">Humor e ingenio</div>
+              <div class="topic-desc">El humor crea conexión instantánea. No tienes que ser comediante: aprende el timing, el elemento sorpresa, la autoironía y la técnica del "subvert expectation". El humor que funciona siempre tiene estructura.</div>
+              <div class="topic-tags"><span class="tag c">Master</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🚀</div>
+              <div class="topic-name">Comunicación de alto liderazgo</div>
+              <div class="topic-desc">Cómo hablar en reuniones con autoridad · Dar feedback que transforma · Comunicación de visión y motivación · Hablar con personas de mayor rango sin intimidarse · El arte del silencio estratégico.</div>
+              <div class="topic-tags"><span class="tag c">Liderazgo</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🧬</div>
+              <div class="topic-name">Identidad comunicativa</div>
+              <div class="topic-desc">Tu estilo propio: el tono que te hace reconocible, las palabras que usas, el ritmo único tuyo. No eres un clon de nadie. Los grandes comunicadores tienen una firma que no se confunde con otra.</div>
+              <div class="topic-tags"><span class="tag c">Identidad</span></div>
+            </div>
+            <div class="topic-card">
+              <div class="topic-icon">🌐</div>
+              <div class="topic-name">Comunicación digital y personal branding</div>
+              <div class="topic-desc">Tu voz en redes, en email, en videollamadas. Hablar en cámara. Crear contenido que educa o persuade. El communicador del siglo XXI tiene que dominar ambos mundos: presencial y digital.</div>
+              <div class="topic-tags"><span class="tag c">Digital</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 3: MÓDULOS EN PROFUNDIDAD -->
+<section id="modulos">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div>
+        <h2 class="section-title">Módulos a <span class="hl2">fondo</span> — cada área explicada</h2>
+        <p class="section-desc">Aquí está el detalle real de qué aprender en cada área y cómo practicarlo.</p>
+      </div>
+    </div>
+
+    <!-- MOD 1: VOZ -->
+    <div class="module-block">
+      <div class="module-header">
+        <div class="module-icon-wrap">🎙️</div>
+        <div class="module-meta">
+          <div class="module-title">Módulo 1 — La Voz</div>
+          <div class="module-subtitle">Tu voz es la primera impresión que das. Antes del contenido, llega el sonido.</div>
+        </div>
+      </div>
+      <div class="module-body">
+        <div>
+          <div class="module-col-title">Qué aprender</div>
+          <ul class="checklist">
+            <li><span>Respiración diafragmática:</span> la base de una voz potente sin tensión</li>
+            <li><span>Proyección vocal:</span> hablar desde el diafragma, no de la garganta</li>
+            <li><span>Tono de voz:</span> tonos graves = autoridad; agudos = excitación/nerviosismo</li>
+            <li><span>Ritmo y velocidad:</span> lento = autoridad; rápido = entusiasmo (saber cuándo usar cada uno)</li>
+            <li><span>El poder de la pausa:</span> los 3 segundos antes de una idea importante la hacen pesar 3 veces más</li>
+            <li><span>Articulación y dicción:</span> pronunciar con claridad sin exagerar</li>
+            <li><span>Resonancia:</span> pecho vs. nariz vs. cabeza — cada una da sensaciones distintas</li>
+          </ul>
+        </div>
+        <div>
+          <div class="module-col-title">Cómo practicar</div>
+          <ul class="checklist v">
+            <li class="v"><span>Grábate 5 min al día</span> leyendo en voz alta — escúchate sin juzgarte</li>
+            <li class="v"><span>Lee poesía en voz alta</span> — fuerza a variar ritmo y tono</li>
+            <li class="v"><span>Trabaja con un vaso de agua sobre el abdomen</span> boca arriba para aprender respiración diafragmática</li>
+            <li class="v"><span>Practica el "zumbido":</span> humming para calentar cuerdas vocales cada mañana</li>
+            <li class="v"><span>Imita locutores de radio</span> que admires — es el método más rápido</li>
+            <li class="v"><span>Habla más despacio de lo que te parece normal</span> — la velocidad que a ti te parece lenta, a otros les parece perfecta</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOD 2: LENGUAJE NO VERBAL -->
+    <div class="module-block">
+      <div class="module-header">
+        <div class="module-icon-wrap o">🤸</div>
+        <div class="module-meta">
+          <div class="module-title">Módulo 2 — Lenguaje No Verbal</div>
+          <div class="module-subtitle">El 55% de lo que comunicas no son palabras. Es cuerpo. Es cara. Es espacio.</div>
+        </div>
+      </div>
+      <div class="module-body">
+        <div>
+          <div class="module-col-title">Qué aprender</div>
+          <ul class="checklist o">
+            <li class="o"><span>Postura de poder:</span> espalda recta, hombros hacia atrás, espacio ocupado</li>
+            <li class="o"><span>Contacto visual:</span> 60-70% del tiempo ideal. Aprende a "triángulo ocular"</li>
+            <li class="o"><span>Gesticulación:</span> manos fuera del cuerpo, gestos que amplifican (no contradicen) el mensaje</li>
+            <li class="o"><span>Expresión facial:</span> microexpresiones, sonrisa genuina (Duchenne), congruencia entre emoción y cara</li>
+            <li class="o"><span>Proxémica:</span> el manejo del espacio físico — distancia íntima, personal, social</li>
+            <li class="o"><span>Mirroring (espejeo):</span> imitar sutilmente postura del interlocutor para generar rapport</li>
+          </ul>
+        </div>
+        <div>
+          <div class="module-col-title">Cómo practicar</div>
+          <ul class="checklist o">
+            <li class="o"><span>Grábate en video</span> mientras hablas — el video revela lo que el espejo oculta</li>
+            <li class="o"><span>Practica ante el espejo</span> solo para gestos, sin hablar</li>
+            <li class="o"><span>Ve películas sin sonido</span> e intenta leer qué están sintiendo los personajes</li>
+            <li class="o"><span>Pide feedback</span> a una persona de confianza sobre tus gestos</li>
+            <li class="o"><span>Amy Cuddy - Power posing:</span> 2 minutos de postura de poder antes de una situación importante</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOD 3: PERSUASIÓN -->
+    <div class="module-block">
+      <div class="module-header">
+        <div class="module-icon-wrap v">🔮</div>
+        <div class="module-meta">
+          <div class="module-title">Módulo 3 — Persuasión y Retórica</div>
+          <div class="module-subtitle">Persuadir no es manipular. Es hacer que una persona quiera lo que tú propones porque genuinamente le conviene.</div>
+        </div>
+      </div>
+      <div class="module-body">
+        <div>
+          <div class="module-col-title">Técnicas clave</div>
+          <ul class="checklist">
+            <li><span>Ethos:</span> credibilidad — ¿por qué te van a escuchar a ti? Establécela al inicio.</li>
+            <li><span>Pathos:</span> emoción — las decisiones son emocionales, justificadas con lógica</li>
+            <li><span>Logos:</span> lógica — datos, hechos, estructura de argumento</li>
+            <li><span>Los 6 principios Cialdini:</span> reciprocidad, compromiso, prueba social, autoridad, agrado, escasez</li>
+            <li><span>Técnica del pie en la puerta:</span> pide algo pequeño antes de lo grande</li>
+            <li><span>Técnica del portazo en la cara:</span> pide algo enorme para que el "no" haga más fácil el "sí" real</li>
+            <li><span>Reencuadre (reframing):</span> cambia el contexto mental en el que el otro interpreta algo</li>
+            <li><span>La pregunta socrática:</span> hacer que el otro llegue a tu conclusión mediante preguntas</li>
+          </ul>
+        </div>
+        <div>
+          <div class="module-col-title">Libros esenciales</div>
+          <ul class="checklist v">
+            <li class="v"><span>Influence</span> — Robert Cialdini (el libro base de toda persuasión)</li>
+            <li class="v"><span>Pre-Suasion</span> — Robert Cialdini (el contexto importa más que el mensaje)</li>
+            <li class="v"><span>Never Split the Difference</span> — Chris Voss (negociación del FBI)</li>
+            <li class="v"><span>How to Win Friends and Influence People</span> — Dale Carnegie (atemporal)</li>
+            <li class="v"><span>Rhetoric</span> — Aristóteles (2400 años después, sigue siendo válido)</li>
+            <li class="v"><span>Thinking, Fast and Slow</span> — Kahneman (entiende cómo decide el cerebro)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOD 4: STORYTELLING -->
+    <div class="module-block">
+      <div class="module-header">
+        <div class="module-icon-wrap">📖</div>
+        <div class="module-meta">
+          <div class="module-title">Módulo 4 — Storytelling</div>
+          <div class="module-subtitle">El cerebro humano está diseñado para historias. Los datos informan, las historias mueven.</div>
+        </div>
+      </div>
+      <div class="module-body">
+        <div>
+          <div class="module-col-title">Estructuras narrativas</div>
+          <ul class="checklist">
+            <li><span>Héroe + Problema + Transformación:</span> la estructura base de toda historia</li>
+            <li><span>El viaje del héroe (Campbell):</span> mundo ordinario → llamada → prueba → transformación</li>
+            <li><span>Pixar Storytelling:</span> "Érase que se era... Todos los días... Hasta que un día... Por eso... Hasta que finalmente... Desde entonces..."</li>
+            <li><span>La técnica del "¿y después qué pasó?":</span> cada parte de la historia debe generar esta pregunta</li>
+            <li><span>Detalles sensoriales:</span> cuándo, dónde, cómo olía, qué sentiste — hacen la historia real</li>
+            <li><span>El momento de vulnerabilidad:</span> el punto donde muestras que también fallaste — conecta más que el triunfo</li>
+          </ul>
+        </div>
+        <div>
+          <div class="module-col-title">Cómo practicar</div>
+          <ul class="checklist">
+            <li><span>Storytelling diario:</span> convierte 3 momentos de tu día en mini-historias con estructura</li>
+            <li><span>Banco de historias:</span> crea un documento con 20 historias personales organizadas por tema (fracaso, éxito, aprendizaje, humor)</li>
+            <li><span>The Moth Radio Hour:</span> escucha los mejores narradores del mundo (podcast gratuito)</li>
+            <li><span>Analiza TED Talks:</span> identifica exactamente dónde usan historia y por qué</li>
+            <li><span>Escribe antes de hablar:</span> escribe tus historias primero, luego cuéntalas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOD 5: ESCUCHA Y RAPPORT -->
+    <div class="module-block">
+      <div class="module-header">
+        <div class="module-icon-wrap c">👂</div>
+        <div class="module-meta">
+          <div class="module-title">Módulo 5 — Escucha Activa y Rapport</div>
+          <div class="module-subtitle">El mejor comunicador del mundo no es el que más habla — es el que hace que los demás sientan que los entiende perfectamente.</div>
+        </div>
+      </div>
+      <div class="module-body">
+        <div>
+          <div class="module-col-title">Técnicas de escucha</div>
+          <ul class="checklist c">
+            <li class="c"><span>Escucha sin preparar respuesta:</span> el 90% de las personas están pensando en qué decir, no escuchando</li>
+            <li class="c"><span>Parafrasear:</span> "lo que escucho decirte es..." — valida y clarifica</li>
+            <li class="c"><span>Preguntas de profundización:</span> "¿qué quisiste decir con eso?" "¿cómo te hizo sentir?"</li>
+            <li class="c"><span>Silencio cómodo:</span> aprende a tolerar el silencio — suele provocar que el otro diga más</li>
+            <li class="c"><span>Minimal encouragers:</span> "ajá", "entiendo", "sí" — señales de que sigues activo</li>
+          </ul>
+        </div>
+        <div>
+          <div class="module-col-title">Construcción de rapport</div>
+          <ul class="checklist c">
+            <li class="c"><span>Mirroring sutil:</span> imitar postura, velocidad y tono del interlocutor</li>
+            <li class="c"><span>Encontrar terreno común:</span> la primera conversación siempre debe buscar algo compartido</li>
+            <li class="c"><span>Usar el nombre:</span> usar el nombre de alguien 1-2 veces en la conversación genera conexión instantánea</li>
+            <li class="c"><span>Curiosidad genuina:</span> las mejores conversaciones vienen de curiosidad real, no de un script</li>
+            <li class="c"><span>Reciprocidad:</span> comparte algo personal primero — invita a la otra persona a hacer lo mismo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOD 6: MANEJO DE SITUACIONES -->
+    <div class="module-block">
+      <div class="module-header">
+        <div class="module-icon-wrap o">⚡</div>
+        <div class="module-meta">
+          <div class="module-title">Módulo 6 — Situaciones Difíciles</div>
+          <div class="module-subtitle">El verdadero nivel de un comunicador se ve cuando las cosas se ponen difíciles.</div>
+        </div>
+      </div>
+      <div class="module-body">
+        <div>
+          <div class="module-col-title">Situaciones a dominar</div>
+          <ul class="checklist o">
+            <li class="o"><span>Bloqueo mental en público:</span> técnica de la pausa + anclaje + pregunta retórica para ganar tiempo</li>
+            <li class="o"><span>Preguntas hostiles:</span> validar la pregunta antes de responder, reformularla a tu favor</li>
+            <li class="o"><span>Interrupciones:</span> cómo retomar el hilo sin conflicto ("déjame terminar este punto...")</li>
+            <li class="o"><span>Críticas directas:</span> CNV — observación, emoción, necesidad, petición</li>
+            <li class="o"><span>El "no sé":</span> decirlo sin perder credibilidad ("esa es una gran pregunta, voy a investigarlo")</li>
+            <li class="o"><span>Conversaciones incómodas:</span> estructura SBI (Situación, Comportamiento, Impacto)</li>
+          </ul>
+        </div>
+        <div>
+          <div class="module-col-title">Técnicas de manejo</div>
+          <ul class="checklist o">
+            <li class="o"><span>La regla del 5-5-5:</span> antes de responder impulsivo, respira 5 veces, espera 5 segundos, piensa en 5 consecuencias</li>
+            <li class="o"><span>Reencuadre positivo:</span> "lo que escucho decir es que te preocupa X" — transforma el ataque en necesidad</li>
+            <li class="o"><span>El "sí, y...":</span> del impro teatral — nunca bloquear, siempre construir sobre lo que hay</li>
+            <li class="o"><span>Preguntas calibradas:</span> "¿cómo propones que lo resolvamos?" — responsabiliza sin atacar</li>
+            <li class="o"><span>Regulación emocional:</span> los 4 pasos de Brené Brown para procesar emociones en tiempo real</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECCIÓN 4: ESTRATEGIAS -->
+<section id="estrategias">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div>
+        <h2 class="section-title"><span class="hl3">Estrategias</span> de aprendizaje — cómo estudiar esto correctamente</h2>
+        <p class="section-desc">La información sin sistema no produce resultados. Aquí está el sistema.</div>
+      </div>
+    </div>
+
+    <div class="highlight-box o">
+      <div class="highlight-title o">⚠️ Regla de oro</div>
+      <div class="highlight-body">La comunicación se aprende HABLANDO, no leyendo sobre hablar. Si llevas 3 meses estudiando y no has tenido una sola conversación difícil, estás perdiendo el tiempo. El 80% del tiempo debe ser práctica real.</div>
+    </div>
+
+    <div class="tricks-list" style="margin-top:2rem">
+      <div class="trick-item">
+        <div class="trick-num">01</div>
+        <div class="trick-content">
+          <div class="trick-title">El método de grabación semanal</div>
+          <div class="trick-desc">Grábate hablando durante 5-10 minutos cada semana sobre cualquier tema. Guarda todos los videos. Después de 3 meses, compara el primer video con el último. El progreso que no ves día a día se vuelve obvio cuando comparas semanas.</div>
+        </div>
+        <div class="trick-badge pro">Esencial</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">02</div>
+        <div class="trick-content">
+          <div class="trick-title">El método de imitación deliberada</div>
+          <div class="trick-desc">Elige 3 communicadores que admires (podcasters, conferencistas, actores). Estudia específicamente UNA cosa que hacen bien: sus pausas, su vocabulario, su gesticulación. Practica esa una cosa durante 2 semanas. Repite con otra cosa.</div>
+        </div>
+        <div class="trick-badge key">Clave</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">03</div>
+        <div class="trick-content">
+          <div class="trick-title">El método del libro-aplicación inmediata</div>
+          <div class="trick-desc">Cuando leas un libro de comunicación, no leas más de 1 capítulo al día. Al terminar cada capítulo, practica INMEDIATAMENTE lo aprendido en una situación real ese mismo día. La lectura sin práctica en las primeras 24h se olvida al 80%.</div>
+        </div>
+        <div class="trick-badge pro">Esencial</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">04</div>
+        <div class="trick-content">
+          <div class="trick-title">El método de las 100 conversaciones</div>
+          <div class="trick-desc">Proponte tener 100 conversaciones intencionales con personas desconocidas en los próximos 6 meses: cajeros, conductores de bus, personas en la fila. Sin objetivo más que practicar la conexión. La exposición repetida destruye el miedo social.</div>
+        </div>
+        <div class="trick-badge fast">Rápido</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">05</div>
+        <div class="trick-content">
+          <div class="trick-title">El método de Toastmasters</div>
+          <div class="trick-desc">Toastmasters International es una organización global gratuita o de bajo costo donde practicas hablar en público semanalmente con feedback estructurado. Es probablemente el mejor entorno de práctica que existe para oratoria. Busca tu club local.</div>
+        </div>
+        <div class="trick-badge key">Clave</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">06</div>
+        <div class="trick-content">
+          <div class="trick-title">El método del diario de conversaciones</div>
+          <div class="trick-desc">Después de cada conversación importante, escribe: ¿qué salió bien? ¿qué falló? ¿qué dirías diferente? 5 minutos de reflexión después de una conversación vale más que 1 hora de estudio teórico. Los grandes comunicadores son reflexivos.</div>
+        </div>
+        <div class="trick-badge pro">Esencial</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">07</div>
+        <div class="trick-content">
+          <div class="trick-title">El método de la lectura en voz alta diaria</div>
+          <div class="trick-desc">Lee en voz alta 15 minutos al día: noticias, libros, artículos — lo que sea. No leas en tu cabeza, pronuncia cada palabra. Mejora simultáneamente: vocabulario, dicción, velocidad, ritmo y confianza. Es el entrenamiento más barato y efectivo.</div>
+        </div>
+        <div class="trick-badge fast">Rápido</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">08</div>
+        <div class="trick-content">
+          <div class="trick-title">El método de enseñar para aprender</div>
+          <div class="trick-desc">Cuando aprendas algo nuevo sobre comunicación, enséñaselo a alguien más. Puedes enseñar a un amigo, grabarte explicándolo o escribir un hilo en redes. Enseñar fuerza a clarificar tu comprensión y revela qué tan bien realmente entendiste.</div>
+        </div>
+        <div class="trick-badge key">Clave</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 5: YOUTUBE -->
+<section id="youtube">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div>
+        <h2 class="section-title">¿Puedo aprender por <span class="hl">YouTube</span>? — Sí, pero con intención</h2>
+        <p class="section-desc">YouTube es increíblemente útil para teoría y motivación. El peligro es consumir sin practicar. Aquí los mejores canales organizados por área.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-title">Cómo usar YouTube correctamente</div>
+      <div class="highlight-body">Regla: por cada video que veas (15-30 min), practica lo aprendido 15-30 min ese mismo día. No pongas el siguiente video sin haber aplicado el primero. YouTube como sustituto de la práctica = 0 resultados. YouTube como complemento = muy útil.</div>
+    </div>
+
+    <div class="yt-grid" style="margin-top:2rem">
+      <div class="yt-card">
+        <div class="yt-banner"></div>
+        <div class="yt-body">
+          <div class="yt-category">Comunicación general</div>
+          <div class="yt-channel">Charisma on Command</div>
+          <div class="yt-desc">El mejor canal en inglés para aprender carisma con análisis de personajes reales. Cada video analiza exactamente qué hacen comunicadores carismáticos y por qué funciona. Muy práctico.</div>
+          <div class="yt-topics"><span class="yt-topic">Carisma</span><span class="yt-topic">Cuerpo</span><span class="yt-topic">Humor</span><span class="yt-topic">Confianza</span></div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-banner"></div>
+        <div class="yt-body">
+          <div class="yt-category">Oratoria</div>
+          <div class="yt-channel">TED (ted.com/talks)</div>
+          <div class="yt-desc">La biblioteca más grande del mundo de discursos bien construidos. No solo los veas — estúdialos. ¿Cómo abren? ¿Qué estructura usan? ¿Cuándo cuentan historias? ¿Cómo cierran? Analiza al menos 3 por semana.</div>
+          <div class="yt-topics"><span class="yt-topic">Oratoria</span><span class="yt-topic">Storytelling</span><span class="yt-topic">Estructura</span></div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-banner"></div>
+        <div class="yt-body">
+          <div class="yt-category">Persuasión y psicología</div>
+          <div class="yt-channel">Brendon Burchard</div>
+          <div class="yt-desc">High performance coach con contenido denso sobre comunicación de liderazgo, motivación y persuasión. Sus videos sobre cómo hablar con autoridad son especialmente útiles para contextos profesionales.</div>
+          <div class="yt-topics"><span class="yt-topic">Liderazgo</span><span class="yt-topic">Persuasión</span><span class="yt-topic">Autoridad</span></div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-banner"></div>
+        <div class="yt-body">
+          <div class="yt-category">Psicología social</div>
+          <div class="yt-channel">Vanessa Van Edwards (Science of People)</div>
+          <div class="yt-desc">Investiga la ciencia detrás del lenguaje no verbal, las primeras impresiones y el carisma. Sus videos sobre señales no verbales y comunicación basada en investigación son únicos. Tiene canal propio y aparece en otros.</div>
+          <div class="yt-topics"><span class="yt-topic">No verbal</span><span class="yt-topic">Ciencia</span><span class="yt-topic">Primeras impresiones</span></div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-banner"></div>
+        <div class="yt-body">
+          <div class="yt-category">En español · Comunicación</div>
+          <div class="yt-channel">Yordi Rosado / Adal Ramones</div>
+          <div class="yt-desc">Entrevistadores mexicanos con décadas de experiencia en comunicación en directo. Estudia cómo hacen preguntas, cómo gestionan silencios, cómo conectan con cualquier tipo de invitado. Muy útil para la naturalidad.</div>
+          <div class="yt-topics"><span class="yt-topic">Español</span><span class="yt-topic">Entrevista</span><span class="yt-topic">Conexión</span></div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-banner"></div>
+        <div class="yt-body">
+          <div class="yt-category">Negociación</div>
+          <div class="yt-channel">MasterClass (Chris Voss)</div>
+          <div class="yt-desc">Chris Voss, ex-negociador del FBI y autor de "Never Split the Difference", tiene un MasterClass que es probablemente lo mejor que existe en negociación aplicable a vida diaria. Algunos clips están en YouTube gratis.</div>
+          <div class="yt-topics"><span class="yt-topic">Negociación</span><span class="yt-topic">FBI</span><span class="yt-topic">Técnicas</span></div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-banner"></div>
+        <div class="yt-body">
+          <div class="yt-category">En español · Oratoria</div>
+          <div class="yt-channel">Jürgen Klarić</div>
+          <div class="yt-desc">Experto en neuromarketing y comunicación persuasiva. Muy bueno para entender cómo funciona el cerebro en la compra y la persuasión. Sus charlas tienen mucha energía y están llenas de técnicas concretas. Cuidado: es muy energético, filtra lo que aplica.</div>
+          <div class="yt-topics"><span class="yt-topic">Español</span><span class="yt-topic">Neuromarketing</span><span class="yt-topic">Ventas</span></div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-banner"></div>
+        <div class="yt-body">
+          <div class="yt-category">Debate y argumentación</div>
+          <div class="yt-channel">Intelligence Squared Debates</div>
+          <div class="yt-desc">Debates formales de alto nivel donde los mejores argumentadores del mundo se enfrentan. Estudiar debates es una de las formas más efectivas de aprender argumentación, manejo de objeciones y pensamiento rápido.</div>
+          <div class="yt-topics"><span class="yt-topic">Debate</span><span class="yt-topic">Argumento</span><span class="yt-topic">Lógica</span></div>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-banner"></div>
+        <div class="yt-body">
+          <div class="yt-category">Improv y espontaneidad</div>
+          <div class="yt-channel">Second City Works</div>
+          <div class="yt-desc">El teatro de improvisación es secretamente el mejor entrenamiento para comunicación espontánea, manejo del nerviosismo, pensamiento rápido y conexión con el público. Busca también clases de improv en tu ciudad.</div>
+          <div class="yt-topics"><span class="yt-topic">Improv</span><span class="yt-topic">Espontaneidad</span><span class="yt-topic">Humor</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 6: TRUCOS -->
+<section id="trucos">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div>
+        <h2 class="section-title">Los <span class="hl2">trucos</span> que nadie te enseña explícitamente</h2>
+        <p class="section-desc">Estos son los atajos que los grandes comunicadores usan y que raramente se enseñan en cursos formales.</p>
+      </div>
+    </div>
+
+    <div class="tricks-list">
+      <div class="trick-item">
+        <div class="trick-num">01</div>
+        <div class="trick-content">
+          <div class="trick-title">El truco de la pregunta retórica de apertura</div>
+          <div class="trick-desc">Abre SIEMPRE cualquier presentación o conversación importante con una pregunta retórica. "¿Alguna vez te has preguntado por qué...?" Esto activa el cerebro del oyente inmediatamente — deja de ser pasivo y empieza a buscar la respuesta. Tienes su atención.</div>
+        </div>
+        <div class="trick-badge pro">Pro</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">02</div>
+        <div class="trick-content">
+          <div class="trick-title">El poder de los "3 puntos"</div>
+          <div class="trick-desc">El cerebro humano ama las listas de 3. "Tengo tres razones..." hace que el oyente espere activamente los tres puntos. "Primero X, segundo Y, y tercero Z" suena estructurado y crea la sensación de que eres organizado e inteligente, aunque sea exactamente la misma información.</div>
+        </div>
+        <div class="trick-badge key">Clave</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">03</div>
+        <div class="trick-content">
+          <div class="trick-title">Habla más despacio de lo que crees que debes</div>
+          <div class="trick-desc">Cuando estamos nerviosos, aceleramos. Siempre. La velocidad que a ti te parece "un poco lenta" es exactamente la velocidad correcta para el oyente. Prueba grabarte hablando a lo que crees que es velocidad normal — te sorprenderá lo rápido que suenas.</div>
+        </div>
+        <div class="trick-badge fast">Inmediato</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">04</div>
+        <div class="trick-content">
+          <div class="trick-title">El silencio como respuesta</div>
+          <div class="trick-desc">Después de hacer una propuesta o pregunta importante, cállate. Muchos comunicadores novatos llenan el silencio por incomodidad, negociando contra sí mismos. El silencio genera presión en el otro. Quien habla primero después de una propuesta, pierde poder.</div>
+        </div>
+        <div class="trick-badge pro">Pro</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">05</div>
+        <div class="trick-content">
+          <div class="trick-title">Usar "y" en lugar de "pero"</div>
+          <div class="trick-desc">"Entiendo tu punto PERO..." invalida todo lo que dijo antes. "Entiendo tu punto Y creo que también podríamos considerar..." construye sobre lo que dijo. Este cambio de una palabra transforma conversaciones de adversariales a colaborativas instantáneamente.</div>
+        </div>
+        <div class="trick-badge fast">Inmediato</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">06</div>
+        <div class="trick-content">
+          <div class="trick-title">La pausa antes de la idea importante</div>
+          <div class="trick-desc">Antes de decir algo importante, haz una pausa de 2-3 segundos. Este silencio previo señala al cerebro del oyente que lo que viene es importante. Las ideas precedidas de una pausa se recuerdan 3 veces más que las que fluyen sin interrupción.</div>
+        </div>
+        <div class="trick-badge key">Clave</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">07</div>
+        <div class="trick-content">
+          <div class="trick-title">Hacer preguntas específicas, no abiertas vacías</div>
+          <div class="trick-desc">"¿Qué te pareció?" es una pregunta que produce respuestas cortas. "¿Cuál fue el momento específico que más te impactó y por qué?" produce conversación real. Las preguntas específicas demuestran que escuchaste, que te importa, y generan respuestas más ricas.</div>
+        </div>
+        <div class="trick-badge pro">Pro</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">08</div>
+        <div class="trick-content">
+          <div class="trick-title">Admitir lo que no sabes</div>
+          <div class="trick-desc">Decir "no sé, pero lo investigo" aumenta tu credibilidad, no la disminuye. La gente que siempre tiene una respuesta para todo genera desconfianza. La honestidad sobre los límites de tu conocimiento hace que lo que SÍ dices suene más creíble y confiable.</div>
+        </div>
+        <div class="trick-badge key">Clave</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">09</div>
+        <div class="trick-content">
+          <div class="trick-title">El anclaje emocional al inicio</div>
+          <div class="trick-desc">Empieza cualquier conversación importante estableciendo el tono emocional. "Estoy emocionado de compartir esto contigo" o "Quiero que esta sea una conversación honesta" — estas frases configuran el estado mental del oyente antes de que hayas dicho nada de contenido.</div>
+        </div>
+        <div class="trick-badge pro">Pro</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num">10</div>
+        <div class="trick-content">
+          <div class="trick-title">La vulnerabilidad estratégica</div>
+          <div class="trick-desc">Mostrar un fracaso o debilidad personal en el momento correcto genera más confianza que 10 éxitos. Nadie confía en alguien que parece perfecto. Compartir un error real, con lección aprendida, hace que tu mensaje sea 10 veces más memorable y convincente.</div>
+        </div>
+        <div class="trick-badge key">Clave</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 7: MENTALIDAD -->
+<section id="mentalidad">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div>
+        <h2 class="section-title">La <span class="hl3">mentalidad</span> correcta — sin esto, nada funciona</h2>
+        <p class="section-desc">Las técnicas son el 40%. La mentalidad es el 60%. Estos son los cambios de perspectiva que lo cambian todo.</p>
+      </div>
+    </div>
+
+    <div class="mindset-grid">
+      <div class="mindset-card">
+        <div class="mindset-icon">🎯</div>
+        <div class="mindset-title">Comunicar no es sobre ti — es sobre el otro</div>
+        <div class="mindset-desc">El error más común: enfocarse en cómo te ves, en no equivocarte, en qué pensarán de ti. Los comunicadores de alto impacto están 100% enfocados en el oyente. ¿Qué necesita escuchar? ¿Qué está sintiendo? ¿Qué le va a cambiar la vida? Cuando cambias el foco, la ansiedad desaparece.</div>
+      </div>
+      <div class="mindset-card">
+        <div class="mindset-icon">🔄</div>
+        <div class="mindset-title">El error es parte del entrenamiento, no el final de él</div>
+        <div class="mindset-desc">Cada vez que te trabes, digas "ehh" de más, o una conversación salga mal — eso es datos, no fracaso. Los atletas de élite analizan sus errores frame por frame. Los comunicadores que mejoran más rápido son los que más buscan activamente las situaciones donde pueden fallar y aprender.</div>
+      </div>
+      <div class="mindset-card">
+        <div class="mindset-icon">⏳</div>
+        <div class="mindset-title">La consistencia gana a la intensidad</div>
+        <div class="mindset-desc">5 minutos de práctica al día durante 1 año es infinitamente más efectivo que 10 horas en un fin de semana. El cerebro construye habilidades comunicativas a través de repetición espaciada y experiencias acumuladas. No hay shortcuts en esto — pero hay atajos para acelerar el progreso.</div>
+      </div>
+      <div class="mindset-card">
+        <div class="mindset-icon">🌱</div>
+        <div class="mindset-title">No estás "siendo" alguien diferente — estás expandiendo quién eres</div>
+        <div class="mindset-desc">Muchas personas tienen miedo de aprender comunicación porque sienten que van a perder su autenticidad. Falso. Aprender a hablar bien no te vuelve falso — te da más herramientas para expresar lo que ya eres. Tu versión más comunicativa sigue siendo tú, con más alcance.</div>
+      </div>
+      <div class="mindset-card">
+        <div class="mindset-icon">💪</div>
+        <div class="mindset-title">El miedo al juicio es el mayor enemigo</div>
+        <div class="mindset-desc">La mayoría de personas no hablan por miedo a que los juzguen. Realidad: los demás están tan preocupados por sus propios miedos que apenas te observan. Y cuando te observan, les genera respeto que hayas hablado. El costo de no hablar es siempre mayor que el costo de hablar imperfectamente.</div>
+      </div>
+      <div class="mindset-card">
+        <div class="mindset-icon">📡</div>
+        <div class="mindset-title">Busca la incomodidad deliberadamente</div>
+        <div class="mindset-desc">Cada vez que evitas una conversación difícil, un discurso o una situación incómoda, refuerzas el miedo. Cada vez que te lanzas — aunque salga mal — debilitas el miedo y fortaleces la confianza. La regla: si algo te da miedo hacerlo en comunicación, eso es exactamente lo que debes ir a hacer esta semana.</div>
+      </div>
+    </div>
+
+    <div class="quote-block" style="margin-top:3rem">
+      <div class="quote-text">"No puedes pensar en tu camino hacia una nueva manera de actuar. Solo puedes actuar en tu camino hacia una nueva manera de pensar."</div>
+      <div class="quote-author">— Principio de la exposición progresiva</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 8: HOJA DE RUTA SEMANAL -->
+<section id="semana">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div>
+        <h2 class="section-title">Tu semana <span class="hl">ideal</span> de práctica</h2>
+        <p class="section-desc">Un plan semanal concreto para los primeros 3 meses. Adaptable a tu vida real.</p>
+      </div>
+    </div>
+
+    <div class="strategy-grid" style="grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
+      <div class="strategy-card" style="border-radius:0; border:0; padding:1.25rem">
+        <div class="strategy-num" style="font-size:1.2rem; margin-bottom:0.5rem">LUN</div>
+        <div class="strategy-title" style="font-size:0.8rem">Lectura en voz alta</div>
+        <div class="strategy-desc" style="font-size:0.75rem">15 min. Cualquier texto. Enfócate en ritmo y pronunciación.</div>
+      </div>
+      <div class="strategy-card" style="border-radius:0; border:0; padding:1.25rem">
+        <div class="strategy-num" style="font-size:1.2rem; margin-bottom:0.5rem">MAR</div>
+        <div class="strategy-title" style="font-size:0.8rem">Estudio teórico</div>
+        <div class="strategy-desc" style="font-size:0.75rem">30 min de libro o video. Aplicar 1 técnica ese mismo día.</div>
+      </div>
+      <div class="strategy-card" style="border-radius:0; border:0; padding:1.25rem">
+        <div class="strategy-num" style="font-size:1.2rem; margin-bottom:0.5rem">MIÉ</div>
+        <div class="strategy-title" style="font-size:0.8rem">Conversación intencional</div>
+        <div class="strategy-desc" style="font-size:0.75rem">1 conversación con foco específico: escucha, preguntas, rapport.</div>
+      </div>
+      <div class="strategy-card" style="border-radius:0; border:0; padding:1.25rem">
+        <div class="strategy-num" style="font-size:1.2rem; margin-bottom:0.5rem">JUE</div>
+        <div class="strategy-title" style="font-size:0.8rem">Grabación personal</div>
+        <div class="strategy-desc" style="font-size:0.75rem">5-10 min grabándote hablando libremente. Analizar y anotar.</div>
+      </div>
+      <div class="strategy-card" style="border-radius:0; border:0; padding:1.25rem">
+        <div class="strategy-num" style="font-size:1.2rem; margin-bottom:0.5rem">VIE</div>
+        <div class="strategy-title" style="font-size:0.8rem">Análisis de referentes</div>
+        <div class="strategy-desc" style="font-size:0.75rem">Ver 1 TED Talk o entrevista. Analizar técnicas específicas.</div>
+      </div>
+      <div class="strategy-card" style="border-radius:0; border:0; padding:1.25rem">
+        <div class="strategy-num" style="font-size:1.2rem; margin-bottom:0.5rem">SÁB</div>
+        <div class="strategy-title" style="font-size:0.8rem">Exposición social</div>
+        <div class="strategy-desc" style="font-size:0.75rem">Toastmasters, evento, o conversación con desconocido. Salir de zona de confort.</div>
+      </div>
+      <div class="strategy-card" style="border-radius:0; border:0; padding:1.25rem">
+        <div class="strategy-num" style="font-size:1.2rem; margin-bottom:0.5rem">DOM</div>
+        <div class="strategy-title" style="font-size:0.8rem">Reflexión semanal</div>
+        <div class="strategy-desc" style="font-size:0.75rem">Diario de comunicación: qué salió bien, qué mejorar, objetivo de la próxima semana.</div>
+      </div>
+    </div>
+
+    <div class="highlight-box v" style="margin-top:2rem">
+      <div class="highlight-title v">Tiempo total diario mínimo</div>
+      <div class="highlight-body">20-30 minutos al día es suficiente para progresar significativamente. No necesitas horas. Necesitas consistencia y intención. La persona que practica 20 minutos al día con foco supera a la que estudia 3 horas el fin de semana sin aplicar nada.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 9: LIBROS Y RECURSOS -->
+<section id="recursos">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div>
+        <h2 class="section-title">La biblioteca <span class="hl3">esencial</span> — los libros que sí importan</h2>
+        <p class="section-desc">No tienes que leer todo — empieza con los primeros 3 y ya estarás por delante del 95% de personas.</p>
+      </div>
+    </div>
+
+    <div class="tricks-list">
+      <div class="trick-item">
+        <div class="trick-num" style="font-size:1rem">🥇</div>
+        <div class="trick-content">
+          <div class="trick-title">Cómo ganar amigos e influir sobre las personas — Dale Carnegie</div>
+          <div class="trick-desc">El libro de comunicación interpersonal más vendido de la historia. Escrito en 1936 y cada página sigue siendo válida. Empieza aquí. Cubre: escucha activa, hacer que los otros se sientan importantes, influir sin ofender, liderazgo genuino.</div>
+        </div>
+        <div class="trick-badge fast">Inicio</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num" style="font-size:1rem">🥇</div>
+        <div class="trick-content">
+          <div class="trick-title">Influencia — Robert Cialdini</div>
+          <div class="trick-desc">La biblia de la persuasión científica. Los 6 principios que explican POR QUÉ la gente dice sí. Imprescindible para ventas, negociación, liderazgo y relaciones. Léelo primero en modo "víctima" (detecta cómo te manipulan) y luego en modo "aplicación" (cómo usarlo éticamente).</div>
+        </div>
+        <div class="trick-badge fast">Inicio</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num" style="font-size:1rem">⭐</div>
+        <div class="trick-content">
+          <div class="trick-title">Never Split the Difference — Chris Voss</div>
+          <div class="trick-desc">El ex-negociador jefe del FBI enseña técnicas que funcionan en las situaciones de más alta presión del mundo. Aplicable a salarios, conflictos, ventas y cualquier situación donde necesites que alguien esté de tu lado. Uno de los libros más prácticos que existen.</div>
+        </div>
+        <div class="trick-badge key">Fase 2</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num" style="font-size:1rem">⭐</div>
+        <div class="trick-content">
+          <div class="trick-title">Talk Like TED — Carmine Gallo</div>
+          <div class="trick-desc">Analiza los 500 mejores TED Talks de la historia e identifica los 9 secretos que tienen en común los mejores oradores del mundo. Muy práctico para presentaciones, discursos y cualquier momento donde necesites hablar en público con impacto.</div>
+        </div>
+        <div class="trick-badge key">Fase 2</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num" style="font-size:1rem">⭐</div>
+        <div class="trick-content">
+          <div class="trick-title">The Charisma Myth — Olivia Fox Cabane</div>
+          <div class="trick-desc">Prueba científicamente que el carisma es una habilidad aprendida, no un rasgo innato. Enseña las 3 componentes del carisma (presencia, poder y calidez) y cómo desarrollar cada una. Muy bueno para personas introvertidas que quieren conectar sin traicionarse a sí mismas.</div>
+        </div>
+        <div class="trick-badge pro">Fase 3</div>
+      </div>
+      <div class="trick-item">
+        <div class="trick-num" style="font-size:1rem">📚</div>
+        <div class="trick-content">
+          <div class="trick-title">Comunicación No Violenta — Marshall Rosenberg</div>
+          <div class="trick-desc">El método más efectivo del mundo para comunicar en situaciones difíciles sin generar defensividad. Esencial para conflictos, feedback, relaciones. Enseña a expresar necesidades sin atacar y a escuchar con empatía real. Muy diferente al resto de libros de esta lista.</div>
+        </div>
+        <div class="trick-badge pro">Fase 3</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">VOCAL MAP</div>
+    <div class="footer-tagline">Un sistema completo para convertirte en un comunicador de alto impacto. La habilidad más rentable que puedes desarrollar es la de expresarte con claridad, convicción y conexión genuina.</div>
+  </div>
+  <div class="footer-note">
+    Road Map creado con Claude<br>
+    La comunicación es una habilidad. Las habilidades se entrenan.<br>
+    Empieza hoy. Grábate. Habla con alguien. Haz la pausa.<br>
+    <br>
+    <span style="color:var(--accent);font-weight:700">La única manera es hacerlo.</span>
+  </div>
+</footer>
+
+<script>
+  // Smooth scroll para nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Fade in on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.module-block, .trick-item, .strategy-card, .yt-card, .mindset-card, .topic-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

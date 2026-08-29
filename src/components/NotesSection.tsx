@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, StickyNote, Sparkles, Heart, Pin, Calendar } from "lucide-react";
 
@@ -50,15 +50,9 @@ export default function NotesSection() {
     // Copia el bloque de arriba y pégalo aquí abajo cambiando id: "nota-2", título, fecha y contenido.
   ];
 
-  const [mounted, setMounted] = useState(false);
-  const [openNoteId, setOpenNoteId] = useState<string | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-    if (notes.length > 0) {
-      setOpenNoteId(notes[notes.length - 1].id);
-    }
-  }, []);
+  const [openNoteId, setOpenNoteId] = useState<string | null>(
+    notes.length > 0 ? notes[notes.length - 1].id : null
+  );
 
   const toggleNote = (id: string) => {
     setOpenNoteId(openNoteId === id ? null : id);

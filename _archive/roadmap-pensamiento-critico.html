@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Map: Pensamiento Crítico, Profundo y Sistemático</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f7f4ef;
+    --cream: #ede9e0;
+    --accent: #1a3a5c;
+    --gold: #c8a84b;
+    --rust: #8b3a2a;
+    --sage: #3d5a47;
+    --muted: #7a7060;
+    --border: #d4cebd;
+    --phase1: #1a3a5c;
+    --phase2: #3d5a47;
+    --phase3: #6b3a7a;
+    --phase4: #8b3a2a;
+    --phase5: #c8a84b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.75;
+    font-size: 16px;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '思';
+    position: absolute;
+    right: -20px;
+    top: -40px;
+    font-size: 320px;
+    opacity: 0.04;
+    font-family: serif;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .header-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(32px, 5vw, 60px);
+    font-weight: 800;
+    line-height: 1.1;
+    max-width: 700px;
+    margin-bottom: 24px;
+  }
+
+  header h1 span { color: var(--gold); }
+
+  header p {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    color: #b0a898;
+    max-width: 560px;
+    font-size: 17px;
+  }
+
+  .header-meta {
+    margin-top: 40px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .meta-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6b6055;
+  }
+
+  .meta-value {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--paper);
+  }
+
+  /* NAV */
+  nav {
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 0;
+    min-width: max-content;
+  }
+
+  nav a {
+    display: block;
+    padding: 16px 20px;
+    text-decoration: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  nav a:hover { color: var(--ink); border-bottom-color: var(--gold); }
+
+  /* MAIN LAYOUT */
+  main { max-width: 960px; margin: 0 auto; padding: 60px 40px; }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 80px;
+    padding-bottom: 80px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .section h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .section > p {
+    color: #3a3530;
+    margin-bottom: 16px;
+    max-width: 700px;
+  }
+
+  /* PHASE CARDS */
+  .phase {
+    border-left: 4px solid;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    background: white;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .phase-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  .phase h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .phase-duration {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .phase p { color: #3a3530; margin-bottom: 12px; }
+
+  /* TOPIC BLOCKS */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+  }
+
+  .topic-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .topic-card h4 {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+
+  .topic-card p {
+    font-size: 14px;
+    color: #5a5248;
+    line-height: 1.6;
+  }
+
+  .topic-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* LISTS */
+  .styled-list {
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  .styled-list li {
+    padding: 10px 0 10px 24px;
+    border-bottom: 1px solid #ede9e0;
+    position: relative;
+    font-size: 15px;
+    color: #3a3530;
+  }
+
+  .styled-list li:last-child { border-bottom: none; }
+
+  .styled-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* CALLOUT BOXES */
+  .callout {
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 24px 0;
+    position: relative;
+  }
+
+  .callout-warning {
+    background: #fef9ec;
+    border: 1px solid #e8d38a;
+    border-left: 4px solid var(--gold);
+  }
+
+  .callout-tip {
+    background: #eef4f0;
+    border: 1px solid #b0cdb9;
+    border-left: 4px solid var(--sage);
+  }
+
+  .callout-important {
+    background: #f9f0ed;
+    border: 1px solid #d4a090;
+    border-left: 4px solid var(--rust);
+  }
+
+  .callout-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .callout p { font-size: 14px; margin: 0; color: #3a3530; }
+
+  /* TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+
+  th {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: #3a3530;
+  }
+
+  tr:nth-child(even) td { background: #faf8f4; }
+
+  /* RESOURCES */
+  .resource-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .resource-type {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-weight: 500;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .resource-type.yt { background: #fee; color: #c00; }
+  .resource-type.libro { background: #eef; color: #449; }
+  .resource-type.curso { background: #efe; color: #282; }
+  .resource-type.gratis { background: #ffeedd; color: #a43; }
+
+  .resource-info strong {
+    display: block;
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .resource-info p { font-size: 13px; color: var(--muted); margin: 0; }
+
+  /* STRATEGY CARDS */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .strategy-card {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  .strategy-card .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .strategy-card h4 {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .strategy-card p { font-size: 13px; color: #b0a898; line-height: 1.6; }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+    margin-top: 24px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 6px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--paper);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+
+  .tl-item h4 {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .tl-item p { font-size: 14px; color: #5a5248; }
+
+  /* PHASE COLORS */
+  .p1 { border-color: var(--phase1); }
+  .p1 .phase-number { background: #e8f0f8; color: var(--phase1); }
+  .p2 { border-color: var(--phase2); }
+  .p2 .phase-number { background: #eef3f0; color: var(--phase2); }
+  .p3 { border-color: var(--phase3); }
+  .p3 .phase-number { background: #f3eef6; color: var(--phase3); }
+  .p4 { border-color: var(--phase4); }
+  .p4 .phase-number { background: #f6eeec; color: var(--phase4); }
+  .p5 { border-color: var(--phase5); }
+  .p5 .phase-number { background: #fdf6e3; color: #8a6800; }
+
+  .tc1::before { background: var(--phase1); }
+  .tc2::before { background: var(--phase2); }
+  .tc3::before { background: var(--phase3); }
+  .tc4::before { background: var(--phase4); }
+  .tc5::before { background: var(--phase5); }
+
+  /* QUOTE */
+  blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 16px 24px;
+    margin: 24px 0;
+    background: #fdf9f0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  blockquote p {
+    font-style: italic;
+    font-size: 17px;
+    color: #3a3530;
+    margin: 0;
+  }
+
+  blockquote cite {
+    display: block;
+    font-style: normal;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  /* BADGE ROW */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1px solid;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-blue { border-color: #9ab5d0; color: var(--phase1); background: #f0f5fa; }
+  .badge-green { border-color: #9abda8; color: var(--phase2); background: #f0f5f2; }
+  .badge-purple { border-color: #bba0c8; color: var(--phase3); background: #f5f0f8; }
+  .badge-red { border-color: #c8a09a; color: var(--phase4); background: #f8f0ef; }
+  .badge-gold { border-color: #d4b870; color: #7a5800; background: #fdf5e3; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: #6b6055;
+    text-align: center;
+    padding: 40px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  footer strong { color: var(--gold); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    header, main { padding-left: 24px; padding-right: 24px; }
+    nav { padding: 0 24px; }
+    .phase { padding: 20px; }
+    .topic-grid { grid-template-columns: 1fr; }
+    .strategy-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">// road map completo</div>
+  <h1>Pensar <span>profundo</span>,<br>sistemático y crítico</h1>
+  <p>Una guía desde cero para desarrollar la mente más poderosa que puedes tener: la tuya bien entrenada.</p>
+  <div class="header-meta">
+    <div class="meta-item">
+      <span class="meta-label">Duración estimada</span>
+      <span class="meta-value">12–24 meses</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Niveles</span>
+      <span class="meta-value">5 fases</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Dedicación mínima</span>
+      <span class="meta-value">30 min/día</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Costo</span>
+      <span class="meta-value">Casi cero</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#que-es">¿Qué es?</a></li>
+    <li><a href="#roadmap">Road Map</a></li>
+    <li><a href="#temas">Temarios</a></li>
+    <li><a href="#como-aprender">¿Cómo aprender?</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="#estrategias">Estrategias</a></li>
+    <li><a href="#trucos">Trucos</a></li>
+    <li><a href="#recursos">Recursos</a></li>
+    <li><a href="#errores">Errores comunes</a></li>
+    <li><a href="#plan">Plan de acción</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="que-es">
+    <div class="section-eyebrow">// fundamento</div>
+    <h2>¿Qué significa pensar mejor?</h2>
+    <p>Antes de aprender cualquier técnica, necesitas entender qué son estos tipos de pensamiento, por qué son distintos y cómo se relacionan entre sí.</p>
+
+    <div class="topic-grid">
+      <div class="topic-card tc1">
+        <span class="topic-icon">🔍</span>
+        <h4>Pensamiento Crítico</h4>
+        <p>La capacidad de <strong>analizar argumentos, detectar falacias, evaluar evidencia</strong> y llegar a conclusiones bien fundamentadas. No aceptas lo que te dicen sin examinarlo. Preguntas: ¿quién lo dice?, ¿qué prueba existe?, ¿qué suposiciones hay detrás?</p>
+      </div>
+      <div class="topic-card tc2">
+        <span class="topic-icon">🌊</span>
+        <h4>Pensamiento Profundo</h4>
+        <p>Ir más allá de la superficie. Buscar <strong>causas raíz, patrones ocultos, implicaciones de segundo y tercer orden</strong>. No te quedas con la primera explicación. Preguntas: ¿por qué realmente? ¿y si esto es síntoma de algo más grande?</p>
+      </div>
+      <div class="topic-card tc3">
+        <span class="topic-icon">⚙️</span>
+        <h4>Pensamiento Sistemático</h4>
+        <p>Ver <strong>todo como un sistema interconectado</strong>. Entender retroalimentaciones, efectos emergentes, relaciones no lineales. Preguntas: ¿cómo se conecta esto con aquello? ¿qué ciclos de retroalimentación existen? ¿qué consecuencias no previstas habrá?</p>
+      </div>
+      <div class="topic-card tc4">
+        <span class="topic-icon">🧩</span>
+        <h4>Pensamiento Analítico</h4>
+        <p>Descomponer problemas complejos en partes manejables. <strong>Estructurar, clasificar, priorizar</strong>. Es el complemento operativo del pensamiento crítico.</p>
+      </div>
+      <div class="topic-card tc5">
+        <span class="topic-icon">🔗</span>
+        <h4>Pensamiento Lateral / Creativo</h4>
+        <p>Encontrar soluciones <strong>no obvias</strong>. Conectar ideas de dominios distintos. Romper supuestos. Complementa al pensamiento crítico rompiendo los marcos que lo limitan.</p>
+      </div>
+      <div class="topic-card tc1">
+        <span class="topic-icon">🧠</span>
+        <h4>Metacognición</h4>
+        <p>Pensar sobre tu propio pensamiento. <strong>Conocer tus sesgos, monitorear tu razonamiento</strong>, identificar cuándo estás cometiendo errores mentales. Es la habilidad madre de todas las demás.</p>
+      </div>
+    </div>
+
+    <blockquote>
+      <p>"El pensamiento crítico no es criticar por criticar. Es el arte de pensar sobre tu pensamiento mientras piensas, con el propósito de hacerlo más claro, preciso, relevante y justo."</p>
+      <cite>— Richard Paul & Linda Elder, Foundation for Critical Thinking</cite>
+    </blockquote>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="roadmap">
+    <div class="section-eyebrow">// la ruta</div>
+    <h2>Road Map: Las 5 Fases</h2>
+    <p>Este camino está diseñado para construir desde los cimientos. No saltes fases. Cada una prepara el terreno para la siguiente.</p>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">⚠️ Advertencia honesta</div>
+      <p>Esto no es un curso de 7 días. Desarrollar pensamiento genuinamente sólido toma de 1 a 2 años de práctica constante. La buena noticia: vas mejorando desde el día 1 y los beneficios son inmediatos.</p>
+    </div>
+
+    <!-- FASE 1 -->
+    <div class="phase p1">
+      <div class="phase-header">
+        <span class="phase-number">FASE 01</span>
+        <h3>Fundamentos: Conocer tu mente tal como es</h3>
+      </div>
+      <p class="phase-duration">⏱ Duración estimada: 1–2 meses</p>
+      <p>Antes de mejorar tu pensamiento, necesitas ver con claridad cómo funciona ahora. La mayoría falla aquí porque quiere aprender técnicas sin entender el hardware: su propio cerebro.</p>
+      <ul class="styled-list">
+        <li>Introducción a la psicología cognitiva: ¿cómo procesa información el cerebro?</li>
+        <li>Sistema 1 y Sistema 2 (Daniel Kahneman): pensamiento rápido vs. lento</li>
+        <li>Los sesgos cognitivos más comunes (más de 180 documentados)</li>
+        <li>Heurísticas: atajos mentales útiles y cuándo nos traicionan</li>
+        <li>La ilusión de comprensión: por qué creemos entender más de lo que entendemos</li>
+        <li>Introducción a la metacognición: observar tu propio pensamiento</li>
+        <li>El efecto Dunning-Kruger: por qué los ignorantes no saben que lo son</li>
+      </ul>
+    </div>
+
+    <!-- FASE 2 -->
+    <div class="phase p2">
+      <div class="phase-header">
+        <span class="phase-number">FASE 02</span>
+        <h3>Lógica y Argumentación: La gramática del razonamiento</h3>
+      </div>
+      <p class="phase-duration">⏱ Duración estimada: 2–3 meses</p>
+      <p>La lógica es el lenguaje del pensamiento riguroso. No necesitas ser matemático, pero sí entender cómo se construyen y destruyen argumentos sólidos.</p>
+      <ul class="styled-list">
+        <li>Lógica informal: premisas, conclusiones, argumentos válidos vs. sólidos</li>
+        <li>Tipos de razonamiento: deductivo, inductivo, abductivo</li>
+        <li>Falacias lógicas: las 40+ más comunes (ad hominem, hombre de paja, pendiente resbaladiza...)</li>
+        <li>Cómo construir un argumento bien estructurado</li>
+        <li>Cómo refutar argumentos sin caer en falacias</li>
+        <li>El método socrático: preguntar para llegar a la verdad</li>
+        <li>Lógica proposicional básica: Y, O, NO, condicionales</li>
+        <li>Distinción entre correlación y causalidad</li>
+      </ul>
+    </div>
+
+    <!-- FASE 3 -->
+    <div class="phase p3">
+      <div class="phase-header">
+        <span class="phase-number">FASE 03</span>
+        <h3>Epistemología Práctica: ¿Cómo sabemos lo que creemos saber?</h3>
+      </div>
+      <p class="phase-duration">⏱ Duración estimada: 2–3 meses</p>
+      <p>Esta es la fase que pocos hacen y marca la diferencia real. Aprender a evaluar fuentes, evidencia, y el nivel de confianza adecuado para cada tipo de conocimiento.</p>
+      <ul class="styled-list">
+        <li>Tipos de conocimiento: creencia, opinión, conocimiento justificado</li>
+        <li>El problema de la evidencia: ¿cuánta evidencia necesito para creer algo?</li>
+        <li>Evaluación de fuentes: primarias, secundarias, autoridad, consenso científico</li>
+        <li>El pensamiento probabilístico: pensar en términos de probabilidades, no certezas</li>
+        <li>El método científico como modelo de pensamiento</li>
+        <li>Falsabilidad: la pregunta de Popper que todo argumento debe responder</li>
+        <li>El problema de la inducción: por qué nunca podemos estar 100% seguros</li>
+        <li>Calibración de creencias: actualizar creencias con nueva evidencia (Bayes)</li>
+      </ul>
+    </div>
+
+    <!-- FASE 4 -->
+    <div class="phase p4">
+      <div class="phase-header">
+        <span class="phase-number">FASE 04</span>
+        <h3>Pensamiento Sistemático y Modelos Mentales</h3>
+      </div>
+      <p class="phase-duration">⏱ Duración estimada: 3–4 meses</p>
+      <p>Aquí aprendes a ver el mundo como un conjunto de sistemas interconectados y a usar los mejores "lentes" que la humanidad ha desarrollado para entenderlos.</p>
+      <ul class="styled-list">
+        <li>Teoría general de sistemas: qué es un sistema, retroalimentación, emergencia</li>
+        <li>Bucles de retroalimentación: reforzadores y balanceadores</li>
+        <li>Los modelos mentales de Munger: 100 ideas de 100 disciplinas</li>
+        <li>Primeros principios: descomponer hasta los fundamentos irreducibles</li>
+        <li>El pensamiento de segundo orden: consecuencias de las consecuencias</li>
+        <li>El mapa no es el territorio: los modelos son simplificaciones</li>
+        <li>La navaja de Occam y principios de parsimonia</li>
+        <li>Pensamiento probabilístico avanzado y árboles de decisión</li>
+        <li>Costos de oportunidad y pensamiento en alternativas</li>
+      </ul>
+    </div>
+
+    <!-- FASE 5 -->
+    <div class="phase p5">
+      <div class="phase-header">
+        <span class="phase-number">FASE 05</span>
+        <h3>Integración y Práctica Avanzada</h3>
+      </div>
+      <p class="phase-duration">⏱ Duración estimada: Ongoing (toda la vida)</p>
+      <p>Las habilidades se consolidan aplicándolas en problemas reales, debates, escritura y decisiones cotidianas. Esta fase no termina nunca.</p>
+      <ul class="styled-list">
+        <li>Análisis de casos reales: política, ciencia, economía, historia</li>
+        <li>Escritura argumentativa como práctica de pensamiento</li>
+        <li>Debate socrático y contraargumentación activa</li>
+        <li>Filosofía práctica: estoicismo, pragmatismo, epistemología aplicada</li>
+        <li>Lectura de textos difíciles: cómo leer un libro de Mortimer Adler</li>
+        <li>Revisión y actualización de creencias personales</li>
+        <li>Pensamiento a largo plazo y futurismo estructurado</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="temas">
+    <div class="section-eyebrow">// temarios en profundidad</div>
+    <h2>Cada Área Explicada a Fondo</h2>
+
+    <!-- SESGOS -->
+    <div class="phase p1" style="margin-top:32px;">
+      <div class="phase-header">
+        <span class="phase-number">ÁREA A</span>
+        <h3>Sesgos Cognitivos: El mapa de tus errores automáticos</h3>
+      </div>
+      <p>Un sesgo cognitivo es un patrón sistemático de desviación del razonamiento racional. No son fallos de inteligencia: son bugs evolutivos que todos tenemos. Conocerlos es la defensa.</p>
+      <p><strong>Los más importantes que debes dominar:</strong></p>
+      <table>
+        <tr><th>Sesgo</th><th>Qué hace</th><th>Cómo evitarlo</th></tr>
+        <tr><td>Sesgo de confirmación</td><td>Buscas solo info que confirma lo que ya crees</td><td>Busca activamente la evidencia en contra</td></tr>
+        <tr><td>Efecto ancla</td><td>La primera cifra que escuchas ancla todo tu juicio</td><td>Genera tu propio estimado antes de escuchar datos</td></tr>
+        <tr><td>Sesgo de disponibilidad</td><td>Evalúas probabilidades por lo fácil que algo viene a mente</td><td>Busca estadísticas reales, no ejemplos memorables</td></tr>
+        <tr><td>Sesgo de la narrativa</td><td>Prefieres historias coherentes a datos precisos</td><td>Pregúntate: ¿qué datos tengo realmente?</td></tr>
+        <tr><td>Efecto Dunning-Kruger</td><td>Los ignorantes se creen expertos; los expertos dudan</td><td>Calibra tu confianza con pruebas reales</td></tr>
+        <tr><td>Sesgo del punto ciego</td><td>Ves los sesgos de los demás pero no los propios</td><td>Pide retroalimentación externa constante</td></tr>
+        <tr><td>Pensamiento grupal</td><td>La presión social suprime el pensamiento individual</td><td>Escribe tu opinión antes de escuchar al grupo</td></tr>
+        <tr><td>Aversión a la pérdida</td><td>Las pérdidas duelen 2x más que las ganancias dan placer</td><td>Reenmarcar decisiones como costos, no pérdidas</td></tr>
+      </table>
+      <div class="callout callout-tip">
+        <div class="callout-title">💡 Práctica diaria</div>
+        <p>Al tomar cualquier decisión importante, escribe en papel: "¿Qué sesgo podría estar distorsionando mi pensamiento aquí?" Solo hacer la pregunta ya mejora la calidad de tu razonamiento.</p>
+      </div>
+    </div>
+
+    <!-- FALACIAS -->
+    <div class="phase p2" style="margin-top:24px;">
+      <div class="phase-header">
+        <span class="phase-number">ÁREA B</span>
+        <h3>Falacias Lógicas: Los trucos del mal razonamiento</h3>
+      </div>
+      <p>Una falacia es un argumento que <em>parece</em> válido pero tiene un error lógico. Aprenderlas te protege de ser manipulado y mejora tus propios argumentos.</p>
+      <table>
+        <tr><th>Falacia</th><th>Ejemplo</th></tr>
+        <tr><td><strong>Ad hominem</strong></td><td>"No puedes creerle a X porque es [inserto insulto]"</td></tr>
+        <tr><td><strong>Hombre de paja</strong></td><td>Distorsionar el argumento ajeno para refutarlo más fácil</td></tr>
+        <tr><td><strong>Pendiente resbaladiza</strong></td><td>"Si hacemos A, inevitablemente llegaremos a Z horrible"</td></tr>
+        <tr><td><strong>Apelación a la autoridad</strong></td><td>"X lo dijo y X es famoso, por tanto es verdad"</td></tr>
+        <tr><td><strong>Falsa dicotomía</strong></td><td>"O estás con nosotros o estás contra nosotros"</td></tr>
+        <tr><td><strong>Apelación a la mayoría</strong></td><td>"Todo el mundo lo cree, por tanto debe ser cierto"</td></tr>
+        <tr><td><strong>Post hoc ergo propter hoc</strong></td><td>"Después de A ocurrió B, por tanto A causó B"</td></tr>
+        <tr><td><strong>Apelación a la naturaleza</strong></td><td>"Es natural, por tanto es bueno/correcto"</td></tr>
+        <tr><td><strong>Equívoco</strong></td><td>Usar una palabra con dos sentidos distintos en el mismo argumento</td></tr>
+        <tr><td><strong>Petición de principio</strong></td><td>La conclusión ya está asumida en la premisa</td></tr>
+      </table>
+    </div>
+
+    <!-- MODELOS MENTALES -->
+    <div class="phase p3" style="margin-top:24px;">
+      <div class="phase-header">
+        <span class="phase-number">ÁREA C</span>
+        <h3>Modelos Mentales: Las herramientas del pensador</h3>
+      </div>
+      <p>Un modelo mental es un marco para entender cómo funciona algo. Charlie Munger los llama "una rejilla de modelos" que aplicas a cada situación. Tener más modelos = ver más dimensiones de la realidad.</p>
+      <div class="topic-grid">
+        <div class="topic-card tc3">
+          <h4>🔬 Primeros Principios</h4>
+          <p>Descompón cualquier problema hasta sus verdades fundamentales e inatacables. Luego reconstruye desde ahí. Elon Musk lo usa para innovar donde otros solo imitan.</p>
+        </div>
+        <div class="topic-card tc3">
+          <h4>🔄 Inversión</h4>
+          <p>Para resolver un problema, pregunta qué lo empeoraría y evita eso. "Invierte siempre" — Charlie Munger. Extremadamente útil para evitar errores en lugar de buscar éxitos.</p>
+        </div>
+        <div class="topic-card tc3">
+          <h4>📊 El Mapa ≠ Territorio</h4>
+          <p>Tus modelos de la realidad son simplificaciones. Siempre habrá detalles que no capturan. Actualizarlos constantemente es sabiduría.</p>
+        </div>
+        <div class="topic-card tc3">
+          <h4>🎯 Costo de Oportunidad</h4>
+          <p>Elegir A significa renunciar a B. El verdadero costo de cualquier decisión es lo que sacrificas. Siempre pregunta: ¿cuál es la mejor alternativa a esto?</p>
+        </div>
+        <div class="topic-card tc3">
+          <h4>📐 Ley de los Rendimientos Decrecientes</h4>
+          <p>Llega un punto donde más de lo mismo produce menos beneficio. Aplica a estudio, trabajo, relaciones, ejercicio. Saber cuándo parar es tan importante como saber cuándo seguir.</p>
+        </div>
+        <div class="topic-card tc3">
+          <h4>🌐 Efectos de Segundo Orden</h4>
+          <p>Las consecuencias de las consecuencias. La mayoría solo piensa en orden 1. Los grandes pensadores preguntan: ¿y eso qué causará? ¿y eso? Howard Marks lo llama "segundo nivel de pensamiento".</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PENSAMIENTO SISTEMÁTICO -->
+    <div class="phase p4" style="margin-top:24px;">
+      <div class="phase-header">
+        <span class="phase-number">ÁREA D</span>
+        <h3>Pensamiento Sistemático: Ver el todo y sus partes</h3>
+      </div>
+      <p>Los sistemas tienen propiedades que sus partes individuales no tienen. El agua moja, pero ni el hidrógeno ni el oxígeno solos lo hacen. Pensar sistemáticamente es ver estas propiedades emergentes.</p>
+      <p><strong>Conceptos clave:</strong></p>
+      <ul class="styled-list">
+        <li><strong>Stock y flujo:</strong> Todo sistema tiene acumulaciones (stocks) y tasas de cambio (flujos). El nivel de agua de un lago es un stock; la lluvia y la evaporación son flujos.</li>
+        <li><strong>Retroalimentación reforzadora (+):</strong> El crecimiento genera más crecimiento. Interés compuesto, viralidad, curvas de aprendizaje.</li>
+        <li><strong>Retroalimentación balanceadora (-):</strong> El sistema se autorregula hacia un objetivo. Termostato, homeostasis, mercados en equilibrio.</li>
+        <li><strong>Demoras:</strong> Los efectos no son inmediatos. Las demoras causan oscilaciones y hacen difícil ver causas reales.</li>
+        <li><strong>Emergencia:</strong> Propiedades que aparecen del sistema total, no de sus partes. La consciencia emerge del cerebro; la ciudad emerge de sus habitantes.</li>
+        <li><strong>Apalancamiento:</strong> Pequeños cambios en lugares clave producen grandes efectos. Encontrar los puntos de apalancamiento es el arte del pensamiento sistémico.</li>
+      </ul>
+      <div class="callout callout-tip">
+        <div class="callout-title">📚 Referencia esencial</div>
+        <p>El libro "Thinking in Systems" de Donella Meadows es LA referencia. Corto, denso y práctico. Léelo despacio, dos veces.</p>
+      </div>
+    </div>
+
+    <!-- EPISTEMOLOGÍA -->
+    <div class="phase p5" style="margin-top:24px;">
+      <div class="phase-header">
+        <span class="phase-number">ÁREA E</span>
+        <h3>Epistemología Práctica: Saber qué tan seguros podemos estar</h3>
+      </div>
+      <p>La epistemología pregunta: ¿cómo sabemos lo que creemos saber? En práctica, significa aprender a calibrar tu confianza correctamente y actualizar creencias con evidencia nueva.</p>
+      <ul class="styled-list">
+        <li><strong>Niveles de certeza:</strong> Aprende a hablar en probabilidades ("estoy 70% seguro de que…") en lugar de absolutos ("esto es verdad").</li>
+        <li><strong>El teorema de Bayes simplificado:</strong> Tu nueva creencia = Tu creencia anterior × La fuerza de la nueva evidencia. Siempre actualizas, nunca reemplazas desde cero.</li>
+        <li><strong>Diferencia entre anécdota y dato:</strong> Un caso individual no prueba una regla general. Necesitas muestra representativa, grupo de control, tamaño suficiente.</li>
+        <li><strong>El problema de la autoridad:</strong> Los expertos no siempre tienen razón. Pero tampoco los ignorantes que los cuestionan. Evalúa el consenso científico con matices.</li>
+        <li><strong>Falsabilidad:</strong> Una afirmación que no puede ser falsa no dice nada. "Todo pasa por alguna razón" no es falsificable y por tanto no es conocimiento.</li>
+        <li><strong>Steel-manning:</strong> La práctica opuesta al hombre de paja. Presenta el mejor argumento posible para la posición contraria. Solo después rebutala. Si no puedes hacer esto, no entiendes el debate.</li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="como-aprender">
+    <div class="section-eyebrow">// metodología</div>
+    <h2>¿Cómo Deberías Aprender Todo Esto?</h2>
+    <p>El error más grande es estudiar pensamiento crítico como si fuera un tema más. No es información que acumulas: es una habilidad que entrenas. La diferencia es enorme.</p>
+
+    <div class="callout callout-important">
+      <div class="callout-title">🔴 Verdad incómoda</div>
+      <p>Puedes leer 50 libros sobre pensamiento crítico y seguir pensando igual de mal. Lo que cambia la forma de pensar es la práctica deliberada aplicada a problemas reales. El conocimiento sin práctica es decoración.</p>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:20px; margin:32px 0 16px;">Los 4 modos de aprendizaje que debes combinar</h3>
+
+    <div class="strategy-grid">
+      <div class="strategy-card">
+        <div class="num">01</div>
+        <h4>Lectura Activa</h4>
+        <p>No leer para informarse sino para cuestionar. Subraya, anota preguntas, desafía al autor. Pregunta: ¿qué asume aquí? ¿qué evidencia da? ¿podría estar equivocado?</p>
+      </div>
+      <div class="strategy-card">
+        <div class="num">02</div>
+        <h4>Escritura Argumentativa</h4>
+        <p>Escribir obliga a claridad. Si no puedes explicarlo por escrito con coherencia, no lo entiendes. Escribe 200 palabras diarias sobre algo que leíste o pensaste.</p>
+      </div>
+      <div class="strategy-card">
+        <div class="num">03</div>
+        <h4>Debate y Discusión</h4>
+        <p>Defender y refutar ideas en conversación con otros (o contigo mismo) activa dimensiones del pensamiento que la lectura sola no toca. Busca interlocutores que piensen diferente a ti.</p>
+      </div>
+      <div class="strategy-card">
+        <div class="num">04</div>
+        <h4>Aplicación en lo Real</h4>
+        <p>Analiza noticias, decisiones del trabajo, conversaciones cotidianas con tus herramientas nuevas. El mundo es tu campo de entrenamiento. Un artículo de opinión es un ejercicio de detección de falacias.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:20px; margin:32px 0 16px;">Rutina diaria sugerida (30–60 min)</h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <h4>10 min — Lectura de tema del día</h4>
+        <p>Lee un capítulo, artículo o sección enfocada en una de las áreas del road map. Toma notas activas.</p>
+      </div>
+      <div class="tl-item">
+        <h4>10 min — Análisis de una noticia o argumento real</h4>
+        <p>Elige un artículo de opinión, un debate en YouTube, o una conversación que hayas tenido. Identifica premisas, conclusiones y posibles falacias.</p>
+      </div>
+      <div class="tl-item">
+        <h4>10 min — Escritura de reflexión</h4>
+        <p>¿Qué aprendiste hoy? ¿Qué cuestionas? ¿Qué cambiarías en tu forma de pensar? Sin perfeccionismo: solo escribe.</p>
+      </div>
+      <div class="tl-item">
+        <h4>Semanal — Revisión y debate</h4>
+        <p>Una vez por semana, discute con alguien (o escribe un ensayo) sobre un tema donde tengas una posición. Defiéndela y busca los mejores contraargumentos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="youtube">
+    <div class="section-eyebrow">// plataformas</div>
+    <h2>¿Puedo aprender por YouTube?</h2>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">✅ Respuesta corta</div>
+      <p><strong>Sí, en buena medida, pero con condiciones importantes.</strong> YouTube es excelente para introducción, motivación y ejemplos. Pero tiene límites reales que debes conocer.</p>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 12px;">✅ Lo que YouTube SÍ puede darte</h3>
+    <ul class="styled-list">
+      <li>Introducciones claras y visuales a conceptos difíciles</li>
+      <li>Explicaciones de falacias con ejemplos del mundo real</li>
+      <li>Demostraciones de pensamiento crítico en práctica (debates, análisis)</li>
+      <li>Motivación y comunidad a través de canales especializados</li>
+      <li>Acceso a conferencias y charlas de expertos (TED, universidades)</li>
+    </ul>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 12px;">❌ Lo que YouTube NO puede darte</h3>
+    <ul class="styled-list">
+      <li>Profundidad real: los videos simplifican por necesidad</li>
+      <li>La práctica del pensamiento escrito (indispensable)</li>
+      <li>Retroalimentación personalizada sobre tus argumentos</li>
+      <li>La experiencia de leer textos difíciles y seguirlos hasta el final</li>
+      <li>El hábito de concentración sostenida que los libros desarrollan</li>
+    </ul>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 12px;">📺 Canales recomendados (en español e inglés)</h3>
+
+    <div class="resource-item">
+      <span class="resource-type yt">YT · ES</span>
+      <div class="resource-info">
+        <strong>Derivando</strong>
+        <p>Matemáticas y razonamiento con humor. Excelente para pensamiento lógico sin que se sienta árido.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type yt">YT · ES</span>
+      <div class="resource-info">
+        <strong>QuantumFracture</strong>
+        <p>Física y pensamiento científico. Desarrolla intuición para el razonamiento basado en evidencia.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type yt">YT · ES</span>
+      <div class="resource-info">
+        <strong>La Fuerza de la Razón</strong>
+        <p>Canal dedicado específicamente a falacias, argumentación y escepticismo.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type yt">YT · EN</span>
+      <div class="resource-info">
+        <strong>Wireless Philosophy (Wi-Phi)</strong>
+        <p>Filosofía analítica en formato accesible. Sus series sobre lógica y epistemología son excelentes puntos de entrada.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type yt">YT · EN</span>
+      <div class="resource-info">
+        <strong>Academy of Ideas</strong>
+        <p>Filosofía aplicada a la psicología y la vida. Profundo pero accesible.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type yt">YT · EN</span>
+      <div class="resource-info">
+        <strong>Crash Course Philosophy</strong>
+        <p>Serie completa de introducción a filosofía, lógica, epistemología y ética. Ideal para la Fase 1 y 2.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type yt">YT · EN</span>
+      <div class="resource-info">
+        <strong>Jordan Ellenberg / 3Blue1Brown</strong>
+        <p>Pensamiento matemático aplicado. Desarrolla la intuición para el razonamiento riguroso.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-warning" style="margin-top:24px;">
+      <div class="callout-title">⚠️ El peligro del consumo pasivo</div>
+      <p>Ver videos sobre pensamiento crítico sin practicarlo es como ver videos de gimnasio sin ejercitarte. Después de cada video, escribe 5 líneas: ¿qué aprendiste? ¿qué preguntas tienes? ¿dónde aplica esto en tu vida?</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="estrategias">
+    <div class="section-eyebrow">// método</div>
+    <h2>Estrategias de Aprendizaje</h2>
+    <p>Estas son las estrategias más efectivas según la ciencia del aprendizaje aplicadas específicamente a desarrollar pensamiento crítico.</p>
+
+    <div class="phase p1" style="margin-top:24px;">
+      <div class="phase-header">
+        <span class="phase-number">ESTRATEGIA 1</span>
+        <h3>Práctica de Recuperación (Retrieval Practice)</h3>
+      </div>
+      <p>En lugar de releer tus notas, cierra el libro e intenta recordar lo que aprendiste. La dificultad del recuerdo es lo que consolida el aprendizaje. Para pensamiento crítico: intenta explicar una falacia sin mirar tu nota. Intenta aplicar un modelo mental a un problema nuevo sin guía.</p>
+      <p><strong>Cómo aplicarlo:</strong> Usa tarjetas (físicas o Anki digital). No memorices definiciones: memoriza aplicaciones. "¿Cuál es un ejemplo de sesgo de confirmación en mi vida esta semana?"</p>
+    </div>
+
+    <div class="phase p2" style="margin-top:16px;">
+      <div class="phase-header">
+        <span class="phase-number">ESTRATEGIA 2</span>
+        <h3>La Técnica de Feynman</h3>
+      </div>
+      <p>Aprende a explicar cualquier concepto como si se lo explicaras a un niño de 12 años. Si no puedes, no lo entiendes. La simplicidad de la explicación revela la profundidad real de tu comprensión.</p>
+      <p><strong>Cómo aplicarlo:</strong> Toma un concepto del road map (ej: "sesgo de anclaje") y escribe una explicación de 3 párrafos sin usar jerga. Cuando quedes atascado, vuelve a la fuente para llenar esos huecos.</p>
+    </div>
+
+    <div class="phase p3" style="margin-top:16px;">
+      <div class="phase-header">
+        <span class="phase-number">ESTRATEGIA 3</span>
+        <h3>Interleaving (Intercalado)</h3>
+      </div>
+      <p>No estudies un tema hasta agotarlo y luego pases al siguiente. Alterna entre temas distintos dentro de una sesión. Es más difícil pero produce aprendizaje más duradero y transferible.</p>
+      <p><strong>Cómo aplicarlo:</strong> Sesión de 45 min: 15 min de falacias, 15 min de sesgos, 15 min de modelos mentales. Semana siguiente, cambia el orden.</p>
+    </div>
+
+    <div class="phase p4" style="margin-top:16px;">
+      <div class="phase-header">
+        <span class="phase-number">ESTRATEGIA 4</span>
+        <h3>Diario de Pensamiento (Thinking Journal)</h3>
+      </div>
+      <p>La herramienta más subestimada. Un cuaderno donde registras: decisiones tomadas y su razonamiento, argumentos que escuchaste y tu análisis, sesgos que detectaste en ti mismo, preguntas sin respuesta.</p>
+      <p>Revisarlo cada mes te muestra cómo evoluciona (o no) tu pensamiento. Los mejores pensadores de la historia lo hacían: Darwin, Leonardo, Montaigne.</p>
+    </div>
+
+    <div class="phase p5" style="margin-top:16px;">
+      <div class="phase-header">
+        <span class="phase-number">ESTRATEGIA 5</span>
+        <h3>El Método Socrático en Conversación</h3>
+      </div>
+      <p>En conversaciones cotidianas, practica hacer preguntas en lugar de dar opiniones. "¿Qué quieres decir exactamente con eso?", "¿Cómo sabes que eso es así?", "¿Qué evidencia tienes?", "¿Qué asumes al decir eso?"</p>
+      <p>Esto no es ser difícil: es entrenar el músculo de cuestionar suposiciones, el core del pensamiento crítico.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="trucos">
+    <div class="section-eyebrow">// hacks cognitivos</div>
+    <h2>Trucos y Técnicas Avanzadas</h2>
+    <p>Estos son atajos probados que aceleran el desarrollo del pensamiento crítico. No reemplazan el trabajo profundo, pero lo amplifican.</p>
+
+    <div class="topic-grid">
+      <div class="topic-card tc1">
+        <h4>🎭 Steel-Manning</h4>
+        <p>Antes de refutar cualquier posición, construye el <em>mejor</em> argumento posible para ella. Si no puedes, no estás listo para el debate. Esto elimina el hombre de paja y te obliga a entender de verdad al oponente.</p>
+      </div>
+      <div class="topic-card tc2">
+        <h4>❓ Las 5 Preguntas Socrática</h4>
+        <p>Ante cualquier afirmación: (1) ¿Qué significa exactamente? (2) ¿Cómo lo saben? (3) ¿Es siempre cierto? (4) ¿Qué suposiciones hay? (5) ¿Qué implicaciones tiene? Cinco preguntas que destruyen 90% del pensamiento superficial.</p>
+      </div>
+      <div class="topic-card tc3">
+        <h4>🔀 Inversión de Munger</h4>
+        <p>"Inviértelo, siempre." Si quieres saber cómo tener éxito, pregunta qué causa el fracaso y evítalo. Para cualquier problema, pregunta: ¿qué lo haría peor? Luego haz lo opuesto. Sorprendentemente poderoso.</p>
+      </div>
+      <div class="topic-card tc4">
+        <h4>📏 El Test del Titular Opuesto</h4>
+        <p>Antes de creer una noticia, imagina el titular contrario. ¿Existiría algún incentivo para que alguien lo publique así? ¿Qué información omite? Detecta sesgos editoriales al instante.</p>
+      </div>
+      <div class="topic-card tc5">
+        <h4>⚖️ El Principio de Caridad</h4>
+        <p>Interpreta siempre el argumento ajeno de la manera más favorable posible. No el más débil, sino el más fuerte. Solo así sabes si realmente lo refutas o solo combates una versión fácil.</p>
+      </div>
+      <div class="topic-card tc1">
+        <h4>🗺️ Mapas de Argumentos</h4>
+        <p>Dibuja visualmente un argumento: la conclusión en el centro, las premisas como ramas, los supuestos como raíces. Ver la estructura visualmente revela huecos que el texto oculta. Usa papel o MindMup/Coggle gratis.</p>
+      </div>
+      <div class="topic-card tc2">
+        <h4>🔢 Estimaciones Fermi</h4>
+        <p>Practica estimaciones con órdenes de magnitud: "¿Cuántos pianos hay en México?" No importa la exactitud: importa el método de razonamiento. Esta práctica desarrolla intuición cuantitativa extraordinaria.</p>
+      </div>
+      <div class="topic-card tc3">
+        <h4>📖 Pre-mortem</h4>
+        <p>Antes de ejecutar cualquier decisión importante, imagina que ya fracasó. ¿Qué salió mal? Esta técnica de Gary Klein activa pensamiento crítico sobre tus propios planes eliminando el sesgo optimista.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="recursos">
+    <div class="section-eyebrow">// biblioteca esencial</div>
+    <h2>Recursos por Fase</h2>
+    <p>Una selección rigurosa. No necesitas todo: elige uno por fase y ve profundo en él.</p>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 16px; color: var(--phase1);">Fase 1 — Conocer tu mente</h3>
+    <div class="resource-item">
+      <span class="resource-type libro">LIBRO</span>
+      <div class="resource-info">
+        <strong>Pensar Rápido, Pensar Despacio — Daniel Kahneman</strong>
+        <p>El libro más importante para entender cómo funciona el cerebro. Denso pero accesible. Lee un capítulo por día máximo.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type gratis">GRATIS</span>
+      <div class="resource-info">
+        <strong>yourbiasIs.me — Lista completa de sesgos</strong>
+        <p>Enciclopedia visual de sesgos cognitivos. Úsala como referencia mientras estudias.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type libro">LIBRO</span>
+      <div class="resource-info">
+        <strong>El Arte de Pensar — Rolf Dobelli</strong>
+        <p>52 errores de pensamiento en capítulos de 3 páginas. Perfecto para principiantes. Ligero y práctico.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 16px; color: var(--phase2);">Fase 2 — Lógica y argumentación</h3>
+    <div class="resource-item">
+      <span class="resource-type libro">LIBRO</span>
+      <div class="resource-info">
+        <strong>Being Logical — D.Q. McInerny</strong>
+        <p>El mejor libro de lógica informal para no especialistas. Corto, denso, práctico. 150 páginas que valen 5 años de estudio.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type gratis">GRATIS</span>
+      <div class="resource-info">
+        <strong>YourLogicalFallacyIs.com</strong>
+        <p>Guía visual de 24 falacias con definición y ejemplo. Excelente para memorizar y reconocer en la vida real.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type curso">CURSO</span>
+      <div class="resource-info">
+        <strong>Critical Thinking & Argumentation — Coursera (UC Davis)</strong>
+        <p>Curso universitario gratis. Estructurado, con ejercicios y retroalimentación. Complementa bien los libros.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 16px; color: var(--phase3);">Fase 3 — Epistemología práctica</h3>
+    <div class="resource-item">
+      <span class="resource-type libro">LIBRO</span>
+      <div class="resource-info">
+        <strong>The Scout Mindset — Julia Galef</strong>
+        <p>Cómo tener creencias calibradas en lugar de creencias motivadas. Basado en años de investigación en racionalidad aplicada.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type libro">LIBRO</span>
+      <div class="resource-info">
+        <strong>Factfulness — Hans Rosling</strong>
+        <p>Cómo el pensamiento instintivo nos hace equivocar sobre el mundo real. Con datos, historia y mucha humanidad.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 16px; color: var(--phase4);">Fase 4 — Modelos mentales y sistemas</h3>
+    <div class="resource-item">
+      <span class="resource-type libro">LIBRO</span>
+      <div class="resource-info">
+        <strong>Thinking in Systems — Donella Meadows</strong>
+        <p>El texto definitivo sobre pensamiento sistemático. Claro, profundo, con ejemplos reales. Léelo dos veces.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type libro">LIBRO</span>
+      <div class="resource-info">
+        <strong>Poor Charlie's Almanack — Charles Munger</strong>
+        <p>La colección de discursos de Munger sobre modelos mentales. Denso, brillante, irónico. Uno de los mejores libros de pensamiento que existen.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type gratis">GRATIS</span>
+      <div class="resource-info">
+        <strong>Farnam Street (fs.blog)</strong>
+        <p>El mejor blog del internet sobre modelos mentales, decisiones y pensamiento. Todo gratuito. Suscríbete al newsletter.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 16px; color: #8a6800;">Fase 5 — Profundización y filosofía</h3>
+    <div class="resource-item">
+      <span class="resource-type libro">LIBRO</span>
+      <div class="resource-info">
+        <strong>Cómo Leer un Libro — Mortimer Adler</strong>
+        <p>El manual definitivo de lectura analítica. Cómo leer libros difíciles con comprensión real. Transforma la manera en que lees todo.</p>
+      </div>
+    </div>
+    <div class="resource-item">
+      <span class="resource-type libro">LIBRO</span>
+      <div class="resource-info">
+        <strong>Las Meditaciones — Marco Aurelio</strong>
+        <p>Filosofía estoica en práctica. El diario privado del mejor pensador-líder de la historia. Para la Fase 5: leerlo con lápiz en mano.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="errores">
+    <div class="section-eyebrow">// trampas del camino</div>
+    <h2>Errores Comunes que Debes Evitar</h2>
+
+    <div class="phase p4" style="margin-top:24px;">
+      <div class="phase-header">
+        <span class="phase-number">ERROR 1</span>
+        <h3>El síndrome del eterno estudiante</h3>
+      </div>
+      <p>Acumular libros, cursos y videos sin nunca aplicar. El pensamiento crítico se desarrolla en la práctica, no en la acumulación de información. Señal de alerta: llevas 6 meses "aprendiendo" y no puedes aplicar lo aprendido a un problema real.</p>
+    </div>
+
+    <div class="phase p4" style="margin-top:16px;">
+      <div class="phase-header">
+        <span class="phase-number">ERROR 2</span>
+        <h3>Usar el pensamiento crítico como arma, no como herramienta</h3>
+      </div>
+      <p>El conocimiento de falacias se convierte fácilmente en una herramienta para "ganar" discusiones en lugar de buscar la verdad. Si usas "ad hominem" como insulto en lugar de como señal de que necesitas mejorar tu argumento, estás haciendo lo contrario del pensamiento crítico.</p>
+    </div>
+
+    <div class="phase p4" style="margin-top:16px;">
+      <div class="phase-header">
+        <span class="phase-number">ERROR 3</span>
+        <h3>Confundir escepticismo con cinismo</h3>
+      </div>
+      <p>El escéptico dice "dame evidencia para creer". El cínico dice "nada es verdad y todo está manipulado". El pensamiento crítico bien aplicado no produce nihilismo: produce creencias mejor calibradas. Si terminas creyendo en todo igual, o en nada, algo salió mal.</p>
+    </div>
+
+    <div class="phase p4" style="margin-top:16px;">
+      <div class="phase-header">
+        <span class="phase-number">ERROR 4</span>
+        <h3>Saltarse la lógica formal por aburrida</h3>
+      </div>
+      <p>La lógica parece seca pero es el esqueleto de todo lo demás. Sin entender estructura argumental básica, los modelos mentales se usan mal y el análisis de sesgos queda superficial. Es el área que más se omite y más se necesita.</p>
+    </div>
+
+    <div class="phase p4" style="margin-top:16px;">
+      <div class="phase-header">
+        <span class="phase-number">ERROR 5</span>
+        <h3>No registrar el progreso</h3>
+      </div>
+      <p>Sin un diario de pensamiento, no puedes ver cómo evolucionas (o si lo haces). El cerebro no tiene acceso a sus versiones anteriores: los registros escritos sí. Además, detectarás patrones de error que se repiten y que de otra forma serían invisibles.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section" id="plan">
+    <div class="section-eyebrow">// acción concreta</div>
+    <h2>Tu Plan de Acción: Los Próximos 90 Días</h2>
+    <p>Aquí está exactamente qué hacer para empezar mañana. Sin abrumarte. Sin costos iniciales.</p>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 16px;">Mes 1: Conocer el terreno</h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <h4>Semana 1–2: Empieza con sesgos</h4>
+        <p>Lee "El Arte de Pensar" de Dobelli (o su versión larga: Kahneman). Un capítulo diario. Cada noche escribe 1 sesgo que hayas detectado en ti mismo ese día.</p>
+      </div>
+      <div class="tl-item">
+        <h4>Semana 3–4: Falacias</h4>
+        <p>Estudia 3 falacias por día en yourlogicalfallacyis.com. Para cada una: léela, busca un ejemplo en YouTube (debate político, anuncio, etc.) y escríbelo en tu diario.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 16px;">Mes 2: Argumentación y lógica</h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <h4>Semana 5–6: Being Logical</h4>
+        <p>Lee el libro de McInerny despacio. Para cada capítulo, identifica un argumento real (artículo, conversación) donde aplique lo aprendido.</p>
+      </div>
+      <div class="tl-item">
+        <h4>Semana 7–8: Práctica de argumentación</h4>
+        <p>Elige 2 temas sobre los que tengas opinión fuerte. Escribe: (a) tu argumento, (b) el steel-man del lado opuesto, (c) los puntos débiles de tu propio argumento.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:18px; margin:24px 0 16px;">Mes 3: Modelos mentales y práctica real</h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <h4>Semana 9–10: Farnam Street + Primeros principios</h4>
+        <p>Lee los mejores artículos de fs.blog sobre modelos mentales. Elige 5 modelos que más te resuenen y estudia cada uno a fondo.</p>
+      </div>
+      <div class="tl-item">
+        <h4>Semana 11–12: Aplicación total</h4>
+        <p>Toma una decisión real en tu vida que tengas pendiente. Aplica: primeros principios, steel-man de las opciones, efectos de segundo orden, inversión. Documenta todo el proceso.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-tip" style="margin-top:32px;">
+      <div class="callout-title">🎯 La única métrica que importa</div>
+      <p>Al final de los 90 días, deberías poder tomar un artículo de opinión cualquiera y en 5 minutos identificar: las premisas principales, al menos 2 suposiciones tácitas, si hay alguna falacia, y qué evidencia falta para justificar la conclusión. Si puedes hacer eso, estás en camino.</p>
+    </div>
+
+    <h3 style="font-family:'Sora',sans-serif; font-size:20px; margin:40px 0 20px;">Resumen de herramientas gratuitas</h3>
+    <table>
+      <tr><th>Herramienta</th><th>Para qué</th><th>Costo</th></tr>
+      <tr><td>Anki (app)</td><td>Flashcards de sesgos y falacias</td><td>Gratis</td></tr>
+      <tr><td>yourlogicalfallacyis.com</td><td>Referencia de falacias</td><td>Gratis</td></tr>
+      <tr><td>yourbiasIs.me</td><td>Referencia de sesgos</td><td>Gratis</td></tr>
+      <tr><td>fs.blog</td><td>Modelos mentales</td><td>Gratis</td></tr>
+      <tr><td>Coggle.it / MindMup</td><td>Mapas de argumentos</td><td>Gratis</td></tr>
+      <tr><td>Notion o papel</td><td>Diario de pensamiento</td><td>Gratis</td></tr>
+      <tr><td>Coursera (audit)</td><td>Cursos universitarios</td><td>Gratis (sin certificado)</td></tr>
+    </table>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="section" style="border-bottom:none;">
+    <blockquote>
+      <p>"Una hora de pensamiento efectivo vale más que un año de actividad caótica. La mente entrenada no trabaja más: trabaja diferente. Más lento en apariencia, más rápido en realidad."</p>
+      <cite>— Adaptación de Blaise Pascal</cite>
+    </blockquote>
+
+    <div class="callout callout-important" style="margin-top:24px;">
+      <div class="callout-title">🔴 Recuerda siempre</div>
+      <p>El pensamiento crítico no es saber más que los demás. Es estar dispuesto a ser corregido, actualizar tus creencias con evidencia, y ver el mundo con más matiz y menos certezas absolutas. El destino no es la arrogancia intelectual: es la humildad bien informada.</p>
+    </div>
+
+    <div class="badge-row" style="margin-top:32px;">
+      <span class="badge badge-blue">Fase 1: Sesgos cognitivos</span>
+      <span class="badge badge-green">Fase 2: Lógica y falacias</span>
+      <span class="badge badge-purple">Fase 3: Epistemología</span>
+      <span class="badge badge-red">Fase 4: Sistemas y modelos</span>
+      <span class="badge badge-gold">Fase 5: Integración</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Road Map construido para aprendizaje autodidacta profundo · <strong>Empieza hoy, una cosa a la vez.</strong></p>
+  <p style="margin-top:8px; font-size:10px;">La mente no se entrena leyendo sobre entrenamiento. Se entrena entrenando.</p>
+</footer>
+
+</body>
+</html>

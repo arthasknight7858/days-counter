@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
 
 export interface Song {
   title: string;
@@ -133,32 +140,44 @@ interface MusicContextType {
 const MusicContext = createContext<MusicContextType | undefined>(undefined);
 
 export function MusicProvider({ children }: { children: React.ReactNode }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Lazy state initializers to avoid hydration/render sync issues
+  const [currentIndex, setCurrentIndex] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("sofi_music_song_idx");
+        if (saved !== null) {
+          const idx = parseInt(saved, 10);
+          if (!isNaN(idx) && idx >= 0 && idx < songs.length) return idx;
+        }
+      } catch {}
+    }
+    return 0;
+  });
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(0.85);
+
+  const [volume, setVolume] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const savedVol = localStorage.getItem("sofi_music_volume");
+        if (savedVol !== null) {
+          const v = parseFloat(savedVol);
+          if (!isNaN(v) && v >= 0 && v <= 1) return v;
+        }
+      } catch {}
+    }
+    return 0.85;
+  });
+
   const [isMuted, setIsMuted] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [repeatMode, setRepeatMode] = useState<"off" | "all" | "one">("all");
   const [direction, setDirection] = useState<1 | -1>(1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const currentSong = songs[currentIndex];
-
-  // Load saved volume from localStorage
-  useEffect(() => {
-    try {
-      const savedVol = localStorage.getItem("sofi_music_volume");
-      if (savedVol !== null) {
-        const v = parseFloat(savedVol);
-        if (!isNaN(v) && v >= 0 && v <= 1) {
-          setVolume(v);
-          if (audioRef.current) audioRef.current.volume = v;
-        }
-      }
-    } catch {}
-  }, []);
+  const currentSong = songs[currentIndex] || songs[0];
 
   // Sync audio volume
   useEffect(() => {
@@ -166,6 +185,13 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
       audioRef.current.volume = isMuted ? 0 : volume;
     }
   }, [volume, isMuted]);
+
+  // Persist song index
+  useEffect(() => {
+    try {
+      localStorage.setItem("sofi_music_song_idx", currentIndex.toString());
+    } catch {}
+  }, [currentIndex]);
 
   // Handle song source changes
   useEffect(() => {
@@ -242,7 +268,9 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setProgress(audioRef.current.currentTime);
-      setDuration(audioRef.current.duration || 0);
+      if (audioRef.current.duration && !isNaN(audioRef.current.duration)) {
+        setDuration(audioRef.current.duration);
+      }
     }
   };
 
@@ -254,33 +282,65 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   };
 
   const handleVolumeChange = (newVol: number) => {
-    setVolume(newVol);
+    const clamped = Math.max(0, Math.min(1, newVol));
+    setVolume(clamped);
     if (isMuted) setIsMuted(false);
     try {
-      localStorage.setItem("sofi_music_volume", newVol.toString());
+      localStorage.setItem("sofi_music_volume", clamped.toString());
     } catch {}
   };
 
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-  };
+  const toggleMute = useCallback(() => {
+    setIsMuted((prev) => !prev);
+  }, []);
 
-  const toggleShuffle = () => {
-    setIsShuffle(!isShuffle);
-  };
+  const toggleShuffle = useCallback(() => {
+    setIsShuffle((prev) => !prev);
+  }, []);
 
-  const toggleRepeat = () => {
-    if (repeatMode === "off") setRepeatMode("all");
-    else if (repeatMode === "all") setRepeatMode("one");
-    else setRepeatMode("off");
-  };
+  const toggleRepeat = useCallback(() => {
+    setRepeatMode((prev) => {
+      if (prev === "off") return "all";
+      if (prev === "all") return "one";
+      return "off";
+    });
+  }, []);
 
   const formatTime = (time: number) => {
-    if (isNaN(time) || !isFinite(time)) return "0:00";
+    if (isNaN(time) || !isFinite(time) || time < 0) return "0:00";
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
+
+  // Global keyboard shortcuts (Space, M, Shift+ArrowLeft, Shift+ArrowRight)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.key === "m" || e.key === "M") {
+        toggleMute();
+      } else if (e.key === "ArrowRight" && e.shiftKey) {
+        handleNext();
+      } else if (e.key === "ArrowLeft" && e.shiftKey) {
+        handlePrev();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [togglePlay, toggleMute, handleNext, handlePrev]);
 
   return (
     <MusicContext.Provider
@@ -312,8 +372,13 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
         ref={audioRef}
         src={encodeURI(currentSong.file)}
         onTimeUpdate={handleTimeUpdate}
-        onEnded={handleSongEnd}
+        onDurationChange={handleTimeUpdate}
         onLoadedMetadata={handleTimeUpdate}
+        onCanPlay={handleTimeUpdate}
+        onEnded={handleSongEnd}
+        onError={() => {
+          setIsPlaying(false);
+        }}
         preload="metadata"
       />
       {children}

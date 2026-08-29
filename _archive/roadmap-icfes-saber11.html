@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap ICFES Saber 11° — Guía Completa 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1524;
+    --bg3: #151c30;
+    --card: #1a2238;
+    --card2: #1f2a40;
+    --border: rgba(100,130,220,0.15);
+    --accent1: #4f8ef7;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --text: #e8ecf5;
+    --muted: #8899bb;
+    --gold: #fbbf24;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,142,247,0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(167,139,250,0.12) 0%, transparent 60%),
+                var(--bg);
+    position: relative;
+  }
+
+  .hero::after {
+    content:'';
+    position:absolute;
+    inset:0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234f8ef7' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events:none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(79,142,247,0.12);
+    border: 1px solid rgba(79,142,247,0.3);
+    color: var(--accent1);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, #4f8ef7, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 40px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-n {
+    font-family: 'Sora', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent1);
+    display: block;
+  }
+
+  .stat-l {
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .hero-nav {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-pill {
+    padding: 10px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .nav-pill:hover {
+    background: var(--card2);
+    border-color: rgba(79,142,247,0.4);
+    color: var(--accent1);
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section {
+    padding: 80px 0;
+  }
+
+  .section-tag {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent1);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 580px;
+    margin-bottom: 50px;
+  }
+
+  /* ROADMAP TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent1), var(--accent2), transparent);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: -38px;
+    top: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent1);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 12px rgba(79,142,247,0.5);
+  }
+
+  .tl-phase {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent1);
+    margin-bottom: 6px;
+  }
+
+  .tl-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .tl-body {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* SUBJECT CARDS */
+  .subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  .subj-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .subj-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(79,142,247,0.35);
+  }
+
+  .subj-header {
+    padding: 24px 24px 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .subj-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .subj-meta h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .subj-meta p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .subj-body {
+    padding: 0 24px 24px;
+  }
+
+  .subj-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 18px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+
+  .topic-list {
+    list-style: none;
+  }
+
+  .topic-list li {
+    padding: 7px 0;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border-bottom: 1px solid rgba(100,130,220,0.07);
+  }
+
+  .topic-list li:last-child { border:none; }
+
+  .topic-list li::before {
+    content: '▸';
+    color: var(--accent1);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .subtopic {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-top: 4px;
+    padding-left: 18px;
+    display: block;
+  }
+
+  /* DIFFICULTY PILLS */
+  .diff-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 12px;
+  }
+
+  .diff-alta { background: rgba(251,146,60,0.15); color: #fb923c; }
+  .diff-media { background: rgba(52,211,153,0.15); color: #34d399; }
+  .diff-baja { background: rgba(79,142,247,0.15); color: #4f8ef7; }
+
+  /* COLOR THEMES PER SUBJECT */
+  .math .subj-icon { background: rgba(79,142,247,0.15); }
+  .lect .subj-icon { background: rgba(167,139,250,0.15); }
+  .soc .subj-icon { background: rgba(52,211,153,0.15); }
+  .cnat .subj-icon { background: rgba(251,146,60,0.15); }
+  .eng .subj-icon { background: rgba(244,114,182,0.15); }
+
+  /* STRATEGY CARDS */
+  .strat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .strat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: transform 0.2s;
+  }
+
+  .strat-card:hover { transform: translateY(-3px); }
+
+  .strat-icon {
+    font-size: 2rem;
+    margin-bottom: 14px;
+  }
+
+  .strat-card h4 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .strat-card p {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* TIPS HIGHLIGHTED */
+  .tips-box {
+    background: linear-gradient(135deg, rgba(79,142,247,0.08), rgba(167,139,250,0.08));
+    border: 1px solid rgba(79,142,247,0.25);
+    border-radius: 20px;
+    padding: 36px 40px;
+    margin: 40px 0;
+  }
+
+  .tips-box h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .tip-item {
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .tip-item strong {
+    display: block;
+    color: var(--gold);
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+  }
+
+  .tip-item p {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* YOUTUBE SECTION */
+  .yt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .yt-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+
+  .yt-card:hover { border-color: rgba(251,0,0,0.3); }
+
+  .yt-logo {
+    width: 40px;
+    height: 40px;
+    background: #ff0000;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    color: white;
+    font-weight: 900;
+  }
+
+  .yt-info h4 {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+  }
+
+  .yt-info p {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .yt-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    margin-top: 8px;
+  }
+
+  /* SCHEDULE TABLE */
+  .sched-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .sched-table th {
+    background: var(--card2);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .sched-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .sched-table tr:last-child td { border-bottom: none; }
+  .sched-table tr:hover td { background: rgba(79,142,247,0.04); }
+
+  .day-label {
+    font-weight: 700;
+    color: var(--accent1);
+  }
+
+  /* CHECKLIST */
+  .checklist {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 0.9rem;
+  }
+
+  .check-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(52,211,153,0.15);
+    border: 1.5px solid #34d399;
+    color: #34d399;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* SCORE INFO */
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .score-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .score-n {
+    font-family: 'Sora', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    display: block;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .score-label {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ALERT BOX */
+  .alert {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 14px;
+    padding: 18px 22px;
+    font-size: 0.92rem;
+    color: #fde68a;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 24px 0;
+  }
+
+  .alert-icon { font-size: 1.2rem; flex-shrink:0; margin-top:1px; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 20px 0;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 50px 24px 40px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    border-top: 1px solid var(--border);
+  }
+
+  footer p { margin-bottom: 6px; }
+
+  /* SCROLL SMOOTH */
+  html { scroll-behavior: smooth; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .tab-btn {
+    padding: 9px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab-btn.active {
+    background: var(--accent1);
+    color: white;
+    border-color: transparent;
+  }
+
+  .tab-btn:hover:not(.active) {
+    background: var(--card);
+    color: var(--text);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero { padding: 60px 16px 40px; }
+    .tips-box { padding: 24px 20px; }
+    section { padding: 60px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-badge">🇨🇴 Guía Completa 2026</div>
+  <h1>Road Map<br><span>ICFES Saber 11°</span></h1>
+  <p>Todo lo que necesitas saber para dominar las 5 áreas del examen, desde cero hasta puntaje alto. Temarios, estrategias, recursos y plan de estudio.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-n">5</span><span class="stat-l">Pruebas</span></div>
+    <div class="stat"><span class="stat-n">~230</span><span class="stat-l">Preguntas</span></div>
+    <div class="stat"><span class="stat-n">9h</span><span class="stat-l">Duración total</span></div>
+    <div class="stat"><span class="stat-n">500</span><span class="stat-l">Puntaje máximo</span></div>
+  </div>
+  <div class="hero-nav">
+    <a href="#estructura" class="nav-pill">📋 Estructura</a>
+    <a href="#areas" class="nav-pill">📚 5 Áreas</a>
+    <a href="#roadmap" class="nav-pill">🗺️ Roadmap</a>
+    <a href="#estrategias" class="nav-pill">🧠 Estrategias</a>
+    <a href="#youtube" class="nav-pill">▶️ YouTube</a>
+    <a href="#horario" class="nav-pill">📅 Horario</a>
+    <a href="#trucos" class="nav-pill">⚡ Trucos</a>
+  </div>
+</section>
+
+<!-- ===== ESTRUCTURA ===== -->
+<section id="estructura" style="background: var(--bg2);">
+  <div class="container">
+    <div class="section-tag">Primero lo primero</div>
+    <h2 class="section-title">¿Qué es el ICFES Saber 11° y cómo funciona?</h2>
+    <p class="section-sub">El examen de Estado que abre las puertas a la educación superior en Colombia. Entiéndelo antes de estudiar.</p>
+
+    <div class="strat-grid">
+      <div class="strat-card">
+        <div class="strat-icon">🎯</div>
+        <h4>¿Qué evalúa?</h4>
+        <p>Mide competencias académicas (no memorización) de estudiantes de grado 11°. El objetivo es saber si puedes <strong>razonar, analizar y aplicar</strong> conocimientos, no si memorizas datos.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">📊</div>
+        <h4>¿Cómo se puntúa?</h4>
+        <p>Cada prueba va de <strong>0 a 100 puntos</strong>. El puntaje global es el promedio de las 5 pruebas → máximo <strong>500 puntos</strong>. No hay puntos negativos por respuesta incorrecta.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">⏱️</div>
+        <h4>¿Cuánto dura?</h4>
+        <p>El examen dura <strong>9 horas en total</strong>, divididas en dos sesiones de 4h30 cada una presentadas el mismo día. Las sesiones incluyen recesos.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">📅</div>
+        <h4>¿Cuándo se presenta?</h4>
+        <p>El ICFES se presenta <strong>dos veces al año</strong> (primer y segundo semestre). Los resultados se publican 45–60 días después del examen en la cuenta PRISMA del estudiante.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">🏛️</div>
+        <h4>¿Para qué sirve?</h4>
+        <p>Para ingresar a universidades públicas y privadas, acceder a becas como <strong>Generación E</strong>, aplicar a programas de alta demanda (Medicina, Ingeniería) y demostrar competencias académicas.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">❓</div>
+        <h4>Tipo de preguntas</h4>
+        <p>Todas las preguntas son de <strong>selección múltiple con única respuesta</strong> (4 opciones: A, B, C, D). Aproximadamente 40–45 preguntas por prueba.</p>
+      </div>
+    </div>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <span class="score-n">0–100</span>
+        <p class="score-label">Puntaje por área</p>
+      </div>
+      <div class="score-card">
+        <span class="score-n">~230</span>
+        <p class="score-label">Preguntas totales</p>
+      </div>
+      <div class="score-card">
+        <span class="score-n">300+</span>
+        <p class="score-label">Puntaje decente</p>
+      </div>
+      <div class="score-card">
+        <span class="score-n">380+</span>
+        <p class="score-label">Puntaje alto</p>
+      </div>
+      <div class="score-card">
+        <span class="score-n">450+</span>
+        <p class="score-label">Puntaje excelente</p>
+      </div>
+    </div>
+
+    <div class="alert" style="margin-top:30px;">
+      <span class="alert-icon">💡</span>
+      <div><strong>Recuerda:</strong> El ICFES NO tiene penalización por respuesta incorrecta. Si no sabes una respuesta, <strong>siempre responde algo</strong> — descarta opciones y elige la más probable. Nunca dejes en blanco.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5 ÁREAS ===== -->
+<section id="areas">
+  <div class="container">
+    <div class="section-tag">El corazón del examen</div>
+    <h2 class="section-title">Las 5 Pruebas: Temario Completo</h2>
+    <p class="section-sub">Cada área explicada desde cero, con todos sus subtemas, qué evalúa y cómo la ICFES la enfoca.</p>
+
+    <div class="subjects-grid">
+
+      <!-- MATEMÁTICAS -->
+      <div class="subj-card math" id="matematicas">
+        <div class="subj-header">
+          <div class="subj-icon">🔢</div>
+          <div class="subj-meta">
+            <h3>Matemáticas</h3>
+            <p>~45 preguntas · Peso muy alto</p>
+          </div>
+        </div>
+        <div class="subj-body">
+          <p class="subj-desc">Evalúa la capacidad para resolver situaciones reales usando herramientas matemáticas. NO pide procedimientos de memoria, sino <strong>razonamiento y aplicación en contexto</strong>. Incluye 3 componentes: Razonamiento y argumentación, Comunicación, representación y modelación, y Planteamiento y resolución de problemas.</p>
+          <span class="diff-pill diff-alta">🔥 Dificultad: Alta</span>
+          <div class="divider"></div>
+          <ul class="topic-list">
+            <li>
+              <div>
+                <strong>Álgebra y funciones</strong>
+                <span class="subtopic">Expresiones algebraicas, ecuaciones lineales y cuadráticas, sistemas de ecuaciones, inecuaciones, funciones (lineal, cuadrática, exponencial, logarítmica), gráficas e interpretación.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Geometría y medición</strong>
+                <span class="subtopic">Figuras planas (área, perímetro), sólidos geométricos (volumen, superficie), ángulos, triángulos, teorema de Pitágoras, semejanza y congruencia, transformaciones geométricas.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Pensamiento numérico y variacional</strong>
+                <span class="subtopic">Números reales, razones y proporciones, porcentajes, interés simple y compuesto, variación directa e inversa, progresiones aritméticas y geométricas.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Estadística y probabilidad</strong>
+                <span class="subtopic">Tablas y gráficas estadísticas, medidas de tendencia central (media, mediana, moda), medidas de dispersión, probabilidad clásica, combinatoria básica.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Trigonometría básica</strong>
+                <span class="subtopic">Razones trigonométricas (sen, cos, tan), triángulo rectángulo, aplicaciones en contexto. Nivel básico — no cálculo avanzado.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- LECTURA CRÍTICA -->
+      <div class="subj-card lect" id="lectura">
+        <div class="subj-header">
+          <div class="subj-icon">📖</div>
+          <div class="subj-meta">
+            <h3>Lectura Crítica</h3>
+            <p>~45 preguntas · Transversal a todo</p>
+          </div>
+        </div>
+        <div class="subj-body">
+          <p class="subj-desc">Es la prueba que más impacta el puntaje porque sus habilidades se usan en todas las demás. Evalúa 3 competencias: <strong>Identificar y entender</strong>, <strong>Comprender cómo se articulan</strong> los textos, y <strong>Reflexionar y evaluar</strong> críticamente.</p>
+          <span class="diff-pill diff-media">📘 Dificultad: Media-Alta</span>
+          <div class="divider"></div>
+          <ul class="topic-list">
+            <li>
+              <div>
+                <strong>Tipos de texto</strong>
+                <span class="subtopic">Textos continuos (narrativos, descriptivos, argumentativos, expositivos) y discontinuos (tablas, gráficas, mapas, caricaturas). Debes leer ambos tipos con fluidez.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Identificación de ideas</strong>
+                <span class="subtopic">Idea principal vs. secundaria, tema central, propósito del autor, a quién va dirigido. Preguntas como: "¿Cuál es la idea central del texto?"</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Estructura textual</strong>
+                <span class="subtopic">Relaciones entre párrafos, conectores lógicos (sin embargo, por lo tanto, además), coherencia y cohesión, organización del argumento.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Evaluación de argumentos</strong>
+                <span class="subtopic">Identificar premisas y conclusiones, detectar falacias argumentativas, evaluar la validez de un argumento, reconocer contraargumentos.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Inferencias y relaciones</strong>
+                <span class="subtopic">Deducir información implícita, inferir el significado de palabras por contexto, relacionar partes del texto, identificar el tono del autor (irónico, crítico, neutro).</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Textos filosóficos y literarios</strong>
+                <span class="subtopic">Fragmentos de obras literarias, ensayos filosóficos, textos argumentativos académicos. No necesitas haber leído los libros — solo analizar lo dado.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SOCIALES Y CIUDADANAS -->
+      <div class="subj-card soc" id="sociales">
+        <div class="subj-header">
+          <div class="subj-icon">🌍</div>
+          <div class="subj-meta">
+            <h3>Sociales y Ciudadanas</h3>
+            <p>~45 preguntas · Enfoque analítico</p>
+          </div>
+        </div>
+        <div class="subj-body">
+          <p class="subj-desc">Evalúa la comprensión del mundo social desde las ciencias sociales y la capacidad para ejercer ciudadanía. Integra historia, geografía, política, economía y ética ciudadana. El enfoque es <strong>analítico y reflexivo</strong>, no de memorización de fechas.</p>
+          <span class="diff-pill diff-media">📘 Dificultad: Media</span>
+          <div class="divider"></div>
+          <ul class="topic-list">
+            <li>
+              <div>
+                <strong>Historia de Colombia y el mundo</strong>
+                <span class="subtopic">Independencia, siglo XIX, violencia en Colombia, Frente Nacional, Constitución de 1991. Mundo: Revolución Francesa, guerras mundiales, Guerra Fría, descolonización.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Geografía humana y física</strong>
+                <span class="subtopic">Regiones de Colombia, clima, ecosistemas, recursos naturales, división político-administrativa, demografía, migraciones, urbanización.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Economía básica</strong>
+                <span class="subtopic">Sistemas económicos, oferta y demanda, PIB, inflación, desempleo, mercado laboral, globalización económica, economía colombiana.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Política y sistemas de gobierno</strong>
+                <span class="subtopic">Democracia, separación de poderes, Estado de derecho, Constitución Política de Colombia, derechos fundamentales, mecanismos de participación ciudadana (tutela, referendo, plebiscito).</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Competencias ciudadanas</strong>
+                <span class="subtopic">Convivencia, conflicto y paz, diversidad cultural, derechos humanos, resolución de conflictos, ética y responsabilidad social.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Pensamiento social y crítico</strong>
+                <span class="subtopic">Analizar perspectivas diferentes sobre un mismo evento, reconocer causas y consecuencias históricas, interpretar fuentes primarias (mapas, documentos, estadísticas).</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CIENCIAS NATURALES -->
+      <div class="subj-card cnat" id="ciencias">
+        <div class="subj-header">
+          <div class="subj-icon">🔬</div>
+          <div class="subj-meta">
+            <h3>Ciencias Naturales</h3>
+            <p>~45 preguntas · Biología + Química + Física</p>
+          </div>
+        </div>
+        <div class="subj-body">
+          <p class="subj-desc">Integra Biología, Química y Física en una sola prueba. Evalúa 3 competencias: <strong>Explicación de fenómenos</strong>, <strong>Uso comprensivo del conocimiento</strong> científico e <strong>Indagación</strong>. El énfasis está en comprender y aplicar conceptos, no en fórmulas de memoria.</p>
+          <span class="diff-pill diff-alta">🔥 Dificultad: Alta</span>
+          <div class="divider"></div>
+          <ul class="topic-list">
+            <li>
+              <div>
+                <strong>BIOLOGÍA – Célula y genética</strong>
+                <span class="subtopic">Célula procariota vs. eucariota, orgánulos y funciones, mitosis y meiosis, ADN y síntesis de proteínas, leyes de Mendel, biotecnología básica, evolución y selección natural.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>BIOLOGÍA – Ecosistemas y vida</strong>
+                <span class="subtopic">Cadenas y redes tróficas, ciclos biogeoquímicos (agua, carbono, nitrógeno), fotosíntesis y respiración celular, sistemas del cuerpo humano, taxonomía.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>QUÍMICA – Materia y sus propiedades</strong>
+                <span class="subtopic">Estructura atómica (modelo de Bohr, tabla periódica), tipos de enlace químico, estados de la materia, mezclas y sustancias puras, propiedades físicas y químicas.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>QUÍMICA – Reacciones y soluciones</strong>
+                <span class="subtopic">Tipos de reacciones (síntesis, descomposición, combustión, ácido-base), balanceo de ecuaciones, estequiometría básica, pH y escala, soluciones (concentración, solubilidad).</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>FÍSICA – Movimiento y fuerzas</strong>
+                <span class="subtopic">Cinemática (velocidad, aceleración, MRU, MRUV), Leyes de Newton, trabajo, energía cinética y potencial, conservación de energía, caída libre.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>FÍSICA – Ondas, electricidad y óptica</strong>
+                <span class="subtopic">Ondas mecánicas y electromagnéticas (sonido, luz), reflexión y refracción, carga eléctrica, Ley de Coulomb, circuitos básicos (Ley de Ohm), campo magnético.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- INGLÉS -->
+      <div class="subj-card eng" id="ingles">
+        <div class="subj-header">
+          <div class="subj-icon">🗣️</div>
+          <div class="subj-meta">
+            <h3>Inglés</h3>
+            <p>~45 preguntas · Niveles A1–B2</p>
+          </div>
+        </div>
+        <div class="subj-body">
+          <p class="subj-desc">Evalúa comprensión lectora en inglés. El ICFES usa el <strong>Marco Común Europeo</strong> (A1 a B2). La prueba no incluye habla ni escritura — solo lectura y comprensión. Tu puntaje reflejará tu nivel: A1 (básico) a B+ (avanzado).</p>
+          <span class="diff-pill diff-baja">📗 Dificultad: Media (mejorable)</span>
+          <div class="divider"></div>
+          <ul class="topic-list">
+            <li>
+              <div>
+                <strong>Comprensión de textos</strong>
+                <span class="subtopic">Leer textos cortos (emails, avisos, folletos, artículos) e identificar idea principal, detalles específicos, propósito del texto, vocabulario en contexto.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Gramática en contexto</strong>
+                <span class="subtopic">Tiempos verbales (present simple, past, future, present perfect, conditionals), modales (can, must, should), preposiciones, voz pasiva, oraciones relativas.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Vocabulario y expresiones</strong>
+                <span class="subtopic">Vocabulario frecuente en contextos cotidianos, académicos y formales. Frases conectoras (however, therefore, although), sinónimos y antónimos.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Inferencias e intenciones</strong>
+                <span class="subtopic">Deducir información implícita, identificar el tono del texto (formal/informal, positivo/negativo), reconocer el propósito comunicativo del autor.</span>
+              </div>
+            </li>
+          </ul>
+          <div class="alert" style="margin-top:14px; font-size:0.82rem;">
+            <span class="alert-icon">🌟</span>
+            <div>El inglés es el área donde más fácil puedes subir tu puntaje con práctica constante. <strong>30 min diarios en 6 meses = 2 niveles de mejora.</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end subjects-grid -->
+  </div>
+</section>
+
+<!-- ===== ROADMAP ===== -->
+<section id="roadmap" style="background: var(--bg2);">
+  <div class="container">
+    <div class="section-tag">Tu plan de ataque</div>
+    <h2 class="section-title">Roadmap: De 0 a Puntaje Alto</h2>
+    <p class="section-sub">Un plan de estudio estructurado por fases. Sigue este camino y llegarás preparado al examen.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;">
+
+      <div>
+        <h3 style="font-family:'Sora',sans-serif; font-size:1.2rem; margin-bottom:24px; color:var(--accent3);">📅 FASE 1: Diagnóstico y Base (Meses 1–2)</h3>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--accent3)"></div>
+            <div class="tl-phase">Semana 1</div>
+            <div class="tl-title">Haz un simulacro diagnóstico</div>
+            <div class="tl-body">Descarga un cuadernillo oficial del ICFES (disponibles desde 2019–2024 en icfes.gov.co) y preséntalo completo. Cronometra. Esto te dirá exactamente tus áreas fuertes y débiles sin adivinar.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--accent3)"></div>
+            <div class="tl-phase">Semanas 2–4</div>
+            <div class="tl-title">Identifica y refuerza bases</div>
+            <div class="tl-body">Con los resultados del diagnóstico, marca qué temas fallaste. Empieza por <strong>Matemáticas básicas</strong> (álgebra y operaciones) y <strong>Lectura Crítica</strong> (identificación de ideas). Son las bases de todo.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--accent3)"></div>
+            <div class="tl-phase">Mes 2</div>
+            <div class="tl-title">Aprende las reglas del juego</div>
+            <div class="tl-body">Estudia la Guía de Orientación oficial del ICFES. Entiende qué competencias evalúa cada área. Lee ejemplos de preguntas oficiales. El ICFES tiene un formato muy específico — aprenderlo vale tanto como estudiar el contenido.</div>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Sora',sans-serif; font-size:1.2rem; margin:32px 0 24px; color:var(--accent1);">📚 FASE 2: Estudio por Áreas (Meses 3–5)</h3>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-phase">Mes 3</div>
+            <div class="tl-title">Matemáticas y Lectura Crítica</div>
+            <div class="tl-body">Dedica la mayor parte del tiempo aquí. Matemáticas: practica un tema por semana (álgebra → geometría → estadística → funciones). Lectura: lee un texto argumentativo diario y practica preguntas.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-phase">Mes 4</div>
+            <div class="tl-title">Ciencias Naturales y Sociales</div>
+            <div class="tl-body">Divide Ciencias en: 2 semanas de Biología, 1 semana de Química, 1 semana de Física. Para Sociales: estudia con mapas conceptuales, líneas del tiempo y relaciones causa-efecto.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-phase">Mes 5</div>
+            <div class="tl-title">Inglés + Repaso general</div>
+            <div class="tl-body">Para inglés: practica con textos reales (noticias en inglés fácil, BBC Learning English). Empieza el repaso general de todas las áreas. Resuelve preguntas de exámenes anteriores.</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-family:'Sora',sans-serif; font-size:1.2rem; margin-bottom:24px; color:var(--accent2);">🚀 FASE 3: Simulacros Intensivos (Meses 6–7)</h3>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--accent2)"></div>
+            <div class="tl-phase">Semanas 1–2 del mes 6</div>
+            <div class="tl-title">1 simulacro completo por semana</div>
+            <div class="tl-body">Presenta simulacros en condiciones reales: mismo horario del examen, sin interrupciones, cronometrado. Después de cada simulacro, analiza cada error — entiende por qué fallaste, no solo cuál era la respuesta.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--accent2)"></div>
+            <div class="tl-phase">Semanas 3–4 del mes 6</div>
+            <div class="tl-title">Ataca tus puntos débiles</div>
+            <div class="tl-body">Después del simulacro, dedica la semana a reforzar las áreas donde fallaste más. Un tutor o video de YouTube puede ser clave aquí para aclarar conceptos que no entendiste solos.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--accent2)"></div>
+            <div class="tl-phase">Mes 7</div>
+            <div class="tl-title">Repaso final y ensayo</div>
+            <div class="tl-body">Mínimo 3 simulacros completos este mes. Practica el manejo del tiempo: aprende cuántos minutos por pregunta. Repasa fórmulas clave y conectores lógicos. Descansa bien la semana del examen.</div>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Sora',sans-serif; font-size:1.2rem; margin:32px 0 24px; color:var(--gold);">🏁 FASE 4: Semana del Examen</h3>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--gold)"></div>
+            <div class="tl-phase">Días –7 a –3</div>
+            <div class="tl-title">Repaso ligero y mental</div>
+            <div class="tl-body">No estudies temas nuevos. Repasa tus apuntes más importantes, fórmulas de matemáticas y vocabulario de inglés. Evita el estrés de "estudiar todo".</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--gold)"></div>
+            <div class="tl-phase">Días –2 a –1</div>
+            <div class="tl-title">Preparación logística</div>
+            <div class="tl-body">Descansa. Prepara documentos (cédula/tarjeta de identidad), verifica el lugar del examen, asegura desayuno nutritivo, lleva agua y algo pequeño para comer en el receso.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--gold)"></div>
+            <div class="tl-phase">Día del examen</div>
+            <div class="tl-title">Ejecución sin pánico</div>
+            <div class="tl-body">Lee cada pregunta dos veces. Si no sabes, descarta primero. No te quedes más de 2 min en una sola pregunta — marca, sigue y vuelve. Responde TODAS las preguntas aunque sea por descarte.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== ESTRATEGIAS ===== -->
+<section id="estrategias">
+  <div class="container">
+    <div class="section-tag">Aprende a aprender</div>
+    <h2 class="section-title">Estrategias de Estudio Probadas</h2>
+    <p class="section-sub">No se trata de estudiar más horas, sino de estudiar de forma inteligente y efectiva.</p>
+
+    <div class="strat-grid">
+      <div class="strat-card">
+        <div class="strat-icon">🧠</div>
+        <h4>Técnica Feynman</h4>
+        <p>Explica cada concepto como si le enseñaras a alguien de 10 años. Si no puedes hacerlo con palabras simples, no lo entendiste. Úsala especialmente para Ciencias y Matemáticas.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">🎴</div>
+        <h4>Flashcards con repetición espaciada</h4>
+        <p>Usa Anki (gratis) para crear tarjetas de vocabulario en inglés, fórmulas de Física y fechas históricas. El algoritmo te muestra lo que más olvidas en el momento justo.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">⏲️</div>
+        <h4>Técnica Pomodoro</h4>
+        <p>Estudia 25 min → descansa 5 min → repite. Cada 4 pomodoros, descansa 20–30 min. Mantiene la concentración y evita el agotamiento mental. Ideal para sesiones largas.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">📝</div>
+        <h4>Práctica activa, no pasiva</h4>
+        <p>Resolver preguntas reales del ICFES vale más que leer el libro. Por cada hora de teoría, dedica 1 hora a resolver problemas. El ICFES es un examen práctico, no teórico.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">📊</div>
+        <h4>Lleva un registro de errores</h4>
+        <p>Crea un cuaderno o documento donde anotes cada pregunta que fallaste, por qué la fallaste y el concepto correcto. Revisarlo una vez por semana vale más que estudiar 3 horas extra.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">👥</div>
+        <h4>Grupos de estudio estratégicos</h4>
+        <p>Estudia en grupo máximo 3–4 personas. Cada uno explica un tema a los demás (Feynman grupal). Ojo: los grupos deben ser de personas comprometidas, no para socializar.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">🎯</div>
+        <h4>Ley de Pareto aplicada</h4>
+        <p>El 20% de los temas genera el 80% de las preguntas. En Matemáticas: álgebra y estadística. En Ciencias: célula, reacciones y energía. Identifica esos temas y dóminalos primero.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">🌙</div>
+        <h4>Sueño y consolidación</h4>
+        <p>El cerebro consolida lo aprendido durante el sueño. Dormir menos de 7 horas sabotea el estudio. Un estudiante que duerme bien y estudia 3h supera a uno que duerme 5h y estudia 6h.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">📱</div>
+        <h4>Microstudio diario</h4>
+        <p>10–15 min en el bus, antes de dormir o en descansos: resuelve 5 preguntas de un área, lee un texto corto en inglés o repasa 10 flashcards. La constancia supera a los maratones de estudio.</p>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <h3>💡 Estrategias específicas por área</h3>
+      <div class="tips-grid">
+        <div class="tip-item">
+          <strong>🔢 Matemáticas</strong>
+          <p>Practica con contexto real: el ICFES pone problemas de la vida cotidiana. Dibuja o esquematiza cada problema antes de resolver. Aprende a descartar opciones ilógicas.</p>
+        </div>
+        <div class="tip-item">
+          <strong>📖 Lectura Crítica</strong>
+          <p>Lee el enunciado de la pregunta ANTES del texto para saber qué buscar. Subraya ideas clave. Desconfía de la opción que parece "obvía" — el ICFES pone trampas.</p>
+        </div>
+        <div class="tip-item">
+          <strong>🌍 Sociales</strong>
+          <p>Estudia con líneas del tiempo y mapas mentales. Relaciona eventos entre sí (causas y efectos). Lee artículos de opinión para entender cómo se analizan los hechos sociales.</p>
+        </div>
+        <div class="tip-item">
+          <strong>🔬 Ciencias Naturales</strong>
+          <p>Para la competencia de "indagación": practica leer gráficas de experimentos. Para Física: entiende los conceptos antes de las fórmulas. Para Química: visualiza las reacciones.</p>
+        </div>
+        <div class="tip-item">
+          <strong>🗣️ Inglés</strong>
+          <p>Practica eliminar respuestas en inglés usando lógica. Lee noticias fáciles en inglés (BBC Learning English, VOA Learning). Ve series con subtítulos en inglés.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== YOUTUBE ===== -->
+<section id="youtube" style="background: var(--bg2);">
+  <div class="container">
+    <div class="section-tag">¿Puedo aprender por YouTube?</div>
+    <h2 class="section-title">SÍ, YouTube es un aliado poderoso 🎥</h2>
+    <p class="section-sub">YouTube puede reemplazar un preicfes de pago si sabes qué canales seguir. Aquí están los mejores, completamente gratis.</p>
+
+    <div class="alert">
+      <span class="alert-icon">✅</span>
+      <div><strong>Respuesta corta: SÍ puedes.</strong> YouTube tiene suficiente contenido para prepararte completamente para el ICFES sin pagar un preicfes. La clave es combinarlo con simulacros reales. Usa YouTube para <em>entender conceptos</em> y los cuadernillos oficiales para <em>practicar</em>.</div>
+    </div>
+
+    <div class="yt-grid">
+      <div class="yt-card">
+        <div class="yt-logo">▶</div>
+        <div class="yt-info">
+          <h4>Matemáticas con el Profe Alex</h4>
+          <p>Explicaciones paso a paso de todos los temas de matemáticas del ICFES. Muy claro para estudiantes que sienten que no son "buenos en matemáticas".</p>
+          <span class="yt-tag" style="background:rgba(79,142,247,0.15);color:#4f8ef7;">🔢 Matemáticas</span>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">▶</div>
+        <div class="yt-info">
+          <h4>Khan Academy en Español</h4>
+          <p>El referente mundial. Cubre matemáticas, ciencias, economía y más. Sistema de práctica interactivo. Completamente gratis. Ideal para reforzar bases desde cero.</p>
+          <span class="yt-tag" style="background:rgba(52,211,153,0.15);color:#34d399;">📚 Todas las áreas</span>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">▶</div>
+        <div class="yt-info">
+          <h4>ICFES Interactivo (Canal Oficial)</h4>
+          <p>El canal oficial del ICFES con videos explicativos de cada área, ejemplos de preguntas y orientación oficial. El punto de partida obligatorio.</p>
+          <span class="yt-tag" style="background:rgba(167,139,250,0.15);color:#a78bfa;">🏛️ Oficial</span>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">▶</div>
+        <div class="yt-info">
+          <h4>Lectura Crítica ICFES</h4>
+          <p>Canales especializados en técnicas de lectura crítica, análisis de argumentos y tipos de preguntas. Busca "Lectura Crítica ICFES" y filtra por videos recientes (2024–2026).</p>
+          <span class="yt-tag" style="background:rgba(167,139,250,0.15);color:#a78bfa;">📖 Lectura</span>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">▶</div>
+        <div class="yt-info">
+          <h4>BBC Learning English</h4>
+          <p>El mejor canal para mejorar inglés desde cero. Episodios cortos (3–6 min), vocabulario en contexto real, gramática explicada de forma natural. Escúchalo diario.</p>
+          <span class="yt-tag" style="background:rgba(244,114,182,0.15);color:#f472b6;">🗣️ Inglés</span>
+        </div>
+      </div>
+      <div class="yt-card">
+        <div class="yt-logo">▶</div>
+        <div class="yt-info">
+          <h4>Química con el Profe / Física con el Profe</h4>
+          <p>Canales colombianos con explicaciones de Química y Física enfocadas en el estilo ICFES. Útil para entender conceptos con ejemplos nacionales y familiares.</p>
+          <span class="yt-tag" style="background:rgba(251,146,60,0.15);color:#fb923c;">🔬 Ciencias</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-box" style="margin-top:40px;">
+      <h3>🔍 Cómo buscar en YouTube para el ICFES</h3>
+      <div class="tips-grid">
+        <div class="tip-item">
+          <strong>Búsquedas que funcionan</strong>
+          <p>"[tema] ICFES Saber 11", "ecuaciones cuadráticas ICFES", "lectura crítica ICFES ejemplo", "Ciencias Naturales Saber 11 Colombia"</p>
+        </div>
+        <div class="tip-item">
+          <strong>Filtra siempre por fecha</strong>
+          <p>El formato ICFES cambia. Busca videos de 2023 en adelante. Videos muy viejos pueden enseñar temas que ya no están en la prueba.</p>
+        </div>
+        <div class="tip-item">
+          <strong>Combina con práctica</strong>
+          <p>YouTube para entender → cuadernillos oficiales para practicar. No puedes solo ver videos — debes resolver preguntas reales después de cada video.</p>
+        </div>
+        <div class="tip-item">
+          <strong>Velocidad 1.25x–1.5x</strong>
+          <p>Reproduce los videos a mayor velocidad una vez que entiendas el tema. Ahorra tiempo y puedes cubrir más contenido sin perder comprensión.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HORARIO ===== -->
+<section id="horario">
+  <div class="container">
+    <div class="section-tag">Organización</div>
+    <h2 class="section-title">Plan de Estudio Semanal</h2>
+    <p class="section-sub">Un horario realista y sostenible. Ajústalo según tu colegio y actividades, pero mantén la estructura.</p>
+
+    <div class="alert">
+      <span class="alert-icon">⏰</span>
+      <div>Este horario asume que tienes <strong>6–8 meses antes del examen</strong> y estudias fuera del colegio. Si tienes menos tiempo, dobla la intensidad o prioriza las áreas donde tienes más debilidad.</div>
+    </div>
+
+    <div style="overflow-x:auto; margin-top:24px;">
+      <table class="sched-table">
+        <thead>
+          <tr>
+            <th>Día</th>
+            <th>Tema Principal</th>
+            <th>Actividad</th>
+            <th>Tiempo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="day-label">Lunes</span></td>
+            <td>🔢 Matemáticas</td>
+            <td>Estudia un tema nuevo (ej: funciones lineales) + resuelve 15 preguntas del ICFES sobre ese tema</td>
+            <td>90 min</td>
+          </tr>
+          <tr>
+            <td><span class="day-label">Martes</span></td>
+            <td>📖 Lectura Crítica</td>
+            <td>Lee 2 textos variados (argumentativo + literario) + responde preguntas tipo ICFES. Analiza cada error.</td>
+            <td>60–90 min</td>
+          </tr>
+          <tr>
+            <td><span class="day-label">Miércoles</span></td>
+            <td>🔬 Ciencias Naturales</td>
+            <td>Alterna semanas: Bio / Química / Física. Estudia concepto + resuelve 10 preguntas ICFES.</td>
+            <td>90 min</td>
+          </tr>
+          <tr>
+            <td><span class="day-label">Jueves</span></td>
+            <td>🌍 Sociales y Ciudadanas</td>
+            <td>Estudia una época o tema. Haz un mapa mental o línea del tiempo. Resuelve preguntas.</td>
+            <td>60 min</td>
+          </tr>
+          <tr>
+            <td><span class="day-label">Viernes</span></td>
+            <td>🗣️ Inglés</td>
+            <td>Lee un texto corto en inglés, ve 2 episodios de BBC Learning English, practica 10–15 preguntas.</td>
+            <td>45–60 min</td>
+          </tr>
+          <tr>
+            <td><span class="day-label">Sábado</span></td>
+            <td>🎯 Simulacro o Repaso</td>
+            <td>Semanas 1–2 del mes: repasa errores de la semana. Semanas 3–4: presenta simulacro completo (o por área).</td>
+            <td>2–4 horas</td>
+          </tr>
+          <tr>
+            <td><span class="day-label">Domingo</span></td>
+            <td>😴 Descanso activo</td>
+            <td>Descanso total o máximo 20 min de inglés (BBC, Netflix con subs). El cerebro necesita consolidar.</td>
+            <td>0–20 min</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:32px;">
+      <h3 style="font-family:'Sora',sans-serif; font-size:1.2rem; margin-bottom:20px;">📱 Apps recomendadas de apoyo</h3>
+      <div class="strat-grid">
+        <div class="strat-card">
+          <div class="strat-icon">🃏</div>
+          <h4>Anki (Gratis)</h4>
+          <p>Flashcards con repetición espaciada. Perfecta para vocabulario en inglés, fórmulas de física y fechas históricas. Disponible en Android, iOS y PC.</p>
+        </div>
+        <div class="strat-card">
+          <div class="strat-icon">🌐</div>
+          <h4>Khan Academy (Gratis)</h4>
+          <p>Plataforma completa de matemáticas y ciencias. Sigue el camino de "Álgebra 1", "Geometría" y "Estadística" para cubrir el temario del ICFES.</p>
+        </div>
+        <div class="strat-card">
+          <div class="strat-icon">🔤</div>
+          <h4>Duolingo + Busuu (Inglés)</h4>
+          <p>Para práctica diaria de inglés en móvil. 15–20 min al día complementan perfectamente el estudio de comprensión lectora para el ICFES.</p>
+        </div>
+        <div class="strat-card">
+          <div class="strat-icon">🎯</div>
+          <h4>Simulacros online (Gratis)</h4>
+          <p>Sitios como saber-11.co o preicfes-gratis.com ofrecen simulacros gratuitos con preguntas reales. Úsalos al menos 1 vez por semana en la fase final.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUCOS ===== -->
+<section id="trucos" style="background: var(--bg2);">
+  <div class="container">
+    <div class="section-tag">El día del examen</div>
+    <h2 class="section-title">Trucos y Tácticas para el Día D ⚡</h2>
+    <p class="section-sub">Estrategias de examen que pueden subir tu puntaje sin saber más contenido.</p>
+
+    <ul class="checklist">
+      <li><span class="check-icon">✓</span><div><strong>Regla de los 2 minutos:</strong> Si llevas más de 2 min en una pregunta, márcala y sigue. Vuelve al final con mente fresca.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>Lee la pregunta primero:</strong> En Lectura Crítica, lee la pregunta antes del texto para saber qué buscar mientras lees.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>Descarte activo:</strong> Elimina primero las 2 opciones obviamente incorrectas. Tu probabilidad de acertar sube del 25% al 50%.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>Responde TODO:</strong> No penalización = responde siempre. Nunca dejes en blanco, aunque sea una opción al azar.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>Confía en tu primera respuesta:</strong> Los cambios de respuesta a último momento suelen ser incorrectos. Solo cambia si encontraste razón lógica clara.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>Gestión de energía:</strong> Come algo ligero en el receso. El cerebro necesita glucosa para mantener la concentración 4.5 horas seguidas.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>En matemáticas, sustituye:</strong> Si no sabes cómo resolver, sustituye las opciones en la ecuación y verifica cuál funciona.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>En inglés, lee opción D primero:</strong> Muchas veces la opción correcta está al final. No pierdas tiempo buscando solo entre A y B.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>Cuida la hoja de respuestas:</strong> Marca correctamente. Un error de transcripción puede costarte varias preguntas de golpe.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>No compares con otros:</strong> En el receso, no hables sobre respuestas. Genera ansiedad innecesaria y no cambia nada.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>Lleva reloj analógico:</strong> El celular no entra. Un reloj de muñeca te ayuda a gestionar el tiempo sin depender del examinador.</div></li>
+      <li><span class="check-icon">✓</span><div><strong>Duerme 8 horas las 2 noches antes:</strong> Vale más que estudiar esas horas. La memoria funcional del examen depende del descanso previo.</div></li>
+    </ul>
+
+    <div class="tips-box" style="margin-top:40px;">
+      <h3>🧮 Trucos específicos por área</h3>
+      <div class="tips-grid">
+        <div class="tip-item">
+          <strong>🔢 Matemáticas — Estimación</strong>
+          <p>Muchas preguntas pueden responderse por estimación sin calcular exacto. Si la respuesta debe ser "alrededor de 50", las opciones de 200 y 500 se descartan solas.</p>
+        </div>
+        <div class="tip-item">
+          <strong>📖 Lectura — Palabras clave</strong>
+          <p>"Principalmente", "excepto", "NO es", "según el texto" son palabras trampa. Subráyalas siempre. El ICFES las usa deliberadamente para confundir.</p>
+        </div>
+        <div class="tip-item">
+          <strong>🔬 Ciencias — Sentido común</strong>
+          <p>Si no recuerdas el concepto exacto, usa el sentido común científico. El ICFES evalúa comprensión, no memorización. Una opción que "suena lógica" a menudo es correcta.</p>
+        </div>
+        <div class="tip-item">
+          <strong>🌍 Sociales — Analiza el contexto</strong>
+          <p>Casi todas las preguntas tienen un texto o imagen de contexto. La respuesta suele estar en ese contexto, no en lo que memorizaste. Léelo con atención.</p>
+        </div>
+        <div class="tip-item">
+          <strong>🗣️ Inglés — Cognados</strong>
+          <p>El español e inglés comparten miles de palabras similares (cognados): "important", "possible", "natural". Úsalos para inferir vocabulario desconocido.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RECURSOS ===== -->
+<section>
+  <div class="container">
+    <div class="section-tag">Materiales gratuitos</div>
+    <h2 class="section-title">Recursos Oficiales y Gratuitos</h2>
+    <p class="section-sub">Todo lo que necesitas está disponible gratis. No necesitas comprar libros caros.</p>
+
+    <div class="strat-grid">
+      <div class="strat-card">
+        <div class="strat-icon">🏛️</div>
+        <h4>icfes.gov.co</h4>
+        <p>El sitio oficial del ICFES. Descarga la <strong>Guía de Orientación</strong> y los <strong>cuadernillos de exámenes anteriores</strong> (2019–2024). Son las preguntas reales del examen. Úsalas como simulacros.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">🌐</div>
+        <h4>Khan Academy</h4>
+        <p>khanacademy.org/es — Cursos completos de Matemáticas, Ciencias, Historia y Economía. Gratuito al 100%. Ideal para aprender desde cero y a tu propio ritmo.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">📄</div>
+        <h4>Cuadernillos ICFES PDF</h4>
+        <p>Los cuadernillos oficiales de exámenes pasados están disponibles en universate.co y portaldelau.com. Incluyen preguntas reales de matemáticas, sociales, ciencias, inglés y lectura crítica.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">🎮</div>
+        <h4>Simulacros online gratis</h4>
+        <p><strong>saber-11.co</strong> y <strong>preicfes-gratis.com</strong> ofrecen simulacros completos gratuitos con explicaciones paso a paso. Presentarlos regularmente es obligatorio en tu plan.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">🎧</div>
+        <h4>Podcasts en inglés fácil</h4>
+        <p>"6 Minute English" de BBC y "VOA Learning English" son perfectos para mejorar comprensión auditiva y vocabulario. Escúchalos durante el transporte o mientras almuerzas.</p>
+      </div>
+      <div class="strat-card">
+        <div class="strat-icon">🤖</div>
+        <h4>Inteligencia Artificial (IA)</h4>
+        <p>Usa herramientas de IA para pedir explicaciones de conceptos que no entiendes, generar preguntas de práctica adicionales y verificar si tu comprensión de un tema es correcta.</p>
+      </div>
+    </div>
+
+    <div class="alert" style="margin-top:40px;">
+      <span class="alert-icon">🚀</span>
+      <div>
+        <strong>Mensaje final:</strong> El ICFES no es un examen de suerte. Es un examen de <strong>preparación constante y estratégica</strong>. Con 7 meses de estudio organizado (2–3 horas diarias entre semana + simulacros los fines de semana), puedes alcanzar un puntaje alto desde cero. <strong>El que madruga, el ICFES puntúa.</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>🇨🇴 Roadmap ICFES Saber 11° — Guía completa basada en la estructura oficial del examen 2026</p>
+  <p style="font-size:0.8rem; margin-top:8px;">Consulta siempre la información oficial en <strong>icfes.gov.co</strong> para fechas, tarifas y actualizaciones de la prueba.</p>
+</footer>
+
+</body>
+</html>

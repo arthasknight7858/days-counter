@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Map: Aprende Marketing desde 0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3d;
+    --accent: #7c3aed;
+    --accent2: #06b6d4;
+    --accent3: #f59e0b;
+    --accent4: #10b981;
+    --accent5: #ef4444;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--white); }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 80% 70%, rgba(6,182,212,0.08) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(42,42,61,0.4) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(42,42,61,0.4) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+  .hero-content { position: relative; max-width: 800px; }
+  .hero-badge {
+    display: inline-block; background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.4);
+    color: #a78bfa; font-size: 0.78rem; font-weight: 600; padding: 6px 16px; border-radius: 50px;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.05;
+    color: var(--white); margin-bottom: 24px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(135deg, #a78bfa, #06b6d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero p { font-size: 1.15rem; color: var(--muted); max-width: 540px; margin: 0 auto 40px; }
+  .hero-stats { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-top: 48px; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--white); }
+  .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .scroll-hint { margin-top: 56px; color: var(--muted); font-size: 0.8rem; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+  section { padding: 100px 0; }
+
+  /* SECTION HEADER */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--accent2);
+    text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px; display: block;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--white); margin-bottom: 16px;
+  }
+  .section-sub { color: var(--muted); font-size: 1rem; max-width: 580px; margin-bottom: 60px; }
+
+  /* PHASES TIMELINE */
+  .phases { display: flex; flex-direction: column; gap: 0; }
+  .phase {
+    display: grid; grid-template-columns: 120px 1fr;
+    gap: 0 40px; position: relative;
+  }
+  .phase-left { display: flex; flex-direction: column; align-items: center; }
+  .phase-number {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--white);
+    flex-shrink: 0; position: relative; z-index: 2;
+  }
+  .phase-line { flex: 1; width: 2px; background: var(--border); margin: 8px 0; }
+  .phase:last-child .phase-line { display: none; }
+  .phase-content {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 32px; margin-bottom: 32px; transition: border-color 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .phase-content::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .phase-content:hover { border-color: rgba(124,58,237,0.4); }
+  .phase-duration {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+    color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .phase-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.35rem; color: var(--white); margin-bottom: 12px; }
+  .phase-desc { color: var(--muted); font-size: 0.95rem; margin-bottom: 24px; }
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+  .topic-pill {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 14px; font-size: 0.82rem; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .topic-pill .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* COLORS PER PHASE */
+  .p1 .phase-number { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+  .p1 .phase-content::before { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+  .p1 .dot { background: #a78bfa; }
+
+  .p2 .phase-number { background: linear-gradient(135deg, #0891b2, #06b6d4); }
+  .p2 .phase-content::before { background: linear-gradient(90deg, #0891b2, #06b6d4); }
+  .p2 .dot { background: #06b6d4; }
+
+  .p3 .phase-number { background: linear-gradient(135deg, #d97706, #f59e0b); }
+  .p3 .phase-content::before { background: linear-gradient(90deg, #d97706, #f59e0b); }
+  .p3 .dot { background: #f59e0b; }
+
+  .p4 .phase-number { background: linear-gradient(135deg, #059669, #10b981); }
+  .p4 .phase-content::before { background: linear-gradient(90deg, #059669, #10b981); }
+  .p4 .dot { background: #10b981; }
+
+  .p5 .phase-number { background: linear-gradient(135deg, #dc2626, #ef4444); }
+  .p5 .phase-content::before { background: linear-gradient(90deg, #dc2626, #ef4444); }
+  .p5 .dot { background: #ef4444; }
+
+  .p6 .phase-number { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+  .p6 .phase-content::before { background: linear-gradient(90deg, #7c3aed, #ec4899); }
+  .p6 .dot { background: #ec4899; }
+
+  /* DEEP DIVE CARDS */
+  .deepdive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+  .deepdive-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 28px; transition: transform 0.2s, border-color 0.2s;
+  }
+  .deepdive-card:hover { transform: translateY(-3px); border-color: rgba(124,58,237,0.35); }
+  .card-icon { font-size: 2rem; margin-bottom: 14px; }
+  .card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--white); margin-bottom: 10px; }
+  .card-desc { color: var(--muted); font-size: 0.88rem; margin-bottom: 18px; }
+  .card-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .card-list li { font-size: 0.85rem; color: var(--text); display: flex; align-items: flex-start; gap: 8px; }
+  .card-list li::before { content: '→'; color: var(--accent2); flex-shrink: 0; margin-top: 1px; }
+
+  /* RESOURCES */
+  .resources-section { background: var(--surface); }
+  .resources-wrap { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+  .resource-cat { margin-bottom: 48px; }
+  .resource-cat-title {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--white);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .resource-cat-title span { font-size: 1.4rem; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+  .resource-item {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .resource-name { font-weight: 600; font-size: 0.9rem; color: var(--text); margin-bottom: 4px; }
+  .resource-desc { font-size: 0.78rem; color: var(--muted); }
+  .tag {
+    display: inline-block; font-size: 0.65rem; font-weight: 700; padding: 2px 8px;
+    border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 8px; vertical-align: middle;
+  }
+  .tag-free { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .tag-paid { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .tag-yt { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .tag-es { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+
+  /* STRATEGIES */
+  .strategy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .strategy-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 24px; position: relative; overflow: hidden;
+  }
+  .strategy-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  .s-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted);
+    margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .s-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--white); margin-bottom: 10px; }
+  .s-body { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+  /* TIPS BOX */
+  .tips-box {
+    background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(6,182,212,0.08));
+    border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; padding: 32px;
+    margin-bottom: 32px;
+  }
+  .tips-box h3 { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--white); font-size: 1.1rem; margin-bottom: 16px; }
+  .tips-list { display: flex; flex-direction: column; gap: 12px; }
+  .tip-item { display: flex; gap: 12px; align-items: flex-start; font-size: 0.9rem; }
+  .tip-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .tip-text { color: var(--text); }
+  .tip-text strong { color: var(--white); }
+
+  /* YOUTUBE SECTION */
+  .yt-section {
+    background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.03));
+    border: 1px solid rgba(239,68,68,0.2); border-radius: 16px; padding: 40px;
+  }
+  .yt-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .yt-icon { font-size: 2.5rem; }
+  .yt-title-block h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--white); }
+  .yt-title-block p { color: var(--muted); font-size: 0.9rem; }
+  .yt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .yt-col h4 { font-weight: 600; color: var(--white); margin-bottom: 12px; font-size: 0.9rem; }
+  .yt-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .yt-list li { font-size: 0.84rem; color: var(--muted); display: flex; align-items: flex-start; gap: 8px; }
+  .yt-list li::before { content: '▸'; color: #ef4444; flex-shrink: 0; }
+  .yt-verdict {
+    margin-top: 24px; background: rgba(239,68,68,0.08); border-radius: 10px; padding: 20px;
+    font-size: 0.9rem; color: var(--text);
+  }
+  .yt-verdict strong { color: #ef4444; }
+
+  /* ERRORES */
+  .errors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .error-card {
+    background: var(--surface); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 20px;
+  }
+  .error-card .e-icon { font-size: 1.4rem; margin-bottom: 8px; }
+  .error-card h4 { font-weight: 600; color: var(--white); font-size: 0.9rem; margin-bottom: 6px; }
+  .error-card p { font-size: 0.82rem; color: var(--muted); }
+
+  /* TOOLS */
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .tool-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .tool-name { font-weight: 600; color: var(--white); font-size: 0.9rem; }
+  .tool-cat { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.08em; }
+  .tool-desc { font-size: 0.8rem; color: var(--muted); }
+
+  /* CTA */
+  .cta-section {
+    text-align: center; padding: 120px 40px;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(124,58,237,0.12) 0%, transparent 70%);
+  }
+  .cta-section h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem, 4vw, 3rem); color: var(--white); margin-bottom: 16px; }
+  .cta-section p { color: var(--muted); font-size: 1rem; max-width: 500px; margin: 0 auto 40px; }
+  .cta-btn {
+    display: inline-block; background: var(--accent); color: var(--white);
+    font-weight: 600; padding: 16px 40px; border-radius: 12px; text-decoration: none; font-size: 1rem;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .cta-btn:hover { background: #6d28d9; transform: translateY(-2px); }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 0 40px; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border); padding: 32px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: var(--muted); font-size: 0.8rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    nav { padding: 12px 20px; }
+    .nav-links { display: none; }
+    .container { padding: 0 20px; }
+    .hero { padding: 100px 20px 60px; }
+    .phase { grid-template-columns: 50px 1fr; gap: 0 16px; }
+    .phase-number { width: 44px; height: 44px; font-size: 0.95rem; }
+    .yt-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MARKETING<span>.</span>MAP</div>
+  <ul class="nav-links">
+    <li><a href="#fases">Fases</a></li>
+    <li><a href="#areas">Áreas</a></li>
+    <li><a href="#recursos">Recursos</a></li>
+    <li><a href="#estrategias">Estrategias</a></li>
+    <li><a href="#youtube">¿YouTube?</a></li>
+    <li><a href="#herramientas">Herramientas</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Road Map Completo · Desde 0</div>
+    <h1>Aprende <span class="grad">Marketing</span><br>desde cero</h1>
+    <p>Una guía completa, honesta y práctica para convertirte en marketero. Sin rodeos. Sin cursos de gurús inflados. Con orden real.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Fases</div></div>
+      <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Áreas</div></div>
+      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Recursos</div></div>
+      <div class="stat"><div class="stat-num">12–18</div><div class="stat-label">Meses aprox.</div></div>
+    </div>
+    <div class="scroll-hint">↓ empieza a leer</div>
+  </div>
+</section>
+
+<!-- FASES -->
+<section id="fases">
+  <div class="container">
+    <span class="section-label">// 01 — Road Map por Fases</span>
+    <h2 class="section-title">Tu ruta de aprendizaje</h2>
+    <p class="section-sub">El marketing se aprende en capas. Aquí tienes el orden que te evitará confusión y te dará base real antes de especializarte.</p>
+
+    <div class="phases">
+
+      <!-- FASE 1 -->
+      <div class="phase p1">
+        <div class="phase-left">
+          <div class="phase-number">1</div>
+          <div class="phase-line"></div>
+        </div>
+        <div class="phase-content">
+          <div class="phase-duration">⏱ 1–2 meses</div>
+          <div class="phase-title">Fundamentos del Marketing</div>
+          <div class="phase-desc">Antes de aprender herramientas, necesitas entender para qué sirven. Esta fase te da el lenguaje y el pensamiento estratégico que todo lo demás necesita.</div>
+          <div class="topics-grid">
+            <div class="topic-pill"><span class="dot"></span>¿Qué es el marketing?</div>
+            <div class="topic-pill"><span class="dot"></span>Las 4Ps (Producto, Precio, Plaza, Promoción)</div>
+            <div class="topic-pill"><span class="dot"></span>Las 4Cs del consumidor</div>
+            <div class="topic-pill"><span class="dot"></span>Buyer persona e ICP</div>
+            <div class="topic-pill"><span class="dot"></span>Customer journey</div>
+            <div class="topic-pill"><span class="dot"></span>Embudo de ventas (TOFU, MOFU, BOFU)</div>
+            <div class="topic-pill"><span class="dot"></span>Diferencia marketing vs publicidad</div>
+            <div class="topic-pill"><span class="dot"></span>Marketing B2B vs B2C</div>
+            <div class="topic-pill"><span class="dot"></span>Psicología del consumidor</div>
+            <div class="topic-pill"><span class="dot"></span>Propuesta de valor (USP)</div>
+            <div class="topic-pill"><span class="dot"></span>Investigación de mercado básica</div>
+            <div class="topic-pill"><span class="dot"></span>KPIs fundamentales</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 2 -->
+      <div class="phase p2">
+        <div class="phase-left">
+          <div class="phase-number">2</div>
+          <div class="phase-line"></div>
+        </div>
+        <div class="phase-content">
+          <div class="phase-duration">⏱ 2–3 meses</div>
+          <div class="phase-title">Marketing Digital Esencial</div>
+          <div class="phase-desc">El ecosistema digital completo. Aquí entiendes cómo se mueve la atención en internet y qué canales existen para llegar a tu audiencia.</div>
+          <div class="topics-grid">
+            <div class="topic-pill"><span class="dot"></span>Ecosistema digital</div>
+            <div class="topic-pill"><span class="dot"></span>SEO On-page y Off-page</div>
+            <div class="topic-pill"><span class="dot"></span>Google Ads (SEM)</div>
+            <div class="topic-pill"><span class="dot"></span>Meta Ads (Facebook/Instagram)</div>
+            <div class="topic-pill"><span class="dot"></span>Email marketing</div>
+            <div class="topic-pill"><span class="dot"></span>Marketing de contenidos</div>
+            <div class="topic-pill"><span class="dot"></span>Redes sociales orgánicas</div>
+            <div class="topic-pill"><span class="dot"></span>Analytics básico (GA4)</div>
+            <div class="topic-pill"><span class="dot"></span>Landing pages</div>
+            <div class="topic-pill"><span class="dot"></span>Pixel y tracking</div>
+            <div class="topic-pill"><span class="dot"></span>A/B Testing</div>
+            <div class="topic-pill"><span class="dot"></span>CRM básico</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 3 -->
+      <div class="phase p3">
+        <div class="phase-left">
+          <div class="phase-number">3</div>
+          <div class="phase-line"></div>
+        </div>
+        <div class="phase-content">
+          <div class="phase-duration">⏱ 2–3 meses</div>
+          <div class="phase-title">Contenido y Copywriting</div>
+          <div class="phase-desc">El contenido es el motor del marketing moderno. Aprendes a escribir para vender, crear estrategias de contenido y comunicar con intención.</div>
+          <div class="topics-grid">
+            <div class="topic-pill"><span class="dot"></span>Fundamentos de copywriting</div>
+            <div class="topic-pill"><span class="dot"></span>AIDA y otras fórmulas</div>
+            <div class="topic-pill"><span class="dot"></span>Storytelling de marca</div>
+            <div class="topic-pill"><span class="dot"></span>Escritura persuasiva</div>
+            <div class="topic-pill"><span class="dot"></span>Titulares que convierten</div>
+            <div class="topic-pill"><span class="dot"></span>Emails de venta</div>
+            <div class="topic-pill"><span class="dot"></span>CTAs efectivos</div>
+            <div class="topic-pill"><span class="dot"></span>Content strategy</div>
+            <div class="topic-pill"><span class="dot"></span>Calendario editorial</div>
+            <div class="topic-pill"><span class="dot"></span>Blog y SEO editorial</div>
+            <div class="topic-pill"><span class="dot"></span>Video marketing</div>
+            <div class="topic-pill"><span class="dot"></span>Podcast como canal</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 4 -->
+      <div class="phase p4">
+        <div class="phase-left">
+          <div class="phase-number">4</div>
+          <div class="phase-line"></div>
+        </div>
+        <div class="phase-content">
+          <div class="phase-duration">⏱ 2–3 meses</div>
+          <div class="phase-title">Datos, Analítica y Optimización</div>
+          <div class="phase-desc">El marketing sin datos es solo opinión. Aquí aprendes a leer números, tomar decisiones basadas en evidencia y optimizar continuamente.</div>
+          <div class="topics-grid">
+            <div class="topic-pill"><span class="dot"></span>Google Analytics 4</div>
+            <div class="topic-pill"><span class="dot"></span>Google Search Console</div>
+            <div class="topic-pill"><span class="dot"></span>Métricas por canal</div>
+            <div class="topic-pill"><span class="dot"></span>ROAS, CAC, LTV, CPL</div>
+            <div class="topic-pill"><span class="dot"></span>Atribución de conversiones</div>
+            <div class="topic-pill"><span class="dot"></span>Dashboards y reportes</div>
+            <div class="topic-pill"><span class="dot"></span>Looker Studio (Data Studio)</div>
+            <div class="topic-pill"><span class="dot"></span>Experimentos y CRO</div>
+            <div class="topic-pill"><span class="dot"></span>Heatmaps y sesiones</div>
+            <div class="topic-pill"><span class="dot"></span>UTM y tracking URLs</div>
+            <div class="topic-pill"><span class="dot"></span>Cohort analysis</div>
+            <div class="topic-pill"><span class="dot"></span>Excel/Sheets para marketing</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 5 -->
+      <div class="phase p5">
+        <div class="phase-left">
+          <div class="phase-number">5</div>
+          <div class="phase-line"></div>
+        </div>
+        <div class="phase-content">
+          <div class="phase-duration">⏱ 2–3 meses</div>
+          <div class="phase-title">Estrategia y Marca</div>
+          <div class="phase-desc">Cuando ya sabes los canales, aprendes a unirlos bajo una estrategia coherente. Aquí piensas como CMO, no como ejecutor.</div>
+          <div class="topics-grid">
+            <div class="topic-pill"><span class="dot"></span>Branding y brand identity</div>
+            <div class="topic-pill"><span class="dot"></span>Posicionamiento</div>
+            <div class="topic-pill"><span class="dot"></span>Go-to-market strategy</div>
+            <div class="topic-pill"><span class="dot"></span>Estrategia omnicanal</div>
+            <div class="topic-pill"><span class="dot"></span>Growth hacking</div>
+            <div class="topic-pill"><span class="dot"></span>Product-led growth</div>
+            <div class="topic-pill"><span class="dot"></span>Inbound vs outbound</div>
+            <div class="topic-pill"><span class="dot"></span>Marketing de retención</div>
+            <div class="topic-pill"><span class="dot"></span>Comunidad y loyalty</div>
+            <div class="topic-pill"><span class="dot"></span>Relación con ventas</div>
+            <div class="topic-pill"><span class="dot"></span>Presupuesto de marketing</div>
+            <div class="topic-pill"><span class="dot"></span>Plan de marketing</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 6 -->
+      <div class="phase p6">
+        <div class="phase-left">
+          <div class="phase-number">6</div>
+          <div class="phase-line"></div>
+        </div>
+        <div class="phase-content">
+          <div class="phase-duration">⏱ Ongoing</div>
+          <div class="phase-title">Especialización y Portafolio</div>
+          <div class="phase-desc">Eliges 1–2 áreas donde ser realmente bueno. Construyes casos reales, proyectos propios o para otros, y comienzas a destacar con evidencia.</div>
+          <div class="topics-grid">
+            <div class="topic-pill"><span class="dot"></span>Elige tu especialidad</div>
+            <div class="topic-pill"><span class="dot"></span>Proyectos reales (propios)</div>
+            <div class="topic-pill"><span class="dot"></span>Freelancing inicial</div>
+            <div class="topic-pill"><span class="dot"></span>Portafolio con resultados</div>
+            <div class="topic-pill"><span class="dot"></span>LinkedIn personal brand</div>
+            <div class="topic-pill"><span class="dot"></span>Networking en marketing</div>
+            <div class="topic-pill"><span class="dot"></span>Certificaciones Google/Meta</div>
+            <div class="topic-pill"><span class="dot"></span>Mantenerse actualizado</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ÁREAS PROFUNDAS -->
+<section id="areas">
+  <div class="container">
+    <span class="section-label">// 02 — Áreas en Detalle</span>
+    <h2 class="section-title">Qué aprenderás en cada área</h2>
+    <p class="section-sub">Cada área del marketing digital tiene su propia curva de aprendizaje. Aquí desglosamos cada una.</p>
+
+    <div class="deepdive-grid">
+
+      <div class="deepdive-card">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">SEO — Posicionamiento Orgánico</div>
+        <div class="card-desc">El arte de aparecer en Google sin pagar. Lento al inicio, pero el canal con mejor ROI a largo plazo.</div>
+        <ul class="card-list">
+          <li>Investigación de palabras clave (Keyword Research)</li>
+          <li>SEO On-page: títulos, metas, estructura H1-H6</li>
+          <li>SEO técnico: velocidad, indexación, sitemaps</li>
+          <li>Link building y autoridad de dominio</li>
+          <li>SEO local para negocios físicos</li>
+          <li>Core Web Vitals y UX</li>
+          <li>Herramientas: Ahrefs, SEMrush, Search Console</li>
+          <li>Tiempo para ver resultados: 3–6 meses mínimo</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">📢</div>
+        <div class="card-title">Publicidad de Pago (PPC)</div>
+        <div class="card-desc">Resultados inmediatos. Pagas para aparecer. Requiere saber gestionar presupuesto y optimizar constantemente.</div>
+        <ul class="card-list">
+          <li>Google Ads: Search, Display, Shopping, YouTube</li>
+          <li>Meta Ads: segmentación, creatividades, objetivos</li>
+          <li>TikTok Ads y su formato nativo</li>
+          <li>Retargeting y audiencias personalizadas</li>
+          <li>Estructura de campañas y ad sets</li>
+          <li>Optimización de pujas y presupuesto</li>
+          <li>Calidad del anuncio y Quality Score</li>
+          <li>ROAS, CPC, CPM, CTR — métricas clave</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">📧</div>
+        <div class="card-title">Email Marketing</div>
+        <div class="card-desc">El canal con mayor ROI del marketing digital. Una lista de emails bien trabajada vale más que miles de seguidores.</div>
+        <ul class="card-list">
+          <li>Construcción de lista (lead magnets)</li>
+          <li>Segmentación y personalización</li>
+          <li>Secuencias de bienvenida y nurturing</li>
+          <li>Emails de venta y promoción</li>
+          <li>Automatizaciones y triggers</li>
+          <li>Tasa de apertura, CTR, deliverability</li>
+          <li>Herramientas: Mailchimp, ActiveCampaign, Klaviyo</li>
+          <li>GDPR y CAN-SPAM: permisos y privacidad</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">📱</div>
+        <div class="card-title">Redes Sociales (Social Media)</div>
+        <div class="card-desc">Más que publicar bonito. Se trata de construir comunidad, generar confianza y convertir seguidores en clientes.</div>
+        <ul class="card-list">
+          <li>Estrategia por plataforma (IG, TikTok, LinkedIn, X)</li>
+          <li>Algoritmos: cómo funcionan realmente</li>
+          <li>Creación de contenido orgánico</li>
+          <li>Reels, Stories, Carruseles, Lives</li>
+          <li>Community management</li>
+          <li>Gestión de crisis y comentarios negativos</li>
+          <li>Influencer marketing y UGC</li>
+          <li>Métricas: alcance, engagement, conversiones</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">✍️</div>
+        <div class="card-title">Copywriting</div>
+        <div class="card-desc">La habilidad de escribir palabras que generan acción. Transversal a todos los canales. La habilidad más valiosa del marketing.</div>
+        <ul class="card-list">
+          <li>Fórmulas: AIDA, PAS, BAB, 4Us</li>
+          <li>Investigación del cliente: voz del cliente</li>
+          <li>Copy para anuncios (corto y directo)</li>
+          <li>Copy para landing pages</li>
+          <li>Copy para emails de ventas</li>
+          <li>Manejo de objeciones</li>
+          <li>Social proof: testimonios y prueba social</li>
+          <li>Test de copy con datos reales</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Analítica y Datos</div>
+        <div class="card-desc">Sin datos, el marketing es solo intuición. Aprender a leer métricas te separa del 80% de marketeros.</div>
+        <ul class="card-list">
+          <li>Google Analytics 4: configuración y uso</li>
+          <li>Definir objetivos y conversiones</li>
+          <li>Reportes personalizados</li>
+          <li>Atribución: último clic vs multi-touch</li>
+          <li>Análisis de cohortes</li>
+          <li>CRO: optimización de la tasa de conversión</li>
+          <li>Heatmaps con Hotjar o Clarity</li>
+          <li>Dashboards con Looker Studio</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">Marketing de Contenidos</div>
+        <div class="card-desc">Crear contenido que atrae, educa y convierte. La base del inbound marketing.</div>
+        <ul class="card-list">
+          <li>Estrategia de contenidos: pilares y clusters</li>
+          <li>Blog: artículos SEO y editoriales</li>
+          <li>Video: YouTube y cortos</li>
+          <li>Podcast como canal de autoridad</li>
+          <li>Infografías y contenido visual</li>
+          <li>Newsletters y contenido exclusivo</li>
+          <li>Repurposing: un contenido, múltiples formatos</li>
+          <li>Calendario editorial y herramientas</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">🚀</div>
+        <div class="card-title">Growth Hacking</div>
+        <div class="card-desc">Mentalidad de crecimiento rápido y experimentos. Combina producto, datos y marketing para escalar.</div>
+        <ul class="card-list">
+          <li>El framework AARRR (Pirate Metrics)</li>
+          <li>Experimentos de crecimiento rápidos</li>
+          <li>Viral loops y referidos</li>
+          <li>Product-led growth (PLG)</li>
+          <li>Optimización del onboarding</li>
+          <li>North Star Metric</li>
+          <li>Growth sprints y retrospectivas</li>
+          <li>Casos: Dropbox, Airbnb, Hotmail</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">🎨</div>
+        <div class="card-title">Branding y Posicionamiento</div>
+        <div class="card-desc">Lo que la gente piensa cuando escucha tu nombre. Más estrategia que diseño.</div>
+        <ul class="card-list">
+          <li>Identidad de marca: misión, visión, valores</li>
+          <li>Brand voice y personalidad</li>
+          <li>Posicionamiento competitivo</li>
+          <li>Propuesta de valor diferenciada</li>
+          <li>Arquetipo de marca</li>
+          <li>Naming y taglines</li>
+          <li>Manual de marca</li>
+          <li>Cómo medir el brand awareness</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">Marketing con IA</div>
+        <div class="card-desc">La IA no reemplaza marketeros, pero los marketeros que usan IA reemplazan a los que no. Domínala ahora.</div>
+        <ul class="card-list">
+          <li>Prompting para marketing (ChatGPT, Claude)</li>
+          <li>Generación de copy con IA</li>
+          <li>Creación de imágenes con IA (Midjourney)</li>
+          <li>Automatización con IA</li>
+          <li>Análisis de datos con IA</li>
+          <li>Personalización a escala</li>
+          <li>Chatbots y atención al cliente IA</li>
+          <li>Herramientas: Jasper, Copy.ai, Perplexity</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">🤝</div>
+        <div class="card-title">Automatización y CRM</div>
+        <div class="card-desc">Hacer que el marketing trabaje mientras duermes. Nurturing, leads y clientes en piloto automático.</div>
+        <ul class="card-list">
+          <li>Qué es un CRM y para qué sirve</li>
+          <li>HubSpot gratuito: primeros pasos</li>
+          <li>Flujos de automatización</li>
+          <li>Lead scoring</li>
+          <li>Integración email + CRM</li>
+          <li>Automaciones en WhatsApp Business</li>
+          <li>Zapier: conectar herramientas sin código</li>
+          <li>Segmentación dinámica</li>
+        </ul>
+      </div>
+
+      <div class="deepdive-card">
+        <div class="card-icon">🛒</div>
+        <div class="card-title">eCommerce Marketing</div>
+        <div class="card-desc">Marketing para tiendas online tiene sus propias reglas. Alto volumen, abandono de carrito y ciclos de compra cortos.</div>
+        <ul class="card-list">
+          <li>Optimización de fichas de producto</li>
+          <li>Marketing para Shopify/WooCommerce</li>
+          <li>Google Shopping Ads</li>
+          <li>Retargeting dinámico</li>
+          <li>Recuperación de carritos abandonados</li>
+          <li>Email flows de eCommerce</li>
+          <li>Upsell, cross-sell y bundles</li>
+          <li>Reseñas, ratings y social proof</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RECURSOS / YOUTUBE -->
+<section id="youtube" style="padding: 100px 0;">
+  <div class="container">
+    <span class="section-label">// 03 — ¿Puedo aprender por YouTube?</span>
+    <h2 class="section-title">La pregunta del millón</h2>
+    <p class="section-sub">Respuesta corta: sí, pero con estrategia. YouTube es increíble para aprender marketing, pero también está lleno de ruido.</p>
+
+    <div class="yt-section">
+      <div class="yt-header">
+        <div class="yt-icon">▶️</div>
+        <div class="yt-title-block">
+          <h2>YouTube como herramienta de aprendizaje</h2>
+          <p>Funciona para marketing, pero necesitas saber cómo usarlo</p>
+        </div>
+      </div>
+
+      <div class="yt-grid">
+        <div class="yt-col">
+          <h4>✅ Qué SÍ aprenderás bien en YouTube</h4>
+          <ul class="yt-list">
+            <li>Google Ads paso a paso (hay canales excelentes)</li>
+            <li>Meta Ads: configuración de campañas</li>
+            <li>Google Analytics 4: tutoriales prácticos</li>
+            <li>SEO técnico y keyword research</li>
+            <li>Email marketing con herramientas específicas</li>
+            <li>Casos de estudio reales</li>
+            <li>Tendencias y novedades del sector</li>
+            <li>Estrategia de contenidos en redes</li>
+          </ul>
+        </div>
+        <div class="yt-col">
+          <h4>❌ Qué NO aprenderás bien solo con YouTube</h4>
+          <ul class="yt-list">
+            <li>Pensamiento estratégico profundo (fragmentado)</li>
+            <li>Estructura y orden de aprendizaje</li>
+            <li>Qué ver primero: caerás en el rabbit hole</li>
+            <li>Copywriting avanzado (mejor libros y práctica)</li>
+            <li>Analítica profunda con datos reales</li>
+            <li>Feedback real de tu trabajo</li>
+            <li>Distinguir gurús de expertos reales</li>
+            <li>Habilidades blandas de estrategia</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="yt-verdict">
+        <strong>Veredicto honesto:</strong> YouTube es tu mejor aliado <strong>si ya sabes qué buscar</strong>. El problema es que sin base previa, no sabes qué preguntas hacer. La estrategia ganadora es: <strong>aprende los fundamentos con un libro o curso estructurado → usa YouTube para profundizar en cada herramienta o canal específico → practica en proyectos reales.</strong> YouTube complementa, no reemplaza el aprendizaje estructurado.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RECURSOS -->
+<section id="recursos" style="background: var(--surface); padding: 100px 0;">
+  <div class="resources-wrap">
+    <span class="section-label">// 04 — Recursos Recomendados</span>
+    <h2 class="section-title">Dónde aprender (curado y honesto)</h2>
+    <p class="section-sub" style="margin-bottom: 48px;">Sin spam. Sin cursos de gurús. Solo recursos que realmente enseñan.</p>
+
+    <div class="resource-cat">
+      <div class="resource-cat-title"><span>📺</span> Canales de YouTube en Español</div>
+      <div class="resource-grid">
+        <div class="resource-item">
+          <div class="resource-name">Vilma Núñez <span class="tag tag-yt">YT</span><span class="tag tag-es">ES</span></div>
+          <div class="resource-desc">Estrategia digital, redes sociales, branding. Una de las referentes más sólidas en español.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Dean Romero <span class="tag tag-yt">YT</span><span class="tag tag-es">ES</span></div>
+          <div class="resource-desc">SEO en profundidad, muy técnico y honesto. El canal de SEO en español.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Álvaro Gestión y Marketing <span class="tag tag-yt">YT</span><span class="tag tag-es">ES</span></div>
+          <div class="resource-desc">Marketing estratégico, copywriting, negocios online.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Romuald Fons <span class="tag tag-yt">YT</span><span class="tag tag-es">ES</span></div>
+          <div class="resource-desc">SEO, monetización, posicionamiento. Muy práctico y sin rodeos.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Crehana Marketing <span class="tag tag-yt">YT</span><span class="tag tag-es">ES</span></div>
+          <div class="resource-desc">Cursos gratuitos y contenido educativo variado de marketing digital.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Nico Mendoza <span class="tag tag-yt">YT</span><span class="tag tag-es">ES</span></div>
+          <div class="resource-desc">Ads en redes sociales, especialmente Meta Ads para LATAM.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-cat">
+      <div class="resource-cat-title"><span>📺</span> Canales de YouTube en Inglés</div>
+      <div class="resource-grid">
+        <div class="resource-item">
+          <div class="resource-name">Neil Patel <span class="tag tag-yt">YT</span><span class="tag tag-free">Free</span></div>
+          <div class="resource-desc">SEO, marketing de contenidos, estrategia digital. El más popular del mundo.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Ahrefs <span class="tag tag-yt">YT</span><span class="tag tag-free">Free</span></div>
+          <div class="resource-desc">El mejor canal de SEO en inglés. Práctico, sin hype, basado en datos.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">HubSpot Marketing <span class="tag tag-yt">YT</span><span class="tag tag-free">Free</span></div>
+          <div class="resource-desc">Inbound marketing, email, CRM, estrategia completa.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Alex Hormozi <span class="tag tag-yt">YT</span><span class="tag tag-free">Free</span></div>
+          <div class="resource-desc">Ofertas, copywriting, growth. Directo y con casos reales de millones.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Social Media Examiner <span class="tag tag-yt">YT</span><span class="tag tag-free">Free</span></div>
+          <div class="resource-desc">Novedades de redes sociales, estrategias y plataformas.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Exposure Ninja <span class="tag tag-yt">YT</span><span class="tag tag-free">Free</span></div>
+          <div class="resource-desc">Auditorías de marketing reales en vivo, SEO y conversión.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-cat">
+      <div class="resource-cat-title"><span>📚</span> Libros Imprescindibles</div>
+      <div class="resource-grid">
+        <div class="resource-item">
+          <div class="resource-name">Influence — Robert Cialdini</div>
+          <div class="resource-desc">Los 6 principios de persuasión. El libro más citado en marketing. Obligatorio.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Esto es Marketing — Seth Godin</div>
+          <div class="resource-desc">Qué es realmente el marketing hoy. Cambia tu mentalidad.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">$100M Offers — Alex Hormozi</div>
+          <div class="resource-desc">Cómo crear ofertas irresistibles. Práctico y aplicable.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Hacking Growth — Sean Ellis</div>
+          <div class="resource-desc">El libro fundacional del growth hacking con casos reales.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Building a StoryBrand — Miller</div>
+          <div class="resource-desc">Framework de comunicación de marca. Claridad instantánea.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Contagious — Jonah Berger</div>
+          <div class="resource-desc">Por qué las cosas se vuelven virales. Ciencia del boca a boca.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">The Copywriter's Handbook — Bly</div>
+          <div class="resource-desc">La biblia del copywriting. Técnico, completo y aplicable.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Made to Stick — Heath Brothers</div>
+          <div class="resource-desc">Por qué algunas ideas perduran. Storytelling y comunicación.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-cat">
+      <div class="resource-cat-title"><span>🎓</span> Plataformas de Cursos</div>
+      <div class="resource-grid">
+        <div class="resource-item">
+          <div class="resource-name">Google Skillshop <span class="tag tag-free">Gratis</span></div>
+          <div class="resource-desc">Cursos y certificaciones oficiales de Google Ads, Analytics y más. Gratuitos.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Meta Blueprint <span class="tag tag-free">Gratis</span></div>
+          <div class="resource-desc">Certificación oficial de Meta Ads. Gratis y reconocida en el sector.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">HubSpot Academy <span class="tag tag-free">Gratis</span></div>
+          <div class="resource-desc">Inbound marketing, email, CRM. Certificaciones gratuitas de alta calidad.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Semrush Academy <span class="tag tag-free">Gratis</span></div>
+          <div class="resource-desc">SEO, SEM, content marketing con los creadores de la herramienta.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Coursera / Marketing Digital <span class="tag tag-paid">Pago</span></div>
+          <div class="resource-desc">Especializaciones de universidades reales. Ideal para bases sólidas.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Udemy (con descuento) <span class="tag tag-paid">Pago</span></div>
+          <div class="resource-desc">Cursos prácticos, espera ofertas del 90% de descuento (constantes).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-cat">
+      <div class="resource-cat-title"><span>📰</span> Newsletters y Blogs para mantenerse al día</div>
+      <div class="resource-grid">
+        <div class="resource-item">
+          <div class="resource-name">Marketing Brew <span class="tag tag-free">Gratis</span></div>
+          <div class="resource-desc">Newsletter diaria de marketing de negocio. En inglés, concisa y muy buena.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">The Hustle <span class="tag tag-free">Gratis</span></div>
+          <div class="resource-desc">Negocios, marketing y tecnología. Tono ameno y muy leída.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Moz Blog <span class="tag tag-free">Gratis</span></div>
+          <div class="resource-desc">El blog más importante de SEO. Imprescindible si vas por ese camino.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Doppler Academy Blog <span class="tag tag-free">Gratis</span><span class="tag tag-es">ES</span></div>
+          <div class="resource-desc">Email marketing en español. Uno de los más completos de LATAM.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Backlinko (Brian Dean) <span class="tag tag-free">Gratis</span></div>
+          <div class="resource-desc">Guías de SEO y marketing de contenidos increíblemente detalladas.</div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-name">Marketing de Contenidos ES <span class="tag tag-free">Gratis</span><span class="tag tag-es">ES</span></div>
+          <div class="resource-desc">Blog referente del marketing de contenidos en español.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ESTRATEGIAS DE APRENDIZAJE -->
+<section id="estrategias">
+  <div class="container">
+    <span class="section-label">// 05 — Cómo Aprender de Verdad</span>
+    <h2 class="section-title">Estrategias y trucos para aprender marketing</h2>
+    <p class="section-sub">La mayoría falla no por falta de recursos, sino por falta de método. Aquí los principios que cambian todo.</p>
+
+    <div class="tips-box" style="margin-bottom: 48px;">
+      <h3>🧠 El principio más importante: aprende haciendo</h3>
+      <div class="tips-list">
+        <div class="tip-item"><div class="tip-icon">⚡</div><div class="tip-text"><strong>Regla 70-20-10:</strong> 70% haciendo proyectos reales, 20% aprendiendo de otros profesionales, 10% cursos y libros. La mayoría lo invierte al revés.</div></div>
+        <div class="tip-item"><div class="tip-icon">🎯</div><div class="tip-text"><strong>Empieza tu propio proyecto desde el mes 2:</strong> un blog, una cuenta de Instagram, una tienda ficticia en Shopify. Sin proyecto real, el aprendizaje se olvida.</div></div>
+        <div class="tip-item"><div class="tip-icon">📝</div><div class="tip-text"><strong>Documenta todo lo que aprendes:</strong> escribe resúmenes, crea tu propio swipe file de anuncios, copies y estrategias que te gustan. Aprenderás el doble.</div></div>
+        <div class="tip-item"><div class="tip-icon">🔄</div><div class="tip-text"><strong>Itera rápido:</strong> el marketing premia a quien prueba más hipótesis. Lanza, mide, ajusta. No busques la campaña perfecta al inicio.</div></div>
+      </div>
+    </div>
+
+    <div class="strategy-grid">
+
+      <div class="strategy-card">
+        <div class="s-num">estrategia 01</div>
+        <div class="s-title">El método del "Proyecto Cobaya"</div>
+        <div class="s-body">Crea un proyecto ficticio o real desde el principio. Aplica CADA cosa que aprendes en ese proyecto. Un blog de viajes, una tienda Shopify demo, una marca de café personal. El proyecto es tu laboratorio. Sin laboratorio no hay aprendizaje real.</div>
+      </div>
+
+      <div class="strategy-card">
+        <div class="s-num">estrategia 02</div>
+        <div class="s-title">El Swipe File del Estudiante</div>
+        <div class="s-body">Crea una carpeta donde guardes anuncios, emails, landing pages y posts que te llamen la atención. Analiza POR QUÉ funcionan: qué técnica de copy usan, cómo segmentan, qué llamada a la acción tienen. Esta práctica vale más que 10 cursos.</div>
+      </div>
+
+      <div class="strategy-card">
+        <div class="s-num">estrategia 03</div>
+        <div class="s-title">Aprende del gasto ajeno</div>
+        <div class="s-body">La Biblioteca de Anuncios de Meta es gratis. Google Ads tiene un simulador. Spy tools tienen versiones gratuitas. Estudia qué anuncios llevan meses activos (si llevan tiempo, convierten). Aprendes de presupuestos millonarios sin gastar nada.</div>
+      </div>
+
+      <div class="strategy-card">
+        <div class="s-num">estrategia 04</div>
+        <div class="s-title">El Sprint de 30 días</div>
+        <div class="s-body">Elige UN canal o habilidad. Dedícale 30 días intensivos. Lunes a viernes, 1h mínima de teoría + práctica. Al mes sabes más que el 70% de personas en ese canal. Luego al siguiente. Evita aprender 10 cosas a la vez.</div>
+      </div>
+
+      <div class="strategy-card">
+        <div class="s-num">estrategia 05</div>
+        <div class="s-title">Trabajar gratis (estratégicamente)</div>
+        <div class="s-body">Ofrece tus servicios gratis o muy baratos a un negocio local pequeño durante 2–3 meses. Ganas experiencia real, resultados reales para el portafolio, y posible referencia o cliente de pago. Mejor que cualquier práctica simulada.</div>
+      </div>
+
+      <div class="strategy-card">
+        <div class="s-num">estrategia 06</div>
+        <div class="s-title">El método de Enseñar para Aprender</div>
+        <div class="s-body">Cuando aprendas algo, intenta explicárselo a otra persona (un amigo, en Twitter/X, en un blog). Enseñar obliga a entender profundamente. Además, construyes marca personal desde el inicio de tu aprendizaje.</div>
+      </div>
+
+      <div class="strategy-card">
+        <div class="s-num">estrategia 07</div>
+        <div class="s-title">Reverse Engineering de marcas que admiras</div>
+        <div class="s-body">Elige 3 marcas que te gusten. Desglosa su estrategia completa: qué canales usan, cómo es su copy, qué tipo de contenido publican, cómo es su funnel. Suscríbete a sus emails. Aprenderás estrategia real de los mejores.</div>
+      </div>
+
+      <div class="strategy-card">
+        <div class="s-num">estrategia 08</div>
+        <div class="s-title">Certificaciones como ancla, no como meta</div>
+        <div class="s-body">Las certificaciones de Google, Meta y HubSpot son gratuitas y le dan credibilidad a tu CV. Sácalas, pero no las conviertas en tu objetivo principal. Lo que te da trabajo es lo que sabes hacer, no el certificado. Úsalas como estructura de aprendizaje.</div>
+      </div>
+
+      <div class="strategy-card">
+        <div class="s-num">estrategia 09</div>
+        <div class="s-title">La regla del "Ya lo vi, ahora lo hago"</div>
+        <div class="s-body">Por cada tutorial que veas, haz una réplica inmediata. ¿Viste un video sobre Google Ads? Crea una campaña ficticia ahora mismo. ¿Aprendiste sobre email sequences? Escribe una de 5 emails para una marca inventada. Acción inmediata es la clave.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HERRAMIENTAS -->
+<section id="herramientas">
+  <div class="container">
+    <span class="section-label">// 06 — Stack de Herramientas</span>
+    <h2 class="section-title">Las herramientas que usarás</h2>
+    <p class="section-sub">No necesitas todas desde el inicio. Aprende las gratuitas primero, luego las de pago cuando generes ingresos con ellas.</p>
+
+    <div class="tools-grid">
+      <div class="tool-card">
+        <div class="tool-cat">SEO</div>
+        <div class="tool-name">Google Search Console</div>
+        <div class="tool-desc">Gratis. Imprescindible para ver cómo te ve Google.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">SEO</div>
+        <div class="tool-name">Ahrefs / SEMrush</div>
+        <div class="tool-desc">De pago. Las mejores herramientas SEO del mercado. Empieza con las versiones de prueba.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">SEO</div>
+        <div class="tool-name">Ubersuggest</div>
+        <div class="tool-desc">Freemium. Buena alternativa gratuita para keyword research básico.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Analítica</div>
+        <div class="tool-name">Google Analytics 4</div>
+        <div class="tool-desc">Gratis. El estándar del análisis web. Aprenderlo es obligatorio.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Analítica</div>
+        <div class="tool-name">Looker Studio</div>
+        <div class="tool-desc">Gratis. Dashboards visuales conectados a GA4, Sheets y más.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Analítica</div>
+        <div class="tool-name">Hotjar / Clarity</div>
+        <div class="tool-desc">Gratis (Clarity). Heatmaps y grabaciones de sesión de usuarios.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Email</div>
+        <div class="tool-name">Mailchimp</div>
+        <div class="tool-desc">Gratis hasta 500 contactos. Perfecto para aprender email marketing.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Email</div>
+        <div class="tool-name">ActiveCampaign</div>
+        <div class="tool-desc">De pago. El estándar en automatización y CRM de email avanzado.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Ads</div>
+        <div class="tool-name">Google Ads</div>
+        <div class="tool-desc">Gratis para aprender con el simulador. Pago solo al lanzar campañas.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Ads</div>
+        <div class="tool-name">Meta Ads Manager</div>
+        <div class="tool-desc">Gratis. Acceso a toda la plataforma sin invertir hasta que lanzas.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Contenido</div>
+        <div class="tool-name">Canva</div>
+        <div class="tool-desc">Freemium. El estándar para crear contenido visual sin ser diseñador.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Contenido</div>
+        <div class="tool-name">Notion / Trello</div>
+        <div class="tool-desc">Gratis. Para organizar calendarios editoriales y estrategias.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">CRM</div>
+        <div class="tool-name">HubSpot CRM</div>
+        <div class="tool-desc">Gratis hasta cierto punto. El mejor CRM gratuito para aprender.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Automatización</div>
+        <div class="tool-name">Zapier</div>
+        <div class="tool-desc">Freemium. Conecta herramientas sin código. Fundamental para escalar.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">IA</div>
+        <div class="tool-name">ChatGPT / Claude</div>
+        <div class="tool-desc">Freemium. Para generar copy, ideas, analizar datos y automatizar tareas.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-cat">Landing Pages</div>
+        <div class="tool-name">Webflow / Carrd</div>
+        <div class="tool-desc">Freemium. Crear landing pages sin programar. Carrd es gratis para empezar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ERRORES COMUNES -->
+<section style="padding: 100px 0;">
+  <div class="container">
+    <span class="section-label">// 07 — Errores que Debes Evitar</span>
+    <h2 class="section-title">Lo que hace la mayoría mal</h2>
+    <p class="section-sub">Aprende de los errores más comunes antes de cometerlos tú. Te ahorran meses de tiempo perdido.</p>
+
+    <div class="errors-grid">
+      <div class="error-card">
+        <div class="e-icon">😵</div>
+        <h4>Parálisis por análisis</h4>
+        <p>Coleccionar cursos sin aplicar nada. 10 cursos sin un solo proyecto real = cero progreso. Aprende lo mínimo viable y lanza.</p>
+      </div>
+      <div class="error-card">
+        <div class="e-icon">🎲</div>
+        <h4>Aprender todo a la vez</h4>
+        <p>SEO + Ads + Email + Social al mismo tiempo = experto en nada. Domina un canal antes de saltar al siguiente.</p>
+      </div>
+      <div class="error-card">
+        <div class="e-icon">👑</div>
+        <h4>Seguir solo a gurús</h4>
+        <p>Muchos venden el sueño, no el proceso. Sigue a profesionales con resultados demostrables, no solo a quienes venden cursos caros.</p>
+      </div>
+      <div class="error-card">
+        <div class="e-icon">📉</div>
+        <h4>No medir nada</h4>
+        <p>Publicar sin revisar métricas es tirar esfuerzo al vacío. Desde el día 1, mide. CTR, tasa de apertura, conversiones. Los datos te dicen la verdad.</p>
+      </div>
+      <div class="error-card">
+        <div class="e-icon">🏃</div>
+        <h4>Esperar resultados inmediatos</h4>
+        <p>El SEO tarda 3-6 meses. El email marketing necesita lista. Los Ads necesitan optimización. El marketing es un juego largo.</p>
+      </div>
+      <div class="error-card">
+        <div class="e-icon">🗣️</div>
+        <h4>Hablar del producto, no del cliente</h4>
+        <p>El error de copy más común. Tu cliente no le importa tu producto, le importa su problema. Habla de él, no de ti.</p>
+      </div>
+      <div class="error-card">
+        <div class="e-icon">📋</div>
+        <h4>Copiar sin entender</h4>
+        <p>Copiar anuncios o estrategias sin entender por qué funcionan es inútil. Analiza la lógica detrás, no solo el formato.</p>
+      </div>
+      <div class="error-card">
+        <div class="e-icon">🎨</div>
+        <h4>Obsesionarse con el diseño</h4>
+        <p>Un anuncio feo con buen copy convierte más que uno bonito con copy vacío. El diseño ayuda, el copy vende.</p>
+      </div>
+      <div class="error-card">
+        <div class="e-icon">🔧</div>
+        <h4>Herramientitis aguda</h4>
+        <p>Gastar en 20 herramientas antes de tener resultados. Empieza con las gratuitas. Las de pago llegan cuando tienes ROI para justificarlas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>El mejor momento para empezar<br>es ahora mismo.</h2>
+  <p>No necesitas todo listo. Necesitas el paso 1 de la fase 1. Empieza hoy, no mañana.</p>
+  <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 32px; font-size: 0.9rem; color: var(--muted); max-width: 340px; text-align: left;">
+      <div style="color: var(--white); font-weight: 600; margin-bottom: 8px;">📌 Tu tarea para hoy</div>
+      1. Consigue el libro "Esto es Marketing" de Seth Godin.<br>
+      2. Crea una cuenta en HubSpot Academy (gratis).<br>
+      3. Define tu proyecto cobaya (un blog, una marca, algo).<br>
+      4. Compromete 1 hora diaria durante 30 días.
+    </div>
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 32px; font-size: 0.9rem; color: var(--muted); max-width: 340px; text-align: left;">
+      <div style="color: var(--white); font-weight: 600; margin-bottom: 8px;">⏱ Cuánto tiempo necesitas</div>
+      1h/día = buenos fundamentos en 12–18 meses.<br>
+      2h/día = puedes trabajar como Junior en 8–12 meses.<br>
+      Full-time dedicado = posición empleable en 6 meses.<br>
+      Recuerda: <strong style="color: var(--accent2);">la constancia gana a la intensidad.</strong>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>Marketing Road Map — Guía completa desde 0</div>
+  <div style="color: var(--muted);">Actualizado 2025 · Para principiantes y autodidactas</div>
+</footer>
+
+</body>
+</html>

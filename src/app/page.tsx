@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart } from "lucide-react";
 import BackgroundEffects from "@/components/BackgroundEffects";
@@ -14,13 +14,29 @@ import LettersAccordion from "@/components/LettersAccordion";
 import EducationalSection from "@/components/EducationalSection";
 import ExerciseSection from "@/components/ExerciseSection";
 import NotesSection from "@/components/NotesSection";
+import KeepInMindSection from "@/components/KeepInMindSection";
 import { MusicProvider } from "@/context/MusicContext";
 
 // 08.07.2026 - July 8th, 2026 (Definido fuera del componente para evitar re-instanciaciones)
 const START_DATE = new Date(2026, 6, 8, 0, 0, 0);
 
+const emptySubscribe = () => () => {};
+
 export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionType>("para-ti");
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+
+  if (!mounted) {
+    return (
+      <main className="min-h-screen w-full relative flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden font-sans bg-[#070514]" suppressHydrationWarning>
+        <BackgroundEffects />
+      </main>
+    );
+  }
 
   return (
     <MusicProvider>
@@ -80,7 +96,7 @@ export default function Home() {
           {/* Counter Component */}
           <Counter startDate={START_DATE} />
 
-          {/* Navigation Tabs (Para ti, Educativo, Ejercicio, Notas) */}
+          {/* Navigation Tabs (Para ti, Educativo, Ejercicio, Notas, A tener en cuenta) */}
           <SectionTabs activeSection={activeSection} onChangeSection={setActiveSection} />
         </div>
 
@@ -153,6 +169,19 @@ export default function Home() {
               className="w-full mt-2 sm:mt-4"
             >
               <NotesSection />
+            </motion.div>
+          )}
+
+          {activeSection === "a-tener-en-cuenta" && (
+            <motion.div
+              key="a-tener-en-cuenta"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+              className="w-full mt-2 sm:mt-4"
+            >
+              <KeepInMindSection />
             </motion.div>
           )}
         </AnimatePresence>

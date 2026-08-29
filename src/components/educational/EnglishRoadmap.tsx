@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Compass,
   BookOpen,
@@ -13,10 +13,8 @@ import {
   CheckCircle2,
   ExternalLink,
   Sparkles,
-  ArrowRight,
   Clock,
   Layers,
-  GraduationCap,
   Volume2,
   Mic,
   PenTool,

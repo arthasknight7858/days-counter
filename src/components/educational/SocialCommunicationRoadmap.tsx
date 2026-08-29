@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import {
   Radio,
   Newspaper,
@@ -14,30 +14,23 @@ import {
   AlertOctagon,
   Calendar,
   Layers,
-  Wrench,
   BookOpen,
   Brain,
   CheckSquare,
   Square,
-  ArrowRight,
-  TrendingUp,
-  Volume2,
-  Mic,
-  PenTool,
 } from "lucide-react";
 
 export default function SocialCommunicationRoadmap() {
   const [activeSubTab, setActiveSubTab] = useState<string>("all");
-  const [checklist, setChecklist] = useState<Record<number, boolean>>({});
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("sofi_social_checklist");
-      if (saved) {
-        setChecklist(JSON.parse(saved));
-      }
-    } catch {}
-  }, []);
+  const [checklist, setChecklist] = useState<Record<number, boolean>>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("sofi_social_checklist");
+        if (saved) return JSON.parse(saved);
+      } catch {}
+    }
+    return {};
+  });
 
   const toggleCheck = (idx: number) => {
     setChecklist((prev) => {

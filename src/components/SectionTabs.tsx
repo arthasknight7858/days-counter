@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, GraduationCap, Dumbbell, Sparkles, StickyNote } from "lucide-react";
+import { Heart, GraduationCap, Dumbbell, Sparkles, StickyNote, BookmarkCheck } from "lucide-react";
 
-export type SectionType = "para-ti" | "educativo" | "ejercicio" | "notas";
+export type SectionType = "para-ti" | "educativo" | "ejercicio" | "notas" | "a-tener-en-cuenta";
 
 interface SectionTabsProps {
   activeSection: SectionType;
@@ -35,6 +35,12 @@ export default function SectionTabs({ activeSection, onChangeSection }: SectionT
       label: "Notas",
       icon: StickyNote,
       badge: "📝 Mensajes",
+    },
+    {
+      id: "a-tener-en-cuenta" as SectionType,
+      label: "A tener en cuenta",
+      icon: BookmarkCheck,
+      badge: "💡 Especial",
     },
   ];
 
