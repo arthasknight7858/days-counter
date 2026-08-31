@@ -29,7 +29,7 @@ export default function KeepInMindSection() {
   const items: KeepInMindItem[] = [
     {
       id: "item-1",
-      title: "Amor quiero que veas este video, Te Amo Mcuho 💕",
+      title: "Amor quiero que veas este video, Te Amo Mucho 💕",
       date: "28 de Agosto de 2026",
       badge: "🎬 Video Especial",
       message:

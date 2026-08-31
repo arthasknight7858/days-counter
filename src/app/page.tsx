@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, Loader2 } from "lucide-react";
 import BackgroundEffects from "@/components/BackgroundEffects";
 import Counter from "@/components/Counter";
 import SectionTabs, { SectionType } from "@/components/SectionTabs";
@@ -11,11 +12,34 @@ import FloatingMiniPlayer from "@/components/FloatingMiniPlayer";
 import AboutSofi from "@/components/AboutSofi";
 import Albums from "@/components/Albums";
 import LettersAccordion from "@/components/LettersAccordion";
-import EducationalSection from "@/components/EducationalSection";
-import ExerciseSection from "@/components/ExerciseSection";
-import NotesSection from "@/components/NotesSection";
-import KeepInMindSection from "@/components/KeepInMindSection";
+import BackToTop from "@/components/BackToTop";
 import { MusicProvider } from "@/context/MusicContext";
+
+// Skeletons de carga dinámicos para optimizar el bundle JS inicial
+const SectionLoadingSkeleton = ({ title }: { title: string }) => (
+  <div className="w-full max-w-5xl mx-auto p-8 sm:p-12 rounded-3xl bg-white/5 border border-purple-500/20 backdrop-blur-md flex flex-col items-center justify-center gap-4 min-h-75">
+    <Loader2 className="w-8 h-8 text-purple-400 animate-spin" />
+    <p className="text-purple-200/80 font-medium text-sm sm:text-base animate-pulse">
+      Cargando {title}...
+    </p>
+  </div>
+);
+
+const EducationalSection = dynamic(() => import("@/components/EducationalSection"), {
+  loading: () => <SectionLoadingSkeleton title="Espacio Educativo" />,
+});
+
+const ExerciseSection = dynamic(() => import("@/components/ExerciseSection"), {
+  loading: () => <SectionLoadingSkeleton title="Rutinas de Ejercicio" />,
+});
+
+const NotesSection = dynamic(() => import("@/components/NotesSection"), {
+  loading: () => <SectionLoadingSkeleton title="Tablón de Notas" />,
+});
+
+const KeepInMindSection = dynamic(() => import("@/components/KeepInMindSection"), {
+  loading: () => <SectionLoadingSkeleton title="Recomendaciones" />,
+});
 
 // 08.07.2026 - July 8th, 2026 (Definido fuera del componente para evitar re-instanciaciones)
 const START_DATE = new Date(2026, 6, 8, 0, 0, 0);
@@ -191,6 +215,9 @@ export default function Home() {
           activeSection={activeSection}
           onGoToMusic={() => setActiveSection("para-ti")}
         />
+
+        {/* Floating Back to Top with circular scroll indicator */}
+        <BackToTop />
       </main>
     </MusicProvider>
   );

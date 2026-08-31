@@ -49,8 +49,6 @@ export default function AboutSofi() {
     },
   ];
 
-
-
   return (
     <section className="w-full max-w-5xl mx-auto mt-16 sm:mt-24 px-4 pb-20">
       <motion.div
@@ -67,16 +65,16 @@ export default function AboutSofi() {
         <p className="text-purple-200/70 text-lg tracking-wide uppercase">El universo que encontré en ti</p>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
         {cards.map((card, index) => (
           <motion.div
             key={card.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.6 }}
+            transition={{ delay: index * 0.08, duration: 0.5 }}
             whileHover={{ y: -5, boxShadow: "0 10px 30px -10px rgba(168, 85, 247, 0.4)" }}
-            className="bg-white/5 backdrop-blur-md border border-purple-500/20 rounded-2xl p-6 flex flex-col justify-center min-h-35 transition-all duration-300 group"
+            className="bg-white/5 backdrop-blur-md border border-purple-500/20 rounded-2xl p-6 flex flex-col justify-center min-h-35 transition-all duration-300 group hover:border-purple-500/40"
           >
             <div className="mb-3 transform group-hover:scale-110 transition-transform duration-300 origin-left">
               {card.icon}
@@ -90,8 +88,6 @@ export default function AboutSofi() {
           </motion.div>
         ))}
       </div>
-
-
     </section>
   );
 }

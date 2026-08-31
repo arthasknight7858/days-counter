@@ -1,2 +1,3 @@
-declare module 'framer-motion';
-declare module 'lucide-react';
+// Tipos globales del proyecto
+export {};
+

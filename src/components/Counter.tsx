@@ -16,6 +16,7 @@ export default function Counter({ startDate }: { startDate: Date }) {
     heartbeats: 0,
     daysToNextMonth: 0,
     monthsCompleted: 0,
+    isAnniversaryDay: false,
   });
 
   useEffect(() => {
@@ -23,7 +24,9 @@ export default function Counter({ startDate }: { startDate: Date }) {
       const now = new Date();
       const difference = now.getTime() - startDate.getTime();
 
-      if (difference > 0) {
+      const isAnniversaryDay = now.getDate() === 8;
+
+      if (difference >= 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
         const minutes = Math.floor((difference / 1000 / 60) % 60);
@@ -35,15 +38,19 @@ export default function Counter({ startDate }: { startDate: Date }) {
         const heartbeats = Math.floor(totalMinutes * 80);
 
         // Next month anniversary calculation (Day 8 of upcoming month)
-        const nextMonth = new Date(now.getFullYear(), now.getMonth(), 8);
+        let nextMonth = new Date(now.getFullYear(), now.getMonth(), 8, 0, 0, 0);
         if (now.getDate() >= 8) {
-          nextMonth.setMonth(nextMonth.getMonth() + 1);
+          nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 8, 0, 0, 0);
         }
         const diffToNext = nextMonth.getTime() - now.getTime();
-        const daysToNextMonth = Math.max(0, Math.ceil(diffToNext / (1000 * 60 * 60 * 24)));
+        const daysToNextMonth = isAnniversaryDay
+          ? 0
+          : Math.max(1, Math.ceil(diffToNext / (1000 * 60 * 60 * 24)));
 
         // Approximate months completed
-        let months = (now.getFullYear() - startDate.getFullYear()) * 12 + (now.getMonth() - startDate.getMonth());
+        let months =
+          (now.getFullYear() - startDate.getFullYear()) * 12 +
+          (now.getMonth() - startDate.getMonth());
         if (now.getDate() < startDate.getDate()) {
           months--;
         }
@@ -58,6 +65,7 @@ export default function Counter({ startDate }: { startDate: Date }) {
           heartbeats,
           daysToNextMonth,
           monthsCompleted: Math.max(0, months),
+          isAnniversaryDay,
         });
       }
     };
@@ -152,10 +160,24 @@ export default function Counter({ startDate }: { startDate: Date }) {
                 <span className="text-[11px] text-purple-300/70">Latidos compartidos</span>
               </div>
 
-              <div className="col-span-2 sm:col-span-3 p-2.5 bg-pink-500/10 border border-pink-500/20 rounded-xl text-xs text-pink-200/90 flex items-center justify-center gap-2">
+              <div
+                className={`col-span-2 sm:col-span-3 p-3 rounded-xl text-xs flex items-center justify-center gap-2 border transition-all ${
+                  timeStats.isAnniversaryDay
+                    ? "bg-pink-500/20 border-pink-400/50 text-white font-semibold shadow-[0_0_20px_rgba(244,114,182,0.4)] animate-pulse"
+                    : "bg-pink-500/10 border-pink-500/20 text-pink-200/90"
+                }`}
+              >
                 <Sparkles className="w-4 h-4 text-pink-400 shrink-0" />
                 <span>
-                  Faltan solo <strong className="text-white font-bold">{timeStats.daysToNextMonth} días</strong> para nuestro próximo mesario el día 8 ✨
+                  {timeStats.isAnniversaryDay ? (
+                    <>
+                      🎉 <strong className="text-pink-300 font-bold">¡Hoy es nuestro mesario!</strong> ¡Feliz día mi amor hermoso, te amo infinito! 💖✨
+                    </>
+                  ) : (
+                    <>
+                      Faltan solo <strong className="text-white font-bold">{timeStats.daysToNextMonth} {timeStats.daysToNextMonth === 1 ? "día" : "días"}</strong> para nuestro próximo mesario el día 8 ✨
+                    </>
+                  )}
                 </span>
               </div>
             </div>

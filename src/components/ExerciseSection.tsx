@@ -24,12 +24,47 @@ import {
 export default function ExerciseSection() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
-  // Lazy state initialization for completed habits
+  const getTodayKey = () => {
+    const d = new Date();
+    return `sofi_exercise_habits_${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`;
+  };
+
+  // Web Audio chime for timer completion
+  const playTimerChime = () => {
+    try {
+      const AudioContextClass =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextClass) return;
+      const ctx = new AudioContextClass();
+      const now = ctx.currentTime;
+
+      // 4 harmonic ascending notes (C5, E5, G5, C6)
+      [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now + i * 0.12);
+        gain.gain.setValueAtTime(0.25, now + i * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.6);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.12);
+        osc.stop(now + i * 0.12 + 0.65);
+      });
+    } catch {}
+  };
+
+  // Lazy state initialization for completed habits of today
   const [completedHabits, setCompletedHabits] = useState<Record<string, boolean>>(() => {
     if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem("sofi_exercise_habits");
-        if (saved) return JSON.parse(saved);
+        const todayKey = getTodayKey();
+        const savedToday = localStorage.getItem(todayKey);
+        if (savedToday) return JSON.parse(savedToday);
+        // Fallback to legacy key if exists
+        const legacy = localStorage.getItem("sofi_exercise_habits");
+        if (legacy) return JSON.parse(legacy);
       } catch {}
     }
     return {};
@@ -47,6 +82,7 @@ export default function ExerciseSection() {
         setTimerSeconds((prev) => {
           if (prev <= 1) {
             setTimerRunning(false);
+            playTimerChime();
             return 0;
           }
           return prev - 1;
@@ -82,6 +118,7 @@ export default function ExerciseSection() {
     setCompletedHabits((prev) => {
       const updated = { ...prev, [id]: !prev[id] };
       try {
+        localStorage.setItem(getTodayKey(), JSON.stringify(updated));
         localStorage.setItem("sofi_exercise_habits", JSON.stringify(updated));
       } catch {}
       return updated;
@@ -91,6 +128,7 @@ export default function ExerciseSection() {
   const resetAllHabits = () => {
     setCompletedHabits({});
     try {
+      localStorage.removeItem(getTodayKey());
       localStorage.removeItem("sofi_exercise_habits");
     } catch {}
   };

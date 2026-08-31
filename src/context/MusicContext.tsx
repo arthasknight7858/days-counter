@@ -47,6 +47,21 @@ export const songs: Song[] = [
     cover: "/music/swag.png",
   },
   {
+    title: "A DROP IN THE OCEAN",
+    file: "/music/A Drop in the Ocean.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "AGAIN",
+    file: "/music/Again.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "ALL OF ME",
+    file: "/music/All of Me.mp3",
+    cover: "/music/swag.png",
+  },
+  {
     title: "BETTER MAN",
     file: "/music/BETTER MAN.mp3",
     cover: "/music/swag.png",
@@ -62,13 +77,8 @@ export const songs: Song[] = [
     cover: "/music/swag.png",
   },
   {
-    title: "LOVE SONG",
-    file: "/music/LOVE SONG.mp3",
-    cover: "/music/swag.png",
-  },
-  {
-    title: "AGAIN",
-    file: "/music/Again.mp3",
+    title: "DIE FOR YOU",
+    file: "/music/Die For You.mp3",
     cover: "/music/swag.png",
   },
   {
@@ -77,12 +87,62 @@ export const songs: Song[] = [
     cover: "/music/swag.png",
   },
   {
+    title: "EVERYTHING",
+    file: "/music/Everything.m4a",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "GIRLS LIKE YOU",
+    file: "/music/Girls Like You (Cardi B Version).mp3",
+    cover: "/music/swag.png",
+  },
+  {
     title: "GIVE ME LOVE",
     file: "/music/Give Me Love.mp3",
     cover: "/music/swag.png",
   },
   {
-    title: "PERFECT",
+    title: "HANGING BY A MOMENT",
+    file: "/music/Hanging By A Moment.m4a",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "HISTORY",
+    file: "/music/History.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "IRIS",
+    file: "/music/Iris.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "LITTLE THINGS",
+    file: "/music/Little Things.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "LOVE SONG",
+    file: "/music/LOVE SONG.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "NIGHT CHANGES",
+    file: "/music/Night Changes.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "OUR STORY",
+    file: "/music/Our Story.m4a",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "PERFECT - ONE DIRECTION",
+    file: "/music/Perfect by One Direction.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "PERFECT - ED SHEERAN",
     file: "/music/Perfect.mp3",
     cover: "/music/swag.png",
   },
@@ -97,8 +157,18 @@ export const songs: Song[] = [
     cover: "/music/swag.png",
   },
   {
+    title: "TAKE ON THE WORLD",
+    file: "/music/Take on the World.m4a",
+    cover: "/music/swag.png",
+  },
+  {
     title: "THERE'S NOTHING HOLDING ME BACK",
     file: "/music/There's Nothing Holding Me Back.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "THEY DON'T KNOW ABOUT US",
+    file: "/music/They Don't Know About Us.mp3",
     cover: "/music/swag.png",
   },
   {
@@ -107,8 +177,38 @@ export const songs: Song[] = [
     cover: "/music/swag.png",
   },
   {
+    title: "WHAT MAKES YOU BEAUTIFUL",
+    file: "/music/What Makes You Beautiful.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "WHATEVER IT TAKES",
+    file: "/music/Whatever It Takes.m4a",
+    cover: "/music/swag.png",
+  },
+  {
     title: "WHEREVER YOU WILL GO",
     file: "/music/Wherever You Will Go.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "WONDERWALL",
+    file: "/music/Oasis - Wonderwall (Official Video).mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "WORK",
+    file: "/music/Work.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "YOU & I",
+    file: "/music/You & I.mp3",
+    cover: "/music/swag.png",
+  },
+  {
+    title: "YOU AND ME",
+    file: "/music/You And Me.m4a",
     cover: "/music/swag.png",
   },
 ];
@@ -312,6 +412,47 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
+
+  // Media Session API integration (Windows media overlay, lockscreen, bluetooth keys)
+  useEffect(() => {
+    if (typeof window !== "undefined" && "mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentSong.title,
+        artist: "Axel & Sofía 💕",
+        album: "Nuestra Historia de Amor",
+        artwork: [
+          {
+            src: currentSong.cover,
+            sizes: "512x512",
+            type: currentSong.cover.endsWith(".png") ? "image/png" : "image/jpeg",
+          },
+        ],
+      });
+
+      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+
+      const actionHandlers: [MediaSessionAction, MediaSessionActionHandler][] = [
+        ["play", () => { togglePlay(); }],
+        ["pause", () => { togglePlay(); }],
+        ["previoustrack", () => { handlePrev(); }],
+        ["nexttrack", () => { handleNext(); }],
+        [
+          "seekto",
+          (details) => {
+            if (details.seekTime !== undefined) {
+              handleProgressChange(details.seekTime);
+            }
+          },
+        ],
+      ];
+
+      for (const [action, handler] of actionHandlers) {
+        try {
+          navigator.mediaSession.setActionHandler(action, handler);
+        } catch {}
+      }
+    }
+  }, [currentSong, isPlaying, togglePlay, handleNext, handlePrev]);
 
   // Global keyboard shortcuts (Space, M, Shift+ArrowLeft, Shift+ArrowRight)
   useEffect(() => {

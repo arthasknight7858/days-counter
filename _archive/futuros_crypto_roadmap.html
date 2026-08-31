@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Futuros Cripto — Roadmap Completo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg:       #05070a;
+  --s1:       #090d12;
+  --s2:       #0d1520;
+  --s3:       #111d2c;
+  --border:   #1a2840;
+  --border2:  #243550;
+  --long:     #00e5a0;
+  --long-dim: rgba(0,229,160,.08);
+  --long-mid: rgba(0,229,160,.18);
+  --short:    #ff3d5a;
+  --short-dim:rgba(255,61,90,.08);
+  --short-mid:rgba(255,61,90,.18);
+  --gold:     #f0b429;
+  --gold-dim: rgba(240,180,41,.08);
+  --blue:     #4da6ff;
+  --blue-dim: rgba(77,166,255,.08);
+  --text:     #dce8f5;
+  --muted:    #4a6280;
+  --dim:      #7a9bb8;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Barlow',sans-serif;
+  font-size:16px;
+  line-height:1.65;
+}
+
+/* ── GRID LINES BACKGROUND ── */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(26,40,64,.25) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(26,40,64,.25) 1px,transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(5,7,10,.93);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;
+  display:flex;align-items:center;gap:0;
+  height:52px;
+}
+.nav-logo{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text);
+  display:flex;align-items:center;gap:10px;
+  margin-right:auto;
+}
+.nav-logo .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--long);
+  box-shadow:0 0 8px var(--long);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+nav a{
+  color:var(--muted);text-decoration:none;
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:0 16px;height:52px;display:flex;align-items:center;
+  border-left:1px solid var(--border);
+  transition:color .2s,background .2s;
+}
+nav a:hover{color:var(--text);background:var(--s2)}
+nav a:last-child{border-right:1px solid var(--border)}
+
+/* ── HERO ── */
+.hero{
+  position:relative;
+  padding:120px 32px 80px;
+  z-index:1;
+  overflow:hidden;
+}
+.hero-glow{
+  position:absolute;
+  top:-120px;left:50%;transform:translateX(-50%);
+  width:1200px;height:600px;
+  background:conic-gradient(from 180deg at 50% 50%,
+    rgba(255,61,90,.04) 0deg,
+    rgba(0,229,160,.06) 120deg,
+    rgba(77,166,255,.04) 240deg,
+    rgba(255,61,90,.04) 360deg);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--short-dim);
+  border:1px solid rgba(255,61,90,.25);
+  border-radius:4px;
+  padding:5px 12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--short);
+  letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:28px;
+}
+.hero-badge::before{content:'▲';font-size:9px}
+.hero h1{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(52px,9vw,100px);
+  font-weight:900;
+  line-height:.95;
+  letter-spacing:-.02em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+.hero h1 .l{color:var(--long)}
+.hero h1 .s{color:var(--short)}
+.hero-sub{
+  font-size:18px;color:var(--dim);
+  max-width:600px;margin-bottom:40px;
+  font-weight:400;
+}
+.hero-stats{
+  display:flex;gap:0;flex-wrap:wrap;
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  max-width:700px;
+}
+.hstat{
+  flex:1;min-width:140px;
+  padding:18px 24px;
+  border-right:1px solid var(--border);
+}
+.hstat:last-child{border-right:none}
+.hstat .val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:32px;font-weight:800;
+  line-height:1;margin-bottom:4px;
+}
+.hstat .lbl{
+  font-size:11px;color:var(--muted);
+  font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+}
+
+/* ── CONTAINER ── */
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+section{padding:80px 0;border-top:1px solid var(--border)}
+
+/* ── SECTION HEAD ── */
+.sec-eye{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:10px;
+}
+h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(32px,5vw,52px);
+  font-weight:800;letter-spacing:-.01em;text-transform:uppercase;
+  margin-bottom:14px;line-height:1;
+}
+.sec-lead{
+  color:var(--dim);font-size:16px;
+  max-width:660px;margin-bottom:48px;
+}
+
+/* ── MODULE CARDS (phase) ── */
+.module{
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:4px;
+  margin-bottom:12px;
+  overflow:hidden;
+}
+.mod-head{
+  display:flex;align-items:center;gap:20px;
+  padding:22px 28px;cursor:pointer;
+  transition:background .18s;
+  user-select:none;
+}
+.mod-head:hover{background:var(--s2)}
+.mod-tag{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  padding:3px 10px;border-radius:2px;
+  flex-shrink:0;
+}
+.tag-l{background:var(--long-mid);color:var(--long)}
+.tag-s{background:var(--short-mid);color:var(--short)}
+.tag-g{background:rgba(240,180,41,.15);color:var(--gold)}
+.tag-b{background:rgba(77,166,255,.15);color:var(--blue)}
+.tag-w{background:rgba(220,232,245,.07);color:var(--dim)}
+.mod-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.01em;flex:1;
+}
+.mod-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.mod-dur{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--muted);
+  text-align:right;flex-shrink:0;
+}
+.mod-arrow{
+  font-size:16px;color:var(--muted);
+  transition:transform .28s;margin-left:8px;flex-shrink:0;
+}
+.mod-arrow.open{transform:rotate(180deg)}
+.mod-body{
+  border-top:1px solid var(--border);
+  padding:28px;display:none;
+}
+.mod-body.open{display:block}
+
+/* ── TOPIC GRID ── */
+.tgrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:14px;margin-bottom:24px;
+}
+.tc{
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:4px;padding:18px;
+}
+.tc h4{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:16px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.04em;margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;
+}
+.tc ul{list-style:none;padding:0}
+.tc ul li{
+  font-size:13px;color:var(--dim);
+  padding:3px 0 3px 14px;position:relative;
+  border-bottom:1px solid rgba(26,40,64,.5);
+}
+.tc ul li:last-child{border-bottom:none}
+.tc ul li::before{content:'›';position:absolute;left:0;color:var(--long)}
+
+/* ── ALERT BOXES ── */
+.alert{
+  border-radius:4px;padding:16px 20px;
+  margin:18px 0;font-size:14px;
+}
+.alert strong{display:block;margin-bottom:4px}
+.alert p{color:var(--dim);margin:0}
+.al-danger{background:var(--short-dim);border:1px solid rgba(255,61,90,.3)}
+.al-danger strong{color:var(--short)}
+.al-ok{background:var(--long-dim);border:1px solid rgba(0,229,160,.2)}
+.al-ok strong{color:var(--long)}
+.al-warn{background:var(--gold-dim);border:1px solid rgba(240,180,41,.25)}
+.al-warn strong{color:var(--gold)}
+.al-info{background:var(--blue-dim);border:1px solid rgba(77,166,255,.2)}
+.al-info strong{color:var(--blue)}
+
+/* ── FORMULA BOX ── */
+.formula-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;
+  margin-top:20px;
+}
+.formula{
+  background:var(--s3);border:1px solid var(--border2);
+  border-radius:4px;padding:16px 20px;
+}
+.formula .fname{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;
+}
+.formula .feq{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;color:var(--gold);line-height:1.5;
+}
+.formula .fdesc{font-size:12px;color:var(--dim);margin-top:6px}
+
+/* ── STRATEGY CARDS ── */
+.sgrid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:16px;margin-top:32px;
+}
+.sc{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:4px;padding:24px;position:relative;overflow:hidden;
+}
+.sc::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+.sc-long::after{background:var(--long)}
+.sc-short::after{background:var(--short)}
+.sc-neut::after{background:var(--gold)}
+.sc-blue::after{background:var(--blue)}
+.sc .s-type{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.sc h3{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:800;text-transform:uppercase;
+  margin-bottom:6px;
+}
+.sc .s-risk{
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:12px;
+}
+.sc p{font-size:13px;color:var(--dim);margin-bottom:14px;line-height:1.55}
+.sc ul{list-style:none;padding:0}
+.sc ul li{
+  font-size:12px;color:var(--dim);
+  padding:5px 0 5px 16px;position:relative;
+  border-top:1px solid var(--border);
+}
+.sc ul li:first-child{border-top:none}
+.sc ul li::before{content:'→';position:absolute;left:0;color:var(--muted);font-size:10px;top:7px}
+
+/* ── LIQUIDATION CALCULATOR ── */
+.liq-table{
+  width:100%;border-collapse:collapse;margin-top:20px;font-size:13px;
+}
+.liq-table th{
+  text-align:left;padding:8px 14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--border);
+}
+.liq-table td{
+  padding:10px 14px;border-bottom:1px solid rgba(26,40,64,.4);
+}
+.liq-table tr:hover td{background:var(--s2)}
+.liq-table .lev{font-family:'JetBrains Mono',monospace;color:var(--gold);font-weight:600}
+.liq-table .liq-pct{color:var(--short);font-weight:600}
+.liq-table .margin{color:var(--long)}
+.liq-table .note{font-size:11px;color:var(--muted)}
+
+/* ── PATTERNS TABLE ── */
+.ptable{width:100%;border-collapse:collapse;margin-top:20px}
+.ptable th{
+  text-align:left;padding:9px 14px;
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;
+}
+.ptable td{
+  padding:10px 14px;border-bottom:1px solid rgba(26,40,64,.4);
+  font-size:13px;vertical-align:top;
+}
+.ptable tr:hover td{background:var(--s2)}
+.ptable .pn{font-weight:600;color:var(--text)}
+.ptable .pt{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.badge{display:inline-block;padding:2px 7px;border-radius:2px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.bl{background:var(--long-mid);color:var(--long)}
+.bs{background:var(--short-mid);color:var(--short)}
+.bn{background:rgba(240,180,41,.12);color:var(--gold)}
+.pd{color:var(--dim);font-size:12px}
+.rel{font-size:11px;color:var(--muted)}
+
+/* ── ORDER TYPES ── */
+.order-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:12px;margin-top:20px;
+}
+.order-card{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:4px;padding:18px;
+}
+.order-card .oc-type{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--muted);margin-bottom:6px;
+}
+.order-card h4{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:700;text-transform:uppercase;
+  margin-bottom:6px;
+}
+.order-card p{font-size:12px;color:var(--dim)}
+.order-card .oc-use{
+  margin-top:10px;padding-top:10px;
+  border-top:1px solid var(--border);
+  font-size:11px;color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* ── FUNDING RATE SECTION ── */
+.fr-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;
+}
+@media(max-width:600px){.fr-grid{grid-template-columns:1fr}}
+.fr-card{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:4px;padding:20px;
+}
+.fr-card h4{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:17px;font-weight:700;text-transform:uppercase;margin-bottom:8px;
+}
+.fr-card p{font-size:13px;color:var(--dim)}
+
+/* ── RISK MANAGER ── */
+.rm-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:14px;margin-top:24px;
+}
+.rm-card{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:4px;padding:22px;
+}
+.rm-card .rm-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--long);margin-bottom:8px;letter-spacing:.1em;
+}
+.rm-card h4{font-size:15px;font-weight:600;margin-bottom:6px}
+.rm-card p{font-size:13px;color:var(--dim)}
+
+/* ── SETUPS ── */
+.setup{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:4px;margin-bottom:14px;
+  overflow:hidden;
+}
+.setup-head{
+  display:grid;
+  grid-template-columns:auto 1fr auto auto;
+  align-items:center;gap:16px;
+  padding:18px 24px;
+  cursor:pointer;
+}
+.setup-head:hover{background:var(--s2)}
+.s-dir{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:800;letter-spacing:.1em;
+  padding:4px 10px;border-radius:2px;
+  text-transform:uppercase;
+}
+.s-dir.long{background:var(--long-mid);color:var(--long)}
+.s-dir.short{background:var(--short-mid);color:var(--short)}
+.s-dir.both{background:rgba(240,180,41,.12);color:var(--gold)}
+.setup-name{font-size:15px;font-weight:600}
+.setup-name small{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.s-tf{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.s-arr{color:var(--muted);font-size:14px;transition:transform .25s}
+.s-arr.open{transform:rotate(180deg)}
+.setup-body{
+  border-top:1px solid var(--border);
+  padding:22px 24px;display:none;
+}
+.setup-body.open{display:block}
+.setup-steps{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:10px;margin-top:14px;
+}
+.step-box{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:4px;padding:14px;
+}
+.step-box .sn{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--muted);margin-bottom:5px;
+}
+.step-box p{font-size:12px;color:var(--dim)}
+
+/* ── TIMELINE ── */
+.timeline{
+  position:relative;padding-left:36px;margin-top:32px;
+}
+.timeline::before{
+  content:'';position:absolute;left:10px;top:6px;bottom:0;
+  width:1px;background:var(--border2);
+}
+.tl-item{position:relative;margin-bottom:36px}
+.tl-dot{
+  position:absolute;left:-30px;top:6px;
+  width:10px;height:10px;border-radius:50%;
+  border:2px solid var(--bg);
+}
+.tl-item .tl-time{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--muted);letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:4px;
+}
+.tl-item h4{font-size:16px;font-weight:600;margin-bottom:4px}
+.tl-item p{font-size:13px;color:var(--dim)}
+
+/* ── YT SECTION ── */
+.yt-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:12px;margin-top:20px;
+}
+.yt-c{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:4px;padding:18px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.yt-ic{
+  width:36px;height:36px;border-radius:3px;
+  background:rgba(255,0,0,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;color:#ff4444;
+}
+.yt-c h4{font-size:14px;font-weight:600;margin-bottom:3px}
+.yt-c p{font-size:12px;color:var(--dim)}
+.yt-c .yl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:5px}
+
+/* ── CHECKLIST ── */
+.cklist{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:8px;margin-top:20px;
+}
+.ck{
+  display:flex;align-items:flex-start;gap:10px;
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:4px;padding:10px 14px;font-size:13px;
+}
+.ck-box{
+  width:16px;height:16px;border:1px solid var(--border2);
+  border-radius:2px;flex-shrink:0;margin-top:2px;
+}
+
+/* ── TOOLS GRID ── */
+.tlgrid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:10px;margin-top:20px;
+}
+.tl-card{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:4px;padding:16px;
+}
+.tl-card .tc-cat{
+  font-size:10px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--muted);font-weight:700;margin-bottom:5px;
+}
+.tl-card h4{font-size:14px;font-weight:600;margin-bottom:3px}
+.tl-card p{font-size:12px;color:var(--dim)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  nav{padding:0 16px;gap:0;overflow-x:auto}
+  nav a{padding:0 10px;font-size:10px}
+  .wrap{padding:0 16px}
+  .hero{padding:80px 16px 50px}
+  .mod-head{padding:16px;gap:12px;flex-wrap:wrap}
+  .mod-body{padding:16px}
+  .tgrid{grid-template-columns:1fr}
+  .sgrid{grid-template-columns:1fr}
+  .hero-stats{flex-direction:column}
+  .hstat{border-right:none;border-bottom:1px solid var(--border)}
+  .hstat:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><div class="dot"></div>FUTUROS CRIPTO</div>
+  <a href="#fundamentos">Fundamentos</a>
+  <a href="#mecanica">Mecánica</a>
+  <a href="#riesgo">Riesgo</a>
+  <a href="#setups">Setups</a>
+  <a href="#patrones">Patrones</a>
+  <a href="#psicologia">Psicología</a>
+  <a href="#herramientas">Tools</a>
+  <a href="#youtube">YouTube</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="hero-badge">Mercado de alto riesgo · Solo capital que puedes perder</div>
+    <h1>
+      FUTUROS<br>
+      <span class="l">LONG</span> &amp; <span class="s">SHORT</span><br>
+      CRIPTO
+    </h1>
+    <p class="hero-sub">
+      El roadmap más completo para aprender trading de futuros de criptomonedas desde cero — mecánica, apalancamiento, liquidaciones, setups, gestión de riesgo y psicología. Todo lo que nadie te dice junto.
+    </p>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="val" style="color:var(--short)">80%</div>
+        <div class="lbl">traders pierden dinero</div>
+      </div>
+      <div class="hstat">
+        <div class="val" style="color:var(--gold)">3–6</div>
+        <div class="lbl">meses mínimo en demo</div>
+      </div>
+      <div class="hstat">
+        <div class="val" style="color:var(--long)">1–2%</div>
+        <div class="lbl">riesgo máximo por trade</div>
+      </div>
+      <div class="hstat">
+        <div class="val" style="color:var(--blue)">1:2</div>
+        <div class="lbl">R:R mínimo por setup</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADVERTENCIA ═══ -->
+<section style="border-top:2px solid var(--short);padding:40px 0">
+<div class="wrap">
+  <div class="alert al-danger">
+    <strong>🚨 Antes de empezar — lee esto sin saltártelo</strong>
+    <p>Los futuros son instrumentos de <strong>ALTO RIESGO</strong> con apalancamiento. Puedes perder TODO tu capital en minutos si no tienes gestión de riesgo. El 80% de traders de futuros minoristas pierde dinero según datos de brokers regulados. Este roadmap es educativo — no es consejo financiero. Empieza en cuenta demo mínimo 3 meses antes de tocar dinero real. No uses dinero que necesites para vivir. Nunca.</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══ FASE 1: FUNDAMENTOS DE FUTUROS ═══ -->
+<section id="fundamentos">
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--long)">// MÓDULO 01</p>
+  <h2>Fundamentos de <span style="color:var(--long)">Futuros</span></h2>
+  <p class="sec-lead">Antes de abrir una posición necesitas entender exactamente qué es un contrato de futuros, cómo funciona, y en qué se diferencia del mercado spot. Salta esta parte y perderás dinero por pura ignorancia.</p>
+
+  <!-- Módulo 1.1 -->
+  <div class="module">
+    <div class="mod-head" onclick="tog(this)">
+      <span class="mod-tag tag-l">ESENCIAL</span>
+      <div>
+        <div class="mod-title">¿Qué son los futuros de cripto?</div>
+        <div class="mod-sub">Contratos, tipos, diferencia con spot, perpetuos vs fechados</div>
+      </div>
+      <div class="mod-dur">⏱ 1 semana</div>
+      <span class="mod-arrow">▾</span>
+    </div>
+    <div class="mod-body">
+      <div class="tgrid">
+        <div class="tc">
+          <h4>📄 ¿Qué es un contrato de futuros?</h4>
+          <ul>
+            <li>Acuerdo de comprar/vender un activo a un precio futuro</li>
+            <li>No compras el activo real — solo el contrato</li>
+            <li>Puedes ganar tanto si sube (Long) como si baja (Short)</li>
+            <li>Requiere margen — no el 100% del valor</li>
+            <li>Apalancamiento amplifica ganancias Y pérdidas</li>
+            <li>Liquidación: cuando tu margen se agota</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>♾️ Perpetuos vs Fechados</h4>
+          <ul>
+            <li>Perpetuos: sin fecha de expiración (los más usados en cripto)</li>
+            <li>Perpetuos: tienen Funding Rate cada 8 horas</li>
+            <li>Fechados (Quarterly): expiran en una fecha fija</li>
+            <li>Fechados: sin funding rate, precio converge al spot al vencer</li>
+            <li>En cripto: casi siempre se usan perpetuos</li>
+            <li>Bybit, Binance, OKX — los más líquidos en perpetuos</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>🆚 Futuros vs Spot</h4>
+          <ul>
+            <li>Spot: compras el activo real, lo posees</li>
+            <li>Futuros: solo tienes un contrato, sin el activo</li>
+            <li>Spot: no hay liquidación ni funding rate</li>
+            <li>Futuros: puedes ir Short (ganar en bajadas)</li>
+            <li>Futuros: apalancamiento disponible</li>
+            <li>Futuros: mucho más riesgo y más complejidad</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>💱 Tipos de Margen</h4>
+          <ul>
+            <li>Isolated: solo el margen asignado a ese trade está en riesgo</li>
+            <li>Cross: todo el balance de la cuenta es margen</li>
+            <li>Isolated: para principiantes — limita pérdidas</li>
+            <li>Cross: más flexible, más peligroso</li>
+            <li>USDT-M: margen en stablecoins (lo más común)</li>
+            <li>Coin-M: margen en cripto (inverso)</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>📊 Mark Price vs Last Price</h4>
+          <ul>
+            <li>Last Price: precio del último trade ejecutado</li>
+            <li>Mark Price: precio justo calculado del índice de mercado</li>
+            <li>Las liquidaciones se calculan sobre el Mark Price, NO el Last</li>
+            <li>Manipulaciones en Last Price no te liquidan</li>
+            <li>Siempre vigila el Mark Price para tu PnL real</li>
+            <li>Index Price: promedio de varios exchanges</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>💸 Funding Rate — el costo oculto</h4>
+          <ul>
+            <li>Se paga/recibe cada 8 horas en perpetuos</li>
+            <li>FR positivo: Longs pagan a Shorts</li>
+            <li>FR negativo: Shorts pagan a Longs</li>
+            <li>FR alto positivo = mercado sobrecalentado alcista</li>
+            <li>FR alto negativo = pánico extremo bajista</li>
+            <li>Puede afectar rentabilidad en holds largos</li>
+            <li>Consultar en: Coinglass / Bybit / Binance</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert al-ok">
+        <strong>✅ Cómo practicar esto primero:</strong>
+        <p>Abre una cuenta en <strong>Bybit Testnet</strong> (demo gratuita con fondos ficticios). Navega la interfaz, lee los datos de Mark Price, Funding Rate, Margin Ratio, y PnL. Haz tu primer Long y primer Short sin dinero real. Entiende cada número antes de continuar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Módulo 1.2 -->
+  <div class="module">
+    <div class="mod-head" onclick="tog(this)">
+      <span class="mod-tag tag-g">CRÍTICO</span>
+      <div>
+        <div class="mod-title">Apalancamiento y Liquidaciones</div>
+        <div class="mod-sub">El concepto que destruye más traders — entiéndelo perfectamente</div>
+      </div>
+      <div class="mod-dur">⏱ 1 semana</div>
+      <span class="mod-arrow">▾</span>
+    </div>
+    <div class="mod-body">
+      <div class="alert al-danger">
+        <strong>🔴 El apalancamiento es el mayor destructor de cuentas en futuros</strong>
+        <p>No es una herramienta para ganar más — es una herramienta de control de capital. Un trader profesional usa apalancamiento bajo (3x–5x) con tamaños de posición pequeños, no apalancamiento alto con tamaños grandes. Más apalancamiento = liquidación más cercana.</p>
+      </div>
+
+      <h4 style="margin:20px 0 12px;font-size:15px;font-weight:600">Tabla de Liquidación según Apalancamiento</h4>
+      <table class="liq-table">
+        <thead>
+          <tr>
+            <th>Apalancamiento</th>
+            <th>Movimiento que liquida (Long)</th>
+            <th>Movimiento que liquida (Short)</th>
+            <th>Margen requerido</th>
+            <th>Recomendado para</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="lev">1x</td><td class="liq-pct">-100%</td><td class="liq-pct">+∞</td><td class="margin">100%</td><td class="note">Equivale a spot</td></tr>
+          <tr><td class="lev">2x</td><td class="liq-pct">-50%</td><td class="liq-pct">+50%</td><td class="margin">50%</td><td class="note">Principiantes con experiencia</td></tr>
+          <tr><td class="lev">3x</td><td class="liq-pct">-33%</td><td class="liq-pct">+33%</td><td class="margin">33%</td><td class="note">Principiante → intermedio</td></tr>
+          <tr><td class="lev">5x</td><td class="liq-pct">-20%</td><td class="liq-pct">+20%</td><td class="margin">20%</td><td class="note">Intermedio (SL obligatorio)</td></tr>
+          <tr><td class="lev">10x</td><td class="liq-pct">-10%</td><td class="liq-pct">+10%</td><td class="margin">10%</td><td class="note">Avanzado, posición pequeña</td></tr>
+          <tr><td class="lev">20x</td><td class="liq-pct">-5%</td><td class="liq-pct">+5%</td><td class="margin">5%</td><td class="note">Muy avanzado, scalping</td></tr>
+          <tr><td class="lev" style="color:var(--short)">50x–100x</td><td class="liq-pct">-2% / -1%</td><td class="liq-pct">+2% / +1%</td><td class="margin">2% / 1%</td><td class="note">❌ NO recomendado nunca</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin:24px 0 12px;font-size:15px;font-weight:600">Fórmulas esenciales</h4>
+      <div class="formula-grid">
+        <div class="formula">
+          <div class="fname">Precio de Liquidación — Long</div>
+          <div class="feq">Liq = Entrada × (1 - 1/Apalancamiento)<br>+ (Comisiones)</div>
+          <div class="fdesc">Ej: Entrada $40,000 con 10x → Liq ≈ $36,000</div>
+        </div>
+        <div class="formula">
+          <div class="fname">Precio de Liquidación — Short</div>
+          <div class="feq">Liq = Entrada × (1 + 1/Apalancamiento)<br>- (Comisiones)</div>
+          <div class="fdesc">Ej: Entrada $40,000 con 10x → Liq ≈ $44,000</div>
+        </div>
+        <div class="formula">
+          <div class="fname">Tamaño de Posición</div>
+          <div class="feq">Tamaño = (Capital × Riesgo%)<br>÷ (|Entrada - StopLoss| / Entrada)</div>
+          <div class="fdesc">Siempre calcula esto ANTES de entrar</div>
+        </div>
+        <div class="formula">
+          <div class="fname">Margin Ratio (peligro &gt; 80%)</div>
+          <div class="feq">Ratio = Margen Mantenimiento<br>÷ Margen Balance × 100</div>
+          <div class="fdesc">Por encima de 80% = riesgo de liquidación inminente</div>
+        </div>
+        <div class="formula">
+          <div class="fname">PnL Realizado — Long</div>
+          <div class="feq">PnL = (Precio Cierre - Precio Entrada)<br>× Tamaño Contrato</div>
+          <div class="fdesc">Multiplicado por el apalancamiento en cuenta</div>
+        </div>
+        <div class="formula">
+          <div class="fname">Funding Rate — Costo cada 8h</div>
+          <div class="feq">Costo = Valor Notional × Funding Rate<br>Valor Notional = Tamaño × Precio</div>
+          <div class="fdesc">Con FR 0.01%: posición $10,000 paga $1 cada 8h</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Módulo 1.3 -->
+  <div class="module">
+    <div class="mod-head" onclick="tog(this)">
+      <span class="mod-tag tag-b">OPERATIVO</span>
+      <div>
+        <div class="mod-title">Órdenes en Futuros</div>
+        <div class="mod-sub">Tipos de órdenes, ejecución, slippage y cómo colocarlas correctamente</div>
+      </div>
+      <div class="mod-dur">⏱ 3–5 días</div>
+      <span class="mod-arrow">▾</span>
+    </div>
+    <div class="mod-body">
+      <div class="order-grid">
+        <div class="order-card">
+          <div class="oc-type">Básica</div>
+          <h4>Market Order</h4>
+          <p>Ejecuta inmediatamente al mejor precio disponible. Garantiza ejecución, no el precio.</p>
+          <div class="oc-use">→ Usa en: salidas de emergencia, SL rápido</div>
+        </div>
+        <div class="order-card">
+          <div class="oc-type">Básica</div>
+          <h4>Limit Order</h4>
+          <p>Se ejecuta solo al precio especificado o mejor. Mejor precio, no garantiza ejecución.</p>
+          <div class="oc-use">→ Usa en: entradas planeadas, TPs</div>
+        </div>
+        <div class="order-card">
+          <div class="oc-type">Protección</div>
+          <h4>Stop Market</h4>
+          <p>Cuando el precio toca el trigger, envía una orden Market. El SL clásico — ejecución garantizada.</p>
+          <div class="oc-use">→ Usa en: Stop Loss siempre</div>
+        </div>
+        <div class="order-card">
+          <div class="oc-type">Protección</div>
+          <h4>Stop Limit</h4>
+          <p>Al tocar el trigger, coloca una Limit. Puede no ejecutarse si el precio se mueve rápido.</p>
+          <div class="oc-use">→ Cuidado: puede no ejecutar en crash</div>
+        </div>
+        <div class="order-card">
+          <div class="oc-type">Avanzada</div>
+          <h4>Trailing Stop</h4>
+          <p>SL que sigue al precio en la dirección favorable. Protege ganancias automáticamente.</p>
+          <div class="oc-use">→ Usa en: trades en tendencia fuerte</div>
+        </div>
+        <div class="order-card">
+          <div class="oc-type">Avanzada</div>
+          <h4>TP/SL Condicional</h4>
+          <p>Take Profit y Stop Loss simultáneos vinculados a una posición. Gestión automatizada.</p>
+          <div class="oc-use">→ Siempre configúralos al abrir</div>
+        </div>
+        <div class="order-card">
+          <div class="oc-type">Avanzada</div>
+          <h4>OCO (One Cancels Other)</h4>
+          <p>Dos órdenes: cuando una se ejecuta, la otra se cancela. Gestión de riesgo automática.</p>
+          <div class="oc-use">→ Usa en: entradas + SL simultáneos</div>
+        </div>
+        <div class="order-card">
+          <div class="oc-type">Reducción</div>
+          <h4>Reduce Only</h4>
+          <p>Solo puede reducir (no aumentar) tu posición. Evita abrir posición en dirección contraria.</p>
+          <div class="oc-use">→ Actívala siempre en TPs y SLs</div>
+        </div>
+      </div>
+      <div class="alert al-warn">
+        <strong>⚡ Slippage en futuros</strong>
+        <p>En activos con poco volumen o en momentos de alta volatilidad (noticias, crashes), las órdenes Market pueden ejecutarse a un precio muy diferente al esperado. Usa siempre activos con alto volumen (BTC-USDT, ETH-USDT) especialmente al empezar.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ FASE 2: MECÁNICA AVANZADA ═══ -->
+<section id="mecanica">
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--blue)">// MÓDULO 02</p>
+  <h2>Mecánica <span style="color:var(--blue)">Avanzada</span></h2>
+  <p class="sec-lead">Open Interest, liquidaciones en cascada, Long/Short Ratio, datos de mercado que el precio solo no te dice. Aquí es donde los traders avanzados tienen ventaja sobre los principiantes.</p>
+
+  <div class="module">
+    <div class="mod-head" onclick="tog(this)">
+      <span class="mod-tag tag-b">MARKET DATA</span>
+      <div>
+        <div class="mod-title">Open Interest y Liquidaciones</div>
+        <div class="mod-sub">El combustible del mercado de futuros — aprende a leerlo</div>
+      </div>
+      <div class="mod-dur">⏱ 2 semanas</div>
+      <span class="mod-arrow">▾</span>
+    </div>
+    <div class="mod-body">
+      <div class="tgrid">
+        <div class="tc">
+          <h4>📊 Open Interest (OI)</h4>
+          <ul>
+            <li>OI = total de contratos abiertos en el mercado</li>
+            <li>OI sube + precio sube = tendencia alcista fuerte</li>
+            <li>OI sube + precio baja = tendencia bajista fuerte</li>
+            <li>OI baja + precio sube = subida con poca convicción</li>
+            <li>OI baja + precio baja = capitulación / cierre de shorts</li>
+            <li>OI muy alto = mercado "cargado" de posiciones</li>
+            <li>OI alto = probabilidad de movimiento explosivo</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>💥 Liquidaciones en Cascada</h4>
+          <ul>
+            <li>Cuando muchos traders tienen SL o liq en el mismo nivel</li>
+            <li>El precio barre esos niveles y liquida en cadena</li>
+            <li>Genera movimientos violentos y rápidos</li>
+            <li>Barridas de liquidez = "wick" largo en el gráfico</li>
+            <li>Herramienta: Coinglass — mapa de liquidaciones</li>
+            <li>Evita poner SL en niveles obvios (números redondos)</li>
+            <li>Los institucionales cazan estos niveles</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>📈 Long/Short Ratio</h4>
+          <ul>
+            <li>Porcentaje de traders con posición Long vs Short</li>
+            <li>Más Longs = mercado optimista (puede ser señal de techo)</li>
+            <li>Más Shorts = mercado pesimista (puede ser señal de suelo)</li>
+            <li>El mercado tiende a mover en contra de la mayoría</li>
+            <li>"Squeeze" alcista: sube, liquida Shorts en cadena</li>
+            <li>"Squeeze" bajista: baja, liquida Longs en cadena</li>
+            <li>Usa en conjunto con OI y Funding Rate</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>💰 Funding Rate como señal</h4>
+          <ul>
+            <li>FR muy alto positivo (+0.1%+): demasiados Longs → Short oportunidad</li>
+            <li>FR muy negativo (-0.1%-): demasiados Shorts → Long oportunidad</li>
+            <li>FR neutral (±0.01%): mercado equilibrado</li>
+            <li>FR alto en tendencia alcista: señal de sobrecompra</li>
+            <li>FR muy negativo en caída = capitulación</li>
+            <li>Historial en Coinglass para contexto</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>🗺️ Mapa de Liquidaciones</h4>
+          <ul>
+            <li>Muestra dónde se liquidarán posiciones si el precio llega</li>
+            <li>Zonas de alta liquidez = imanes para el precio</li>
+            <li>El mercado "caza" estas zonas antes de moverse</li>
+            <li>Herramienta: Coinglass → Liquidation Map</li>
+            <li>Agrégalo a tu análisis pre-trade</li>
+            <li>Evita entrar justo antes de una zona de liq masiva</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>🔮 CVD — Cumulative Volume Delta</h4>
+          <ul>
+            <li>Diferencia acumulada entre compras y ventas agresivas</li>
+            <li>CVD sube + precio sube = compra genuina</li>
+            <li>CVD baja + precio sube = divergencia bajista</li>
+            <li>Útil en 15m–1h para confirmar momentum</li>
+            <li>En TradingView: indicador "Cumulative Volume Delta"</li>
+            <li>Señal avanzada — úsala como confirmación</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ FASE 3: GESTIÓN DE RIESGO ═══ -->
+<section id="riesgo">
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--gold)">// MÓDULO 03 — EL MÁS IMPORTANTE</p>
+  <h2>Gestión de <span style="color:var(--gold)">Riesgo</span></h2>
+  <p class="sec-lead">En futuros, la gestión de riesgo no es opcional. Sin ella, cualquier racha de pérdidas te borra la cuenta. Los mejores traders del mundo priorizan NO perder sobre ganar.</p>
+
+  <div class="alert al-danger" style="margin-bottom:28px">
+    <strong>🚨 Verdad incómoda: el mejor AT del mundo no te salva sin gestión de riesgo</strong>
+    <p>Puedes acertar el 70% de tus análisis y aún así perder dinero si no respetas el tamaño de posición, el stop loss y el R:R. La gestión de riesgo es matemática — no es opinión.</p>
+  </div>
+
+  <div class="rm-grid">
+    <div class="rm-card">
+      <div class="rm-num">// REGLA 01</div>
+      <h4>Máximo 1–2% de riesgo por trade</h4>
+      <p>Con $1,000 en cuenta → pérdida máxima por trade: $10–$20. Con $5,000 → $50–$100. Esto te permite sobrevivir 50–100 pérdidas consecutivas. El tamaño de posición se ajusta para que si te salta el SL, pierdas ese %. No el apalancamiento.</p>
+    </div>
+    <div class="rm-card">
+      <div class="rm-num">// REGLA 02</div>
+      <h4>Stop Loss siempre colocado al abrir</h4>
+      <p>No hay excepción. El SL se pone ANTES de confirmar la entrada. En futuros con apalancamiento, no tener SL es apostar a que el mercado nunca va en tu contra — y lo hará. Usa Stop Market, no Stop Limit en SL de futuros.</p>
+    </div>
+    <div class="rm-card">
+      <div class="rm-num">// REGLA 03</div>
+      <h4>R:R mínimo 1:2 — sin excepciones</h4>
+      <p>Si arriesgas $100, el TP debe ser mínimo $200. Con un R:R de 1:2 solo necesitas acertar el 34% de los trades para ser rentable. No tomes trades con R:R menores al 1:2. Si no hay R:R, no hay trade.</p>
+    </div>
+    <div class="rm-card">
+      <div class="rm-num">// REGLA 04</div>
+      <h4>Apalancamiento efectivo vs nominal</h4>
+      <p>Usa apalancamiento 10x con posición que arriesga 1% = apalancamiento efectivo muy bajo. Un trader profesional puede usar 10x pero mover solo el 2–3% de su cuenta. El apalancamiento nominal no importa — el tamaño de posición sí.</p>
+    </div>
+    <div class="rm-card">
+      <div class="rm-num">// REGLA 05</div>
+      <h4>Máximo 3 pérdidas seguidas = para el día</h4>
+      <p>Tres pérdidas consecutivas indican que el mercado no está dando los setups que buscas, o que estás en mal estado mental. Para. El revenge trading tras 3 pérdidas es la forma más rápida de borrar una semana de ganancias.</p>
+    </div>
+    <div class="rm-card">
+      <div class="rm-num">// REGLA 06</div>
+      <h4>Drawdown máximo: 10% mensual</h4>
+      <p>Si pierdes el 10% de tu cuenta en un mes, deja de operar ese mes. Revisa qué salió mal, ajusta, y vuelve el mes siguiente. Permitir drawdowns mayores lleva a decisiones desesperadas que empeoran todo.</p>
+    </div>
+    <div class="rm-card">
+      <div class="rm-num">// REGLA 07</div>
+      <h4>Posiciones simultáneas correlacionadas</h4>
+      <p>Long en BTC y Long en ETH al mismo tiempo = doble exposición al mismo riesgo de mercado. Si el mercado cae, ambas pierden. Máximo 3–5 posiciones, evita correlaciones altas entre ellas.</p>
+    </div>
+    <div class="rm-card">
+      <div class="rm-num">// REGLA 08</div>
+      <h4>Breakeven cuanto antes</h4>
+      <p>Cuando el trade va a tu favor y alcanza un R de 1:1 (ganas lo mismo que arriesgabas), mueve el SL a la entrada. Así el trade no puede perderse — el peor escenario es empatar. Solo aplica en trades con espacio suficiente.</p>
+    </div>
+    <div class="rm-card">
+      <div class="rm-num">// REGLA 09</div>
+      <h4>No añadir a posiciones perdedoras</h4>
+      <p>"Promediar a la baja" en futuros con apalancamiento = aumentar la pérdida potencial. Si el trade va en tu contra, confía en tu SL. Añadir a un perdedor es una apuesta emocional, no una decisión técnica.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:40px;margin-bottom:8px;font-size:20px;font-weight:700">Calculadora mental de posición</h3>
+  <div class="formula-grid">
+    <div class="formula">
+      <div class="fname">Paso 1: Define tu riesgo en $</div>
+      <div class="feq">Riesgo $ = Capital × 0.01<br>Ej: $2,000 × 1% = $20 de riesgo</div>
+    </div>
+    <div class="formula">
+      <div class="fname">Paso 2: Calcula el % de movimiento al SL</div>
+      <div class="feq">% SL = |Entrada - StopLoss| / Entrada<br>Ej: ($40,500 - $40,000) / $40,500 = 1.23%</div>
+    </div>
+    <div class="formula">
+      <div class="fname">Paso 3: Tamaño de posición</div>
+      <div class="feq">Posición = Riesgo $ / % SL<br>Ej: $20 / 0.0123 = $1,626 valor notional</div>
+    </div>
+    <div class="formula">
+      <div class="fname">Paso 4: Apalancamiento necesario</div>
+      <div class="feq">Lev = Valor Notional / Capital disponible<br>Ej: $1,626 / $2,000 = 0.8x (ni apalancas)</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ FASE 4: AT PARA FUTUROS ═══ -->
+<section>
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--blue)">// MÓDULO 04</p>
+  <h2>Análisis Técnico <span style="color:var(--blue)">para Futuros</span></h2>
+  <p class="sec-lead">El AT en futuros tiene matices importantes: los wicks de liquidación, el comportamiento de soporte/resistencia con apalancamiento, y la importancia del contexto de mercado mayor.</p>
+
+  <div class="module">
+    <div class="mod-head" onclick="tog(this)">
+      <span class="mod-tag tag-b">AT CORE</span>
+      <div>
+        <div class="mod-title">Estructura de Mercado para Futuros</div>
+        <div class="mod-sub">Tendencia, HH/HL, LH/LL, BOS, CHOCH — el lenguaje del precio</div>
+      </div>
+      <div class="mod-dur">⏱ 4–6 semanas</div>
+      <span class="mod-arrow">▾</span>
+    </div>
+    <div class="mod-body">
+      <div class="tgrid">
+        <div class="tc">
+          <h4>📈 Estructura Alcista</h4>
+          <ul>
+            <li>Higher Highs (HH) — máximos cada vez más altos</li>
+            <li>Higher Lows (HL) — mínimos cada vez más altos</li>
+            <li>Buscar Longs en pullbacks a HL</li>
+            <li>SL debajo del HL anterior</li>
+            <li>La tendencia alcista sigue hasta BOS bajista</li>
+            <li>Multi-timeframe: confirma en 4h antes de entrar en 15m</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>📉 Estructura Bajista</h4>
+          <ul>
+            <li>Lower Highs (LH) — máximos cada vez más bajos</li>
+            <li>Lower Lows (LL) — mínimos cada vez más bajos</li>
+            <li>Buscar Shorts en rebotes a LH</li>
+            <li>SL encima del LH anterior</li>
+            <li>La tendencia bajista sigue hasta BOS alcista</li>
+            <li>No short en soporte fuerte — espera el bounce</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>🔴 Break of Structure (BOS)</h4>
+          <ul>
+            <li>Cuando el precio rompe el último HH o LL de la tendencia</li>
+            <li>Confirma continuación de la tendencia actual</li>
+            <li>BOS alcista: precio rompe el último HH</li>
+            <li>BOS bajista: precio rompe el último LL</li>
+            <li>Diferencia con CHOCH: BOS confirma, CHOCH cambia</li>
+            <li>Espera el cierre de vela para confirmar</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>🔄 Change of Character (CHOCH)</h4>
+          <ul>
+            <li>Señal de posible cambio de tendencia</li>
+            <li>En tendencia alcista: precio rompe el último HL → CHOCH bajista</li>
+            <li>En tendencia bajista: precio rompe el último LH → CHOCH alcista</li>
+            <li>El CHOCH es la primera señal, espera confirmación</li>
+            <li>Más potente en timeframes altos (4h, 1D)</li>
+            <li>Combinar con otros confirmadores</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>🧲 Liquidity Zones (SMC)</h4>
+          <ul>
+            <li>Equal Highs/Lows: niveles donde muchos ponen SL</li>
+            <li>El precio los barre antes de moverse en dirección real</li>
+            <li>"Stop Hunt" o "Liquidity Sweep"</li>
+            <li>Barrida de máximos → puede ser señal de Short</li>
+            <li>Barrida de mínimos → puede ser señal de Long</li>
+            <li>Busca reversión tras la barrida con volumen</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>📦 Order Blocks (OB)</h4>
+          <ul>
+            <li>Zona donde ocurrió un movimiento impulsivo fuerte</li>
+            <li>Bullish OB: última vela bajista antes de impulso alcista</li>
+            <li>Bearish OB: última vela alcista antes de impulso bajista</li>
+            <li>Precio regresa al OB para "buscar" órdenes</li>
+            <li>Entrada en retesteo del OB con momentum</li>
+            <li>SL debajo/encima del OB según dirección</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>🕳️ Fair Value Gaps (FVG)</h4>
+          <ul>
+            <li>Zona sin negociación — "imbalance" de precio</li>
+            <li>3 velas: mecha de la 1ra no toca mecha de la 3ra</li>
+            <li>El precio tiende a volver a llenar estos gaps</li>
+            <li>Bullish FVG: soporte potencial en retesteo</li>
+            <li>Bearish FVG: resistencia potencial en retesteo</li>
+            <li>Más efectivo en 15m–4h</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4>📐 Multi-Timeframe Analysis (MTF)</h4>
+          <ul>
+            <li>Regla de oro: analiza siempre de mayor a menor</li>
+            <li>1D: dirección principal (sesgo del día)</li>
+            <li>4h: estructura y zonas clave</li>
+            <li>1h: puntos de entrada y SL</li>
+            <li>15m: timing exacto de entrada</li>
+            <li>Nunca entres contra el 4h sin confirmación fuerte</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ SETUPS DE TRADING ═══ -->
+<section id="setups">
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--long)">// MÓDULO 05</p>
+  <h2>Setups <span style="color:var(--long)">de Futuros</span></h2>
+  <p class="sec-lead">Un setup es un conjunto de condiciones que, cuando se cumplen, te dan una ventaja estadística. No operas por intuición — operas cuando el setup está completo. Aprende 3–4 máximo y domínalos.</p>
+
+  <div class="setup">
+    <div class="setup-head" onclick="togSetup(this)">
+      <span class="s-dir long">LONG</span>
+      <div class="setup-name">Pullback a Soporte + Confluencia
+        <small>El setup más confiable para principiantes en tendencia alcista</small>
+      </div>
+      <span class="s-tf">4H / 1H / 15M</span>
+      <span class="s-arr">▾</span>
+    </div>
+    <div class="setup-body">
+      <div class="alert al-ok">
+        <strong>📋 Condición base:</strong>
+        <p>Tendencia alcista confirmada en 4h (HH + HL). Precio en pullback hacia una zona de soporte clave.</p>
+      </div>
+      <div class="setup-steps">
+        <div class="step-box"><div class="sn">PASO 1 — Sesgo</div><p>Confirma tendencia alcista en 4h: HH y HL, precio encima de EMA 20/50</p></div>
+        <div class="step-box"><div class="sn">PASO 2 — Zona</div><p>Identifica soporte: S/R previo, Order Block, FVG, Fibonacci 50–61.8% del último impulso</p></div>
+        <div class="step-box"><div class="sn">PASO 3 — Espera</div><p>No entres cuando el precio va cayendo — espera que llegue a la zona y muestre señal de rechazo</p></div>
+        <div class="step-box"><div class="sn">PASO 4 — Señal</div><p>En 15m: vela de reversión (Engulfing, Hammer, Pin Bar) en la zona + volumen creciente</p></div>
+        <div class="step-box"><div class="sn">PASO 5 — Entrada</div><p>Entra al cierre de la vela de señal o en el retesteo del nivel. Limit Order preferiblemente</p></div>
+        <div class="step-box"><div class="sn">PASO 6 — SL y TP</div><p>SL: por debajo de la zona de soporte (fuera de la estructura). TP: próxima resistencia (R:R ≥ 1:2)</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="setup">
+    <div class="setup-head" onclick="togSetup(this)">
+      <span class="s-dir short">SHORT</span>
+      <div class="setup-name">Retesteo de Resistencia Rota
+        <small>Vender el rebote al nivel que antes fue soporte y ahora es resistencia</small>
+      </div>
+      <span class="s-tf">1H / 15M</span>
+      <span class="s-arr">▾</span>
+    </div>
+    <div class="setup-body">
+      <div class="alert al-danger">
+        <strong>📋 Condición base:</strong>
+        <p>Tendencia bajista en 4h. Precio ha roto un soporte importante y hace un retesteo de ese nivel (ahora resistencia).</p>
+      </div>
+      <div class="setup-steps">
+        <div class="step-box"><div class="sn">PASO 1 — Sesgo</div><p>Tendencia bajista en 4h confirmada: LH + LL. Precio debajo de EMA 20/50</p></div>
+        <div class="step-box"><div class="sn">PASO 2 — Ruptura</div><p>El precio ha roto un soporte relevante (no menor) con cierre de vela 1h o 4h por debajo</p></div>
+        <div class="step-box"><div class="sn">PASO 3 — Retesteo</div><p>El precio sube de vuelta al nivel roto. El antiguo soporte ahora actúa como resistencia (flip)</p></div>
+        <div class="step-box"><div class="sn">PASO 4 — Señal</div><p>En 15m: rechazo del nivel con vela bajista (Bearish Engulfing, Shooting Star) + volumen</p></div>
+        <div class="step-box"><div class="sn">PASO 5 — Entrada</div><p>Short en el cierre de la vela de señal o retesteo más fino del nivel</p></div>
+        <div class="step-box"><div class="sn">PASO 6 — SL y TP</div><p>SL: por encima del nivel roto + margen. TP: siguiente soporte / low anterior (R:R ≥ 1:2)</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="setup">
+    <div class="setup-head" onclick="togSetup(this)">
+      <span class="s-dir both">AMBOS</span>
+      <div class="setup-name">Liquidity Sweep + Reversión
+        <small>Capturar la trampa — setup de SMC/ICT muy potente</small>
+      </div>
+      <span class="s-tf">15M / 5M</span>
+      <span class="s-arr">▾</span>
+    </div>
+    <div class="setup-body">
+      <div class="alert al-warn">
+        <strong>📋 Condición base:</strong>
+        <p>El precio barre (wick) un máximo/mínimo previo aparente buscando liquidez, y luego revierte con fuerza. Setup de Smart Money.</p>
+      </div>
+      <div class="setup-steps">
+        <div class="step-box"><div class="sn">PASO 1 — Identifica</div><p>Zona con Equal Highs o Equal Lows visibles (muchos traders ponen SL ahí)</p></div>
+        <div class="step-box"><div class="sn">PASO 2 — Espera la barrida</div><p>El precio barre brevemente esa zona con wick y cierra de vuelta al otro lado</p></div>
+        <div class="step-box"><div class="sn">PASO 3 — Confirmación</div><p>En 5m: vela de reversión fuerte después de la barrida, con cierre firme</p></div>
+        <div class="step-box"><div class="sn">PASO 4 — OI + FR</div><p>Verifica si la barrida coincidió con pico de liquidaciones en Coinglass</p></div>
+        <div class="step-box"><div class="sn">PASO 5 — Entrada</div><p>Entra en dirección de la reversión al cierre de la vela de confirmación</p></div>
+        <div class="step-box"><div class="sn">PASO 6 — SL y TP</div><p>SL: más allá del wick de la barrida. TP: primera zona de liquidez opuesta</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="setup">
+    <div class="setup-head" onclick="togSetup(this)">
+      <span class="s-dir long">LONG</span>
+      <div class="setup-name">Breakout con Volumen
+        <small>Entrada en ruptura confirmada de resistencia importante</small>
+      </div>
+      <span class="s-tf">4H / 1H</span>
+      <span class="s-arr">▾</span>
+    </div>
+    <div class="setup-body">
+      <div class="setup-steps">
+        <div class="step-box"><div class="sn">PASO 1 — Identifica</div><p>Resistencia relevante (tocada 2+ veces) o rango de consolidación claro en 4h</p></div>
+        <div class="step-box"><div class="sn">PASO 2 — Volumen</div><p>El breakout debe ir acompañado de volumen significativamente mayor al promedio</p></div>
+        <div class="step-box"><div class="sn">PASO 3 — Cierre</div><p>Espera el CIERRE de vela 4h (o 1h mínimo) por encima de la resistencia — no el wick</p></div>
+        <div class="step-box"><div class="sn">PASO 4 — OI</div><p>OI debe estar subiendo durante el breakout — confirma posiciones nuevas, no cierres</p></div>
+        <div class="step-box"><div class="sn">PASO 5 — Entrada</div><p>Opción A: al cierre de la vela de breakout. Opción B (más segura): retesteo del nivel roto</p></div>
+        <div class="step-box"><div class="sn">PASO 6 — SL y TP</div><p>SL: debajo del nivel roto. TP: proyección del rango / siguiente resistencia mayor</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ ESTRATEGIAS POR ESTILO ═══ -->
+<section>
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--gold)">// MÓDULO 06</p>
+  <h2>Estrategias por <span style="color:var(--gold)">Estilo</span></h2>
+  <p class="sec-lead">Elige UNA estrategia y domínala durante 3–6 meses antes de explorar otra. Los traders que saltan entre estrategias no dominan ninguna.</p>
+
+  <div class="sgrid">
+    <div class="sc sc-long">
+      <div class="s-type" style="color:var(--long)">// LARGO PLAZO</div>
+      <h3>Swing Futures</h3>
+      <div class="s-risk" style="color:var(--dim)">RIESGO MEDIO · 4H–1D · DÍAS A SEMANAS</div>
+      <p>Ideal para personas con trabajo: analizas 1–2 veces al día, entras en setups de 4h/1D, holds de 2–10 días. El apalancamiento bajo es tu aliado (2x–5x) porque el SL puede estar lejos.</p>
+      <ul>
+        <li>Setups: pullback a soporte, breakout, retesteo S/R</li>
+        <li>Apalancamiento: 2x–5x máximo</li>
+        <li>SL: basado en estructura 4h</li>
+        <li>TP parcial al primer objetivo, mover SL a BE</li>
+        <li>Funding Rate puede acumular costo — monitorear</li>
+        <li>Revisión mínima: 2 veces al día</li>
+      </ul>
+    </div>
+    <div class="sc sc-blue">
+      <div class="s-type" style="color:var(--blue)">// INTRADÍA</div>
+      <h3>Day Trading Futuros</h3>
+      <div class="s-risk" style="color:var(--dim)">RIESGO ALTO · 15M–1H · HORAS</div>
+      <p>Abres y cierras todas las posiciones el mismo día. Requiere 4–6 horas de pantalla. Debes saber leer estructura, liquidez e indicadores de momentum en tiempo real.</p>
+      <ul>
+        <li>Setups: rango del día, barridas de liquidez, breakouts de 1h</li>
+        <li>Apalancamiento: 5x–10x con posición muy pequeña</li>
+        <li>Opera solo las 2–3 primeras horas de sesiones (NY/London)</li>
+        <li>Máximo 3–5 trades por día</li>
+        <li>Sin posiciones overnight — cierra todo al final del día</li>
+        <li>Requiere mínimo 6 meses de swing previo</li>
+      </ul>
+    </div>
+    <div class="sc sc-short">
+      <div class="s-type" style="color:var(--short)">// ULTRA CORTO PLAZO</div>
+      <h3>Scalping Futuros</h3>
+      <div class="s-risk" style="color:var(--dim)">RIESGO MUY ALTO · 1M–5M · MINUTOS</div>
+      <p>Docenas de trades pequeños buscando 0.2%–1% de movimiento. Requiere comisiones bajísimas, conexión rápida y 6+ horas frente a la pantalla. NO para principiantes.</p>
+      <ul>
+        <li>Solo BTC y ETH — máxima liquidez</li>
+        <li>Apalancamiento: 5x–15x con posición muy pequeña</li>
+        <li>Leer Order Book y CVD en tiempo real</li>
+        <li>Comisiones asesinan la rentabilidad — usa maker orders</li>
+        <li>Máximo 20–30 trades al día con disciplina</li>
+        <li>Solo viable con 1+ año de day trading previo</li>
+      </ul>
+    </div>
+    <div class="sc sc-neut">
+      <div class="s-type" style="color:var(--gold)">// NEUTRAL</div>
+      <h3>Hedging / Funding Arbitrage</h3>
+      <div class="s-risk" style="color:var(--dim)">RIESGO BAJO-MEDIO · ESTRATEGIA NEUTRAL</div>
+      <p>Combina posición Long en spot con Short en futuros cuando el funding rate es muy alto. Ganas el funding sin exposición al precio. Estrategia avanzada de rendimiento.</p>
+      <ul>
+        <li>Requiere funding rate &gt; 0.05–0.1% para ser rentable</li>
+        <li>Long spot BTC + Short perpetuo BTC = delta neutral</li>
+        <li>Ganas el funding del Short sin riesgo de precio</li>
+        <li>Considera comisiones en ambas posiciones</li>
+        <li>Descorrelacionar en momentos de bajo FR</li>
+        <li>Estrategia de "cash and carry" en cripto</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ PATRONES ═══ -->
+<section id="patrones">
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--blue)">// MÓDULO 07</p>
+  <h2>Patrones clave para <span style="color:var(--blue)">Futuros</span></h2>
+  <p class="sec-lead">En futuros, los patrones más importantes son los que generan trampas de liquidez y movimientos explosivos. Foco especial en los que funcionan en cripto con apalancamiento.</p>
+
+  <table class="ptable">
+    <thead>
+      <tr>
+        <th>Patrón</th><th>Tipo</th><th>Señal</th><th>Descripción y uso en futuros</th><th>Efectividad Cripto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="pn">Bull Flag</td>
+        <td class="pt">CONTINUACIÓN</td>
+        <td><span class="badge bl">LONG</span></td>
+        <td class="pd">Impulso fuerte + retroceso en canal bajista suave + breakout. Long al breakout con volumen. Muy común en BTC.</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Bear Flag</td>
+        <td class="pt">CONTINUACIÓN</td>
+        <td><span class="badge bs">SHORT</span></td>
+        <td class="pd">Caída fuerte + rebote en canal alcista débil + breakdown. Short al breakdown. Efectivo en mercados bajistas.</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Wyckoff Accumulation</td>
+        <td class="pt">ESTRUCTURA</td>
+        <td><span class="badge bl">LONG</span></td>
+        <td class="pd">Rango lateral con Spring (barrida del mínimo) antes de subida. Long en el Spring con volumen de confirmación.</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Wyckoff Distribution</td>
+        <td class="pt">ESTRUCTURA</td>
+        <td><span class="badge bs">SHORT</span></td>
+        <td class="pd">Rango lateral con Upthrust (barrida del máximo) antes de caída. Short en el Upthrust con volumen.</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Head & Shoulders</td>
+        <td class="pt">REVERSIÓN</td>
+        <td><span class="badge bs">SHORT</span></td>
+        <td class="pd">Tres picos, central más alto. Short en ruptura del neckline. Proyección: distancia cabeza-neckline.</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Inverse H&amp;S</td>
+        <td class="pt">REVERSIÓN</td>
+        <td><span class="badge bl">LONG</span></td>
+        <td class="pd">Tres valles, central más profundo. Long en ruptura del neckline con volumen. Señal de fondo.</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Double Top</td>
+        <td class="pt">REVERSIÓN</td>
+        <td><span class="badge bs">SHORT</span></td>
+        <td class="pd">Dos máximos al mismo nivel. Short en ruptura del swing low entre los dos picos. Cuidado con fakeouts en cripto.</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Double Bottom</td>
+        <td class="pt">REVERSIÓN</td>
+        <td><span class="badge bl">LONG</span></td>
+        <td class="pd">Forma "W". Long en ruptura de la resistencia media. Muy frecuente como suelo de ciclo.</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Bearish Engulfing en Resistencia</td>
+        <td class="pt">VELA</td>
+        <td><span class="badge bs">SHORT</span></td>
+        <td class="pd">Gran vela roja que engulle la verde anterior, exactamente en zona de resistencia + OI bajando. Alta probabilidad.</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Bullish Engulfing en Soporte</td>
+        <td class="pt">VELA</td>
+        <td><span class="badge bl">LONG</span></td>
+        <td class="pd">Gran vela verde que engulle la roja anterior en zona de soporte + liquidaciones de Longs visibles en Coinglass.</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Pin Bar / Hammer en Soporte</td>
+        <td class="pt">VELA</td>
+        <td><span class="badge bl">LONG</span></td>
+        <td class="pd">Wick largo inferior en soporte. En futuros = barrida de liquidez + rechazo. Señal muy fiable con contexto.</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Shooting Star en Resistencia</td>
+        <td class="pt">VELA</td>
+        <td><span class="badge bs">SHORT</span></td>
+        <td class="pd">Wick largo superior en resistencia. Barrida de Shorts + rechazo. Short con SL encima del wick.</td>
+        <td>⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Triángulo Ascendente</td>
+        <td class="pt">CONTINUACIÓN</td>
+        <td><span class="badge bl">LONG</span></td>
+        <td class="pd">Máximos iguales + mínimos ascendentes. Long en breakout confirmado con volumen. Proyección: altura del triángulo.</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Descending Wedge</td>
+        <td class="pt">REVERSIÓN</td>
+        <td><span class="badge bl">LONG</span></td>
+        <td class="pd">Canal bajista comprimiéndose. Los vendedores se agotan. Long en breakout alcista sorpresivo.</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Rising Wedge</td>
+        <td class="pt">REVERSIÓN</td>
+        <td><span class="badge bs">SHORT</span></td>
+        <td class="pd">Canal alcista comprimiéndose. Trampa para longs. Short en breakdown. Muy común antes de correcciones cripto.</td>
+        <td>⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="pn">Cup & Handle</td>
+        <td class="pt">CONTINUACIÓN</td>
+        <td><span class="badge bl">LONG</span></td>
+        <td class="pd">Forma de "U" con pequeño pullback (handle). Long en breakout del handle con volumen creciente.</td>
+        <td>⭐⭐⭐</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ═══ PSICOLOGÍA ═══ -->
+<section id="psicologia">
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--short)">// MÓDULO 08 — LO QUE NADIE TE DICE</p>
+  <h2>Psicología del <span style="color:var(--short)">Trader de Futuros</span></h2>
+  <p class="sec-lead">El apalancamiento amplifica no solo el dinero — amplifica las emociones. Lo que en spot sería un 2% de bajada, con 10x es un 20% de tu posición. La presión psicológica en futuros es exponencialmente mayor.</p>
+
+  <div class="module">
+    <div class="mod-head" onclick="tog(this)">
+      <span class="mod-tag tag-s">MENTALIDAD</span>
+      <div>
+        <div class="mod-title">Los 8 Errores Mentales que Destruyen Cuentas</div>
+        <div class="mod-sub">Reconócelos, nómbralos, y tendrás control sobre ellos</div>
+      </div>
+      <span class="mod-arrow">▾</span>
+    </div>
+    <div class="mod-body">
+      <div class="tgrid">
+        <div class="tc">
+          <h4 style="color:var(--short)">⚡ FOMO en Futuros</h4>
+          <ul>
+            <li>Ver una vela verde enorme y entrar sin setup</li>
+            <li>En futuros el FOMO cuesta el doble — apalancado</li>
+            <li>El precio siempre tiene retrocesos — espera</li>
+            <li>Si ya se movió el 5%, la oportunidad terminó</li>
+            <li>Cura: tener una lista de setups predefinidos</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4 style="color:var(--short)">🎰 Revenge Trading</h4>
+          <ul>
+            <li>Perder y abrir inmediatamente otra posición "para recuperar"</li>
+            <li>Típicamente con más apalancamiento del normal</li>
+            <li>Resulta en la segunda pérdida más grande del día</li>
+            <li>Cura: regla inquebrantable — 3 pérdidas = cierra todo</li>
+            <li>El mercado no te debe nada</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4 style="color:var(--short)">🐛 Mover el Stop Loss</h4>
+          <ul>
+            <li>"Déjame ver si sube un poco más y lo cierro yo"</li>
+            <li>El SL que se mueve puede convertir -2% en -20%</li>
+            <li>En futuros: -20% puede ser liquidación total con 5x</li>
+            <li>El SL se decide al abrir el trade, no después</li>
+            <li>Cura: usar SL automático en el exchange siempre</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4 style="color:var(--short)">📱 Overtrading</h4>
+          <ul>
+            <li>Operar por operar cuando no hay setup válido</li>
+            <li>El aburrimiento es una señal de peligro</li>
+            <li>Más trades ≠ más dinero</li>
+            <li>Los mejores traders hacen 2–5 trades a la semana</li>
+            <li>Cura: tener una lista de condiciones para entrar</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4 style="color:var(--short)">🔭 Sesgo de Confirmación</h4>
+          <ul>
+            <li>Ver solo lo que confirma tu análisis previo</li>
+            <li>"Ya puse el Long, por eso el gráfico sube"</li>
+            <li>Buscar activamente evidencia en contra</li>
+            <li>Si estás en Long y aparece señal bajista fuerte — cierra</li>
+            <li>El mercado no sabe que tienes una posición</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4 style="color:var(--short)">💎 Aversión a la Pérdida</h4>
+          <ul>
+            <li>No aceptar que el SL saltó y seguir esperando</li>
+            <li>"Seguiré aguantando hasta que vuelva"</li>
+            <li>Una pérdida pequeña cerrada = dinero para otro trade</li>
+            <li>Una pérdida aguantada = potencialmente cuenta borrada</li>
+            <li>Cura: el SL automático elimina la decisión emocional</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4 style="color:var(--short)">💰 Cerrar el TP muy pronto</h4>
+          <ul>
+            <li>Cerrar al 50% del TP por miedo a que revierta</li>
+            <li>Destruye el R:R calculado antes de entrar</li>
+            <li>Puede hacer tu estrategia no rentable aunque aciertes</li>
+            <li>Cura: TP automático + confiar en el plan</li>
+            <li>TP parcial es correcto — TP completo temprano no</li>
+          </ul>
+        </div>
+        <div class="tc">
+          <h4 style="color:var(--short)">🤑 Aumentar tamaño tras ganancias</h4>
+          <ul>
+            <li>"Llevo 3 trades buenos, soy imparable — subo el tamaño"</li>
+            <li>El 4to trade con el doble del tamaño puede borrar todo</li>
+            <li>El tamaño de posición sigue siempre la regla del 1–2%</li>
+            <li>El mercado no sabe que tuviste una racha ganadora</li>
+            <li>Escala capital gradualmente — no por racha</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ HERRAMIENTAS ═══ -->
+<section id="herramientas">
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--gold)">// MÓDULO 09</p>
+  <h2>Herramientas <span style="color:var(--gold)">para Futuros</span></h2>
+  <p class="sec-lead">Stack mínimo para operar futuros con seriedad. Gratis hasta donde puedas — la mayoría de lo esencial no cuesta nada.</p>
+
+  <div class="tlgrid">
+    <div class="tl-card">
+      <div class="tc-cat">📊 Gráficos</div>
+      <h4>TradingView</h4>
+      <p>Versión gratuita suficiente. Conecta exchange con alertas. Imprescindible.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">🏛️ Exchange principal</div>
+      <h4>Bybit</h4>
+      <p>Mejor interfaz de futuros para principiantes. Cuenta demo gratuita (Testnet).</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">🏛️ Exchange alternativo</div>
+      <h4>Binance Futures</h4>
+      <p>Mayor volumen global. También tiene Testnet para práctica.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">💥 Liquidaciones</div>
+      <h4>Coinglass</h4>
+      <p>Mapa de liquidaciones, OI, L/S Ratio, Funding Rate histórico. Gratis.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">📈 OI y datos</div>
+      <h4>Velo.xyz</h4>
+      <p>Open Interest agregado, Funding Rate por exchange. Muy completo y gratuito.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">😱 Sentimiento</div>
+      <h4>Fear & Greed</h4>
+      <p>alternative.me — termómetro del mercado cripto. Simple y efectivo.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">🔗 On-Chain</div>
+      <h4>CryptoQuant</h4>
+      <p>Exchange netflow, whale ratio, métricas de Bitcoin on-chain.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">📓 Journal</div>
+      <h4>TraderVue / Notion</h4>
+      <p>TraderVue importa trades automáticamente. Notion si prefieres personalizar.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">🧮 Calculadora</div>
+      <h4>Bybit Calculator</h4>
+      <p>Calculadora nativa de posición, PnL y liquidación. Úsala antes de cada trade.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">🔔 Alertas</div>
+      <h4>TradingView Alerts</h4>
+      <p>Alertas de precio e indicadores. Plan gratis: hasta 1 alerta activa.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">📱 Portfolio</div>
+      <h4>CoinStats</h4>
+      <p>Seguimiento de PnL y posiciones abiertas en tiempo real.</p>
+    </div>
+    <div class="tl-card">
+      <div class="tc-cat">📰 Noticias</div>
+      <h4>CoinDesk / The Block</h4>
+      <p>Noticias que mueven el mercado. Activa alertas para eventos macro.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ YOUTUBE ═══ -->
+<section id="youtube">
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--blue)">// MÓDULO 10</p>
+  <h2>YouTube: <span style="color:var(--blue)">Sí, pero así</span></h2>
+  <p class="sec-lead">YouTube es una mina de oro y un campo minado al mismo tiempo. Hay contenido extraordinario y hay estafadores profesionales. La diferencia es sutil — aquí te la explico.</p>
+
+  <div class="alert al-danger">
+    <strong>🚨 Señales de alerta — huye de inmediato</strong>
+    <p>"Gané $X en Y horas" · "Este método secreto" · Screenshots de ganancias sin auditoría · "Grupo VIP de señales $99/mes" · Canales que nunca muestran pérdidas · Afflinks en cada video a exchanges (cobran comisión por cada liquidación tuya) · "Activa la campana para no perderte mis señales" · Influencers que compran monedas y luego las promueven (pump&dump).</p>
+  </div>
+
+  <div class="yt-grid" style="margin-top:24px">
+    <div class="yt-c">
+      <div class="yt-ic">▶</div>
+      <div>
+        <h4>The Matrix Trader</h4>
+        <p>Order flow y análisis de futuros serio. Muestra proceso y pérdidas.</p>
+        <div class="yl">🇺🇸 INGLÉS · Futuros avanzado</div>
+      </div>
+    </div>
+    <div class="yt-c">
+      <div class="yt-ic">▶</div>
+      <div>
+        <h4>Benjamin Cowen</h4>
+        <p>Data-driven. Sin hype. Análisis de largo plazo y ciclos de BTC.</p>
+        <div class="yl">🇺🇸 INGLÉS · Macro + ciclos</div>
+      </div>
+    </div>
+    <div class="yt-c">
+      <div class="yt-ic">▶</div>
+      <div>
+        <h4>Trader Dante</h4>
+        <p>Wyckoff y VSA aplicados a cripto. Muy pedagógico.</p>
+        <div class="yl">🇺🇸 INGLÉS · Wyckoff</div>
+      </div>
+    </div>
+    <div class="yt-c">
+      <div class="yt-ic">▶</div>
+      <div>
+        <h4>InvestAnswers</h4>
+        <p>On-chain profundo, métricas macro. Excelente para contexto.</p>
+        <div class="yl">🇺🇸 INGLÉS · On-chain macro</div>
+      </div>
+    </div>
+    <div class="yt-c">
+      <div class="yt-ic">▶</div>
+      <div>
+        <h4>Satoshi Defenders</h4>
+        <p>AT cripto en español sin pump. Buena calidad técnica.</p>
+        <div class="yl">🇪🇸 ESPAÑOL · AT intermedio</div>
+      </div>
+    </div>
+    <div class="yt-c">
+      <div class="yt-ic">▶</div>
+      <div>
+        <h4>Crypto Jefe</h4>
+        <p>Análisis de futuros en español. Mezcla AT con datos de mercado.</p>
+        <div class="yl">🇪🇸 ESPAÑOL · Futuros básico</div>
+      </div>
+    </div>
+    <div class="yt-c">
+      <div class="yt-ic">▶</div>
+      <div>
+        <h4>Uncomplication</h4>
+        <p>Educación de futuros muy clara. Explica mecánica sin glamour.</p>
+        <div class="yl">🇺🇸 INGLÉS · Mecánica futuros</div>
+      </div>
+    </div>
+    <div class="yt-c">
+      <div class="yt-ic">▶</div>
+      <div>
+        <h4>Bybit Learn (oficial)</h4>
+        <p>Tutorials de la plataforma y mecánica. Gratis y fiable.</p>
+        <div class="yl">🌍 MULTI · Principiante</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert al-warn" style="margin-top:28px">
+    <strong>📚 Libros obligatorios para traders de futuros</strong>
+    <p><strong>"Trading in the Zone" — Mark Douglas</strong> (psicología, el libro #1) · <strong>"Technical Analysis of the Financial Markets" — Murphy</strong> (AT clásico) · <strong>"Reminiscences of a Stock Operator" — Lefèvre</strong> (mentalidad del trader) · <strong>"The Art and Science of Technical Analysis" — Adam Grimes</strong> (AT moderno y estadístico) · <strong>"Market Wizards" — Jack Schwager</strong> (entrevistas a los mejores traders del mundo)</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══ TIMELINE ═══ -->
+<section>
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--long)">// PLAN REALISTA</p>
+  <h2>Timeline de <span style="color:var(--long)">Aprendizaje</span></h2>
+  <p class="sec-lead">No hay atajos. El que te prometa rentabilidad en semanas te va a quitar el dinero. Este es el camino honesto.</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-time">MES 1–2</div>
+      <h4>Fundamentos + Demo sin apalancamiento</h4>
+      <p>Aprende mecánica de futuros, tipos de órdenes, funding rate, liquidaciones. Abre cuenta demo en Bybit Testnet. Opera sin apalancamiento (1x) para entender la interfaz. Lee "Trading in the Zone".</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--long)"></div>
+      <div class="tl-time">MES 3–4</div>
+      <h4>Análisis Técnico + Estructura + Demo con 2x</h4>
+      <p>Estudia estructura de mercado, soporte/resistencia, velas, Fibonacci. Opera en demo con máximo 2x apalancamiento. Empieza tu journal. Meta: 50 trades demo documentados con razonamiento.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--gold)"></div>
+      <div class="tl-time">MES 5–6</div>
+      <h4>Setups definidos + Gestión de Riesgo</h4>
+      <p>Elige 2–3 setups y domínalos. Define tu plan de trading por escrito. Opera demo con gestión de riesgo real (1–2% por trade). Si eres consistentemente positivo 2 meses seguidos en demo, puedes considerar dinero real.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--short)"></div>
+      <div class="tl-time">MES 7–9</div>
+      <h4>Primeros trades reales — mínimo capital</h4>
+      <p>Empieza con $100–$300. Opera exactamente igual que en demo — mismos setups, mismo riesgo, mismo apalancamiento máximo (2x–3x). El objetivo no es ganar dinero — es aprender a manejar emociones con dinero real.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--dim)"></div>
+      <div class="tl-time">MES 10–18</div>
+      <h4>Escalar gradualmente si hay consistencia</h4>
+      <p>Solo si tienes 3 meses de rentabilidad positiva en real (porcentaje, no monto), considera aumentar el capital. Sigue las mismas reglas. Explora conceptos avanzados: SMC, Order Flow, On-Chain. Nunca aumentes en racha emocional.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--long)"></div>
+      <div class="tl-time">AÑO 2+</div>
+      <h4>Especialización y optimización</h4>
+      <p>Trader con edge definido, estadísticas propias y disciplina probada. Explora automatización (Pine Script, bots), hedging, estrategias neutrales. A este punto deberías conocerte perfectamente como trader.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ CHECKLIST ═══ -->
+<section>
+<div class="wrap">
+  <p class="sec-eye" style="color:var(--short)">// ANTES DE TU PRIMER TRADE REAL</p>
+  <h2>Checklist de <span style="color:var(--short)">Futuros</span></h2>
+
+  <div class="cklist">
+    <div class="ck"><div class="ck-box"></div>Entiendo qué es un perpetuo y cómo funciona el funding rate</div>
+    <div class="ck"><div class="ck-box"></div>Sé calcular el precio de liquidación antes de entrar</div>
+    <div class="ck"><div class="ck-box"></div>Sé calcular el tamaño de posición según mi riesgo %</div>
+    <div class="ck"><div class="ck-box"></div>Uso Isolated Margin, no Cross (como principiante)</div>
+    <div class="ck"><div class="ck-box"></div>Siempre coloco SL automático al abrir la posición</div>
+    <div class="ck"><div class="ck-box"></div>Mi apalancamiento máximo es 5x (3x preferible al inicio)</div>
+    <div class="ck"><div class="ck-box"></div>Tengo al menos 50 trades en cuenta demo documentados</div>
+    <div class="ck"><div class="ck-box"></div>Mi R:R es siempre igual o mayor a 1:2</div>
+    <div class="ck"><div class="ck-box"></div>El dinero que voy a usar no lo necesito para vivir</div>
+    <div class="ck"><div class="ck-box"></div>Tengo un plan de trading escrito con mis setups</div>
+    <div class="ck"><div class="ck-box"></div>Sé leer el Funding Rate y Open Interest en Coinglass</div>
+    <div class="ck"><div class="ck-box"></div>Conozco el mapa de liquidaciones y lo uso pre-trade</div>
+    <div class="ck"><div class="ck-box"></div>Tengo mi journal de trading listo para registrar todo</div>
+    <div class="ck"><div class="ck-box"></div>Sé la diferencia entre Mark Price y Last Price</div>
+    <div class="ck"><div class="ck-box"></div>Tengo definida mi regla de pérdidas diarias (ej: -3% = paro)</div>
+    <div class="ck"><div class="ck-box"></div>He leído al menos "Trading in the Zone"</div>
+    <div class="ck"><div class="ck-box"></div>Mi 2FA está activado en el exchange</div>
+    <div class="ck"><div class="ck-box"></div>Sé identificar un setup de pullback a soporte en 4h/1h</div>
+  </div>
+
+  <div class="alert al-danger" style="margin-top:32px">
+    <strong>🔴 Si no puedes marcar todos los puntos de arriba, NO abras una posición real aún</strong>
+    <p>El mercado de futuros no se mueve más rápido que tu aprendizaje. Está ahí mañana, la próxima semana y el próximo mes. El dinero perdido por apresurarse sí se va para siempre.</p>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer style="border-top:1px solid var(--border);padding:40px 32px;text-align:center;position:relative;z-index:1">
+  <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">
+    // Este roadmap es estrictamente educativo — no es consejo financiero
+  </p>
+  <p style="color:var(--muted);font-size:13px">
+    El trading de futuros de criptomonedas implica riesgo real y sustancial de pérdida de capital.<br>
+    <strong style="color:var(--dim)">DYOR · NEVER RISK WHAT YOU CAN'T AFFORD TO LOSE · SL ALWAYS</strong>
+  </p>
+</footer>
+
+<script>
+function tog(header){
+  const body = header.nextElementSibling;
+  const arr = header.querySelector('.mod-arrow');
+  const open = body.classList.toggle('open');
+  arr.classList.toggle('open', open);
+}
+function togSetup(header){
+  const body = header.nextElementSibling;
+  const arr = header.querySelector('.s-arr');
+  const open = body.classList.toggle('open');
+  arr.classList.toggle('open', open);
+}
+</script>
+</body>
+</html>

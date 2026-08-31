@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -18,6 +18,10 @@ import {
   Repeat,
   Repeat1,
   Keyboard,
+  Search,
+  X,
+  ListMusic,
+  Sparkles,
 } from "lucide-react";
 import { useMusic } from "@/context/MusicContext";
 
@@ -48,10 +52,18 @@ export default function MusicPlayer() {
 
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [playlistSearch, setPlaylistSearch] = useState("");
+
+  const filteredSongs = useMemo(() => {
+    if (!playlistSearch.trim()) return songs;
+    const q = playlistSearch.toLowerCase().trim();
+    return songs.filter((s) => s.title.toLowerCase().includes(q));
+  }, [songs, playlistSearch]);
 
   const handleSelectSong = (index: number) => {
     playSong(index);
     setShowPlaylist(false);
+    setPlaylistSearch("");
   };
 
   return (
@@ -73,19 +85,27 @@ export default function MusicPlayer() {
 
         <div className="bg-white/5 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 sm:p-8 w-full shadow-[0_10px_40px_rgba(168,85,247,0.15)] relative overflow-hidden group">
           {/* Subtle background glow */}
-          <div className="absolute inset-0 bg-linear-to-br from-purple-600/10 via-transparent to-purple-900/20 opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+          <div className="absolute inset-0 bg-linear-to-br from-purple-600/10 via-transparent to-purple-900/20 opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
           <div className="flex flex-col items-center relative z-10">
-            {/* Album Cover with slide animation */}
+            {/* Album Cover with slide animation and spinning vinyl */}
             <div className="relative w-48 h-48 sm:w-56 sm:h-56 mb-8">
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={currentIndex}
                   custom={direction}
                   variants={{
-                    enter: (d: number) => ({ x: d * 80, opacity: 0, scale: 0.85 }),
+                    enter: (d: number) => ({
+                      x: d * 80,
+                      opacity: 0,
+                      scale: 0.85,
+                    }),
                     center: { x: 0, opacity: 1, scale: 1 },
-                    exit: (d: number) => ({ x: d * -80, opacity: 0, scale: 0.85 }),
+                    exit: (d: number) => ({
+                      x: d * -80,
+                      opacity: 0,
+                      scale: 0.85,
+                    }),
                   }}
                   initial="enter"
                   animate="center"
@@ -107,173 +127,153 @@ export default function MusicPlayer() {
                       alt={currentSong.title}
                       fill
                       sizes="(max-width: 640px) 192px, 224px"
-                      className="object-cover"
                       priority
+                      className="object-cover"
                     />
-                    {/* Vinyl hole */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-[#050505] rounded-full border-2 border-purple-500/30 flex items-center justify-center shadow-inner">
-                      <div className="w-3 h-3 bg-purple-500/50 rounded-full" />
+                    {/* Vinyl Center Hole */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-[#0a071b] rounded-full border-4 border-purple-500/30 flex items-center justify-center">
+                      <div className="w-3 h-3 bg-purple-400 rounded-full" />
                     </div>
                   </div>
                 </motion.div>
               </AnimatePresence>
             </div>
 
-            {/* Song Info with slide animation */}
-            <div className="text-center w-full mb-6 min-h-18 flex flex-col items-center justify-center">
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={currentIndex}
-                  custom={direction}
-                  variants={{
-                    enter: (d: number) => ({ x: d * 40, opacity: 0 }),
-                    center: { x: 0, opacity: 1 },
-                    exit: (d: number) => ({ x: d * -40, opacity: 0 }),
-                  }}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.35 }}
-                  className="w-full"
-                >
-                  <h4 className="text-2xl font-bold text-white mb-1.5 tracking-wide drop-shadow-md truncate px-2">
-                    {currentSong.title}
-                  </h4>
-                  <div className="flex items-center justify-center gap-2 text-purple-300/90 font-medium tracking-widest uppercase text-xs sm:text-sm">
-                    <Music className="w-3.5 h-3.5 animate-heartbeat text-purple-400" />
-                    <span>Para mi amor</span>
-
-                    {/* Dynamic Equalizer Waveform */}
-                    <div className="flex items-end gap-0.5 h-3.5 ml-1">
-                      {[1, 2, 3, 4, 5].map((bar) => (
-                        <motion.span
-                          key={bar}
-                          animate={
-                            isPlaying
-                              ? {
-                                  height: ["20%", "100%", "40%", "85%", "30%"],
-                                }
-                              : { height: "20%" }
-                          }
-                          transition={{
-                            duration: 0.8,
-                            repeat: Infinity,
-                            delay: bar * 0.12,
-                            ease: "easeInOut",
-                          }}
-                          className="w-1 bg-linear-to-t from-purple-500 to-pink-400 rounded-full"
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+            {/* Song Info */}
+            <div className="text-center mb-6 w-full">
+              <h4 className="text-xl sm:text-2xl font-bold text-white tracking-wide truncate">
+                {currentSong.title}
+              </h4>
+              <p className="text-xs uppercase tracking-widest text-purple-300/70 mt-1 font-semibold flex items-center justify-center gap-1.5">
+                <Music className="w-3.5 h-3.5 text-purple-400" />
+                <span>Nuestra Playlist ({currentIndex + 1} de {songs.length})</span>
+              </p>
             </div>
 
-            {/* Song counter hint */}
-            <div className="flex items-center gap-1.5 mb-5 flex-wrap justify-center max-w-[280px]">
-              {songs.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleSelectSong(i)}
-                  className={`transition-all duration-300 rounded-full cursor-pointer ${
-                    i === currentIndex
-                      ? "w-5 h-2 bg-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.8)]"
-                      : "w-2 h-2 bg-purple-700/60 hover:bg-purple-500/80"
-                  }`}
-                  aria-label={`Ir a ${songs[i].title}`}
-                />
-              ))}
-            </div>
-
-            {/* Progress Bar */}
+            {/* Progress Bar with smooth scrubbing */}
             <div className="w-full mb-6">
-              <input
-                type="range"
-                min={0}
-                max={duration || 100}
-                value={progress}
-                onChange={(e) => handleProgressChange(Number(e.target.value))}
-                className="w-full h-2 bg-purple-900/50 rounded-full appearance-none cursor-pointer accent-purple-400 shadow-inner"
-              />
-              <div className="flex justify-between text-sm text-purple-300/80 mt-2 font-mono font-medium">
+              <div className="relative flex items-center group/slider">
+                <input
+                  type="range"
+                  min="0"
+                  max={duration || 100}
+                  value={progress}
+                  onChange={(e) => handleProgressChange(parseFloat(e.target.value))}
+                  className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-400 focus:outline-none"
+                />
+              </div>
+              <div className="flex justify-between text-xs text-purple-300/60 font-mono mt-2">
                 <span>{formatTime(progress)}</span>
                 <span>{formatTime(duration)}</span>
               </div>
             </div>
 
-            {/* Main Controls with Shuffle & Repeat */}
-            <div className="flex items-center justify-center gap-4 sm:gap-6 w-full mb-5">
+            {/* Audio Spectrum Visualizer */}
+            <div className="flex items-end justify-center gap-1 h-5 mb-6">
+              {[0.4, 0.9, 0.5, 0.8, 0.3, 1, 0.6, 0.7, 0.3, 0.8, 0.5, 0.9].map((height, i) => (
+                <motion.span
+                  key={i}
+                  animate={
+                    isPlaying
+                      ? {
+                          height: [
+                            `${height * 25}%`,
+                            `${Math.min(100, height * 100 + 20)}%`,
+                            `${height * 25}%`,
+                          ],
+                        }
+                      : { height: "20%" }
+                  }
+                  transition={{
+                    duration: 0.55,
+                    repeat: Infinity,
+                    delay: (i % 4) * 0.1,
+                    ease: "easeInOut",
+                  }}
+                  className="w-1 bg-linear-to-t from-purple-500 to-fuchsia-400 rounded-full"
+                />
+              ))}
+            </div>
+
+            {/* Main Controls */}
+            <div className="flex items-center justify-between w-full mb-6 px-2">
+              {/* Shuffle */}
               <button
-                className={`p-2 rounded-full transition-all cursor-pointer ${
-                  isShuffle
-                    ? "text-purple-300 bg-purple-500/20 border border-purple-400/40 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
-                    : "text-purple-300/40 hover:text-purple-300/80"
-                }`}
                 onClick={toggleShuffle}
-                aria-label="Modo aleatorio"
-                title={isShuffle ? "Aleatorio: Activado" : "Aleatorio: Desactivado"}
+                className={`p-2.5 rounded-full transition-all cursor-pointer ${
+                  isShuffle
+                    ? "text-purple-400 bg-purple-500/20 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                    : "text-purple-300/50 hover:text-white hover:bg-white/5"
+                }`}
+                title={isShuffle ? "Aleatorio activado" : "Activar aleatorio"}
               >
                 <Shuffle className="w-4 h-4" />
               </button>
 
+              {/* Prev */}
               <button
-                className="text-purple-300/70 hover:text-purple-300 hover:scale-110 transition-all active:scale-90 p-1 cursor-pointer"
                 onClick={handlePrev}
-                aria-label="Canción anterior"
+                className="text-purple-300 hover:text-white p-3 hover:bg-white/10 rounded-full transition-all transform active:scale-95 cursor-pointer"
+                title="Canción anterior (Shift + Flecha Izq)"
               >
                 <SkipBack className="w-6 h-6 fill-current" />
               </button>
 
+              {/* Play / Pause */}
               <button
                 onClick={togglePlay}
-                className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center bg-linear-to-br from-purple-400 to-purple-600 text-white rounded-full shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-110 hover:shadow-[0_0_35px_rgba(168,85,247,0.7)] transition-all active:scale-95 cursor-pointer"
-                aria-label={isPlaying ? "Pausar" : "Reproducir"}
+                className="w-16 h-16 rounded-full bg-linear-to-br from-purple-500 to-purple-700 text-white flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.6)] hover:shadow-[0_0_35px_rgba(168,85,247,0.8)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                title={isPlaying ? "Pausar (Espacio)" : "Reproducir (Espacio)"}
               >
                 {isPlaying ? (
-                  <Pause className="w-6 h-6 sm:w-7 sm:h-7 fill-current" />
+                  <Pause className="w-8 h-8 fill-current" />
                 ) : (
-                  <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-current ml-1" />
+                  <Play className="w-8 h-8 fill-current ml-1" />
                 )}
               </button>
 
+              {/* Next */}
               <button
-                className="text-purple-300/70 hover:text-purple-300 hover:scale-110 transition-all active:scale-90 p-1 cursor-pointer"
                 onClick={handleNext}
-                aria-label="Siguiente canción"
+                className="text-purple-300 hover:text-white p-3 hover:bg-white/10 rounded-full transition-all transform active:scale-95 cursor-pointer"
+                title="Siguiente canción (Shift + Flecha Der)"
               >
                 <SkipForward className="w-6 h-6 fill-current" />
               </button>
 
+              {/* Repeat */}
               <button
-                className={`p-2 rounded-full transition-all cursor-pointer ${
-                  repeatMode !== "off"
-                    ? "text-purple-300 bg-purple-500/20 border border-purple-400/40 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
-                    : "text-purple-300/40 hover:text-purple-300/80"
-                }`}
                 onClick={toggleRepeat}
-                aria-label="Repetir"
+                className={`p-2.5 rounded-full transition-all cursor-pointer ${
+                  repeatMode !== "off"
+                    ? "text-purple-400 bg-purple-500/20 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                    : "text-purple-300/50 hover:text-white hover:bg-white/5"
+                }`}
                 title={
                   repeatMode === "all"
                     ? "Repetir todo"
                     : repeatMode === "one"
-                    ? "Repetir esta canción"
-                    : "Repetir: Desactivado"
+                    ? "Repetir una canción"
+                    : "No repetir"
                 }
               >
-                {repeatMode === "one" ? <Repeat1 className="w-4 h-4" /> : <Repeat className="w-4 h-4" />}
+                {repeatMode === "one" ? (
+                  <Repeat1 className="w-4 h-4" />
+                ) : (
+                  <Repeat className="w-4 h-4" />
+                )}
               </button>
             </div>
 
-            {/* Volume Control Bar */}
-            <div className="flex items-center gap-3 w-full max-w-[240px] px-3 py-1.5 rounded-full bg-white/5 border border-purple-500/10 mb-4">
+            {/* Volume Control */}
+            <div className="flex items-center gap-3 w-full px-2 mb-6">
               <button
                 onClick={toggleMute}
                 className="text-purple-300/70 hover:text-white transition-colors cursor-pointer"
-                aria-label={isMuted ? "Desactivar silencio" : "Silenciar"}
+                title={isMuted ? "Desactivar silencio (M)" : "Silenciar (M)"}
               >
                 {isMuted || volume === 0 ? (
-                  <VolumeX className="w-4 h-4" />
+                  <VolumeX className="w-4 h-4 text-rose-400" />
                 ) : volume < 0.5 ? (
                   <Volume1 className="w-4 h-4" />
                 ) : (
@@ -282,115 +282,132 @@ export default function MusicPlayer() {
               </button>
               <input
                 type="range"
-                min={0}
-                max={1}
-                step={0.01}
+                min="0"
+                max="1"
+                step="0.01"
                 value={isMuted ? 0 : volume}
                 onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-purple-950 rounded-full appearance-none cursor-pointer accent-purple-400"
-                aria-label="Control de volumen"
+                className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-400 focus:outline-none"
               />
-              <span className="text-[10px] font-mono text-purple-300/60 w-7 text-right">
-                {Math.round((isMuted ? 0 : volume) * 100)}%
+              <span className="text-[11px] font-mono text-purple-300/60 w-8 text-right">
+                {isMuted ? "0%" : `${Math.round(volume * 100)}%`}
               </span>
             </div>
 
-            {/* Playlist & Shortcuts toggle buttons */}
-            <div className="flex items-center justify-between w-full pt-2 border-t border-purple-500/10">
+            {/* Secondary Toolbar: Playlist & Shortcuts */}
+            <div className="flex items-center justify-between w-full pt-4 border-t border-purple-500/20 text-xs">
+              <button
+                onClick={() => setShowPlaylist(!showPlaylist)}
+                className="flex items-center gap-1.5 text-purple-300/80 hover:text-purple-200 bg-white/5 hover:bg-white/10 px-3.5 py-1.5 rounded-full transition-all cursor-pointer"
+              >
+                <ListMusic className="w-3.5 h-3.5 text-purple-400" />
+                <span>Lista ({songs.length})</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform ${
+                    showPlaylist ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
               <button
                 onClick={() => setShowShortcuts(!showShortcuts)}
-                className="flex items-center gap-1.5 text-[11px] text-purple-400/60 hover:text-purple-300 transition-colors cursor-pointer"
-                title="Atajos de teclado"
+                className="flex items-center gap-1 text-purple-300/60 hover:text-purple-200 px-2 py-1 transition-colors cursor-pointer"
+                title="Ver atajos de teclado"
               >
                 <Keyboard className="w-3.5 h-3.5" />
                 <span>Atajos</span>
               </button>
-
-              <button
-                onClick={() => setShowPlaylist(!showPlaylist)}
-                className="flex items-center gap-2 text-purple-400/80 hover:text-purple-300 text-xs tracking-wider uppercase font-medium transition-all hover:gap-3 cursor-pointer"
-                aria-label="Ver lista de canciones"
-              >
-                <span>Playlist ({songs.length})</span>
-                <motion.div animate={{ rotate: showPlaylist ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                  <ChevronDown className="w-4 h-4" />
-                </motion.div>
-              </button>
             </div>
-
-            {/* Shortcuts info dropdown */}
-            <AnimatePresence>
-              {showShortcuts && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="w-full mt-3 p-3 bg-purple-950/40 border border-purple-500/20 rounded-xl text-[11px] text-purple-200/80 space-y-1 font-mono"
-                >
-                  <p className="flex justify-between">
-                    <span>Espacio:</span>
-                    <span className="text-purple-300 font-bold">Play / Pausa</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span>M:</span>
-                    <span className="text-purple-300 font-bold">Silenciar</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span>Shift + ➔:</span>
-                    <span className="text-purple-300 font-bold">Siguiente</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span>Shift + ⬅:</span>
-                    <span className="text-purple-300 font-bold">Anterior</span>
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </div>
 
-        {/* Playlist Dropdown */}
+        {/* Shortcuts Dropdown */}
+        <AnimatePresence>
+          {showShortcuts && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="w-full mt-3 bg-slate-950/80 border border-purple-500/20 rounded-2xl p-4 text-xs text-purple-200/80 backdrop-blur-md"
+            >
+              <p className="font-bold text-white mb-2 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                Atajos de teclado globales:
+              </p>
+              <div className="grid grid-cols-2 gap-2 text-[11px]">
+                <div><kbd className="px-1.5 py-0.5 bg-white/10 rounded text-purple-300">Espacio</kbd> Play / Pausa</div>
+                <div><kbd className="px-1.5 py-0.5 bg-white/10 rounded text-purple-300">M</kbd> Silenciar / Activar</div>
+                <div><kbd className="px-1.5 py-0.5 bg-white/10 rounded text-purple-300">Shift + →</kbd> Siguiente</div>
+                <div><kbd className="px-1.5 py-0.5 bg-white/10 rounded text-purple-300">Shift + ←</kbd> Anterior</div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Playlist Modal / Accordion */}
         <AnimatePresence>
           {showPlaylist && (
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.97 }}
-              transition={{ duration: 0.3 }}
-              className="w-full mt-3 bg-white/5 backdrop-blur-xl border border-purple-500/20 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(168,85,247,0.12)] max-h-80 overflow-y-auto"
+              initial={{ opacity: 0, y: 10, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: "auto" }}
+              exit={{ opacity: 0, y: 10, height: 0 }}
+              className="w-full mt-4 bg-slate-950/90 border border-purple-500/30 rounded-2xl p-4 shadow-xl backdrop-blur-xl max-h-80 flex flex-col"
             >
-              {songs.map((song, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleSelectSong(index)}
-                  className={`w-full flex items-center gap-4 px-5 py-3.5 text-left transition-all duration-200 hover:bg-purple-500/10 cursor-pointer ${
-                    index === currentIndex
-                      ? "bg-purple-500/15 border-l-2 border-purple-400"
-                      : "border-l-2 border-transparent"
-                  } ${index !== songs.length - 1 ? "border-b border-purple-500/10" : ""}`}
-                >
-                  <span className="text-xs text-purple-500/60 font-mono w-5 shrink-0">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div
-                    className={`w-2 h-2 rounded-full shrink-0 ${
-                      index === currentIndex && isPlaying
-                        ? "bg-purple-400 animate-pulse"
-                        : "bg-purple-700/40"
-                    }`}
-                  />
-                  <span
-                    className={`text-sm font-medium tracking-wide truncate ${
-                      index === currentIndex ? "text-purple-200" : "text-purple-300/60"
-                    }`}
+              {/* Search in Playlist */}
+              <div className="relative mb-3">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-purple-400" />
+                <input
+                  type="text"
+                  value={playlistSearch}
+                  onChange={(e) => setPlaylistSearch(e.target.value)}
+                  placeholder="Buscar canción..."
+                  className="w-full pl-9 pr-8 py-1.5 bg-white/5 border border-purple-500/20 focus:border-purple-400 rounded-xl text-xs text-white placeholder:text-purple-300/50 outline-none"
+                />
+                {playlistSearch && (
+                  <button
+                    onClick={() => setPlaylistSearch("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-white/50 hover:text-white"
                   >
-                    {song.title}
-                  </span>
-                  {index === currentIndex && isPlaying && (
-                    <span className="ml-auto text-xs text-purple-400 animate-pulse">♪</span>
-                  )}
-                </button>
-              ))}
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+
+              {/* Song List */}
+              <div className="overflow-y-auto space-y-1 flex-1 pr-1">
+                {filteredSongs.map((song) => {
+                  const originalIdx = songs.findIndex((s) => s.file === song.file);
+                  const isCurrent = originalIdx === currentIndex;
+
+                  return (
+                    <button
+                      key={song.file}
+                      onClick={() => handleSelectSong(originalIdx)}
+                      className={`w-full flex items-center justify-between p-2.5 rounded-xl text-left transition-all text-xs cursor-pointer ${
+                        isCurrent
+                          ? "bg-purple-600/30 text-white border border-purple-500/40"
+                          : "hover:bg-white/5 text-purple-200/80"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 truncate">
+                        <span className="w-4 font-mono text-[10px] text-purple-400 shrink-0">
+                          {(originalIdx + 1).toString().padStart(2, "0")}
+                        </span>
+                        <span className="truncate font-medium">{song.title}</span>
+                      </div>
+
+                      {isCurrent && (
+                        <div className="flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                          <span className="text-[10px] font-bold text-purple-300">
+                            {isPlaying ? "Sonando" : "Pausada"}
+                          </span>
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

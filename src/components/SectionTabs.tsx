@@ -32,9 +32,9 @@ export default function SectionTabs({ activeSection, onChangeSection }: SectionT
     },
     {
       id: "notas" as SectionType,
-      label: "Notas",
+      label: "Tablón & Notas",
       icon: StickyNote,
-      badge: "📝 Mensajes",
+      badge: "💌 Recuerdos",
     },
     {
       id: "a-tener-en-cuenta" as SectionType,

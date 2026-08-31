@@ -36,7 +36,7 @@ export default function FloatingMiniPlayer({ activeSection, onGoToMusic }: Float
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 80, opacity: 0, scale: 0.95 }}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          className="fixed bottom-4 sm:bottom-6 left-3 right-3 sm:left-auto sm:right-6 sm:max-w-md z-50 pointer-events-auto"
+          className="fixed bottom-4 sm:bottom-6 left-3 right-3 sm:left-6 sm:right-auto sm:max-w-md z-50 pointer-events-auto"
         >
           <div className="bg-slate-950/90 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-2.5 sm:p-3.5 shadow-[0_10px_35px_rgba(168,85,247,0.35)] flex items-center justify-between gap-3 text-white">
             {/* Left: Album cover with spinning disc + info */}
