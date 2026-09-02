@@ -28,7 +28,10 @@ export default function BackgroundEffects() {
   }, []);
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-[#070514]">
+    <div
+      className="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-[#070514]"
+      style={{ contain: "paint" }}
+    >
       {/* Deep gradient background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-purple-900/25 via-[#070514] to-black" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,var(--tw-gradient-stops))] from-fuchsia-900/15 via-transparent to-transparent" />

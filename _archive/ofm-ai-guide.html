@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI OFM — Guía Completa</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --border: #1e1e28;
+    --border2: #2a2a38;
+    --text: #e8e8f0;
+    --text-muted: #6b6b85;
+    --text-dim: #3a3a52;
+    --accent: #7c6af7;
+    --accent-soft: #5b4fd4;
+    --accent-glow: rgba(124, 106, 247, 0.15);
+    --accent2: #f7a26a;
+    --accent2-soft: rgba(247, 162, 106, 0.12);
+    --green: #4af7a2;
+    --green-soft: rgba(74, 247, 162, 0.1);
+    --red: #f76a6a;
+    --red-soft: rgba(247, 106, 106, 0.1);
+    --mono: 'DM Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    overflow-x: auto;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover {
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 120px 24px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(124, 106, 247, 0.3);
+    color: var(--accent);
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 20px;
+  }
+
+  .stat-num {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--accent);
+    font-family: var(--mono);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* SECTIONS */
+  .section {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    padding-top: 6px;
+    min-width: 28px;
+  }
+
+  .section-title-wrap h2 {
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .section-title-wrap p {
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 520px;
+  }
+
+  /* CONTENT BLOCKS */
+  .prose {
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 680px;
+  }
+
+  .prose strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .prose p { margin-bottom: 16px; }
+
+  /* CARDS */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 28px 0;
+  }
+
+  .card {
+    background: var(--surface);
+    padding: 24px;
+    transition: background 0.15s;
+  }
+
+  .card:hover { background: var(--surface2); }
+
+  .card-icon {
+    font-size: 20px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .card-badge {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--accent-glow);
+    color: var(--accent);
+  }
+
+  /* TABLE */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  th {
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 11px;
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td { background: var(--surface2); }
+
+  td strong { color: var(--text); font-weight: 500; }
+
+  /* CODE BLOCKS */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 20px 0;
+    overflow: hidden;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .code-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .code-dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .code-dots span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  .dot-r { background: #f76a6a; opacity: 0.6; }
+  .dot-y { background: #f7c96a; opacity: 0.6; }
+  .dot-g { background: #4af7a2; opacity: 0.6; }
+
+  .code-body {
+    padding: 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.8;
+    color: #a0a0c0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .code-body .cm { color: #5b5b7a; }
+  .code-body .kw { color: var(--accent); }
+  .code-body .str { color: var(--green); }
+  .code-body .num { color: var(--accent2); }
+  .code-body .hl { color: var(--text); font-weight: 500; }
+
+  /* FLOW DIAGRAM */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+    max-width: 480px;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .flow-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 36px;
+  }
+
+  .flow-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    outline: 1px solid var(--accent);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .flow-line {
+    width: 1px;
+    flex: 1;
+    min-height: 24px;
+    background: var(--border2);
+    margin: 2px 0;
+  }
+
+  .flow-step:last-child .flow-line { display: none; }
+
+  .flow-content {
+    padding: 2px 0 20px 12px;
+  }
+
+  .flow-content strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .flow-content span {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* PILLS / TAGS */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 16px 0;
+  }
+
+  .tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    color: var(--text-muted);
+    font-family: var(--mono);
+  }
+
+  .tag.green { border-color: rgba(74, 247, 162, 0.3); color: var(--green); background: var(--green-soft); }
+  .tag.purple { border-color: rgba(124, 106, 247, 0.3); color: var(--accent); background: var(--accent-glow); }
+  .tag.orange { border-color: rgba(247, 162, 106, 0.3); color: var(--accent2); background: var(--accent2-soft); }
+  .tag.red { border-color: rgba(247, 106, 106, 0.3); color: var(--red); background: var(--red-soft); }
+
+  /* ALERT BOXES */
+  .alert {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  .alert.info { background: var(--accent-glow); border: 1px solid rgba(124, 106, 247, 0.25); color: #b0aaee; }
+  .alert.warning { background: var(--accent2-soft); border: 1px solid rgba(247, 162, 106, 0.25); color: #d4b080; }
+  .alert.success { background: var(--green-soft); border: 1px solid rgba(74, 247, 162, 0.25); color: #80d4aa; }
+  .alert.danger { background: var(--red-soft); border: 1px solid rgba(247, 106, 106, 0.25); color: #d48080; }
+
+  /* REVENUE BARS */
+  .revenue-item {
+    display: grid;
+    grid-template-columns: 130px 1fr 60px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .revenue-label { font-size: 12px; color: var(--text-muted); }
+
+  .revenue-bar-wrap {
+    background: var(--surface2);
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+  }
+
+  .revenue-bar {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--accent);
+  }
+
+  .revenue-pct {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-align: right;
+  }
+
+  /* PLATFORM CARDS */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .platform-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .platform-card:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+  }
+
+  .platform-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .platform-priority {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  .p1 { background: rgba(74, 247, 162, 0.12); color: var(--green); }
+  .p2 { background: rgba(124, 106, 247, 0.12); color: var(--accent); }
+  .p3 { background: rgba(247, 162, 106, 0.12); color: var(--accent2); }
+  .p-warn { background: rgba(247, 106, 106, 0.12); color: var(--red); }
+
+  .platform-list {
+    list-style: none;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .platform-list li {
+    padding: 3px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .platform-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--text-dim);
+  }
+
+  /* TOOL GRID */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .tool-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .tool-name {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .tool-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .tool-free {
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--green);
+    background: var(--green-soft);
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    margin: 24px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .timeline-phase {
+    background: var(--surface);
+    padding: 20px;
+  }
+
+  .phase-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .phase-title {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .phase-items {
+    list-style: none;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .phase-items li {
+    padding: 3px 0;
+    padding-left: 12px;
+    position: relative;
+  }
+
+  .phase-items li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-dim);
+    font-size: 10px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  /* SUBSECTION */
+  .subsection {
+    margin-bottom: 40px;
+  }
+
+  .subsection h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .subsection h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 200px;
+  }
+
+  .subsection h4 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin: 16px 0 8px;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  /* SCRIPT BLOCK */
+  .script-block {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .script-block strong {
+    color: var(--accent2);
+    font-style: normal;
+    font-size: 11px;
+    font-family: var(--mono);
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+
+  /* SCROLL TO TOP */
+  .scroll-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 40px; height: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .scroll-top:hover {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  /* INDEX */
+  .index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+    margin: 32px 0;
+  }
+
+  .index-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+
+  .index-item:hover {
+    background: var(--surface2);
+    color: var(--text);
+    border-color: var(--border2);
+  }
+
+  .index-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    nav { padding: 0 16px; }
+    .nav-links { display: none; }
+    .container, .hero { padding: 0 16px; }
+    .hero { padding-top: 88px; }
+    .revenue-item { grid-template-columns: 100px 1fr 50px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AI OFM / GUIDE</div>
+  <ul class="nav-links">
+    <li><a href="#economia">Economía</a></li>
+    <li><a href="#nichos">Sub-Nichos</a></li>
+    <li><a href="#setup">Setup</a></li>
+    <li><a href="#plataformas">Plataformas</a></li>
+    <li><a href="#contenido">Contenido</a></li>
+    <li><a href="#chatting">Chatting</a></li>
+    <li><a href="#herramientas">Herramientas</a></li>
+    <li><a href="#legal">Legal</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Guía Operativa 2024–2025</div>
+  <h1>El sistema completo de<br><span>AI OnlyFans Management</span></h1>
+  <p class="hero-desc">Todo lo que necesitas para construir, lanzar y escalar una operación OFM usando inteligencia artificial — desde cero, desde Colombia.</p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">$2B+</div>
+      <div class="stat-label">Revenue anual en OF</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">70%</div>
+      <div class="stat-label">Revenue viene de DMs</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">20–50%</div>
+      <div class="stat-label">Split agencia/modelo</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3–6m</div>
+      <div class="stat-label">Tiempo al primer revenue</div>
+    </div>
+  </div>
+</div>
+
+<!-- ÍNDICE -->
+<div class="container">
+  <div class="section" id="indice">
+    <div class="section-header">
+      <div class="section-num">00</div>
+      <div class="section-title-wrap">
+        <h2>Índice de contenido</h2>
+        <p>Navega directamente a la sección que necesitas</p>
+      </div>
+    </div>
+    <div class="index-grid">
+      <a href="#economia" class="index-item"><span class="index-num">01</span> Economía OFM</a>
+      <a href="#nichos" class="index-item"><span class="index-num">02</span> Sub-Nichos</a>
+      <a href="#setup" class="index-item"><span class="index-num">03</span> Setup iPhone + VPN</a>
+      <a href="#plataformas" class="index-item"><span class="index-num">04</span> Plataformas</a>
+      <a href="#sfw" class="index-item"><span class="index-num">05</span> SFW vs NSFW</a>
+      <a href="#persona" class="index-item"><span class="index-num">06</span> AI Persona</a>
+      <a href="#contenido" class="index-item"><span class="index-num">07</span> Producción de Contenido</a>
+      <a href="#prompts" class="index-item"><span class="index-num">08</span> Estructura de Prompts</a>
+      <a href="#chatting" class="index-item"><span class="index-num">09</span> Chatting & PPV</a>
+      <a href="#herramientas" class="index-item"><span class="index-num">10</span> Herramientas Gratuitas</a>
+      <a href="#pagos" class="index-item"><span class="index-num">11</span> Pagos desde Colombia</a>
+      <a href="#legal" class="index-item"><span class="index-num">12</span> Legal & Fiscal</a>
+      <a href="#errores" class="index-item"><span class="index-num">13</span> Errores Fatales</a>
+      <a href="#roadmap" class="index-item"><span class="index-num">14</span> Roadmap 90 días</a>
+    </div>
+  </div>
+</div>
+
+<!-- 01 ECONOMÍA -->
+<div class="container">
+  <div class="section" id="economia">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title-wrap">
+        <h2>La economía OFM</h2>
+        <p>Cómo fluye el dinero y dónde está la oportunidad real</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>OnlyFans Management (OFM) es el modelo de negocio donde <strong>tú eres el operador, no el creador de contenido</strong>. Gestionas cuentas, sistemas de ventas, marketing y chatting — la modelo (o persona IA) es el producto; tú eres la empresa detrás.</p>
+      <p>La plataforma OnlyFans tiene más de 220 millones de usuarios registrados y genera más de $2B en pagos anuales a creadores. El ecosistema completo — agencias, chatters, editores, tráfico — es múltiplos de eso.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="subsection">
+      <h3>Cómo se distribuye el revenue</h3>
+      <div style="margin: 20px 0;">
+        <div class="revenue-item">
+          <span class="revenue-label">PPV (Pay Per View)</span>
+          <div class="revenue-bar-wrap"><div class="revenue-bar" style="width: 55%; background: var(--accent);"></div></div>
+          <span class="revenue-pct">55%</span>
+        </div>
+        <div class="revenue-item">
+          <span class="revenue-label">Subscripciones</span>
+          <div class="revenue-bar-wrap"><div class="revenue-bar" style="width: 25%; background: var(--accent-soft);"></div></div>
+          <span class="revenue-pct">25%</span>
+        </div>
+        <div class="revenue-item">
+          <span class="revenue-label">Tips</span>
+          <div class="revenue-bar-wrap"><div class="revenue-bar" style="width: 12%; background: var(--accent2);"></div></div>
+          <span class="revenue-pct">12%</span>
+        </div>
+        <div class="revenue-item">
+          <span class="revenue-label">Customs</span>
+          <div class="revenue-bar-wrap"><div class="revenue-bar" style="width: 8%; background: #5b7af7;"></div></div>
+          <span class="revenue-pct">8%</span>
+        </div>
+      </div>
+      <div class="alert info">
+        <span class="alert-icon">💡</span>
+        <span>El PPV en DMs es el driver principal de revenue. Un fan que paga $20/mes en suscripción puede gastar $200/mes en PPV si el chatting está activo y bien ejecutado. Esta es la diferencia entre una cuenta de $1K/mes y una de $20K/mes.</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Los 4 roles del ecosistema OFM</h3>
+      <div class="cards">
+        <div class="card">
+          <span class="card-icon">🏢</span>
+          <h3>Agencia OFM</h3>
+          <p>Gestiona cuentas de modelos reales. Toma 20–50% del revenue bruto. Provee chatting, edición, marketing y estrategia.</p>
+          <span class="card-badge">$10K–$200K/mes</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">🤖</span>
+          <h3>AI Persona Operator</h3>
+          <p>Opera cuentas de personajes IA 100% generados. Sin modelo real. Revenue 100% para el operador menos fees de plataforma.</p>
+          <span class="card-badge">$2K–$50K/mes</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">💬</span>
+          <h3>Chatter Agency</h3>
+          <p>Provee chatters entrenados a agencias OFM. Cobras por cuenta manejada. El modelo más escalable y de bajo riesgo.</p>
+          <span class="card-badge">$3K–$15K/mes</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">📈</span>
+          <h3>Traffic Agency</h3>
+          <p>Gestiona el crecimiento en redes sociales para cuentas OFM. El cuello de botella de todo el ecosistema.</p>
+          <span class="card-badge">$5K–$30K/mes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 NICHOS -->
+<div class="container">
+  <div class="section" id="nichos">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title-wrap">
+        <h2>Sub-nichos OFM</h2>
+        <p>Cada nicho tiene dinámicas distintas de revenue, esfuerzo y velocidad</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nicho</th>
+            <th>Revenue potencial</th>
+            <th>Tiempo primer ingreso</th>
+            <th>Esfuerzo inicial</th>
+            <th>Competencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>AI Persona</strong></td>
+            <td>$2K–$50K/mes</td>
+            <td>2–4 meses</td>
+            <td>Alto (setup)</td>
+            <td>Media-Alta</td>
+          </tr>
+          <tr>
+            <td><strong>Agencia OFM (modelos reales)</strong></td>
+            <td>$10K–$200K/mes</td>
+            <td>1–3 meses</td>
+            <td>Muy Alto</td>
+            <td>Alta</td>
+          </tr>
+          <tr>
+            <td><strong>Chatter Agency</strong></td>
+            <td>$3K–$15K/mes</td>
+            <td>2–4 semanas</td>
+            <td>Medio</td>
+            <td>Media</td>
+          </tr>
+          <tr>
+            <td><strong>Content Production</strong></td>
+            <td>$2K–$8K/mes</td>
+            <td>1–2 semanas</td>
+            <td>Bajo-Medio</td>
+            <td>Baja</td>
+          </tr>
+          <tr>
+            <td><strong>Traffic Agency</strong></td>
+            <td>$5K–$30K/mes</td>
+            <td>2–3 meses</td>
+            <td>Alto</td>
+            <td>Media</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert warning">
+      <span class="alert-icon">⚠️</span>
+      <span><strong>Para AI Personas específicamente:</strong> OnlyFans está comenzando a requerir verificación de identidad de creadores. Fanvue y Fansly son más permisivos con personas IA. Empieza en Fanvue y expande a OF cuando tengas tracción y entiendas mejor los ToS actuales.</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="subsection">
+      <h3>Micro-nichos con menos competencia</h3>
+      <div class="tags">
+        <span class="tag green">Fitness / Gym</span>
+        <span class="tag green">Gamer Girl</span>
+        <span class="tag green">Latina / Exotic</span>
+        <span class="tag green">ASMR / Voz</span>
+        <span class="tag green">Cosplay / Anime</span>
+        <span class="tag purple">Alt / E-girl</span>
+        <span class="tag purple">Yoga / Wellness</span>
+        <span class="tag purple">Artsy / Aesthetic</span>
+        <span class="tag orange">MILF (AI)</span>
+        <span class="tag orange">College Student</span>
+      </div>
+      <p class="prose">Los micro-nichos tienen audiencias más pequeñas pero fans con LTV (lifetime value) mucho más alto. Un fan de cosplay puede gastar 3x más que un fan genérico porque la conexión es más específica.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 03 SETUP -->
+<div class="container">
+  <div class="section" id="setup">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title-wrap">
+        <h2>Setup iPhone + VPN + Número</h2>
+        <p>Infraestructura limpia para tu operación desde Colombia</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Reset del iPhone</h3>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <strong>Factory Reset completo</strong>
+            <span>Ajustes → General → Transferir o restablecer → Borrar contenido y configuración</span>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <strong>Apple ID nuevo</strong>
+            <span>Crea un Apple ID completamente nuevo. Usa un email de negocio (ProtonMail recomendado). Nunca vincules tu Apple ID personal.</span>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <strong>Instala VPN antes de todo</strong>
+            <span>La primera app que instalas es el VPN. Después de eso, todo el tráfico va encriptado.</span>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content">
+            <strong>Nunca mezcles uso personal</strong>
+            <span>Este dispositivo es solo para el negocio OFM. Nada de cuentas personales, Gmail propio, o apps personales.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>VPN — Configuración profunda</h3>
+      <div class="prose">
+        <p>Las plataformas usan múltiples señales para detectar tu ubicación real: IP del dispositivo, GPS, zona horaria del sistema, y patrones de comportamiento. El VPN solo cubre la IP. Aquí está cómo cubrir todo:</p>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <span class="card-icon">🔒</span>
+          <h3>Mullvad VPN</h3>
+          <p>El mejor para privacidad. No guarda logs, acepta pago anónimo, sin cuenta de email. $5/mes.</p>
+          <span class="card-badge">Recomendado #1</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">🛡️</span>
+          <h3>ProtonVPN</h3>
+          <p>Plan gratuito con servidores USA disponibles. Más lento que Mullvad pero funcional para empezar sin costo.</p>
+          <span class="card-badge">Gratis disponible</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">⚡</span>
+          <h3>Windscribe</h3>
+          <p>10GB gratis al mes. Buena velocidad. Servidores en USA y UK. Buena alternativa gratuita.</p>
+          <span class="card-badge">10GB gratis/mes</span>
+        </div>
+      </div>
+
+      <div class="code-block" style="margin-top: 20px;">
+        <div class="code-header">
+          <span class="code-label">configuración crítica</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body"><span class="kw">SERVIDOR FIJO:</span>  <span class="str">New York, USA</span>  <span class="cm">← nunca lo cambies</span>
+<span class="kw">ZONA HORARIA:</span>  Ajustes → General → Idioma y región → EST
+<span class="kw">KILL SWITCH:</span>   Activa en la app VPN <span class="cm">← corta internet si VPN falla</span>
+<span class="kw">ALWAYS ON:</span>     VPN activo antes de abrir cualquier app
+
+<span class="cm">⚠ Si cambias de servidor o país, las plataformas
+  detectan el cambio de IP y pueden bloquear la cuenta</span></div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Número virtual de USA desde Colombia</h3>
+
+      <div class="subsection">
+        <h4>Opción 1 — TextNow (gratuito)</h4>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <strong>Activa VPN en USA</strong>
+              <span>Servidor New York o Los Angeles activo antes de abrir la app</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <strong>Descarga TextNow de App Store</strong>
+              <span>Crea cuenta. Te asigna número de USA automáticamente.</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <strong>Mantenimiento</strong>
+              <span>Envía un mensaje desde la app cada 30 días para que el número no expire. Es crítico.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h4>Opción 2 — Google Voice (más estable)</h4>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <strong>VPN en USA activo</strong>
+              <span>Imprescindible — Google Voice solo está disponible en USA</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <strong>Abre voice.google.com</strong>
+              <span>Inicia sesión con tu Google Account de negocio (no personal)</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <strong>Selecciona tu número</strong>
+              <span>Elige área code 212 (NY) o 310 (LA) para mayor credibilidad</span>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <strong>Verifica con número colombiano</strong>
+              <span>Google pide verificar con un número real. Tu número colombiano personal funciona para este paso (solo una vez).</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h4>Opción 3 — Hushed ($5/mes, más confiable)</h4>
+        <p class="prose">Para verificaciones de Twitter Blue o plataformas más exigentes. Hushed y Burner son apps de números virtuales de pago. La ventaja: números más estables, menos detectados como VoIP por las plataformas.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 SFW vs NSFW -->
+<div class="container">
+  <div class="section" id="sfw">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title-wrap">
+        <h2>SFW vs NSFW — explicado</h2>
+        <p>La distinción más importante de tu estrategia de contenido</p>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">✅</span>
+        <h3>SFW — Safe For Work</h3>
+        <p>Contenido apto para todo público. No contiene nudez, lenguaje sexual explícito ni material adulto. Se puede ver en cualquier plataforma y en cualquier contexto.</p>
+        <div class="tags" style="margin-top: 12px;">
+          <span class="tag green">TikTok ✓</span>
+          <span class="tag green">Instagram ✓</span>
+          <span class="tag green">Twitter ✓</span>
+          <span class="tag green">Reddit ✓</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔞</span>
+        <h3>NSFW — Not Safe For Work</h3>
+        <p>Contenido adulto. Requiere verificación de edad y plataformas específicas. Es el contenido premium detrás del paywall en Fanvue.</p>
+        <div class="tags" style="margin-top: 12px;">
+          <span class="tag red">TikTok ✗</span>
+          <span class="tag red">Instagram ✗</span>
+          <span class="tag orange">Twitter ⚠</span>
+          <span class="tag green">Fanvue ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="subsection">
+      <h3>El funnel correcto</h3>
+      <div class="alert success">
+        <span class="alert-icon">🎯</span>
+        <span>El contenido explícito <strong>nunca</strong> está en plataformas gratuitas. Solo en Fanvue, detrás del paywall. Las redes sociales son el gancho; Fanvue es la monetización.</span>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label">funnel de conversión</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body"><span class="kw">TikTok</span>  <span class="str">SFW puro</span>      → Audiencia masiva nueva (millones de alcance)
+    ↓
+<span class="kw">Twitter/X</span> <span class="str">SFW + NSFW suave</span> → Comunidad caliente (fans cercanos)
+    ↓
+<span class="kw">Fanvue</span>   <span class="str">NSFW completo</span>   → Monetización (paywall)
+    ↓
+<span class="kw">DMs</span>      <span class="str">PPV personalizado</span> → Revenue máximo (70% del total)</div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Qué cuenta como qué</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Contenido</th><th>Clasificación</th><th>Plataformas OK</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Retrato, lifestyle, café, viajes</td><td><span class="tag green">SFW</span></td><td>Todas</td></tr>
+            <tr><td>Ropa ajustada, fitness, bikini (no explícito)</td><td><span class="tag green">SFW</span></td><td>TikTok, Twitter, Reddit</td></tr>
+            <tr><td>Lencería sugestiva (no nudez)</td><td><span class="tag orange">SFW límite</span></td><td>Twitter/X (con flag activado), Reddit</td></tr>
+            <tr><td>Desnudo artístico parcial</td><td><span class="tag red">NSFW</span></td><td>Twitter/X (NSFW activado), Fanvue</td></tr>
+            <tr><td>Contenido explícito</td><td><span class="tag red">NSFW explícito</span></td><td>Solo Fanvue</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 PLATAFORMAS -->
+<div class="container">
+  <div class="section" id="plataformas">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title-wrap">
+        <h2>Plataformas a fondo</h2>
+        <p>Setup, estrategia y errores a evitar en cada una</p>
+      </div>
+    </div>
+
+    <!-- Twitter -->
+    <div class="subsection">
+      <h3>Twitter / X — Prioridad #1</h3>
+      <div class="alert success">
+        <span class="alert-icon">🔑</span>
+        <span>Twitter/X es el ecosistema principal del OFM. La audiencia está aquí, el tráfico hacia Fanvue es directo y de alta intención. Si solo puedes hacer una plataforma, hazla Twitter.</span>
+      </div>
+
+      <h4>Setup paso a paso</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>VPN USA activo</strong><span>Servidor fijo antes de abrir cualquier cosa</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Email ProtonMail nuevo</strong><span>Nunca tu email personal</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Número virtual USA</strong><span>TextNow o Google Voice para verificación</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Nombre y handle de tu persona IA</strong><span>Ejemplo: @EmmaVirtual o @LunaAI — memorable y único</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Foto de perfil + Banner</strong><span>Tu AI persona. Banner: imagen horizontal llamativa con link a Fanvue</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Bio + Pinned Tweet</strong><span>Bio: quién eres (en personaje) + link Fanvue. Pin: tu mejor foto</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Activa contenido sensible</strong><span>Ajustes → Privacidad → Contenido que ves → Medios con contenido para adultos</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Activa NSFW en tu perfil</strong><span>Ajustes → Tu cuenta → Configuración → Marcar como contenido para adultos</span></div>
+        </div>
+      </div>
+
+      <h4>Estrategia de crecimiento</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label">rutina diaria twitter</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body"><span class="hl">MAÑANA (15 min):</span>
+  <span class="str">→</span> 1 post SFW atractivo con imagen AI (foto lifestyle)
+  <span class="str">→</span> Reply a 5 cuentas grandes del nicho (comentario real, no spam)
+  <span class="str">→</span> Follow a 20 cuentas del nicho
+
+<span class="hl">TARDE (10 min):</span>
+  <span class="str">→</span> 1 post NSFW suave (activa más interacciones)
+  <span class="str">→</span> Responde a todos los replies/DMs
+
+<span class="hl">NOCHE (10 min):</span>
+  <span class="str">→</span> 1 post teaser con link a Fanvue
+  <span class="str">→</span> Unfollow cuentas que no siguieron de vuelta (herramienta: ManageFlitter)</div>
+      </div>
+
+      <div class="alert warning">
+        <span class="alert-icon">⚠️</span>
+        <span><strong>Twitter Blue ($8/mes):</strong> Necesario para monetización directa y mayor alcance. También aumenta la credibilidad de la cuenta. Requiere número de teléfono verificado. Págalo con tarjeta virtual (Nequi o Bancolombia Virtual) o PayPal.</span>
+      </div>
+    </div>
+
+    <!-- Reddit -->
+    <div class="subsection">
+      <h3>Reddit — Prioridad #2</h3>
+      <div class="prose">
+        <p>Reddit es el canal de tráfico gratuito más poderoso para OFM. Un solo post que se viraliza puede traer 1,000–5,000 visitas a tu Fanvue en 24 horas. La clave es entender que Reddit tiene un sistema de reputación (karma) que debes construir antes de poder promocionar.</p>
+      </div>
+
+      <h4>El problema del karma — y cómo resolverlo</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Semana 1–2: Build karma general</strong><span>Comenta en r/AskReddit, r/gaming, r/Colombia, r/memes. Necesitas 100–500 karma antes de postear en subs grandes.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Semana 3: Subreddits pequeños</strong><span>Empieza en subs con menos de 50K miembros y menos restricciones de karma.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>Semana 4+: Subreddits grandes</strong><span>Con 500+ karma accedes a r/OnlyFansPromotions, r/AIGirls y similares.</span></div>
+        </div>
+      </div>
+
+      <h4>Subreddits por objetivo</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Subreddit</th><th>Tipo contenido</th><th>Karma requerido</th><th>Links permitidos</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>r/AIGirls</strong></td><td>SFW/NSFW AI</td><td>~100</td><td>Sí (en comentarios)</td></tr>
+            <tr><td><strong>r/OnlyFansPromotions</strong></td><td>Promoción directa</td><td>~500</td><td>Sí</td></tr>
+            <tr><td><strong>r/StableDiffusion</strong></td><td>Arte AI (SFW)</td><td>Bajo</td><td>No directamente</td></tr>
+            <tr><td><strong>r/artificial</strong></td><td>AI en general</td><td>Bajo</td><td>No</td></tr>
+            <tr><td><strong>Nicho específico</strong></td><td>Depende del sub</td><td>Variable</td><td>Leer reglas</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TikTok -->
+    <div class="subsection">
+      <h3>TikTok — Prioridad #3</h3>
+      <div class="alert info">
+        <span class="alert-icon">📱</span>
+        <span>TikTok es solo para audiencia masiva SFW. El objetivo no es monetizar en TikTok — es llevar tráfico a Twitter/X, donde después se convierte a Fanvue. Piénsalo como la cima del funnel.</span>
+      </div>
+
+      <h4>Tipos de contenido que funcionan para AI personas</h4>
+      <div class="cards">
+        <div class="card">
+          <span class="card-icon">🌅</span>
+          <h3>Morning Routine</h3>
+          <p>Serie de clips de tu persona haciendo su mañana. Muy alto engagement. "POV: tu AI waifu despierta"</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">✨</span>
+          <h3>Outfit Reveals</h3>
+          <p>Transformación de outfit. Trending en el nicho. Usa audios virales de TikTok con tus clips de Veo/Kling.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">🎭</span>
+          <h3>Trend Participation</h3>
+          <p>Tu persona IA haciendo trends virales actuales. Adapta el audio trending a clips de tu personaje.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">🤖</span>
+          <h3>Behind the AI</h3>
+          <p>Muestra el proceso de creación de tu persona. "Cómo creé mi AI girlfriend" — alta curiosidad.</p>
+        </div>
+      </div>
+
+      <div class="alert danger">
+        <span class="alert-icon">🚫</span>
+        <span><strong>No puedes linkear Fanvue directamente desde TikTok.</strong> La cadena es: TikTok bio → Twitter/X → Fanvue. O usa Linktree como intermediario con todos tus links.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 AI PERSONA -->
+<div class="container">
+  <div class="section" id="persona">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title-wrap">
+        <h2>Construyendo tu AI Persona</h2>
+        <p>El activo más importante de toda la operación</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Tu AI persona no es solo un set de imágenes. Es un <strong>personaje completo con historia, personalidad y voz</strong>. Los fans pagan por la conexión emocional — si tu persona no tiene profundidad, el churn (cancelaciones) será alto y el LTV por fan bajo.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="subsection">
+      <h3>Character Sheet — Template</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label">character-sheet.txt</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body"><span class="cm">═══ IDENTIDAD ═══</span>
+<span class="kw">Nombre:</span>        <span class="str">Luna</span> (elige algo memorable, 1–2 sílabas)
+<span class="kw">Edad aparente:</span> <span class="str">24 años</span>
+<span class="kw">Nacionalidad:</span>  <span class="str">Colombiana / Latina</span> (ventaja competitiva)
+<span class="kw">Ciudad:</span>        <span class="str">Medellín</span> (específica, construye credibilidad)
+<span class="kw">Ocupación:</span>     <span class="str">Artista / Modelo independiente</span>
+
+<span class="cm">═══ APARIENCIA (para prompts) ═══</span>
+<span class="kw">Cabello:</span>       <span class="str">Long dark brown wavy hair, natural texture</span>
+<span class="kw">Ojos:</span>          <span class="str">Dark brown almond-shaped eyes, long lashes</span>
+<span class="kw">Piel:</span>          <span class="str">Warm olive skin tone, clear complexion</span>
+<span class="kw">Cara:</span>          <span class="str">Soft jawline, full lips, small rounded nose</span>
+<span class="kw">Cuerpo:</span>        <span class="str">Athletic, feminine curves, 5'6"</span>
+<span class="kw">Sin tatuajes:</span>  <span class="str">no tattoos, no piercings visible</span> (más flexible)
+
+<span class="cm">═══ PERSONALIDAD ═══</span>
+<span class="kw">Tono:</span>          <span class="str">Cálida, juguetona, algo misteriosa</span>
+<span class="kw">Intereses:</span>     <span class="str">Arte, café, música, viajes, naturaleza</span>
+<span class="kw">Habla como:</span>   <span class="str">Casual pero inteligente, usa emoji con moderación</span>
+<span class="kw">Hobbies:</span>       <span class="str">Fotografía, yoga matutino, cocina</span>
+
+<span class="cm">═══ BACKSTORY ═══</span>
+<span class="str">"Crecí en Medellín, siempre me gustó el arte y la fotografía.
+Decidí compartir mi mundo aquí. No soy perfecta — soy real."</span>
+
+<span class="cm">═══ SEED DE GENERACIÓN (guardar este número) ═══</span>
+<span class="kw">Seed:</span> <span class="num">XXXXXXXX</span> <span class="cm">← el que dio la cara que más te gustó</span></div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Consistencia visual — el problema más importante</h3>
+      <div class="prose">
+        <p>El mayor reto técnico de las AI personas es mantener la misma cara en cada imagen. Las herramientas de generación crean una cara diferente en cada prompt a menos que uses técnicas específicas.</p>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <span class="card-icon">🎲</span>
+          <h3>Seed Fijo</h3>
+          <p>Guarda el número de seed que generó la cara que te gustó. Úsalo siempre para mantener la cara base consistente.</p>
+          <span class="card-badge">Técnica básica</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">📌</span>
+          <h3>IP-Adapter</h3>
+          <p>Sube tu imagen de referencia y el modelo mantiene los rasgos faciales. Disponible en Tensor.art y ComfyUI.</p>
+          <span class="card-badge">Técnica intermedia</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">🎯</span>
+          <h3>InstantID / PuLID</h3>
+          <p>Las herramientas más avanzadas para face consistency. Resultado casi perfecto. Requiere instalación local.</p>
+          <span class="card-badge">Técnica avanzada</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 07 PROMPTS -->
+<div class="container">
+  <div class="section" id="prompts">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="section-title-wrap">
+        <h2>Estructura de Prompts</h2>
+        <p>La fórmula para contenido visual consistente y de calidad</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Fórmula maestra</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label">prompt-formula</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body"><span class="kw">[CHARACTER_REF]</span> <span class="str">+</span> <span class="kw">[ACCIÓN]</span> <span class="str">+</span> <span class="kw">[AMBIENTE]</span> <span class="str">+</span> <span class="kw">[ILUMINACIÓN]</span> <span class="str">+</span> <span class="kw">[CÁMARA]</span> <span class="str">+</span> <span class="kw">[MOOD]</span>
+
+<span class="cm">════════════════════════════════════</span>
+<span class="kw">CHARACTER_REF</span> <span class="cm">(siempre al inicio, igual en todos):</span>
+<span class="str">Young latin woman, 24, long dark wavy hair, dark brown 
+almond eyes, warm olive skin, soft facial features, 
+full lips, athletic figure —</span>
+
+<span class="kw">ACCIÓN:</span>
+<span class="str">sitting at marble cafe table, holding coffee cup,
+standing at window, walking through park, reading book...</span>
+
+<span class="kw">AMBIENTE:</span>
+<span class="str">cozy Parisian cafe, modern apartment, rooftop at sunset,
+misty forest, luxury hotel room, beach at golden hour...</span>
+
+<span class="kw">ILUMINACIÓN:</span>
+<span class="str">golden hour backlight, soft window light, studio lighting,
+dramatic side lighting, neon city reflections at night...</span>
+
+<span class="kw">CÁMARA:</span>
+<span class="str">85mm portrait lens, 35mm cinematic, close-up face,
+full body shot, POV intimate, over shoulder...</span>
+
+<span class="kw">MOOD / TÉCNICA:</span>
+<span class="str">photorealistic, 8K, shallow depth of field, bokeh,
+film grain, cinematic color grade, hyperdetailed skin</span></div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Prompts listos para usar</h3>
+
+      <h4>Portrait / Lifestyle</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label">prompt-portrait.txt</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body">Young latin woman, 24, long dark wavy hair, dark brown 
+almond eyes, warm olive skin, soft features, full lips — 
+sitting at marble cafe table in Paris, golden hour afternoon 
+light streaming through large windows, wearing cream oversized 
+sweater, holding coffee with both hands, slight dreamy smile, 
+looking out window. Shallow depth of field, bokeh background, 
+cinematic 85mm lens, warm color grade, film grain, 8K.</div>
+      </div>
+
+      <h4>Morning Routine (TikTok viral)</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label">prompt-morning.txt</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body">Young latin woman, 24, long dark wavy hair, dark brown eyes, 
+warm olive skin — slow morning routine in minimalist white 
+bedroom, soft natural window light, wearing white oversized 
+cotton t-shirt, stretching arms upward, hair slightly messy, 
+peaceful relaxed expression. Handheld intimate camera feel, 
+warm soft golden morning atmosphere, slow motion 60fps, 
+cinematic, 4K quality.</div>
+      </div>
+
+      <h4>Atmospheric / Emotional</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label">prompt-atmospheric.txt</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body">Young latin woman, 24, long dark wavy hair, dark brown eyes, 
+warm olive skin — standing at floor-to-ceiling window 
+overlooking rainy city at night, soft warm interior light 
+contrasting blue-grey outside, wearing silk robe, 
+contemplative expression with slight smile, rain droplets 
+on glass foreground, bokeh city lights, cinematic anamorphic 
+lens flares, slow breathing micro-motion, intimate atmosphere, 
+film noir color grade.</div>
+      </div>
+
+      <h4>Palabras clave de movimiento (para videos en Kling/Flow)</h4>
+      <div class="tags">
+        <span class="tag purple">subtle breathing movement</span>
+        <span class="tag purple">hair gently moving</span>
+        <span class="tag purple">slow cinematic push in</span>
+        <span class="tag purple">rack focus background</span>
+        <span class="tag purple">handheld camera feel</span>
+        <span class="tag purple">slow motion 60fps</span>
+        <span class="tag purple">micro-expressions</span>
+        <span class="tag purple">eyelashes flutter</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Palabras a EVITAR en prompts (filtros)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Evitar</th><th>Usar en cambio</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="tag red">sexy</span> (solo)</td><td><span class="tag green">alluring, confident, editorial</span></td></tr>
+            <tr><td><span class="tag red">seductive</span> (directo)</td><td><span class="tag green">mysterious, captivating, magnetic</span></td></tr>
+            <tr><td><span class="tag red">revealing clothes</span></td><td><span class="tag green">form-fitting, elegant, minimalist outfit</span></td></tr>
+            <tr><td><span class="tag red">explicit</span></td><td><span class="tag green">intimate atmosphere, editorial fashion</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 08 CHATTING -->
+<div class="container">
+  <div class="section" id="chatting">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <div class="section-title-wrap">
+        <h2>Chatting & PPV — El 70% del Revenue</h2>
+        <p>La habilidad más valiosa y más subestimada del OFM</p>
+      </div>
+    </div>
+
+    <div class="alert info">
+      <span class="alert-icon">💡</span>
+      <span>Un fan que paga $15/mes en suscripción puede gastar $300/mes en PPV si el chatting está bien ejecutado. La diferencia entre una cuenta de $500/mes y una de $10K/mes es casi siempre el chatting.</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="subsection">
+      <h3>Tipos de monetización en DMs</h3>
+      <div class="cards">
+        <div class="card">
+          <span class="card-icon">🔒</span>
+          <h3>PPV (Pay Per View)</h3>
+          <p>Envías contenido bloqueado en el DM. El fan paga para desbloquearlo. Precio: $5–$50 por mensaje. Es el método más efectivo.</p>
+          <span class="card-badge">$5–$50 por mensaje</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">🎨</span>
+          <h3>Custom Requests</h3>
+          <p>El fan pide algo específico (outfit, situación, mensaje de voz). Cobras por producirlo. Alta personalización = precio premium.</p>
+          <span class="card-badge">$20–$200 por custom</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">💕</span>
+          <h3>Conversación Premium</h3>
+          <p>Fans que pagan por atención y conexión emocional. Son los "whales" — gastan más que nadie. El chatting emocional los retiene.</p>
+          <span class="card-badge">LTV más alto</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">🎁</span>
+          <h3>Tip Farming</h3>
+          <p>Incentivas tips con contenido especial. "Manda tip de $10 y te mando algo especial". Funciona mejor con fans fidelizados.</p>
+          <span class="card-badge">$5–$100 por tip</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Scripts reales de conversación</h3>
+
+      <h4>Script de apertura (fan nuevo que entra a Fanvue)</h4>
+      <div class="script-block">
+        <strong>TÚ (como Luna):</strong>
+        Heyy! Gracias por suscribirte 🥰 Eres de los pocos que llegan aquí... me encanta que estés. ¿Cómo te llamas? Quiero conocerte un poco 💫
+      </div>
+
+      <h4>Script de PPV (enviando contenido bloqueado)</h4>
+      <div class="script-block">
+        <strong>SITUACIÓN: Fan lleva 3 días en la cuenta</strong>
+        Hoy me tomé algo especial para ti... no lo puse en el feed porque quería que tú lo vieras primero 🖤 [CONTENIDO BLOQUEADO - $18] Dime qué piensas cuando lo veas 👀
+      </div>
+
+      <h4>Script de retención (fan que no abre DMs hace días)</h4>
+      <div class="script-block">
+        <strong>TÚ:</strong>
+        Oye... llevo días pensando en mandarte esto pero no sé 🙈 ¿Sigues ahí? Tengo algo guardado justo para ti [CONTENIDO BLOQUEADO - $12]
+      </div>
+
+      <h4>Script de custom request</h4>
+      <div class="script-block">
+        <strong>FAN:</strong> ¿Puedes hacerme algo con [outfit/situación específica]?<br><br>
+        <strong>TÚ:</strong> Oooh me gusta esa idea 🔥 Para algo así me tomo mi tiempo para hacerlo bien... sería $[precio]. ¿Lo hacemos? ✨
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Herramientas de chatting con IA</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Herramienta</th><th>Función</th><th>Precio</th><th>Nivel</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>SuperCreator</strong></td><td>IA que responde DMs en el tono de tu persona. CRM completo para OFM.</td><td>~$50/mes</td><td>Avanzado</td></tr>
+            <tr><td><strong>Mango</strong></td><td>CRM + chatting IA. Similar a SuperCreator, más enfocado en analytics.</td><td>~$40/mes</td><td>Avanzado</td></tr>
+            <tr><td><strong>Tú mismo</strong></td><td>Al principio el chatting manual te enseña los patrones. Imprescindible antes de automatizar.</td><td>Gratis</td><td>Principiante</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert warning">
+        <span class="alert-icon">⚠️</span>
+        <span><strong>Importante:</strong> Haz el chatting tú mismo las primeras semanas aunque sea una persona IA. Aprenderás qué tipo de mensajes convierten, qué preguntan los fans, y qué scripts funcionan. Sin ese conocimiento, la IA de chatting no podrá replicar lo que funciona.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 HERRAMIENTAS -->
+<div class="container">
+  <div class="section" id="herramientas">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div class="section-title-wrap">
+        <h2>Stack completo de herramientas gratuitas</h2>
+        <p>Todo lo que necesitas sin gastar un peso para empezar</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Generación de imágenes</h3>
+      <div class="tool-grid">
+        <div class="tool-item">
+          <div class="tool-name">Tensor.art</div>
+          <div class="tool-desc">Flux.1 online. Créditos gratuitos diarios. La mejor calidad fotorrealista disponible sin GPU.</div>
+          <span class="tool-free">GRATIS / créditos diarios</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Civitai</div>
+          <div class="tool-desc">Miles de modelos especializados. Comunidad enorme con prompts compartidos. Generación online.</div>
+          <span class="tool-free">GRATIS / créditos</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Google ImageFX</div>
+          <div class="tool-desc">Basado en Imagen 3. Calidad muy alta para SFW. Límites generosos actualmente.</div>
+          <span class="tool-free">GRATIS</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">SD Local (AUTOMATIC1111)</div>
+          <div class="tool-desc">Sin límites, máximo control. Requiere GPU Nvidia 4GB+. Curva de aprendizaje alta pero vale la pena.</div>
+          <span class="tool-free">GRATIS (con GPU)</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">ComfyUI</div>
+          <div class="tool-desc">Más eficiente en memoria que A1111. Flujos visuales. IP-Adapter para consistencia facial.</div>
+          <span class="tool-free">GRATIS (con GPU)</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Mage.space</div>
+          <div class="tool-desc">Generación online, varios modelos, sin registro requerido. Bueno para probar estilos rápido.</div>
+          <span class="tool-free">GRATIS básico</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Generación de video</h3>
+      <div class="tool-grid">
+        <div class="tool-item">
+          <div class="tool-name">Kling AI</div>
+          <div class="tool-desc">El mejor para image-to-video gratuito. Sube tu imagen de referencia y anímala. Créditos diarios gratuitos.</div>
+          <span class="tool-free">GRATIS / créditos</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Google Flow / Veo 3</div>
+          <div class="tool-desc">Calidad cinemática superior para SFW. Acceso via Google Labs. Límite de generaciones diarias.</div>
+          <span class="tool-free">GRATIS limitado</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Pika Labs</div>
+          <div class="tool-desc">150 créditos/mes gratis. Excelente para movimientos sutiles: respiración, pelo, parpadeo.</div>
+          <span class="tool-free">150 créditos/mes</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Runway ML</div>
+          <div class="tool-desc">125 créditos gratis al registrarte. Gen-3 Alpha es calidad cinematográfica. Se agotan rápido.</div>
+          <span class="tool-free">125 créditos inicio</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Hailuo (MiniMax)</div>
+          <div class="tool-desc">Alternativa a Kling. Calidad comparable. Créditos gratuitos. Bueno para tener como backup.</div>
+          <span class="tool-free">GRATIS / créditos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Edición y publicación</h3>
+      <div class="tool-grid">
+        <div class="tool-item">
+          <div class="tool-name">CapCut</div>
+          <div class="tool-desc">Edición de video completa en iPhone. Gratis, potente, con templates virales de TikTok incluidos.</div>
+          <span class="tool-free">GRATIS</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Buffer</div>
+          <div class="tool-desc">Programa posts en hasta 3 cuentas gratis. Suficiente para Twitter + Reddit + TikTok.</div>
+          <span class="tool-free">GRATIS 3 cuentas</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Canva</div>
+          <div class="tool-desc">Crea banners, collages y material de marca para tu persona IA. Templates listos.</div>
+          <span class="tool-free">GRATIS básico</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Linktree</div>
+          <div class="tool-desc">Un link en bio que lleva a todos tus perfiles + Fanvue. Soluciona el problema de "solo un link".</div>
+          <span class="tool-free">GRATIS</span>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">Notion</div>
+          <div class="tool-desc">Calendario de contenido, tracking de métricas, banco de scripts. Tu sistema operativo del negocio.</div>
+          <span class="tool-free">GRATIS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Workflow semanal completo</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label">rutina-semanal.txt</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body"><span class="hl">LUNES (2h) — Producción de imágenes:</span>
+  <span class="str">→</span> Tensor.art: 20 fotos estáticas (distintos outfits y ambientes)
+  <span class="str">→</span> Civitai: 10 variaciones adicionales
+  <span class="str">→</span> Organizar en carpetas: SFW / NSFW-suave / Fanvue
+
+<span class="hl">MARTES (1.5h) — Producción de video:</span>
+  <span class="str">→</span> Kling AI: 5 clips animados (image-to-video)
+  <span class="str">→</span> Google Flow: 2 videos elaborados SFW
+  <span class="str">→</span> CapCut: editar y exportar en 9:16 y 1:1
+
+<span class="hl">MIÉRCOLES (1h) — Programación:</span>
+  <span class="str">→</span> Buffer: programa toda la semana
+  <span class="str">→</span> Actualiza Fanvue con 2–3 posts nuevos
+  <span class="str">→</span> Prepara 5 DMs de PPV para enviar
+
+<span class="hl">JUEVES–DOMINGO — Publicación + chatting:</span>
+  <span class="str">→</span> Responde todos los DMs activamente
+  <span class="str">→</span> Envía PPV a fans activos
+  <span class="str">→</span> Interactúa en Twitter (replies, follows)
+
+<span class="cm">TOTAL: ~4.5 horas de producción / semana</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 PAGOS -->
+<div class="container">
+  <div class="section" id="pagos">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <div class="section-title-wrap">
+        <h2>Pagos desde Colombia</h2>
+        <p>Cómo recibir USD en Fanvue y convertir a COP</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Wise vs Payoneer</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Wise</th><th>Payoneer</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Comisión retiro</strong></td><td>~0.5–1%</td><td>~2–3%</td></tr>
+            <tr><td><strong>Cuenta USD virtual</strong></td><td>✅ Número de cuenta USA real</td><td>✅ Sí</td></tr>
+            <tr><td><strong>Tiempo de pago</strong></td><td>1–2 días</td><td>2–5 días</td></tr>
+            <tr><td><strong>App móvil</strong></td><td>Excelente</td><td>Buena</td></tr>
+            <tr><td><strong>Conversión a COP</strong></td><td>Tasa de mercado real</td><td>Tasa inferior</td></tr>
+            <tr><td><strong>Tarjeta débito</strong></td><td>✅ Disponible en Colombia</td><td>✅ Disponible</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert success">
+        <span class="alert-icon">✅</span>
+        <span><strong>Recomendación:</strong> Abre Wise primero. Te da un número de cuenta bancaria USA (routing + account number) que puedes usar para recibir pagos de Fanvue como si tuvieras una cuenta bancaria americana real.</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Flujo de dinero</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-label">flujo-de-pagos</span>
+          <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <div class="code-body"><span class="kw">Fans pagan</span> en USD/EUR a Fanvue
+    ↓
+<span class="kw">Fanvue</span> retiene 20% de comisión <span class="cm">(80% para ti)</span>
+    ↓
+<span class="kw">Fanvue paga</span> a tu cuenta Wise USA (número ACH)
+    ↓
+<span class="kw">Wise</span> recibe en USD, convierte a COP a tasa de mercado
+    ↓
+<span class="kw">Transfiere</span> a tu cuenta Bancolombia / Nequi
+
+<span class="cm">Ejemplo real:
+Fan paga $100 → Fanvue toma $20 → Tú recibes $80
+$80 USD × ~4,200 COP = ~$336,000 COP</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 11 LEGAL -->
+<div class="container">
+  <div class="section" id="legal">
+    <div class="section-header">
+      <div class="section-num">12</div>
+      <div class="section-title-wrap">
+        <h2>Legal y fiscal en Colombia</h2>
+        <p>No lo ignores — los ingresos del exterior tienen implicaciones</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Obligaciones como persona natural</h3>
+      <div class="prose">
+        <p>Los ingresos de Fanvue son <strong>ingresos del exterior</strong>. Como colombiano que recibe pagos del extranjero, estás obligado a declararlos ante la DIAN si superas el umbral de declaración de renta (~$55M COP anuales en 2024).</p>
+        <p>Wise y Payoneer emiten certificados de ingresos que puedes presentar a tu contador. No trates de esconder estos ingresos — la trazabilidad bancaria los hace visibles de todas formas.</p>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Estructura recomendada al escalar</h3>
+      <div class="cards">
+        <div class="card">
+          <span class="card-icon">👤</span>
+          <h3>Persona Natural (inicio)</h3>
+          <p>Para los primeros $500–$2,000/mes. Declaras renta anualmente. Sin necesidad de constituir empresa todavía.</p>
+          <span class="card-badge">$0–$2K/mes</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">🏢</span>
+          <h3>SAS Unipersonal</h3>
+          <p>Cuando superes $1,500–$2,000 USD/mes. Separa patrimonio personal del negocio. Permite contratar chatters y editores formalmente.</p>
+          <span class="card-badge">$2K+/mes</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">🌐</span>
+          <h3>LLC en USA (avanzado)</h3>
+          <p>Para operaciones de $10K+/mes. Permite abrir cuenta bancaria USA real, mayor credibilidad, optimización fiscal.</p>
+          <span class="card-badge">$10K+/mes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 ERRORES -->
+<div class="container">
+  <div class="section" id="errores">
+    <div class="section-header">
+      <div class="section-num">13</div>
+      <div class="section-title-wrap">
+        <h2>Errores que quiebran el negocio</h2>
+        <p>Aprende de los errores más comunes antes de cometerlos</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Error</th><th>Consecuencia</th><th>Solución</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cambiar VPN/país frecuentemente</strong></td>
+            <td>Ban o restricción de plataforma</td>
+            <td>Un servidor fijo siempre, para siempre</td>
+          </tr>
+          <tr>
+            <td><strong>No calentar la cuenta antes de promocionar</strong></td>
+            <td>Shadow ban inmediato en TikTok/Twitter</td>
+            <td>2 semanas de actividad orgánica antes de cualquier promo</td>
+          </tr>
+          <tr>
+            <td><strong>Todo en una sola cuenta</strong></td>
+            <td>Un ban = pierdes todo el negocio</td>
+            <td>Mínimo 2 cuentas por plataforma desde el inicio</td>
+          </tr>
+          <tr>
+            <td><strong>No hacer backup del contenido</strong></td>
+            <td>Si te banean, pierdes el banco de imágenes</td>
+            <td>Todo en Google Drive o iCloud automáticamente</td>
+          </tr>
+          <tr>
+            <td><strong>Ignorar el chatting</strong></td>
+            <td>Revenue estancado en subscripciones básicas</td>
+            <td>Chatting activo desde el día 1 en Fanvue</td>
+          </tr>
+          <tr>
+            <td><strong>Persona IA sin personalidad definida</strong></td>
+            <td>Fans no conectan, churn alto</td>
+            <td>Character sheet completo antes de lanzar</td>
+          </tr>
+          <tr>
+            <td><strong>Postear solo links sin contenido</strong></td>
+            <td>Las plataformas penalizan como spam</td>
+            <td>80% contenido de valor, 20% promoción</td>
+          </tr>
+          <tr>
+            <td><strong>Precios mal calibrados en Fanvue</strong></td>
+            <td>Barrera de entrada muy alta o revenue muy bajo</td>
+            <td>Empieza con $9.99/mes, ajusta según conversión</td>
+          </tr>
+          <tr>
+            <td><strong>Cara inconsistente en imágenes</strong></td>
+            <td>Fans detectan que "no es la misma persona"</td>
+            <td>Seed fijo + IP-Adapter + prompt idéntico</td>
+          </tr>
+          <tr>
+            <td><strong>No trackear métricas</strong></td>
+            <td>No sabes qué funciona ni qué no</td>
+            <td>Notion con tabla semanal de KPIs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 13 ROADMAP -->
+<div class="container">
+  <div class="section" id="roadmap">
+    <div class="section-header">
+      <div class="section-num">14</div>
+      <div class="section-title-wrap">
+        <h2>Roadmap — 90 días</h2>
+        <p>De cero a primera monetización real</p>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-phase">
+        <span class="phase-label">SEMANA 1–2</span>
+        <div class="phase-title">Infraestructura</div>
+        <ul class="phase-items">
+          <li>iPhone reseteado</li>
+          <li>Apple ID + ProtonMail nuevo</li>
+          <li>VPN Mullvad/ProtonVPN</li>
+          <li>Número virtual USA</li>
+          <li>Wise abierto</li>
+          <li>Fanvue configurado</li>
+          <li>Character Sheet definido</li>
+        </ul>
+      </div>
+      <div class="timeline-phase">
+        <span class="phase-label">SEMANA 3–4</span>
+        <div class="phase-title">Banco de contenido</div>
+        <ul class="phase-items">
+          <li>50 imágenes SFW en Tensor.art</li>
+          <li>Seed fijo establecido</li>
+          <li>10 clips en Kling AI</li>
+          <li>5 videos en Google Flow</li>
+          <li>Cuentas Twitter + Reddit creadas</li>
+          <li>Calentando cuentas (sin promo)</li>
+        </ul>
+      </div>
+      <div class="timeline-phase">
+        <span class="phase-label">MES 2</span>
+        <div class="phase-title">Lanzamiento</div>
+        <ul class="phase-items">
+          <li>Fanvue público con precio</li>
+          <li>Empezar a promocionar</li>
+          <li>Twitter: 3–5 posts/día</li>
+          <li>Reddit: build karma</li>
+          <li>TikTok: primer video</li>
+          <li>Chatting activo en DMs</li>
+          <li>Primeros $0–$500</li>
+        </ul>
+      </div>
+      <div class="timeline-phase">
+        <span class="phase-label">MES 3</span>
+        <div class="phase-title">Optimización</div>
+        <ul class="phase-items">
+          <li>Identificar canal de mayor ROI</li>
+          <li>Escalar lo que convierte</li>
+          <li>PPV activo con scripts</li>
+          <li>Primer custom request</li>
+          <li>Trackear LTV por fan</li>
+          <li>Objetivo: $500–$2.000</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="subsection">
+      <h3>Revenue realista por escenario</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Escenario</th><th>Mes 3</th><th>Mes 6</th><th>Mes 12</th><th>Factor clave</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Conservador</strong></td><td>$0–$300</td><td>$300–$1.500</td><td>$1.500–$5K</td><td>Consistencia de contenido</td></tr>
+            <tr><td><strong>Moderado</strong></td><td>$300–$1.000</td><td>$1.000–$5K</td><td>$5K–$15K</td><td>Chatting activo + PPV</td></tr>
+            <tr><td><strong>Agresivo</strong></td><td>$1.000–$3K</td><td>$3K–$15K</td><td>$15K–$50K+</td><td>Traffic escalado + sistema</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert info">
+        <span class="alert-icon">📌</span>
+        <span>Los números del escenario agresivo requieren dedicación casi full-time o contratar chatters. Para un proyecto paralelo a otras actividades, el escenario moderado es el más realista y sostenible.</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>El orden de prioridades si solo tienes 1 hora al día</h3>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>1. Chatting en Fanvue (20 min)</strong><span>El ROI más alto. Responder DMs activos y enviar PPV a fans que no han comprado.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>2. 1 post en Twitter/X (10 min)</strong><span>Mantiene el algoritmo activo. Usa contenido del banco que ya generaste.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>3. 1 post en Reddit (10 min)</strong><span>El de mayor potencial de tráfico masivo. Busca el subreddit correcto del día.</span></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+          <div class="flow-content"><strong>4. Generación de contenido (20 min)</strong><span>Usa el tiempo restante en Tensor.art o Kling para reponer el banco de contenido.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="border-top: 1px solid var(--border); padding: 40px 0; margin-top: 0;">
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: gap;">
+      <div style="font-family: var(--mono); font-size: 11px; color: var(--text-dim);">AI OFM GUIDE — 2024/2025</div>
+      <div style="font-family: var(--mono); font-size: 11px; color: var(--text-dim);">14 módulos · Guía operativa completa</div>
+    </div>
+  </div>
+</div>
+
+<a href="#" class="scroll-top">↑</a>
+
+</body>
+</html>

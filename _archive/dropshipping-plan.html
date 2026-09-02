@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Acción: Dropshipping desde Cero</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #22222e;
+    --accent: #6c47ff;
+    --accent2: #ff6b35;
+    --accent3: #00d4aa;
+    --accent4: #ffd93d;
+    --text: #e8e8f0;
+    --muted: #7a7a9a;
+    --phase1: #6c47ff;
+    --phase2: #ff6b35;
+    --phase3: #00d4aa;
+    --phase4: #ffd93d;
+    --phase5: #ff4785;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 80px 40px 60px;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(108,71,255,0.12);
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 560px;
+    font-weight: 300;
+  }
+
+  /* STATS BAR */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .stat-item {
+    background: var(--surface);
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* MAIN CONTENT */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+
+  /* WHAT IS SECTION */
+  .intro-box {
+    margin: 48px 0;
+    padding: 32px 36px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .intro-box h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .intro-box p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .intro-box p strong {
+    color: var(--text);
+  }
+
+  /* FLOW DIAGRAM */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .flow-step {
+    background: rgba(108,71,255,0.1);
+    border: 1px solid rgba(108,71,255,0.3);
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #a78bfa;
+  }
+
+  .flow-arrow {
+    color: var(--muted);
+    font-size: 18px;
+  }
+
+  /* PHASES */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 56px 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .phase {
+    margin-bottom: 40px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card);
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .phase-badge {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .phase-info { flex: 1; }
+
+  .phase-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .phase-time {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .phase-body { padding: 24px 28px; }
+
+  /* TASKS GRID */
+  .tasks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .task {
+    padding: 14px 16px;
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .task-icon { font-size: 20px; }
+
+  .task-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .task-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .phase-tip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .phase-tip strong { color: var(--text); }
+
+  /* PRODUCTS SECTION */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .product-card:hover { border-color: var(--accent); }
+
+  .product-emoji { font-size: 32px; display: block; margin-bottom: 10px; }
+
+  .product-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .product-why {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .product-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-hot { background: rgba(255,107,53,0.15); color: #ff6b35; }
+  .tag-stable { background: rgba(0,212,170,0.15); color: #00d4aa; }
+  .tag-trend { background: rgba(108,71,255,0.15); color: #a78bfa; }
+
+  /* MARKETING */
+  .channels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .channel-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 18px;
+  }
+
+  .channel-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .channel-icon { font-size: 22px; }
+
+  .channel-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .channel-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .channel-priority {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    color: var(--accent3);
+  }
+
+  /* TOOLS */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .tool-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .tool-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  .tool-info { flex: 1; }
+
+  .tool-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .tool-use {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ROADMAP TIMELINE */
+  .timeline {
+    margin-top: 32px;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--phase1), var(--phase2), var(--phase3), var(--phase4), var(--phase5));
+    border-radius: 2px;
+  }
+
+  .tl-item {
+    display: flex;
+    gap: 28px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .tl-dot {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .tl-body {
+    flex: 1;
+    padding: 12px 0 0;
+  }
+
+  .tl-week {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .tl-goal {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .tl-desc {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* ERRORS SECTION */
+  .errors-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .error-item {
+    background: rgba(255,71,133,0.05);
+    border: 1px solid rgba(255,71,133,0.2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .error-x {
+    font-size: 14px;
+    color: #ff4785;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .error-text {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .error-text strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+  /* KPI TABLE */
+  .kpi-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 13px;
+  }
+
+  .kpi-table th {
+    background: var(--surface);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .kpi-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .kpi-table td:first-child {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .kpi-table tr:last-child td { border-bottom: none; }
+
+  .kpi-table td strong {
+    color: var(--accent3);
+    font-weight: 700;
+  }
+
+  /* FINAL CTA */
+  .cta {
+    margin-top: 56px;
+    background: linear-gradient(135deg, rgba(108,71,255,0.15) 0%, rgba(255,107,53,0.08) 100%);
+    border: 1px solid rgba(108,71,255,0.3);
+    border-radius: 16px;
+    padding: 40px 36px;
+    text-align: center;
+  }
+
+  .cta h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .cta p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .cta-rule {
+    font-size: 13px;
+    color: #a78bfa;
+    font-weight: 600;
+    margin-top: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 600px) {
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .errors-list { grid-template-columns: 1fr; }
+    .flow { gap: 8px; }
+    .flow-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Plan de Acción Completo</div>
+  <h1>Tu negocio de<br><span>Dropshipping</span><br>desde cero</h1>
+  <p class="hero-sub">Guía paso a paso sin conocimientos previos. Todo lo que necesitas saber para lanzar, vender y escalar.</p>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item">
+    <span class="stat-num">$0</span>
+    <span class="stat-label">Inventario inicial</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">5</span>
+    <span class="stat-label">Fases del plan</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">3–6</span>
+    <span class="stat-label">Meses para escalar</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">20–40%</span>
+    <span class="stat-label">Margen de ganancia</span>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- WHAT IS -->
+  <div class="intro-box">
+    <h2>¿Qué es el Dropshipping?</h2>
+    <p>Es un modelo de negocio donde <strong>tú vendes productos online sin tener inventario</strong>. Cuando un cliente te compra, tú le compras al proveedor y él envía directamente al cliente. Tu ganancia es la diferencia entre el precio que pones y lo que pagas al proveedor.</p>
+    <div class="flow">
+      <div class="flow-step">👤 Cliente compra en tu tienda</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">💰 Tú cobras el pago</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">🏭 Ordenas al proveedor</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">📦 Proveedor envía directo</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">✅ Tú te quedas el margen</div>
+    </div>
+  </div>
+
+  <!-- PHASES TITLE -->
+  <div class="section-title">Plan de 5 Fases</div>
+
+  <!-- PHASE 1 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge" style="background:rgba(108,71,255,0.15);color:#a78bfa;">Fase 1</div>
+      <div class="phase-info">
+        <div class="phase-title">Investigación y Nicho</div>
+        <div class="phase-time">⏱ Semana 1 — La base de todo</div>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="tasks">
+        <div class="task">
+          <div class="task-icon">🎯</div>
+          <div class="task-title">Elegir tu nicho</div>
+          <div class="task-desc">Un nicho específico vende mejor que uno genérico. Ej: "accesorios para gatos" en vez de "mascotas".</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🔍</div>
+          <div class="task-title">Validar demanda</div>
+          <div class="task-desc">Usa Google Trends, TikTok y Amazon para ver qué busca la gente ahora mismo.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">👥</div>
+          <div class="task-title">Definir tu cliente ideal</div>
+          <div class="task-desc">Edad, intereses, dónde pasa el tiempo, qué problema tiene y cómo tu producto lo resuelve.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🕵️</div>
+          <div class="task-title">Analizar competencia</div>
+          <div class="task-desc">Busca tiendas que ya venden lo que quieres. Si existen competidores, hay mercado.</div>
+        </div>
+      </div>
+      <div class="phase-tip">💡 <span><strong>Criterio de nicho ganador:</strong> Alta pasión de los compradores + producto que resuelve un problema + poca competencia directa + precio de venta entre $25–$150 USD.</span></div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge" style="background:rgba(255,107,53,0.15);color:#ff6b35;">Fase 2</div>
+      <div class="phase-info">
+        <div class="phase-title">Proveedores y Productos</div>
+        <div class="phase-time">⏱ Semana 2 — Tu cadena de suministro</div>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="tasks">
+        <div class="task">
+          <div class="task-icon">🏭</div>
+          <div class="task-title">AliExpress</div>
+          <div class="task-desc">El más popular para principiantes. Millones de productos, envío a todo el mundo. Busca proveedores con 4.7+ estrellas y más de 500 pedidos.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">⚡</div>
+          <div class="task-title">CJ Dropshipping</div>
+          <div class="task-desc">Envíos más rápidos que AliExpress. Tienen almacenes en USA y Europa. Ideal si tu mercado es occidental.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🚀</div>
+          <div class="task-title">Zendrop / AutoDS</div>
+          <div class="task-desc">Plataformas premium con proveedores verificados, envíos rápidos y automatización de pedidos.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">📋</div>
+          <div class="task-title">Pide muestras</div>
+          <div class="task-desc">Antes de vender, compra el producto tú mismo. Verifica calidad, tiempo de entrega y el empaque.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">💲</div>
+          <div class="task-title">Calcular margen</div>
+          <div class="task-desc">Fórmula: Precio venta = Costo producto × 3. Ejemplo: producto $8 → vendes a $24.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">📄</div>
+          <div class="task-title">Contrato con proveedor</div>
+          <div class="task-desc">Negocia qué pasa con pedidos perdidos, devoluciones y tiempos máximos de envío.</div>
+        </div>
+      </div>
+      <div class="phase-tip">💡 <span><strong>Regla de oro:</strong> Nunca vendas un producto que no hayas recibido tú primero. La calidad del producto = reputación de tu negocio.</span></div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge" style="background:rgba(0,212,170,0.15);color:#00d4aa;">Fase 3</div>
+      <div class="phase-info">
+        <div class="phase-title">Crear tu Tienda Online</div>
+        <div class="phase-time">⏱ Semanas 3–4 — Tu vitrina digital</div>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="tasks">
+        <div class="task">
+          <div class="task-icon">🛒</div>
+          <div class="task-title">Shopify (recomendado)</div>
+          <div class="task-desc">La plataforma #1 para dropshipping. Fácil de usar, integra con AliExpress y tiene apps para todo. Desde $29/mes.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🌐</div>
+          <div class="task-title">Dominio propio</div>
+          <div class="task-desc">Compra un dominio profesional (ej: MiTienda.com). Cuesta ~$12/año y transmite confianza.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🎨</div>
+          <div class="task-title">Diseño y branding</div>
+          <div class="task-desc">Logo simple, colores consistentes, tema limpio. No necesitas ser diseñador, usa Canva + temas gratuitos de Shopify.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">📸</div>
+          <div class="task-title">Páginas de producto</div>
+          <div class="task-desc">Fotos de alta calidad + descripción que vende (beneficios, no características) + precio claro + botón de compra visible.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🔒</div>
+          <div class="task-title">Generar confianza</div>
+          <div class="task-desc">Página "Sobre nosotros", política de devoluciones, chat en vivo, reseñas de clientes, iconos de pago seguro.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">💳</div>
+          <div class="task-title">Métodos de pago</div>
+          <div class="task-desc">Activa Shopify Payments, PayPal y tarjeta. Cuantas más opciones, más ventas.</div>
+        </div>
+      </div>
+      <div class="phase-tip">💡 <span><strong>Error crítico a evitar:</strong> No lances con 200 productos. Empieza con 5–10 productos bien elegidos y páginas de venta perfectas.</span></div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge" style="background:rgba(255,215,61,0.15);color:#ffd93d;">Fase 4</div>
+      <div class="phase-info">
+        <div class="phase-title">Marketing y Tráfico</div>
+        <div class="phase-time">⏱ Meses 2–3 — Traer clientes</div>
+      </div>
+    </div>
+    <div class="phase-body">
+
+      <div class="channels-grid">
+        <div class="channel-card">
+          <div class="channel-top">
+            <div class="channel-icon">🎵</div>
+            <div class="channel-name">TikTok Orgánico</div>
+          </div>
+          <div class="channel-desc">Crea videos mostrando el producto en uso. Tendencias, antes/después, unboxings. Es el canal con mayor alcance gratuito en 2025.</div>
+          <div class="channel-priority">★★★ PRIORIDAD MÁXIMA</div>
+        </div>
+        <div class="channel-card">
+          <div class="channel-top">
+            <div class="channel-icon">📱</div>
+            <div class="channel-name">Instagram Reels</div>
+          </div>
+          <div class="channel-desc">Reels de 15–30 seg mostrando el producto. Usa hashtags del nicho. Colabora con microinfluencers (10k–50k seguidores).</div>
+          <div class="channel-priority">★★★ PRIORIDAD ALTA</div>
+        </div>
+        <div class="channel-card">
+          <div class="channel-top">
+            <div class="channel-icon">📘</div>
+            <div class="channel-name">Facebook/Meta Ads</div>
+          </div>
+          <div class="channel-desc">Publicidad pagada con segmentación avanzada. Empieza con $10–15/día. El mejor ROI para dropshipping a escala.</div>
+          <div class="channel-priority">★★★ CUANDO TENGAS PRESUPUESTO</div>
+        </div>
+        <div class="channel-card">
+          <div class="channel-top">
+            <div class="channel-icon">🔍</div>
+            <div class="channel-name">Google Shopping</div>
+          </div>
+          <div class="channel-desc">Aparece cuando alguien busca comprar tu producto. Comprador de alta intención = más conversión.</div>
+          <div class="channel-priority">★★ FASE INTERMEDIA</div>
+        </div>
+        <div class="channel-card">
+          <div class="channel-top">
+            <div class="channel-icon">✉️</div>
+            <div class="channel-name">Email Marketing</div>
+          </div>
+          <div class="channel-desc">Recolecta emails desde el día 1. Un correo bien hecho tiene ROI de $42 por cada $1 invertido. Usa Klaviyo.</div>
+          <div class="channel-priority">★★★ NO IGNORAR</div>
+        </div>
+        <div class="channel-card">
+          <div class="channel-top">
+            <div class="channel-icon">🤝</div>
+            <div class="channel-name">Influencer Marketing</div>
+          </div>
+          <div class="channel-desc">Envía productos gratis a microinfluencers del nicho. 1 video viral puede generar miles en ventas de golpe.</div>
+          <div class="channel-priority">★★ MUY EFECTIVO</div>
+        </div>
+      </div>
+
+      <div class="phase-tip" style="margin-top: 16px;">💡 <span><strong>Estrategia de contenido:</strong> Publica 3 videos en TikTok/Reels diarios los primeros 30 días. Muestra el problema → presenta el producto → muestra el resultado. El algoritmo premia la constancia.</span></div>
+    </div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge" style="background:rgba(255,71,133,0.15);color:#ff4785;">Fase 5</div>
+      <div class="phase-info">
+        <div class="phase-title">Optimizar y Escalar</div>
+        <div class="phase-time">⏱ Meses 4–6 — Crecer inteligente</div>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="tasks">
+        <div class="task">
+          <div class="task-icon">📊</div>
+          <div class="task-title">Analizar métricas</div>
+          <div class="task-desc">Tasa de conversión, costo por adquisición, ticket promedio. Lo que no se mide, no mejora.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🔁</div>
+          <div class="task-title">Upsell y cross-sell</div>
+          <div class="task-desc">Ofrece productos complementarios al momento de compra. Aumenta el valor promedio del pedido 30–50%.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">⭐</div>
+          <div class="task-title">Reseñas y prueba social</div>
+          <div class="task-desc">Pide reseñas con fotos/videos a cada cliente. Las reseñas reales convierten 3× más que las descripciones.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🤖</div>
+          <div class="task-title">Automatizar procesos</div>
+          <div class="task-desc">Usa DSers o AutoDS para automatizar pedidos. Así puedes manejar 100 pedidos/día sin hacerlo manualmente.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🌍</div>
+          <div class="task-title">Expandir mercados</div>
+          <div class="task-desc">Si funciona en un país, traduce la tienda y repite. USA, UK, Australia, Canadá son los mejores mercados.</div>
+        </div>
+        <div class="task">
+          <div class="task-icon">🏷️</div>
+          <div class="task-title">Construir tu marca</div>
+          <div class="task-desc">Empieza a pedir empaques personalizados. De "tienda genérica" a "marca reconocida" = precios más altos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS TO SELL -->
+  <div class="section-title">Productos Recomendados para Empezar</div>
+
+  <div class="products-grid">
+    <div class="product-card">
+      <span class="product-emoji">💡</span>
+      <div class="product-name">Gadgets de hogar</div>
+      <div class="product-why">Organizadores, lámparas LED, gadgets de cocina. Alta demanda todo el año.</div>
+      <span class="product-tag tag-stable">Estable</span>
+    </div>
+    <div class="product-card">
+      <span class="product-emoji">🐾</span>
+      <div class="product-name">Accesorios Mascotas</div>
+      <div class="product-why">Los dueños gastan sin límite en sus mascotas. Nicho con compradores apasionados.</div>
+      <span class="product-tag tag-hot">🔥 Top</span>
+    </div>
+    <div class="product-card">
+      <span class="product-emoji">💪</span>
+      <div class="product-name">Fitness en casa</div>
+      <div class="product-why">Bandas de resistencia, rodillos, accesorios de yoga. Mercado en crecimiento constante.</div>
+      <span class="product-tag tag-hot">🔥 Top</span>
+    </div>
+    <div class="product-card">
+      <span class="product-emoji">🌱</span>
+      <div class="product-name">Productos Eco</div>
+      <div class="product-why">Pajitas reutilizables, bags de tela, bambú. El consumidor consciente paga más.</div>
+      <span class="product-tag tag-trend">Tendencia</span>
+    </div>
+    <div class="product-card">
+      <span class="product-emoji">👶</span>
+      <div class="product-name">Bebés y Niños</div>
+      <div class="product-why">Los padres compran rápido y confían en buenas reseñas. Ticket de compra repetida.</div>
+      <span class="product-tag tag-stable">Estable</span>
+    </div>
+    <div class="product-card">
+      <span class="product-emoji">🎮</span>
+      <div class="product-name">Accesorios Gaming</div>
+      <div class="product-why">Luces LED, soportes, auriculares. Audiencia joven y muy activa en redes.</div>
+      <span class="product-tag tag-hot">🔥 Top</span>
+    </div>
+    <div class="product-card">
+      <span class="product-emoji">💆</span>
+      <div class="product-name">Belleza y cuidado</div>
+      <div class="product-why">Masajeadores faciales, herramientas gua sha, gadgets de skincare.</div>
+      <span class="product-tag tag-trend">Tendencia</span>
+    </div>
+    <div class="product-card">
+      <span class="product-emoji">🚗</span>
+      <div class="product-name">Accesorios de Auto</div>
+      <div class="product-why">Soportes móviles, organizadores, cargadores. Comprador masculino con ticket alto.</div>
+      <span class="product-tag tag-stable">Estable</span>
+    </div>
+  </div>
+
+  <div class="intro-box" style="margin-top: 20px; border-left-color: var(--accent2);">
+    <h2>¿Cómo encontrar productos ganadores?</h2>
+    <p>Busca en <strong>TikTok Shop</strong> los más vendidos de tu nicho. Revisa <strong>Amazon Best Sellers</strong> y <strong>AliExpress Hot Products</strong>. Usa herramientas como <strong>Minea</strong> o <strong>AdSpy</strong> para ver qué anuncios están gastando más dinero (si alguien gasta en publicidad, es porque vende). El criterio clave: <strong>problema obvio → solución visible en video → "¡necesito eso!"</strong></p>
+  </div>
+
+  <!-- ROADMAP -->
+  <div class="section-title">Hoja de Ruta Mensual</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot" style="background: var(--phase1);">1</div>
+      <div class="tl-body">
+        <div class="tl-week">Semanas 1–2</div>
+        <div class="tl-goal">Fundamentos y configuración</div>
+        <div class="tl-desc">Elegir nicho, encontrar proveedor, pedir muestra, crear cuenta Shopify, dominio, métodos de pago.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background: var(--phase2);">2</div>
+      <div class="tl-body">
+        <div class="tl-week">Semanas 3–4</div>
+        <div class="tl-goal">Lanzar la tienda</div>
+        <div class="tl-desc">Diseñar tienda, crear páginas de producto, configurar políticas, iniciar redes sociales del negocio.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background: var(--phase3);">3</div>
+      <div class="tl-body">
+        <div class="tl-week">Mes 2</div>
+        <div class="tl-goal">Primeras ventas orgánicas</div>
+        <div class="tl-desc">Publicar 3 videos/día en TikTok e Instagram, contactar microinfluencers, recopilar primeras reseñas.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background: var(--phase4);">4</div>
+      <div class="tl-body">
+        <div class="tl-week">Mes 3</div>
+        <div class="tl-goal">Activar publicidad pagada</div>
+        <div class="tl-desc">Con ingresos de las ventas orgánicas, reinvertir en Meta Ads y/o TikTok Ads. Presupuesto mínimo: $300.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background: var(--phase5);">5</div>
+      <div class="tl-body">
+        <div class="tl-week">Meses 4–6</div>
+        <div class="tl-goal">Escalar y automatizar</div>
+        <div class="tl-desc">Duplicar presupuesto en anuncios ganadores, automatizar pedidos, agregar nuevos productos, expandir mercados.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="section-title">Herramientas Esenciales</div>
+  <div class="tools-grid">
+    <div class="tool-item"><div class="tool-dot" style="background:#6c47ff;"></div><div class="tool-info"><div class="tool-name">Shopify</div><div class="tool-use">Plataforma de tienda online</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#ff6b35;"></div><div class="tool-info"><div class="tool-name">DSers / AutoDS</div><div class="tool-use">Automatizar pedidos con AliExpress</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#00d4aa;"></div><div class="tool-info"><div class="tool-name">Canva</div><div class="tool-use">Diseño de imágenes y creativos</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#ffd93d;"></div><div class="tool-info"><div class="tool-name">Klaviyo</div><div class="tool-use">Email marketing automatizado</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#ff4785;"></div><div class="tool-info"><div class="tool-name">Minea / AdSpy</div><div class="tool-use">Espiar anuncios ganadores</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#6c47ff;"></div><div class="tool-info"><div class="tool-name">Google Trends</div><div class="tool-use">Validar demanda de productos</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#00d4aa;"></div><div class="tool-info"><div class="tool-name">CapCut</div><div class="tool-use">Editar videos para TikTok/Reels</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#ff6b35;"></div><div class="tool-info"><div class="tool-name">ChatGPT</div><div class="tool-use">Escribir descripciones y copys de anuncios</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#ffd93d;"></div><div class="tool-info"><div class="tool-name">Loox / Judge.me</div><div class="tool-use">Recolectar y mostrar reseñas</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#ff4785;"></div><div class="tool-info"><div class="tool-name">Hotjar</div><div class="tool-use">Ver cómo se mueven los usuarios en tu tienda</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#a78bfa;"></div><div class="tool-info"><div class="tool-name">Google Analytics 4</div><div class="tool-use">Analizar el tráfico de tu tienda</div></div></div>
+    <div class="tool-item"><div class="tool-dot" style="background:#6c47ff;"></div><div class="tool-info"><div class="tool-name">Meta Business Suite</div><div class="tool-use">Gestionar anuncios en Facebook e Instagram</div></div></div>
+  </div>
+
+  <!-- KPI -->
+  <div class="section-title">Métricas que debes vigilar</div>
+  <table class="kpi-table">
+    <thead>
+      <tr>
+        <th>Métrica</th>
+        <th>¿Qué mide?</th>
+        <th>Meta inicial</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tasa de Conversión (CVR)</td>
+        <td>% de visitantes que compran</td>
+        <td><strong>1.5%–3%</strong></td>
+      </tr>
+      <tr>
+        <td>Costo por Adquisición (CPA)</td>
+        <td>Cuánto gastas para conseguir 1 venta</td>
+        <td><strong>Menor al 30% del precio</strong></td>
+      </tr>
+      <tr>
+        <td>Ticket Promedio (AOV)</td>
+        <td>Valor promedio de cada pedido</td>
+        <td><strong>$35–$80 USD</strong></td>
+      </tr>
+      <tr>
+        <td>Retorno sobre Gasto en Ads (ROAS)</td>
+        <td>Por cada $1 en ads, cuánto generas</td>
+        <td><strong>Mínimo 2.5×</strong></td>
+      </tr>
+      <tr>
+        <td>Tasa de Abandono de Carrito</td>
+        <td>% que agrega al carrito pero no compra</td>
+        <td><strong>Objetivo: menor al 65%</strong></td>
+      </tr>
+      <tr>
+        <td>Margen de Ganancia Neto</td>
+        <td>Lo que queda después de todos los costos</td>
+        <td><strong>15%–30%</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ERRORS -->
+  <div class="section-title">Errores Comunes a Evitar</div>
+  <div class="errors-list">
+    <div class="error-item">
+      <div class="error-x">✕</div>
+      <div class="error-text"><strong>Elegir productos sin validar</strong>Lanzar sin saber si hay demanda real es el error #1 de los principiantes.</div>
+    </div>
+    <div class="error-item">
+      <div class="error-x">✕</div>
+      <div class="error-text"><strong>Demasiados productos al inicio</strong>Mejor 5 productos con páginas perfectas que 100 páginas mediocres.</div>
+    </div>
+    <div class="error-item">
+      <div class="error-x">✕</div>
+      <div class="error-text"><strong>No hacer seguimiento postventa</strong>Un cliente satisfecho es el mejor vendedor. El 80% abandona sin dar seguimiento.</div>
+    </div>
+    <div class="error-item">
+      <div class="error-x">✕</div>
+      <div class="error-text"><strong>Ignorar los envíos largos</strong>Plazos de entrega de 30–60 días destruyen la reputación. Elige proveedores con stock local.</div>
+    </div>
+    <div class="error-item">
+      <div class="error-x">✕</div>
+      <div class="error-text"><strong>Gastar todo en ads sin probar</strong>Primero valida orgánicamente, luego escala con publicidad pagada.</div>
+    </div>
+    <div class="error-item">
+      <div class="error-x">✕</div>
+      <div class="error-text"><strong>No recolectar emails desde el día 1</strong>El email es el activo más valioso. Ofrece descuento a cambio del correo.</div>
+    </div>
+    <div class="error-item">
+      <div class="error-x">✕</div>
+      <div class="error-text"><strong>Copiar la tienda de la competencia</strong>Inspirarse sí. Copiar no. Tu diferenciación es tu ventaja competitiva.</div>
+    </div>
+    <div class="error-item">
+      <div class="error-x">✕</div>
+      <div class="error-text"><strong>Rendirse en el mes 1</strong>Las primeras semanas son las más difíciles. Casi nadie vende en el día 1. La constancia gana.</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>El momento de empezar es hoy</h2>
+    <p>El dropshipping no es dinero fácil, es un negocio real que requiere trabajo, aprendizaje y constancia. Pero con este plan tienes todo lo que necesitas para arrancar con ventaja.</p>
+    <div class="cta-rule">Regla de los 90 días: Comprométete 90 días sin evaluar si "funciona o no". Ejecuta, aprende, ajusta. Después toma decisiones.</div>
+  </div>
+
+</div>
+</body>
+</html>

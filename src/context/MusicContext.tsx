@@ -451,8 +451,24 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
           navigator.mediaSession.setActionHandler(action, handler);
         } catch {}
       }
+
+      // Update position state for system lockscreen scrub bar
+      if (
+        "setPositionState" in navigator.mediaSession &&
+        duration > 0 &&
+        !isNaN(duration) &&
+        !isNaN(progress)
+      ) {
+        try {
+          navigator.mediaSession.setPositionState({
+            duration: Math.max(0, duration),
+            playbackRate: 1,
+            position: Math.min(Math.max(0, progress), duration),
+          });
+        } catch {}
+      }
     }
-  }, [currentSong, isPlaying, togglePlay, handleNext, handlePrev]);
+  }, [currentSong, isPlaying, progress, duration, togglePlay, handleNext, handlePrev]);
 
   // Global keyboard shortcuts (Space, M, Shift+ArrowLeft, Shift+ArrowRight)
   useEffect(() => {
@@ -518,7 +534,10 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
         onCanPlay={handleTimeUpdate}
         onEnded={handleSongEnd}
         onError={() => {
-          setIsPlaying(false);
+          // Auto-skip to next song if a track fails to decode
+          setTimeout(() => {
+            handleNext();
+          }, 500);
         }}
         preload="metadata"
       />

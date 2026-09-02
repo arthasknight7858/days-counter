@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Carreras Universitarias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0D1117;
+  --bg2: #161B22;
+  --bg3: #21262D;
+  --border: rgba(255,255,255,0.08);
+  --text: #E6EDF3;
+  --text2: #8B949E;
+  --text3: #6E7681;
+  --sidebar-w: 280px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.sidebar-header {
+  padding: 1.5rem 1.25rem 1rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sidebar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.sidebar-sub {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: .02em;
+}
+.sidebar-search {
+  padding: .75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sidebar-search input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--text);
+  outline: none;
+  font-family: 'Inter', sans-serif;
+}
+.sidebar-search input::placeholder { color: var(--text3); }
+.sidebar-search input:focus { border-color: rgba(255,255,255,0.2); }
+.area-group { flex-shrink: 0; }
+.area-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .6rem 1.25rem .3rem;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 1.25rem;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text2);
+  transition: background .12s, color .12s;
+  border-left: 2px solid transparent;
+  text-decoration: none;
+}
+.nav-item:hover { background: rgba(255,255,255,.04); color: var(--text); }
+.nav-item.active { color: var(--text); border-left-color: var(--acc); background: rgba(255,255,255,.05); }
+.nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--acc);
+  opacity: .6;
+}
+.nav-item.active .nav-dot { opacity: 1; }
+
+/* ── MAIN ── */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  max-width: 860px;
+  padding: 0 3rem 4rem;
+}
+
+/* ── CAREER SECTION ── */
+.career {
+  padding-top: 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.career:last-child { border-bottom: none; }
+
+.career-header {
+  margin-bottom: 2rem;
+}
+.career-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.area-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: rgba(255,255,255,.06);
+  color: var(--text2);
+}
+.career-icon-badge {
+  font-size: 18px;
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.career-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.career-tagline {
+  font-size: 16px;
+  color: var(--text2);
+  line-height: 1.6;
+  max-width: 640px;
+  font-weight: 300;
+}
+.career-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1.25rem;
+}
+.meta-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text2);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+.meta-chip .meta-label {
+  color: var(--text3);
+  font-size: 10px;
+}
+.meta-chip .meta-val {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ── SALARY BLOCK ── */
+.salary-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--acc);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+.salary-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+.salary-col {}
+.salary-col .s-label {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 4px;
+}
+.salary-col .s-val {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+.salary-col .s-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+.salary-bar-wrap { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.salary-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.salary-bar-label { font-size: 11px; color: var(--text2); min-width: 110px; }
+.salary-bar-track { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.salary-bar-fill { height: 100%; border-radius: 2px; background: var(--acc); opacity: .7; }
+.salary-bar-val { font-size: 11px; color: var(--text3); min-width: 40px; text-align: right; }
+
+/* ── CONTENT GRID ── */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.content-grid.full { grid-template-columns: 1fr; }
+.block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.4rem;
+}
+.block.full { grid-column: 1/-1; }
+.block-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: .9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.block-title .bt-accent {
+  width: 3px; height: 12px;
+  border-radius: 2px;
+  background: var(--acc);
+  flex-shrink: 0;
+}
+.block p {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: .6rem;
+}
+.block p:last-child { margin-bottom: 0; }
+ul.item-list { list-style: none; padding: 0; }
+ul.item-list li {
+  font-size: 13px;
+  color: var(--text2);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+ul.item-list li:last-child { border-bottom: none; }
+ul.item-list li::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--acc);
+  opacity: .6;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* Pros / Cons */
+.proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.pros-block { background: rgba(34,197,94,.04); border: 1px solid rgba(34,197,94,.12); border-radius: 8px; padding: 1.1rem 1.3rem; }
+.cons-block { background: rgba(239,68,68,.04); border: 1px solid rgba(239,68,68,.1); border-radius: 8px; padding: 1.1rem 1.3rem; }
+.pros-block .block-title { color: rgba(34,197,94,.7); }
+.cons-block .block-title { color: rgba(239,68,68,.6); }
+.pros-block ul.item-list li::before { background: rgba(34,197,94,.8); opacity:1; }
+.cons-block ul.item-list li::before { background: rgba(239,68,68,.7); opacity:1; }
+
+/* Skills bars */
+.skill-row { margin-bottom: 10px; }
+.skill-row:last-child { margin-bottom: 0; }
+.skill-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+.skill-track { height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.skill-fill { height: 100%; border-radius: 3px; background: var(--acc); }
+
+/* Quote block */
+.curiosity-block {
+  background: linear-gradient(135deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--acc);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 14px;
+}
+.curiosity-block .label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--acc);
+  opacity: .8;
+  margin-bottom: 6px;
+}
+.curiosity-block p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.75;
+}
+
+/* Daily timeline */
+.timeline { list-style: none; padding: 0; }
+.timeline li {
+  display: flex;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.55;
+  align-items: flex-start;
+}
+.timeline li .tl-dot {
+  width: 7px; height: 7px;
+  border: 2px solid var(--acc);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+  opacity: .7;
+}
+
+/* Specializations */
+.spec-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.spec-tag {
+  font-size: 11.5px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+
+/* Earnings table */
+.earnings-table { width: 100%; border-collapse: collapse; }
+.earnings-table th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text3);
+  font-weight: 600;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+.earnings-table td {
+  font-size: 12.5px;
+  color: var(--text2);
+  padding: 7px 8px;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.earnings-table tr:last-child td { border-bottom: none; }
+.earnings-table td:last-child { color: var(--text); font-weight: 500; }
+
+/* Horizon / outlook */
+.outlook-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.outlook-label { font-size: 12px; color: var(--text2); min-width: 130px; }
+.outlook-track { flex: 1; height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.outlook-fill { height: 100%; border-radius: 3px; }
+
+/* Mobile hamburger */
+#menu-toggle {
+  display: none;
+  position: fixed;
+  top: 14px; left: 14px;
+  z-index: 200;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  width: 36px; height: 36px;
+  cursor: pointer;
+  align-items: center; justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+}
+#menu-toggle span {
+  display: block;
+  width: 16px; height: 1.5px;
+  background: var(--text2);
+  border-radius: 1px;
+}
+
+/* TOC intro */
+.page-intro {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+.page-intro .pi-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--text3);
+  margin-bottom: .5rem;
+}
+.page-intro h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: .75rem;
+}
+.page-intro .pi-desc {
+  font-size: 15px;
+  color: var(--text2);
+  max-width: 560px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 2rem;
+}
+.toc-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: border-color .15s;
+}
+.toc-item:hover { border-color: rgba(255,255,255,.2); }
+.toc-item .ti { font-size: 20px; }
+.toc-item .ti-area { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .05em; }
+.toc-item .ti-name { font-size: 13px; color: var(--text); font-weight: 500; }
+
+@media (max-width: 768px) {
+  #sidebar { transform: translateX(-100%); transition: transform .25s; }
+  #sidebar.open { transform: translateX(0); }
+  #main { margin-left: 0; padding: 0 1.25rem 3rem; }
+  #menu-toggle { display: flex; }
+  .career-title { font-size: 24px; }
+  .content-grid { grid-template-columns: 1fr; }
+  .proscons { grid-template-columns: 1fr; }
+  .salary-row { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<button id="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Menú">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">Guía de Carreras Universitarias</div>
+    <div class="sidebar-sub">13 carreras · análisis profundo</div>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="nav-search" placeholder="Buscar carrera..." oninput="filterNav(this.value)">
+  </div>
+  <div id="nav-list"></div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- INTRO -->
+<section class="page-intro" id="inicio">
+  <div class="pi-label">Guía completa</div>
+  <h1>Carreras universitarias y empleos</h1>
+  <p class="pi-desc">Análisis profundo de qué se estudia, qué se hace realmente, cuánto se gana en cada nivel, las responsabilidades diarias, habilidades necesarias, perspectivas de carrera y lo que nadie te cuenta antes de elegir.</p>
+  <div class="toc-grid" id="toc-grid"></div>
+</section>
+
+<!-- CAREERS rendered by JS -->
+<div id="careers-container"></div>
+
+</main>
+
+<script>
+const CAREERS = [
+{
+  id: "sistemas",
+  icon: "💻",
+  area: "Tecnología",
+  acc: "#4F9CF9",
+  name: "Ingeniería en Sistemas / Informática",
+  tagline: "La carrera que construye el mundo digital. Quien estudia sistemas aprende a descomponer problemas complejos en instrucciones que las máquinas pueden ejecutar. Es una mezcla única de lógica matemática, creatividad de diseño y pragmatismo de ingeniería.",
+  duracion: "4–5 años",
+  salario_min: 800, salario_max: 5000, salario_senior: 8000,
+  demanda: "Muy alta — déficit global de talento",
+  modalidad: "Remoto / Híbrido / Presencial",
+  study: [
+    "Algoritmos y estructuras de datos — el corazón de la carrera. Enseña cómo resolver problemas de forma eficiente.",
+    "Bases de datos relacionales (SQL) y no relacionales (MongoDB, Redis) — cómo almacenar y consultar información.",
+    "Sistemas operativos — cómo funciona Linux/Windows por dentro, procesos, memoria, filesystems.",
+    "Redes y comunicaciones — TCP/IP, HTTP, DNS, protocolos de internet.",
+    "Ingeniería de software — metodologías ágiles (Scrum, Kanban), arquitecturas, patrones de diseño.",
+    "Lenguajes de programación — C, Java, Python, JavaScript; cada uno con sus paradigmas.",
+    "Compiladores y lenguajes formales — cómo se transforma código en instrucciones de máquina.",
+    "Seguridad informática básica — autenticación, cifrado, vulnerabilidades comunes (OWASP Top 10).",
+    "Inteligencia artificial y machine learning — fundamentos de modelos predictivos.",
+    "Sistemas distribuidos — microservicios, computación en la nube, contenedores (Docker, Kubernetes).",
+  ],
+  jobs: [
+    "Desarrollador backend — construye la lógica de servidor y APIs.",
+    "Desarrollador frontend — crea la interfaz de usuario en navegadores y apps.",
+    "Fullstack developer — abarca ambas capas.",
+    "Arquitecto de software — diseña la estructura de sistemas complejos.",
+    "DevOps / SRE — automatiza despliegues y garantiza disponibilidad.",
+    "Ingeniero de datos — construye pipelines de datos y ETL.",
+    "CTO en startups — el perfil técnico máximo en una empresa.",
+    "Ingeniero de plataforma / cloud — gestiona infraestructura en AWS, GCP, Azure.",
+  ],
+  daily: [
+    "Escribir, revisar y depurar código (6–8 horas en días intensos).",
+    "Standup diario de 15 min: qué hice, qué voy a hacer, qué me bloquea.",
+    "Revisar pull requests de colegas: dar feedback técnico sobre calidad del código.",
+    "Investigar errores en producción (bugs reportados por usuarios reales — urgente).",
+    "Diseñar y documentar APIs o arquitecturas para nuevas funcionalidades.",
+    "Reuniones de sprint planning, refinement y retrospectiva (cada 2 semanas).",
+    "Leer documentación técnica y mantenerse al día con librerías y frameworks.",
+    "Hablar con product managers para entender qué necesita el negocio.",
+  ],
+  oblig: [
+    "Cumplir fechas de entrega de features — hay sprints con compromisos con el cliente.",
+    "Mantener cobertura de tests — el código sin pruebas es deuda técnica garantizada.",
+    "Participar en guardia de incidentes (on-call) — si el sistema cae a las 3am, respondes tú.",
+    "Documentar decisiones técnicas (ADRs) para que el equipo futuro las entienda.",
+    "Seguir estándares de seguridad — no guardar contraseñas en texto plano, cifrar datos sensibles.",
+    "Actualización constante — un lenguaje o framework puede quedar obsoleto en 3 años.",
+  ],
+  skills: [
+    {n: "Programación y algoritmos", v: 95},
+    {n: "Resolución de problemas", v: 92},
+    {n: "Inglés técnico (documentación)", v: 87},
+    {n: "Trabajo en equipo / Git", v: 82},
+    {n: "Arquitectura de sistemas", v: 78},
+  ],
+  salaries: [
+    {role: "Junior (0–2 años)", co: "$600–1,200/mes", global: "$2,000–4,000/mes"},
+    {role: "Mid (2–5 años)", co: "$1,200–2,500/mes", global: "$5,000–9,000/mes"},
+    {role: "Senior (5+ años)", co: "$2,500–5,000/mes", global: "$10,000–18,000/mes"},
+    {role: "Tech Lead / Arquitecto", co: "$4,000–8,000/mes", global: "$15,000–25,000/mes"},
+  ],
+  specs: ["Backend (Node, Java, Go, Rust)", "Frontend (React, Vue, Angular)", "Mobile (iOS, Android, Flutter)", "Cloud / DevOps", "Data Engineering", "Seguridad", "Blockchain / Web3", "Videojuegos (Unity, Unreal)"],
+  outlook: [{l:"Automatización por IA", v:25, c:"#ef4444"},{l:"Crecimiento del sector", v:92, c:"#22c55e"},{l:"Trabajo remoto global", v:90, c:"#4F9CF9"},{l:"Salario vs 5 años atrás", v:80, c:"#a78bfa"}],
+  pros: ["Alta demanda laboral global — empresas contratan en cualquier país.", "Trabajo 100% remoto accesible — desde Colombia puedes ganar en USD.", "Salario crece rápidamente con la experiencia y el portafolio.", "Cambiar de industria es fácil — software sirve en salud, finanzas, juegos, gobierno.", "No necesitas título formal para entrar — GitHub pesa más que el diploma en muchas empresas."],
+  cons: ["Deuda técnica y código legacy — heredar proyectos mal escritos es frustrante.", "Síndrome del impostor frecuente — la industria avanza tan rápido que siempre sientes que sabes poco.", "On-call puede arruinar fines de semana y vacaciones.", "Reuniones excesivas en empresas grandes pueden cortar el flujo de trabajo.", "Sedentarismo — 8–10 horas frente a pantalla sin moverse."],
+  curiosity: "El 60 % de los trabajos en tecnología no requieren un título universitario formal según LinkedIn. Un desarrollador con buen portafolio en GitHub, proyectos reales y presencia en comunidades puede ganar más que uno con maestría pero sin práctica. La carrera universitaria sigue siendo valiosa para fundamentos, redes de contacto y cargos en grandes corporaciones, pero la industria tech es la más meritocrática del mundo laboral."
+},
+{
+  id: "ciberseguridad",
+  icon: "🔒",
+  area: "Tecnología",
+  acc: "#f472b6",
+  name: "Ciberseguridad",
+  tagline: "Los guardianes de la infraestructura digital. Un profesional en ciberseguridad piensa como un atacante para defender sistemas, datos y personas. Es la disciplina más estratégicamente crítica de la tecnología moderna — y una de las más escasas.",
+  duracion: "4–5 años (o bootcamp intensivo + certificaciones)",
+  salario_min: 1200, salario_max: 6500, salario_senior: 12000,
+  demanda: "Crítica — déficit de 3.5 millones de profesionales globalmente",
+  modalidad: "Remoto / Híbrido / Presencial en sector crítico",
+  study: [
+    "Redes y protocolos — TCP/IP profundo, firewalls, VPNs, proxies, DNS poisoning.",
+    "Criptografía — algoritmos simétricos (AES), asimétricos (RSA), PKI, TLS/SSL, hashing.",
+    "Hacking ético y pentesting — metodología PTES, herramientas (Metasploit, Burp Suite, Nmap).",
+    "Forense digital — adquisición de evidencia, análisis de memoria, recuperación de datos.",
+    "Análisis de malware — ingeniería inversa, comportamiento de virus, ransomware, rootkits.",
+    "SIEM y monitoreo — Splunk, Microsoft Sentinel, Elastic Stack, alertas y correlación.",
+    "Cloud security — seguridad en AWS/Azure/GCP, IAM, Zero Trust architecture.",
+    "Legislación y cumplimiento — GDPR, ISO 27001, NIST CSF, SOC 2, PCI-DSS.",
+    "Ingeniería social — phishing, vishing, pretexting, técnicas de manipulación humana.",
+    "Aplicaciones web — OWASP Top 10, SQLi, XSS, CSRF, inyecciones.",
+  ],
+  jobs: [
+    "Analista SOC Nivel 1/2/3 — monitorea alertas y responde a incidentes.",
+    "Penetration Tester — simula ataques para encontrar vulnerabilidades antes que los hackers.",
+    "CISO — Chief Information Security Officer, lidera la estrategia de seguridad corporativa.",
+    "Threat Intelligence Analyst — investiga actores maliciosos, TTPs, IoCs.",
+    "Forense digital — analiza equipos comprometidos para reconstruir ataques.",
+    "Bug Bounty Hunter — profesional independiente que reporta vulnerabilidades por recompensa.",
+    "Security Engineer — diseña e implementa controles de seguridad en la arquitectura.",
+    "Red Team / Blue Team — equipos de ataque y defensa simulados internamente.",
+  ],
+  daily: [
+    "Monitorear dashboards de SIEM buscando anomalías y alertas de seguridad.",
+    "Analizar logs de firewall, EDR, proxy para detectar comportamientos sospechosos.",
+    "Ejecutar escaneos de vulnerabilidad (Nessus, OpenVAS) y priorizar hallazgos.",
+    "Realizar pruebas de penetración: reconocimiento, explotación, escalada de privilegios.",
+    "Escribir reportes de seguridad para equipos técnicos y para dirección ejecutiva.",
+    "Responder a incidentes activos: contención, erradicación, recuperación.",
+    "Investigar CVEs recientes y evaluar si afectan la infraestructura propia.",
+    "Diseñar campañas de phishing simulado para capacitar empleados.",
+  ],
+  oblig: [
+    "Disponibilidad 24/7 ante incidentes críticos — una brecha no avisa.",
+    "Confidencialidad total — los hallazgos de seguridad son información sensible.",
+    "Documentar metodologías y evidencias formales para auditoría.",
+    "Mantener certificaciones vigentes: CEH, OSCP, CISSP, CompTIA Security+.",
+    "Cumplir marcos regulatorios: ISO 27001, NIST, PCI-DSS según industria.",
+    "Reportar vulnerabilidades de forma ética — no explotar lo que encuentras.",
+  ],
+  skills: [
+    {n: "Redes y protocolos", v: 95},
+    {n: "Pentesting / hacking ético", v: 90},
+    {n: "Análisis de logs y forense", v: 85},
+    {n: "Scripting (Python, Bash)", v: 80},
+    {n: "Comunicación ejecutiva", v: 72},
+  ],
+  salaries: [
+    {role: "SOC Analista Junior", co: "$800–1,500/mes", global: "$3,000–5,000/mes"},
+    {role: "Pentester Mid", co: "$1,500–3,000/mes", global: "$6,000–10,000/mes"},
+    {role: "Senior Security Engineer", co: "$3,000–6,000/mes", global: "$12,000–18,000/mes"},
+    {role: "CISO corporativo", co: "$5,000–12,000/mes", global: "$20,000–40,000/mes"},
+  ],
+  specs: ["Red Teaming / Ofensiva", "Blue Team / Defensiva", "Cloud Security", "AppSec", "Forense Digital", "Threat Intelligence", "OT/ICS Security (industrial)", "Bug Bounty"],
+  outlook: [{l:"Ataques globales en auge", v:98, c:"#ef4444"},{l:"Crecimiento del sector", v:95, c:"#22c55e"},{l:"Escasez de talento", v:97, c:"#f472b6"},{l:"Demanda en gobierno", v:88, c:"#a78bfa"}],
+  pros: ["Escasez global extrema = salarios premium sin necesidad de experiencia enorme.", "El trabajo nunca es rutinario — cada ataque es distinto.", "Alta demanda en banca, salud, gobierno, energía — sectores que no desaparecen.", "Comunidad CTF (Capture The Flag) activa, competitiva y muy formativa.", "Puedes ganar desde casa reportando vulnerabilidades en programas de bug bounty."],
+  cons: ["Estrés extremo — una brecha puede costar millones a la empresa.", "On-call permanente — los incidentes ocurren de madrugada y en fines de semana.", "Actualización constante obligatoria — nuevas CVEs y técnicas de ataque cada semana.", "Burocracia corporativa frena implementar controles que ya sabes que necesitas.", "El trabajo ofensivo (pentest) requiere autorización explícita — el límite legal es delgado."],
+  curiosity: "El ataque de ransomware a Colonial Pipeline en 2021 cerró el suministro de combustible de la costa este de EE.UU. durante 5 días. La causa raíz fue una contraseña filtrada y la ausencia de autenticación multifactor en una VPN. Un solo profesional de seguridad con las medidas correctas habría prevenido una crisis nacional. Ese contexto explica por qué el campo paga lo que paga."
+},
+{
+  id: "ia",
+  icon: "🤖",
+  area: "Tecnología",
+  acc: "#a78bfa",
+  name: "Inteligencia Artificial y Ciencia de Datos",
+  tagline: "La disciplina más transformadora del siglo. Combina estadística, programación y comprensión del negocio para extraer conocimiento de datos, construir sistemas que aprenden y tomar mejores decisiones que cualquier analista humano.",
+  duracion: "4–5 años + maestría muy recomendada",
+  salario_min: 1500, salario_max: 8000, salario_senior: 15000,
+  demanda: "Explosiva — roles de IA generativa crecieron 200 % en 2024",
+  modalidad: "Remoto / Híbrido — alta flexibilidad",
+  study: [
+    "Estadística y probabilidad avanzada — distribuciones, inferencia, hipótesis, Bayesianismo.",
+    "Machine learning supervisado — regresión, clasificación, árboles, SVM, ensemble methods.",
+    "Machine learning no supervisado — clustering, reducción de dimensionalidad, detección de anomalías.",
+    "Deep learning — redes neuronales, CNNs, RNNs, Transformers, atención.",
+    "Procesamiento de lenguaje natural (NLP) — tokenización, embeddings, LLMs, fine-tuning.",
+    "Computer vision — detección de objetos, segmentación, YOLO, SAM.",
+    "MLOps y despliegue — pipelines automatizados, monitoreo de modelos, drift detection.",
+    "Big Data — Spark, Hadoop, procesamiento distribuido de datasets masivos.",
+    "Visualización de datos — Matplotlib, Seaborn, Plotly, Tableau, storytelling con datos.",
+    "Ética en IA — sesgos algorítmicos, privacidad diferencial, transparencia y explicabilidad.",
+  ],
+  jobs: [
+    "Data Scientist — analiza datos, construye modelos y comunica hallazgos al negocio.",
+    "ML Engineer — lleva modelos de investigación a producción escalable.",
+    "Data Engineer — construye pipelines de datos, lakes y warehouses.",
+    "Analista de datos — extrae insights descriptivos con SQL y visualización.",
+    "Research Scientist — investiga nuevas arquitecturas y técnicas en laboratorio.",
+    "Prompt Engineer / AI Consultant — especialista en LLMs y IA generativa.",
+    "MLOps Engineer — garantiza que los modelos en producción no degraden.",
+  ],
+  daily: [
+    "Explorar y limpiar datasets (EDA) — el 60 % del tiempo real de un Data Scientist.",
+    "Entrenar experimentos de modelos: ajustar hiperparámetros, comparar métricas.",
+    "Construir pipelines ETL para mover y transformar datos entre sistemas.",
+    "Escribir código Python/SQL para análisis, features y modelado.",
+    "Presentar hallazgos a stakeholders no técnicos — traducir estadística a decisiones.",
+    "Monitorear modelos en producción: detectar degradación y concept drift.",
+    "Revisar papers de investigación de ArXiv para mantenerse en la frontera.",
+    "Colaborar con ingenieros para integrar predicciones en productos reales.",
+  ],
+  oblig: [
+    "Validar que los modelos no tengan sesgos discriminatorios contra grupos protegidos.",
+    "Documentar experimentos con MLflow, W&B u otros — reproducibilidad es obligatoria.",
+    "Asegurar privacidad de datos: anonimización, GDPR compliance, acceso mínimo necesario.",
+    "Comunicar incertidumbre del modelo — un 85 % de accuracy puede ser excelente o terrible según el contexto.",
+    "Mantener modelos actualizados ante cambio en distribución de datos (retraining periódico).",
+  ],
+  skills: [
+    {n: "Python / R (pandas, sklearn, PyTorch)", v: 95},
+    {n: "Estadística y probabilidad", v: 92},
+    {n: "SQL y manejo de datos", v: 88},
+    {n: "Visualización y storytelling", v: 80},
+    {n: "MLOps y producción", v: 72},
+  ],
+  salaries: [
+    {role: "Analista de datos Junior", co: "$800–1,500/mes", global: "$3,500–5,000/mes"},
+    {role: "Data Scientist Mid", co: "$1,800–3,500/mes", global: "$8,000–12,000/mes"},
+    {role: "Senior ML Engineer", co: "$4,000–7,000/mes", global: "$15,000–22,000/mes"},
+    {role: "Director / Head of Data", co: "$6,000–12,000/mes", global: "$20,000–35,000/mes"},
+  ],
+  specs: ["NLP / LLMs", "Computer Vision", "Forecasting y Series de Tiempo", "Sistemas de Recomendación", "RL (Aprendizaje por Refuerzo)", "Bioinformática computacional", "MLOps", "IA aplicada a finanzas"],
+  outlook: [{l:"Impacto IA generativa", v:99, c:"#a78bfa"},{l:"Crecimiento de roles", v:97, c:"#22c55e"},{l:"Automatización de análisis", v:85, c:"#f59e0b"},{l:"Demanda en salud / biotech", v:88, c:"#4F9CF9"}],
+  pros: ["Los salarios más altos de la industria tech y creciendo.", "Impacto medible y concreto — el modelo de recomendación que construiste genera millones.", "Trabajo en la frontera del conocimiento humano.", "Aplicable a cualquier industria: salud, retail, finanzas, entretenimiento, gobierno.", "La IA generativa abrió roles completamente nuevos que no existían hace 3 años."],
+  cons: ["El 80 % del tiempo es limpieza de datos, no ML elegante como en los papers.", "Alta exigencia matemática de base — sin estadística sólida, los modelos son cajas negras.", "Los modelos fallan de formas inesperadas y es difícil depurar por qué.", "Riesgo de hype — expectativas infladas en algunos equipos directivos.", "Los LLMs están automatizando análisis de datos básicos — el nivel de exigencia sube."],
+  curiosity: "GPT-4 fue entrenado con aproximadamente 1 billón de parámetros en un costo estimado de $100 millones USD solo en cómputo. Sin embargo, el 90 % del trabajo que generó valor comercial con IA en las empresas en 2024 fue hecho con modelos mucho más pequeños, datos propios y fine-tuning focalizado. El conocimiento de cuándo NO usar un modelo complejo vale tanto como saber construirlo."
+},
+{
+  id: "medicina",
+  icon: "🩺",
+  area: "Salud",
+  acc: "#34d399",
+  name: "Medicina",
+  tagline: "La carrera más larga, exigente y de mayor responsabilidad. Un médico toma decisiones que afectan directamente la vida de las personas, muchas veces con información incompleta, bajo presión extrema y en tiempo real.",
+  duracion: "6–7 años de carrera + 2–5 años de residencia + especialización",
+  salario_min: 800, salario_max: 6000, salario_senior: 12000,
+  demanda: "Alta — especialmente especialistas y en zonas rurales",
+  modalidad: "Presencial obligatorio — no existe medicina 100 % remota",
+  study: [
+    "Anatomía humana — morfología completa del cuerpo, disección en cadáver.",
+    "Fisiología — cómo funcionan todos los sistemas (cardiovascular, renal, neurológico, etc.).",
+    "Bioquímica clínica — metabolismo, enzimas, hormonas, interpretación de laboratorio.",
+    "Fisiopatología — cómo y por qué enferman los sistemas del cuerpo.",
+    "Semiología clínica — arte de interrogar al paciente y examinarlo físicamente.",
+    "Farmacología — mecanismos de acción, dosis, interacciones y toxicología de medicamentos.",
+    "Medicina interna — enfermedades sistémicas: diabetes, hipertensión, cáncer, infecciones.",
+    "Cirugía general — técnicas quirúrgicas, anestesia, manejo de heridas y complicaciones.",
+    "Pediatría, ginecología, psiquiatría, geriatría — poblaciones especiales.",
+    "Medicina de urgencias — manejo del paciente crítico, ACLS, trauma, shock.",
+  ],
+  jobs: [
+    "Médico general / de familia — primer contacto del paciente con el sistema de salud.",
+    "Médico internista — enfermedades del adulto sin cirugía.",
+    "Especialistas: cardiólogo, neurólogo, oncólogo, gastroenterólogo y 30+ especialidades más.",
+    "Cirujano general o subespecializado (cardiovascular, neurocirugia, plástica).",
+    "Médico de urgencias / emergenciólogo — trabajo bajo máxima presión.",
+    "Médico investigador / epidemiólogo — ciencia clínica y salud pública.",
+    "Gerente de salud / hospital — administración sanitaria.",
+  ],
+  daily: [
+    "Pasar visita a pacientes hospitalizados: revisar evolución, exámenes y ajustar tratamientos.",
+    "Consulta externa: anamnesis completa, examen físico, diagnóstico diferencial, plan.",
+    "Interpretar imágenes (radiografías, TAC, RMN) y laboratorio clínico.",
+    "Realizar procedimientos: suturas, punciones, intubaciones, procedimientos menores.",
+    "Documentar en historia clínica electrónica — crucial legalmente.",
+    "Coordinar con enfermería, laboratorio, imágenes y otros especialistas.",
+    "Guardia hospitalaria: 12–36 horas de trabajo continuo sin descanso garantizado.",
+    "Comunicar diagnósticos difíciles (cáncer, muerte) a pacientes y familias.",
+  ],
+  oblig: [
+    "Secreto médico absoluto — no puedes revelar información del paciente.",
+    "Consentimiento informado para todo procedimiento — la falta de este es falta ética y legal.",
+    "Registro completo y oportuno en historia clínica — es documento legal.",
+    "Guardia hospitalaria obligatoria en sistema público.",
+    "Actualización médica continua (CME) — puntos por año para mantener registro profesional.",
+    "Notificación obligatoria de ciertas enfermedades a autoridades sanitarias (tuberculosis, COVID, etc.).",
+    "Responsabilidad médico-legal — una mala práctica puede generar demanda civil o penal.",
+  ],
+  skills: [
+    {n: "Conocimiento clínico actualizado", v: 98},
+    {n: "Toma de decisiones bajo presión", v: 94},
+    {n: "Comunicación empática con pacientes", v: 90},
+    {n: "Resistencia física y emocional", v: 87},
+    {n: "Trabajo en equipo interdisciplinario", v: 83},
+  ],
+  salaries: [
+    {role: "Médico residente (internado)", co: "$300–700/mes", global: "$1,500–3,000/mes"},
+    {role: "Médico general recién egresado", co: "$800–1,500/mes", global: "$3,000–6,000/mes"},
+    {role: "Especialista con experiencia", co: "$2,500–6,000/mes", global: "$10,000–20,000/mes"},
+    {role: "Subespecialista privado establecido", co: "$5,000–15,000/mes", global: "$20,000–50,000/mes"},
+  ],
+  specs: ["Cardiología", "Neurología", "Oncología", "Cirugía plástica", "Medicina estética", "Urgencias / Emergencias", "Radiología e imágenes", "Medicina deportiva", "Psiquiatría", "Infectología"],
+  outlook: [{l:"Envejecimiento poblacional", v:95, c:"#22c55e"},{l:"IA en diagnóstico (desafío)", v:60, c:"#f59e0b"},{l:"Demanda de especialistas", v:90, c:"#34d399"},{l:"Telemedicina creciente", v:72, c:"#4F9CF9"}],
+  pros: ["Impacto directo e irreemplazable en la vida humana — salvas vidas literalmente.", "Enorme diversidad de caminos: clínica, investigación, salud pública, gestión, academia.", "Respeto social y confianza de la comunidad.", "Posibilidad de trabajo en cualquier país con revalidación del título.", "Ejercicio privado puede generar ingresos muy superiores al sector público."],
+  cons: ["Ciclo formativo de 12–15 años antes de ejercer como especialista independiente.", "Guardias de 24–36 horas — privación de sueño crónica en residencia.", "Burnout médico es epidemia — 50 % de médicos reportan síntomas según la OMS.", "Responsabilidad legal permanente — demandas por mala práctica son frecuentes.", "En Colombia el sector público paga mal y la carrera cuesta cara en tiempo y dinero.", "Exposición a enfermedades infecciosas, sustancias peligrosas y muerte diaria."],
+  curiosity: "El síndrome de burnout médico es tan severo que la tasa de suicidio en médicos duplica la de la población general. En EE.UU., un médico muere por suicidio cada día. La residencia médica — el periodo de formación hospitalaria posgraduación — implica trabajar 80 horas semanales por salarios que en muchos países equivalen a menos del salario mínimo. Es el entrenamiento más exigente que existe en cualquier profesión."
+},
+{
+  id: "civil",
+  icon: "🏗️",
+  area: "Ingeniería",
+  acc: "#fb923c",
+  name: "Ingeniería Civil",
+  tagline: "Los que construyen el mundo físico que habitamos. Cada puente que cruzas, cada edificio donde vives y cada carretera que recorres fue calculada, diseñada y supervisada por un ingeniero civil.",
+  duracion: "5 años",
+  salario_min: 700, salario_max: 4500, salario_senior: 8000,
+  demanda: "Alta y estable — infraestructura siempre se necesita",
+  modalidad: "Campo + oficina — poco remoto disponible",
+  study: [
+    "Mecánica de suelos y geotecnia — comportamiento del terreno bajo cargas y agua.",
+    "Análisis y diseño estructural — cálculo de vigas, columnas, losas, cimentaciones.",
+    "Hidráulica e hidrología — diseño de acueductos, alcantarillados, control de inundaciones.",
+    "Materiales de construcción — propiedades de concreto, acero, madera, asfalto.",
+    "Vías y transporte — diseño geométrico de carreteras, tráfico, pavimentos.",
+    "Diseño sismoresistente — NSR-10 en Colombia, normas de sismorresistencia.",
+    "Topografía y sistemas de información geográfica (SIG).",
+    "Gestión de proyectos — PMI/PMBOK, presupuesto, programación de obra (MS Project, Primavera).",
+    "Ambiental e impacto — estudios de impacto ambiental (EIA), manejo de residuos de construcción.",
+  ],
+  jobs: [
+    "Ingeniero estructural — calcula y diseña estructuras de edificios y puentes.",
+    "Director de obra — responsable técnico y administrativo de la construcción.",
+    "Interventor / inspector — fiscaliza contratos de obra para el Estado o clientes privados.",
+    "Gerente de proyectos de construcción — coordina todos los actores de la obra.",
+    "Ingeniero vial — diseña y supervisa carreteras y redes de transporte.",
+    "Consultor en geotecnia — estudia suelos para cimentaciones de proyectos.",
+  ],
+  daily: [
+    "Revisar y verificar planos estructurales e hidráulicos recibidos de diseñadores.",
+    "Supervisar avance diario de obra: verificar que la ejecución coincide con el proyecto.",
+    "Coordinar contratistas, proveedores de materiales y subcontratistas especializados.",
+    "Resolver imprevistos en terreno — el suelo real nunca es exactamente como el estudio.",
+    "Elaborar y controlar presupuestos de obra — las desviaciones cuestan millones.",
+    "Gestionar permisos, licencias y aprobaciones ante curadurías y entidades municipales.",
+    "Redactar informes de avance para clientes, interventoría o banco de proyectos.",
+  ],
+  oblig: [
+    "Cumplir la NSR-10 (Norma Sismo Resistente) — obligatoria en Colombia; ignorarla es delito.",
+    "Firmar y sellar documentos técnicos como responsable — implica responsabilidad penal.",
+    "Memorias de cálculo completas y archivadas — evidencia en caso de falla.",
+    "Manejo ambiental de residuos de construcción según PGIRS municipal.",
+    "Gestión de seguridad y salud en el trabajo (SST) en obra.",
+    "Entrega de planos récord (as-built) al finalizar la obra.",
+  ],
+  skills: [
+    {n: "Diseño estructural (ETABS, SAP2000)", v: 92},
+    {n: "Gestión de proyectos", v: 88},
+    {n: "Normativas técnicas (NSR, RAS)", v: 88},
+    {n: "AutoCAD / BIM (Revit)", v: 82},
+    {n: "Liderazgo de personal en obra", v: 78},
+  ],
+  salaries: [
+    {role: "Ingeniero residente junior", co: "$800–1,500/mes", global: "$2,500–4,500/mes"},
+    {role: "Ingeniero de diseño mid", co: "$1,500–3,000/mes", global: "$5,000–8,000/mes"},
+    {role: "Director de obra senior", co: "$3,000–6,000/mes", global: "$8,000–14,000/mes"},
+    {role: "Gerente de proyectos / Socio", co: "$5,000–12,000/mes", global: "$12,000–20,000/mes"},
+  ],
+  specs: ["Estructural (edificios)", "Vías y transporte", "Hidráulica y sanitaria", "Geotecnia", "Gerencia de proyectos", "BIM Management", "Infraestructura urbana", "Ambiental"],
+  outlook: [{l:"Infraestructura en LATAM", v:85, c:"#22c55e"},{l:"Adopción BIM", v:70, c:"#fb923c"},{l:"Construcción sostenible", v:78, c:"#34d399"},{l:"Obras públicas (Colombia)", v:80, c:"#4F9CF9"}],
+  pros: ["Satisfacción de ver obras físicas terminadas que duran décadas.", "Alta demanda constante — en países en desarrollo la infraestructura siempre es necesidad.", "Acceso a grandes proyectos de impacto nacional (metros, vías 4G, represas).", "Estabilidad laboral en sector público como interventor o contratista del Estado.", "Rol de liderazgo temprano — un director de obra a los 30 años es completamente normal."],
+  cons: ["Trabajo en campo con calor, lluvia y condiciones adversas.", "Responsabilidad legal altísima — fallas estructurales generan cargos penales.", "Poco compatible con trabajo remoto — hay que estar físicamente en la obra.", "Presión extrema en control de costos y cronogramas.", "Sector muy sensible a ciclos económicos y corrupción en contratación pública."],
+  curiosity: "El colapso del Puente Morandi en Génova (Italia) en 2018 mató a 43 personas y generó cargos criminales contra 59 ingenieros, funcionarios y ejecutivos de la empresa concesionaria. La investigación demostró que había informes técnicos internos que advertían deterioro estructural desde 2017. En ingeniería civil, 'lo sabía pero no actué' no es una defensa — es agravante."
+},
+{
+  id: "electrica",
+  icon: "⚡",
+  area: "Ingeniería",
+  acc: "#fbbf24",
+  name: "Ingeniería Eléctrica y Electrónica",
+  tagline: "La ingeniería que gobierna la energía y la señal. Desde las redes eléctricas nacionales que iluminan países hasta el chip de 3 nanómetros en tu teléfono — todo lo diseña un ingeniero eléctrico o electrónico.",
+  duracion: "5 años",
+  salario_min: 800, salario_max: 5000, salario_senior: 9000,
+  demanda: "Alta — energías renovables y vehículos eléctricos disparan la demanda",
+  modalidad: "Industria / campo / laboratorio — poco remoto",
+  study: [
+    "Circuitos eléctricos y electrónica analógica — leyes de Kirchhoff, amplificadores, filtros.",
+    "Electrónica digital — lógica combinacional, secuencial, FPGAs, microprocesadores.",
+    "Control automático — sistemas realimentados, PID, controladores, lazo cerrado.",
+    "Máquinas eléctricas — motores DC, AC, transformadores, variadores de frecuencia.",
+    "Electrónica de potencia — convertidores, inversores, rectificadores.",
+    "Telecomunicaciones — modulación, antenas, fibra óptica, redes inalámbricas.",
+    "Energías renovables — solar fotovoltaica, eólica, almacenamiento en baterías.",
+    "Sistemas embebidos — programación de microcontroladores (Arduino, STM32, ESP32).",
+    "Diseño de PCB — Altium Designer, KiCad, layout de tarjetas electrónicas.",
+    "Instrumentación industrial — sensores, PLC, SCADA, protocolos industriales (Modbus, PROFIBUS).",
+  ],
+  jobs: [
+    "Ingeniero de automatización industrial — programa PLCs y sistemas SCADA.",
+    "Diseñador de sistemas embebidos — hardware y firmware de dispositivos.",
+    "Ingeniero en energías renovables — diseña plantas solares y eólicas.",
+    "Especialista en telecomunicaciones — redes 5G, fibra, radiocomunicaciones.",
+    "Ingeniero de mantenimiento eléctrico — garantiza disponibilidad de plantas industriales.",
+    "Diseñador de PCB — tarjetas electrónicas para productos de consumo o industria.",
+  ],
+  daily: [
+    "Diseñar y simular circuitos en SPICE, MATLAB/Simulink o herramientas de PCB.",
+    "Programar PLCs (Siemens, Allen-Bradley) y configurar sistemas SCADA.",
+    "Revisar instalaciones eléctricas industriales y residenciales.",
+    "Diagnosticar fallas en equipos: osciloscopio, multímetro, analizador de redes.",
+    "Elaborar planos eléctricos unilineales y de instrumentación (P&ID).",
+    "Calcular dimensionamiento de conductores, protecciones y equipos.",
+    "Gestionar proveedores de equipos eléctricos y electrónicos.",
+  ],
+  oblig: [
+    "Cumplir RETIE (Reglamento Técnico de Instalaciones Eléctricas) en Colombia.",
+    "Certificación de equipos e instalaciones antes de energizar.",
+    "Normas de seguridad eléctrica — trabajo en tensión solo con equipo certificado.",
+    "Calibración periódica de instrumentos de medición.",
+    "Documentación técnica de instalaciones: manuales, hojas de datos, planos récord.",
+  ],
+  skills: [
+    {n: "Electrónica analógica y digital", v: 92},
+    {n: "Programación de PLC / SCADA", v: 87},
+    {n: "Normas eléctricas (RETIE)", v: 85},
+    {n: "MATLAB / CAD eléctrico", v: 82},
+    {n: "Seguridad industrial", v: 80},
+  ],
+  salaries: [
+    {role: "Técnico junior / recién egresado", co: "$800–1,400/mes", global: "$2,500–4,000/mes"},
+    {role: "Ingeniero de automatización mid", co: "$1,500–3,000/mes", global: "$5,000–9,000/mes"},
+    {role: "Senior / especialista energía", co: "$3,000–6,000/mes", global: "$9,000–15,000/mes"},
+    {role: "Gerente técnico / consultor", co: "$5,000–10,000/mes", global: "$14,000–22,000/mes"},
+  ],
+  specs: ["Automatización industrial", "Energías renovables", "Sistemas embebidos / IoT", "Telecomunicaciones", "Electrónica de potencia", "Diseño PCB", "Smart Grid", "Vehículos eléctricos"],
+  outlook: [{l:"Vehículos eléctricos (EV)", v:96, c:"#fbbf24"},{l:"Energía solar y eólica", v:95, c:"#22c55e"},{l:"Industria 4.0 / IoT", v:90, c:"#4F9CF9"},{l:"Smart Grid", v:82, c:"#a78bfa"}],
+  pros: ["Alta demanda por transición energética global — el mundo se electrifica.", "Trabajo práctico y tangible — diseñas sistemas que ves funcionar.", "Salarios competitivos en sector industrial y energético.", "Puerta natural a la automatización, IoT y energías limpias.", "Alta estabilidad — plantas industriales siempre necesitan mantenimiento."],
+  cons: ["Riesgo físico real — la electricidad mata; los accidentes ocurren incluso con experiencia.", "Trabajo en ambientes industriales hostiles: calor, ruido, altura.", "Turnos rotativos en plantas de producción continua (24/7).", "Muy especializado — cambiar de industria no es tan fácil como en software.", "Menos glamour que la tecnología digital — la carrera está infravalorada socialmente."],
+  curiosity: "Tesla (la empresa) pasó de vender 0 a 1.8 millones de vehículos eléctricos en 2023. Cada uno necesita aproximadamente 1,500 componentes electrónicos y el equivalente a 1 km de cableado. El diseño de esos sistemas requiere ingenieros eléctricos especializados. Según el BLS, la demanda de ingenieros eléctricos crecerá un 11 % hasta 2030 — el doble del promedio de todas las profesiones."
+},
+{
+  id: "industrial",
+  icon: "⚙️",
+  area: "Ingeniería",
+  acc: "#f97316",
+  name: "Ingeniería Industrial",
+  tagline: "Los optimizadores del mundo productivo. Un ingeniero industrial analiza cómo fluyen personas, materiales, información y energía dentro de una organización y los hace fluir mejor, más rápido y con menos desperdicio.",
+  duracion: "5 años",
+  salario_min: 700, salario_max: 4000, salario_senior: 7000,
+  demanda: "Alta en manufactura, logística y consultoría",
+  modalidad: "Planta industrial / oficina / consultoría",
+  study: [
+    "Investigación de operaciones — programación lineal, redes, optimización combinatoria.",
+    "Gestión de la cadena de suministro — aprovisionamiento, producción, distribución, inventarios.",
+    "Control estadístico de calidad — cartas de control, Six Sigma, capacidad de proceso.",
+    "Ergonomía y seguridad industrial — diseño de puestos de trabajo, riesgo ocupacional.",
+    "Simulación de sistemas — Arena, ProModel — simular líneas de producción antes de construir.",
+    "Manufactura y procesos de producción — lean manufacturing, justo a tiempo, 5S.",
+    "Ingeniería de costos — estructura de costos, costeo ABC, presupuestación.",
+    "Gestión de proyectos — PMI, cronogramas, gestión de riesgos.",
+  ],
+  jobs: [
+    "Jefe de producción — lidera el piso de planta, cumple el programa diario.",
+    "Gerente de logística y supply chain — optimiza la cadena desde proveedor hasta cliente.",
+    "Analista / gerente de calidad — implementa y audita sistemas de gestión (ISO 9001).",
+    "Consultor en mejora de procesos — Lean, Six Sigma, transformación operacional.",
+    "Gerente de operaciones — responsable integral de la eficiencia productiva.",
+    "Analista de cadena de valor — mapea procesos y elimina desperdicios.",
+  ],
+  daily: [
+    "Revisar KPIs de producción: OEE, SCRAP, tiempo de ciclo, ausentismo.",
+    "Liderar sesiones de mejora continua Kaizen con equipos de planta.",
+    "Coordinar turnos de producción y asignar recursos humanos y de máquina.",
+    "Analizar desviaciones de calidad y liderar planes de acción correctiva.",
+    "Diseñar layouts de planta usando CAD o papel — flujos de material.",
+    "Gestionar inventarios: qué pedir, cuánto y cuándo (EOQ, MRP).",
+    "Presentar reportes de desempeño a gerencia y directivos.",
+  ],
+  oblig: [
+    "Cumplir metas de producción y eficiencia por turno, día y mes.",
+    "Garantizar el cumplimiento de normas ISO 9001 / ISO 14001 / OHSAS 18001.",
+    "Gestión de salud y seguridad del personal en planta.",
+    "Reporte de indicadores clave a gerencia con frecuencia diaria o semanal.",
+    "Control presupuestal del área de operaciones.",
+  ],
+  skills: [
+    {n: "Análisis y optimización de procesos", v: 92},
+    {n: "Estadística aplicada / Six Sigma", v: 87},
+    {n: "Liderazgo de equipos operativos", v: 88},
+    {n: "ERP (SAP, Oracle)", v: 80},
+    {n: "Lean Manufacturing", v: 85},
+  ],
+  salaries: [
+    {role: "Ingeniero junior de planta", co: "$700–1,300/mes", global: "$2,500–4,000/mes"},
+    {role: "Jefe de producción / calidad", co: "$1,400–2,800/mes", global: "$4,500–7,000/mes"},
+    {role: "Gerente de operaciones senior", co: "$3,000–6,000/mes", global: "$8,000–12,000/mes"},
+    {role: "Consultor Six Sigma Black Belt", co: "$4,000–8,000/mes", global: "$10,000–18,000/mes"},
+  ],
+  specs: ["Lean Manufacturing", "Six Sigma Black Belt", "Supply Chain Management", "Logística y distribución", "Calidad e ISO", "Proyectos de inversión", "Simulación de operaciones", "Ergonomía"],
+  outlook: [{l:"Industria 4.0 / digitalización", v:88, c:"#f97316"},{l:"E-commerce y logística", v:92, c:"#22c55e"},{l:"Manufactura local (nearshoring)", v:80, c:"#4F9CF9"},{l:"Automatización de planta", v:82, c:"#a78bfa"}],
+  pros: ["Alta empleabilidad en cualquier industria — toda empresa produce algo.", "Acceso a roles directivos a edad relativamente temprana.", "Visión integral del negocio — entiende finanzas, personas, procesos y tecnología.", "Certificaciones Lean y Six Sigma multiplican el salario y la empleabilidad.", "Las consultoras top (McKinsey, Bain) reclutan fuertemente ingenieros industriales."],
+  cons: ["Puede volverse rutinario en empresas tradicionales sin cultura de mejora.", "Presión constante por resultados de producción — los números mandan.", "Menos valorado en startups y empresas digitales.", "En Colombia, los salarios en planta industrial son inferiores a otras ingenierías.", "Alta exposición a conflictos entre personal operativo y mandos medios."],
+  curiosity: "El Toyota Production System (TPS), base del Lean Manufacturing moderno, fue desarrollado por Taiichi Ohno — un ingeniero industrial. Redujo el tiempo de producción de vehículos en un 75 %, eliminó 7 tipos de desperdicio y fue adoptado por hospitales, aerolíneas, bancos y startups. Hoy Amazon aplica principios del TPS en sus centros de distribución. Un solo concepto de ingeniería industrial cambió la economía mundial."
+},
+{
+  id: "mecanica",
+  icon: "🔧",
+  area: "Ingeniería",
+  acc: "#60a5fa",
+  name: "Ingeniería Mecánica",
+  tagline: "La ingeniería madre — la más antigua de las formales. Diseña y analiza todo lo que se mueve, genera energía o transmite fuerzas: desde turbinas de avión hasta prótesis biónicas y vehículos eléctricos.",
+  duracion: "5 años",
+  salario_min: 750, salario_max: 4500, salario_senior: 8000,
+  demanda: "Estable — alta en aeroespacial, automotriz y energía",
+  modalidad: "Industria / laboratorio / diseño mixto",
+  study: [
+    "Mecánica de sólidos y resistencia de materiales — esfuerzos, deformaciones, fallas.",
+    "Termodinámica — ciclos de potencia, calor, trabajo, eficiencia energética.",
+    "Dinámica de fluidos — flujos internos y externos, aerodinámica, CFD computacional.",
+    "Diseño de máquinas — elementos mecánicos: engranajes, rodamientos, ejes, embragues.",
+    "Manufactura y procesos de producción — mecanizado, soldadura, fundición, impresión 3D.",
+    "CAD 3D avanzado — SolidWorks, CATIA, Fusion 360, diseño paramétrico.",
+    "Análisis por elementos finitos (FEA) — simular esfuerzos y temperaturas sin prototipo.",
+    "Dinámica y vibraciones — análisis de sistemas oscilantes, resonancias, ruido.",
+    "Control de máquinas — servomotores, actuadores, CNC.",
+    "Robótica — cinemática, dinámica, programación de robots industriales.",
+  ],
+  jobs: [
+    "Diseñador de producto mecánico — crea nuevos productos desde cero en CAD.",
+    "Ingeniero de manufactura — optimiza cómo se fabrica el producto.",
+    "Ingeniero de mantenimiento industrial — garantiza disponibilidad de maquinaria.",
+    "Especialista en análisis de fallas — investiga por qué fallan piezas en servicio.",
+    "Ingeniero aeroespacial / automotriz — sectores de alta exigencia y alto salario.",
+    "Diseñador de dispositivos médicos — prótesis, implantes, equipos de diagnóstico.",
+  ],
+  daily: [
+    "Diseñar piezas y ensamblajes en CAD 3D y liberar planos para manufactura.",
+    "Configurar y revisar simulaciones FEA (ANSYS, Abaqus) de esfuerzo y temperatura.",
+    "Elaborar especificaciones técnicas de componentes: tolerancias GD&T, materiales, tratamientos.",
+    "Supervisar procesos de mecanizado, soldadura o ensamble en planta.",
+    "Analizar fallas de producto — AMEF (Análisis de Modos y Efectos de Falla).",
+    "Coordinar con proveedores de piezas y validar muestras de producción.",
+    "Gestionar proyectos de I+D de nuevos productos en equipo multidisciplinario.",
+  ],
+  oblig: [
+    "Cumplir tolerancias y especificaciones GD&T en planos de fabricación.",
+    "Documentar AMEF, planes de control y validaciones de producto.",
+    "Certificaciones de producto por industria (ASME, ISO, CE, FDA para médico).",
+    "Gestión de cambios de ingeniería (ECO) — cada modificación debe trazarse.",
+    "Responsabilidad sobre fallas en campo: recall de producto si hay riesgo de seguridad.",
+  ],
+  skills: [
+    {n: "CAD 3D / FEA (ANSYS, SW)", v: 93},
+    {n: "Termodinámica y fluidos", v: 85},
+    {n: "Análisis de materiales", v: 83},
+    {n: "GD&T y planos técnicos", v: 80},
+    {n: "Gestión de proyectos de I+D", v: 75},
+  ],
+  salaries: [
+    {role: "Diseñador junior", co: "$800–1,400/mes", global: "$3,000–5,000/mes"},
+    {role: "Ingeniero de manufactura mid", co: "$1,500–3,000/mes", global: "$5,500–9,000/mes"},
+    {role: "Senior / especialista FEA", co: "$3,000–5,500/mes", global: "$9,000–15,000/mes"},
+    {role: "Gerente de I+D / Ing. Jefe", co: "$5,000–10,000/mes", global: "$15,000–25,000/mes"},
+  ],
+  specs: ["Diseño de producto", "Aeroespacial", "Automotriz / EV", "Dispositivos médicos", "Análisis FEA / CFD", "Robótica", "Manufactura avanzada", "Energía (turbinas, HVAC)"],
+  outlook: [{l:"Vehículos eléctricos / EV", v:92, c:"#60a5fa"},{l:"Impresión 3D / manufactura aditiva", v:85, c:"#22c55e"},{l:"Aeroespacial (SpaceX, Boeing)", v:78, c:"#a78bfa"},{l:"Robótica e industria 4.0", v:88, c:"#f97316"}],
+  pros: ["Amplísima variedad de industrias — de la NASA a laboratorios médicos.", "Trabajo tangible — diseñas cosas reales que puedes tocar.", "Alta demanda en países industrializados (EE.UU., Alemania, México automotriz).", "Base sólida para posgrados en mecatrónica, aeroespacial, biomédica.", "Satisfacción de ver un producto tuyo manufacturado en serie."],
+  cons: ["En LATAM la industria manufacturera de alta tecnología es limitada — menos oportunidades que en países industrializados.", "Ciclos de diseño largos — un producto puede tardar 2–4 años en llegar al mercado.", "Trabajo a veces en ambientes industriales hostiles.", "Salarios inferiores al software en la misma región.", "Automatización CNC y robots reemplaza algunos roles de manufactura básica."],
+  curiosity: "La ingeniería mecánica es la más antigua de las ingenierías formales — los primeros programas datan de 1847 en el MIT. Sin embargo, sus aplicaciones más revolucionarias son actuales: SpaceX usa ingeniería mecánica computacional avanzada para diseñar cohetes reutilizables, y los investigadores del MIT están desarrollando exoesqueletos mecánicos para rehabilitación de pacientes con parálisis."
+},
+{
+  id: "admin",
+  icon: "📊",
+  area: "Negocios",
+  acc: "#818cf8",
+  name: "Administración de Empresas",
+  tagline: "La carrera que enseña a dirigir organizaciones. No se limita a 'hacer negocios' — abarca estrategia, finanzas, personas, marketing, operaciones y cultura. Un buen administrador es el director de orquesta de una empresa.",
+  duracion: "4–5 años",
+  salario_min: 600, salario_max: 5000, salario_senior: 15000,
+  demanda: "Alta con especialización — saturada sin ella",
+  modalidad: "Oficina / híbrido / remoto parcial",
+  study: [
+    "Contabilidad financiera y gerencial — leer e interpretar estados financieros.",
+    "Finanzas corporativas — valoración de proyectos, costo de capital, decisiones de inversión.",
+    "Marketing estratégico — segmentación, posicionamiento, mezcla de marketing.",
+    "Gestión de recursos humanos — selección, desarrollo, compensación, clima organizacional.",
+    "Estrategia empresarial — modelos de Porter, análisis DOFA, Balanced Scorecard.",
+    "Economía — micro y macroeconómica aplicada a decisiones empresariales.",
+    "Derecho comercial y tributario — contratos, sociedades, normativa fiscal.",
+    "Gestión de operaciones — producción, cadena de valor, procesos.",
+    "Emprendimiento e innovación — modelos de negocio, lean startup, design thinking.",
+    "Estadística para negocios — análisis de datos para toma de decisiones.",
+  ],
+  jobs: [
+    "CEO / Gerente general — dirige toda la organización.",
+    "Consultor estratégico (McKinsey, BCG, Deloitte) — resuelve problemas complejos de negocios.",
+    "Analista de negocios — traduce necesidades del negocio en soluciones.",
+    "Gerente de producto (Product Manager) — define qué construye el equipo de producto.",
+    "Director de Recursos Humanos — gestiona el capital humano de la empresa.",
+    "Emprendedor / Fundador — crea su propia empresa desde cero.",
+    "Gerente comercial / ventas — responsable del crecimiento de ingresos.",
+  ],
+  daily: [
+    "Revisar y analizar reportes financieros: P&G, Balance, flujo de caja.",
+    "Liderar reuniones de planificación estratégica y seguimiento de OKRs.",
+    "Gestionar presupuesto: aprobar gastos, identificar desviaciones.",
+    "Tomar decisiones de contratación, estructura organizacional y compensación.",
+    "Presentar resultados e iniciativas a directivos, socios o inversionistas.",
+    "Negociar contratos con proveedores, clientes y socios estratégicos.",
+    "Analizar el entorno competitivo y ajustar la estrategia.",
+  ],
+  oblig: [
+    "Cumplir metas financieras acordadas con la junta directiva o accionistas.",
+    "Gobierno corporativo — transparencia, control interno, cumplimiento ético.",
+    "Gestión de riesgos empresariales — identificar y mitigar amenazas al negocio.",
+    "Reportes a entes reguladores según sector (Superintendencia, DIAN, etc.).",
+    "Manejo responsable de información confidencial de la empresa.",
+    "Cumplimiento de normativa laboral en gestión del personal.",
+  ],
+  skills: [
+    {n: "Liderazgo y toma de decisiones", v: 92},
+    {n: "Análisis financiero", v: 87},
+    {n: "Comunicación ejecutiva", v: 90},
+    {n: "Gestión del cambio", v: 82},
+    {n: "Visión estratégica", v: 88},
+  ],
+  salaries: [
+    {role: "Analista / asistente de gerencia", co: "$600–1,200/mes", global: "$2,500–4,000/mes"},
+    {role: "Jefe de área / gerente junior", co: "$1,500–3,000/mes", global: "$5,000–9,000/mes"},
+    {role: "Director / Gerente senior", co: "$4,000–9,000/mes", global: "$12,000–22,000/mes"},
+    {role: "CEO / Socio consultor", co: "$8,000–25,000/mes", global: "$25,000–100,000+/mes"},
+  ],
+  specs: ["MBA (generales o especializados)", "Consultoría estratégica", "Emprendimiento y startups", "Gerencia de producto (PM)", "Finanzas corporativas", "Marketing digital", "Gestión internacional", "Recursos Humanos"],
+  outlook: [{l:"Demanda de MBA", v:85, c:"#818cf8"},{l:"Startups y emprendimiento", v:88, c:"#22c55e"},{l:"Consultoría estratégica", v:80, c:"#4F9CF9"},{l:"Digital vs tradicional", v:75, c:"#f59e0b"}],
+  pros: ["Visión completa del funcionamiento empresarial desde el primer año.", "El MBA potencia exponencialmente salario y red de contactos.", "Alta versatilidad — funciona en cualquier industria o sector.", "Emprendimiento accesible — puedes crear empresa con relativamente poco capital.", "Roles directivos son accesibles relativamente rápido con buen desempeño."],
+  cons: ["Título muy genérico y competido — sin especialización o MBA es difícil destacar.", "Salarios de entrada bajos comparados con ingenieros o médicos.", "Política corporativa y juegos de poder son inevitables en grandes empresas.", "La carrera de software ha absorbido muchos roles de 'negocio' con perfil más técnico.", "Sin números sólidos, el perfil de administrador se percibe como 'blando' en startups tech."],
+  curiosity: "El 65 % de los CEOs del Fortune 500 tienen un MBA. Sin embargo, los fundadores de Apple, Microsoft, Facebook y Dell nunca terminaron sus carreras universitarias. Esta paradoja revela algo importante: la administración no es una carrera de conocimiento acumulado como medicina — es una carrera de redes, contexto, liderazgo y toma de decisiones bajo incertidumbre. El MBA es el pasaporte para grandes corporaciones; la acción directa lo es para emprender."
+},
+{
+  id: "finanzas",
+  icon: "💰",
+  area: "Negocios",
+  acc: "#2dd4bf",
+  name: "Finanzas y Contabilidad",
+  tagline: "El lenguaje universal de los negocios. Los financieros toman decisiones que mueven millones de dólares; los contadores garantizan que los números digan la verdad. Sin ellos, ninguna empresa puede existir formalmente.",
+  duracion: "4–5 años",
+  salario_min: 700, salario_max: 6000, salario_senior: 12000,
+  demanda: "Alta y muy estable — cada empresa necesita un contador",
+  modalidad: "Oficina / banca / remoto parcial — temporadas muy intensas",
+  study: [
+    "Contabilidad financiera — registro de transacciones, estados financieros, principios contables.",
+    "Contabilidad de costos — costeo de productos y servicios, análisis de márgenes.",
+    "Auditoría interna y externa — revisión independiente de estados financieros.",
+    "Normas Internacionales de Información Financiera (NIIF/IFRS) — estándar global.",
+    "Finanzas corporativas — estructura de capital, VPN, TIR, valoración de empresas.",
+    "Mercados de capitales — acciones, bonos, derivados, mercado de divisas.",
+    "Gestión de riesgos financieros — riesgo de crédito, mercado, liquidez y operacional.",
+    "Tributación — impuesto de renta, IVA, retención, planeación fiscal.",
+    "Modelado financiero — Excel avanzado, proyecciones, análisis de sensibilidad.",
+    "Finanzas cuantitativas — estadística aplicada, modelos de valoración (Black-Scholes).",
+  ],
+  jobs: [
+    "Contador público certificado — firma estados financieros y declaraciones tributarias.",
+    "Auditor externo (Big 4: Deloitte, PwC, EY, KPMG) — revisa cuentas de grandes empresas.",
+    "Analista financiero — modela proyecciones y apoya decisiones de inversión.",
+    "Trader / analista de inversiones — gestiona portafolios en bolsa.",
+    "CFO (Director Financiero) — máximo cargo financiero de la organización.",
+    "Asesor fiscal / tributarista — optimiza la carga impositiva de empresas y personas.",
+    "Controller — controla la contabilidad interna y el cumplimiento financiero.",
+  ],
+  daily: [
+    "Registrar, clasificar y conciliar transacciones contables en ERP (SAP, Siigo, Contapyme).",
+    "Preparar estados financieros mensuales: P&G, balance general, flujo de caja.",
+    "Elaborar modelos de proyección y valoración en Excel.",
+    "Coordinar con auditoría externa — preparar papeles de trabajo y soportes.",
+    "Calcular y declarar impuestos: IVA, retención en la fuente, renta.",
+    "Analizar variaciones de costos y márgenes versus presupuesto.",
+    "Presentar reportes financieros a gerencia con análisis de desviaciones.",
+  ],
+  oblig: [
+    "Cumplimiento tributario estricto y oportuno — las multas son costosas.",
+    "Aplicar NIIF/IFRS correctamente en estados financieros — es estándar legal.",
+    "Secreto profesional sobre información financiera de clientes y empleadores.",
+    "Firmar estados financieros y declaraciones — responsabilidad legal directa.",
+    "Actualización en normativa tributaria — cambia frecuentemente.",
+    "Control interno — implementar y documentar controles antifraude.",
+  ],
+  skills: [
+    {n: "Contabilidad y análisis financiero", v: 96},
+    {n: "Excel / modelado financiero", v: 92},
+    {n: "Normativa NIIF / tributaria", v: 88},
+    {n: "Ética y confidencialidad", v: 95},
+    {n: "Auditoría y control interno", v: 82},
+  ],
+  salaries: [
+    {role: "Auxiliar contable / junior", co: "$700–1,200/mes", global: "$2,000–3,500/mes"},
+    {role: "Contador / analista financiero", co: "$1,400–2,800/mes", global: "$4,500–7,000/mes"},
+    {role: "Auditor senior / Controller", co: "$3,000–6,000/mes", global: "$8,000–14,000/mes"},
+    {role: "CFO / Director financiero", co: "$6,000–20,000/mes", global: "$20,000–60,000+/mes"},
+  ],
+  specs: ["Auditoría Big 4", "Finanzas corporativas", "Mercado de capitales / Trading", "Tributación y fiscalidad", "Riesgo financiero", "Banca de inversión", "FP&A (Financial Planning & Analysis)", "Contabilidad forense"],
+  outlook: [{l:"Fintech disruptiendo banca", v:85, c:"#2dd4bf"},{l:"Demanda de auditores", v:80, c:"#22c55e"},{l:"Automatización contable (IA)", v:65, c:"#f59e0b"},{l:"Estabilidad del sector", v:92, c:"#4F9CF9"}],
+  pros: ["Rol absolutamente crítico en toda organización — nunca sobra un buen contador.", "Las Big 4 son una escuela de negocios de primer nivel con excelente remuneración.", "Alta certeza de empleo — la contabilidad es obligatoria por ley.", "Acceso a información privilegiada y estratégica del negocio.", "El camino a CFO es uno de los más claros en el mundo corporativo."],
+  cons: ["Los cierres contables son agotadores — enero y abril son meses de 70 horas semanales.", "Trabajo muy detallista — un error decimal puede tener grandes consecuencias.", "Los auditores de Big 4 trabajan 65+ horas semanales durante temporada alta.", "La automatización contable básica está siendo reemplazada por IA y RPA.", "Poca creatividad en roles puramente contables — trabajo bastante rutinario."],
+  curiosity: "El escándalo de Enron (2001) llevó a la quiebra a Arthur Andersen, una de las firmas de auditoría más grandes del mundo, y resultó en 89 cargos criminales. La manipulación contable de $74 mil millones en activos ficticios fue posible porque auditores firmaron estados financieros falsos. Ese evento generó la Ley Sarbanes-Oxley (SOX), que cambió para siempre los estándares de auditoría global. La firma de un contador vale más que muchos lo imaginan."
+},
+{
+  id: "biotecnologia",
+  icon: "🔬",
+  area: "Ciencias",
+  acc: "#4ade80",
+  name: "Biotecnología",
+  tagline: "La fusión de la biología y la tecnología. Diseña soluciones vivas: medicamentos biológicos producidos en células, cultivos resistentes a la sequía, diagnósticos moleculares ultrarrápidos y terapias génicas que reescriben el ADN.",
+  duracion: "5 años + posgrado muy recomendado",
+  salario_min: 700, salario_max: 5000, salario_senior: 10000,
+  demanda: "Creciente — especialmente en biopharma y diagnóstico molecular",
+  modalidad: "Laboratorio / industria farmacéutica / investigación",
+  study: [
+    "Biología molecular — ADN, ARN, proteínas, replicación, transcripción, traducción.",
+    "Genética — herencia, mutaciones, genómica, CRISPR-Cas9 y edición génica.",
+    "Microbiología e inmunología — bacterias, virus, hongos, sistema inmune, vacunas.",
+    "Bioquímica estructural — enzimas, cofactores, vías metabólicas, energética celular.",
+    "Cultivos celulares — técnica aséptica, líneas celulares, fermentación y bioreactores.",
+    "Bioinformática — análisis de secuencias genómicas, alineamiento, bases de datos (NCBI, Uniprot).",
+    "Ingeniería de proteínas — expresión heteróloga, purificación, caracterización.",
+    "Bioética y regulación — FDA, INVIMA, EMA, buenas prácticas de laboratorio (BPL/GLP).",
+    "Bioprocesos industriales — escalado de producción de fármacos biológicos.",
+    "Diagnóstico molecular — PCR, ELISA, secuenciación, inmunohistoquímica.",
+  ],
+  jobs: [
+    "Científico de I+D en industria farmacéutica — desarrolla nuevos fármacos biológicos.",
+    "Investigador en laboratorio académico — publica descubrimientos científicos.",
+    "Especialista en diagnóstico molecular — laboratorios clínicos y de referencia.",
+    "Bioinformático — analiza datos genómicos a gran escala.",
+    "Especialista regulatorio — gestiona aprobaciones de productos ante agencias sanitarias.",
+    "Científico en biotech startup — riesgo alto, impacto enorme, equity posible.",
+    "Técnico especialista en fermentación y bioprocesos — planta de producción.",
+  ],
+  daily: [
+    "Planificar y ejecutar experimentos: PCR, Western blot, ELISA, cultivos celulares.",
+    "Analizar datos experimentales con Python/R y bioinformática.",
+    "Documentar protocolos y resultados en cuaderno de laboratorio (paper o digital).",
+    "Preparar muestras biológicas: tejidos, sangre, células, microorganismos.",
+    "Revisar literatura científica de ArXiv, PubMed para mantenerse actualizado.",
+    "Asistir a reuniones de laboratorio (journal club, presentación de resultados).",
+    "Escribir secciones de publicaciones científicas o informes técnicos.",
+  ],
+  oblig: [
+    "Bioseguridad estricta según nivel BSL (1-4) — equipo de protección personal obligatorio.",
+    "Buenas Prácticas de Laboratorio (GLP/BPL) — cada paso documentado y trazable.",
+    "Protocolos éticos para investigación con humanos o animales (IACUC).",
+    "Cadena de custodia de muestras biológicas — identidad y trazabilidad.",
+    "Disposición correcta de residuos biológicos peligrosos.",
+    "Confidencialidad de datos de investigación propietaria.",
+  ],
+  skills: [
+    {n: "Técnicas de laboratorio (PCR, ELISA)", v: 95},
+    {n: "Rigor científico y documentación", v: 95},
+    {n: "Bioinformática (Python, R, Biopython)", v: 80},
+    {n: "Inglés científico (lectura y escritura)", v: 90},
+    {n: "Estadística experimental", v: 78},
+  ],
+  salaries: [
+    {role: "Técnico / investigador junior", co: "$700–1,200/mes", global: "$2,500–4,500/mes"},
+    {role: "Científico de I+D mid", co: "$1,400–2,800/mes", global: "$5,500–9,000/mes"},
+    {role: "Senior Scientist / Project Lead", co: "$3,000–5,500/mes", global: "$10,000–18,000/mes"},
+    {role: "Director científico / CSO", co: "$6,000–15,000/mes", global: "$20,000–50,000+/mes"},
+  ],
+  specs: ["Terapia génica (CRISPR)", "Biofármacos / anticuerpos monoclonales", "Diagnóstico molecular", "Bioinformática computacional", "Biotecnología agrícola (OGM)", "Vacunas y inmunología", "Microbioma", "Bioimpresión 3D"],
+  outlook: [{l:"Inversión en biopharma", v:92, c:"#4ade80"},{l:"CRISPR y terapia génica", v:95, c:"#22c55e"},{l:"Diagnóstico post-COVID", v:85, c:"#4F9CF9"},{l:"Biotech en LATAM", v:55, c:"#f59e0b"}],
+  pros: ["Contribución directa a curar enfermedades y mejorar la vida humana.", "Sector con inversión creciente — biotech captó $30B+ USD en VC en 2023.", "CRISPR, ARNm e IA están generando una revolución biotecnológica sin precedentes.", "Variedad de especializaciones — de la agricultura a la oncología.", "Alta demanda internacional — EE.UU., Alemania, Suiza, Dinamarca concentran los mejores laboratorios."],
+  cons: ["Posgrado casi obligatorio para avanzar más allá del laboratorio técnico.", "Salarios bajos en investigación pública y academia comparado con industria.", "Experimentos fallidos son la norma — la paciencia es una habilidad crítica.", "Regulación muy lenta — llevar un fármaco de laboratorio a mercado toma 12–15 años.", "En Colombia la industria biotech es muy pequeña — muchos deben emigrar para ejercer plenamente."],
+  curiosity: "La vacuna de ARNm contra COVID-19 de Pfizer-BioNTech fue desarrollada en 11 meses, versus los 10–15 años que tarda típicamente una vacuna. Fue posible porque los biotecnólogos tenían décadas de investigación en ARNm para cáncer acumulada en laboratorios. Hoy esa misma tecnología está en ensayos clínicos fase III para melanoma, cáncer de páncreas, VIH y alzheimer. La biotecnología no cura enfermedades en meses — construye el conocimiento que las cura en décadas."
+},
+{
+  id: "derecho",
+  icon: "⚖️",
+  area: "Derecho",
+  acc: "#a8a29e",
+  name: "Derecho y Abogacía",
+  tagline: "La carrera que garantiza que las reglas del juego social se cumplan. Los abogados son el puente entre la norma escrita y la realidad humana — negocian, argumentan, redactan y defienden en conflictos que afectan vidas, empresas y países.",
+  duracion: "5 años + habilitación profesional (tarjeta de abogado)",
+  salario_min: 600, salario_max: 7000, salario_senior: 20000,
+  demanda: "Alta con especialización — saturada en litigio general",
+  modalidad: "Despacho / juzgados / corporativo / academia",
+  study: [
+    "Derecho civil — contratos, propiedad, familia, herencias, responsabilidad civil.",
+    "Derecho penal — tipos penales, proceso penal acusatorio, defensa y acusación.",
+    "Derecho constitucional — principios, derechos fundamentales, tutela, acciones constitucionales.",
+    "Derecho administrativo — relación Estado-ciudadano, contratos públicos, litigios contra el Estado.",
+    "Derecho mercantil y corporativo — sociedades, fusiones, adquisiciones (M&A), contratos comerciales.",
+    "Derecho laboral — contratos de trabajo, despidos, negociación colectiva, SGSST.",
+    "Derecho internacional — tratados, arbitraje internacional, derechos humanos.",
+    "Derecho tributario — fiscalidad de personas y empresas, planeación tributaria.",
+    "Argumentación jurídica y técnica legal — cómo construir argumentos sólidos ante jueces.",
+    "Clínica jurídica — práctica real con casos reales antes de graduarse.",
+  ],
+  jobs: [
+    "Abogado litigante — representa clientes en demandas y juicios ante juzgados.",
+    "Asesor jurídico corporativo (in-house) — consejero legal permanente de una empresa.",
+    "Fiscal / abogado del Estado — acusa en nombre de la sociedad.",
+    "Notario — da fe pública de actos jurídicos.",
+    "Árbitro comercial — resuelve disputas comerciales sin ir a juzgados.",
+    "Abogado de derecho internacional / arbitraje — conflictos entre empresas o países.",
+    "Docente e investigador jurídico — academia y publicaciones doctrinales.",
+  ],
+  daily: [
+    "Redactar contratos, demandas, recursos de apelación, derechos de petición.",
+    "Investigar jurisprudencia en bases de datos (Lexbase, Vlex, Corte Suprema).",
+    "Asistir a audiencias: orales, preparatorias, de juicio en juzgados.",
+    "Asesorar clientes: explicar situación legal, opciones y riesgos.",
+    "Negociar acuerdos extrajudiciales — la mayoría de conflictos se resuelven antes del juicio.",
+    "Revisar documentos societarios, contratos y due diligence en M&A.",
+    "Cumplir plazos procesales estrictos — el vencimiento de un término es irreversible.",
+  ],
+  oblig: [
+    "Secreto profesional — lo que el cliente te dice no puede revelarse jamás sin autorización.",
+    "Cumplir plazos procesales fatales — perder un recurso por vencimiento tiene consecuencias graves.",
+    "Código de ética del abogado — no puede mentir al juez ni actuar en conflicto de intereses.",
+    "Registro y actualización de tarjeta profesional ante el Consejo Superior de la Judicatura.",
+    "Actualización en legislación — las leyes cambian y los fallos también.",
+    "Lealtad al cliente dentro de los límites de la ley y la ética profesional.",
+  ],
+  skills: [
+    {n: "Argumentación y lógica jurídica", v: 96},
+    {n: "Redacción legal precisa", v: 94},
+    {n: "Investigación normativa / jurisprudencia", v: 90},
+    {n: "Negociación y persuasión", v: 86},
+    {n: "Manejo de presión y plazos", v: 88},
+  ],
+  salaries: [
+    {role: "Abogado junior / pasante", co: "$600–1,100/mes", global: "$2,500–4,000/mes"},
+    {role: "Asociado en firma mid-market", co: "$1,500–3,000/mes", global: "$5,000–9,000/mes"},
+    {role: "Socio / asesor in-house senior", co: "$4,000–10,000/mes", global: "$15,000–30,000/mes"},
+    {role: "Socio BigLaw / arbitraje intl.", co: "$8,000–25,000+/mes", global: "$30,000–100,000+/mes"},
+  ],
+  specs: ["Derecho corporativo / M&A", "Arbitraje comercial nacional e internacional", "Derecho penal empresarial", "Propiedad intelectual y tecnología", "Derecho tributario", "Derecho laboral", "Derecho público / contratación estatal", "Compliance y anticorrupción"],
+  outlook: [{l:"Legaltech y automatización", v:70, c:"#f59e0b"},{l:"Arbitraje internacional", v:85, c:"#a8a29e"},{l:"Compliance y regulación", v:90, c:"#22c55e"},{l:"Derecho digital / cibernético", v:82, c:"#4F9CF9"}],
+  pros: ["Altísima versatilidad — el derecho cruza todos los sectores de la economía.", "Especialización eleva los ingresos de forma exponencial.", "Independencia profesional — consultoría propia con baja inversión inicial.", "Enorme impacto social y acceso a esferas de poder político y económico.", "El arbitraje internacional puede generar honorarios extraordinarios."],
+  cons: ["Mercado muy saturado — Colombia tiene más abogados per cápita que Alemania.", "Primeros años con salarios muy bajos en firmas pequeñas.", "Trabajo bajo presión de plazos permanente — el tiempo corre siempre.", "Litigio es emocionalmente desgastante — los conflictos de los clientes se vuelven tuyos.", "Las herramientas de IA (Harvey, LexMachina) están automatizando investigación y redacción básica."],
+  curiosity: "En EE.UU., un asociado primer año en una firma 'BigLaw' (Latham, Skadden, Sullivan & Cromwell) gana $225,000 USD anuales desde el día uno. En Colombia, el mismo perfil en una firma top gana $1,500–3,000 USD/mes. La brecha explica por qué los mejores abogados colombianos buscan certificarse para ejercer en Nueva York o Londres. El Uniform Bar Exam (UBE) y el LLM son el camino — y el retorno puede ser de 10x."
+},
+{
+  id: "arquitectura",
+  icon: "🏛️",
+  area: "Arte y Diseño",
+  acc: "#f9a8d4",
+  name: "Arquitectura",
+  tagline: "La disciplina que fusiona arte, ingeniería y sociología para crear los espacios donde la humanidad vive, trabaja, aprende y sana. Es la única profesión donde el error puede durar siglos y la excelencia, milenios.",
+  duracion: "5–6 años",
+  salario_min: 600, salario_max: 5000, salario_senior: 10000,
+  demanda: "Moderada — mercado competido, pero siempre necesaria",
+  modalidad: "Despacho de diseño / obra / gestión inmobiliaria",
+  study: [
+    "Diseño arquitectónico (taller de proyectos) — el corazón de la carrera, semestre a semestre.",
+    "Historia y teoría de la arquitectura — de la antigüedad clásica al deconstructivismo.",
+    "Construcción y estructuras — cómo se materializa lo que diseñas.",
+    "Urbanismo y planificación territorial — ciudades, POT, movilidad, espacio público.",
+    "BIM y modelado digital — Revit, Rhino, Grasshopper, parametrización.",
+    "Representación gráfica — dibujo técnico, perspectivas, renderizado (Lumion, Enscape).",
+    "Instalaciones — hidráulica, eléctrica, HVAC, acústica.",
+    "Arquitectura bioclimática — eficiencia energética, ventilación natural, orientación solar.",
+    "Gestión de proyectos — contratos, presupuestos, cronograma de obra.",
+    "Patrimonio y restauración — intervención en edificios históricos protegidos.",
+  ],
+  jobs: [
+    "Arquitecto proyectista — diseña edificios, viviendas, equipamientos.",
+    "Director de obra — supervisa la construcción y garantiza fidelidad al proyecto.",
+    "Urbanista — diseña planes maestros, planes de ordenamiento territorial.",
+    "Diseñador de interiores — espacios residenciales y comerciales.",
+    "BIM Manager — coordina modelos digitales del edificio de todas las disciplinas.",
+    "Gerente inmobiliario — desarrolla proyectos de vivienda y comercio.",
+    "Arquitecto de patrimonio — restaura y conserva edificios históricos.",
+  ],
+  daily: [
+    "Diseñar y desarrollar proyectos en Revit, AutoCAD, Rhino u SketchUp.",
+    "Producir planimetría técnica: plantas, cortes, fachadas, detalles constructivos.",
+    "Supervisar obra: verificar que la construcción se ejecuta conforme al proyecto.",
+    "Coordinar con ingeniero estructural, eléctrico, hidrosanitario y otros especialistas.",
+    "Presentar proyectos a clientes y comités: renders, maquetas, láminas de diseño.",
+    "Gestionar licencias, permisos y radicación ante curadurías urbanas.",
+    "Elaborar presupuesto de obra y hacer seguimiento de costos.",
+  ],
+  oblig: [
+    "Cumplir NSR-10, normas de accesibilidad y POT municipal — son legalmente obligatorias.",
+    "Firmar y sellar planos como arquitecto responsable — implica responsabilidad civil y penal.",
+    "Visado de planos ante curaduría urbana o entidad correspondiente.",
+    "Contrato de diseño y supervisión correctamente redactado con el cliente.",
+    "Gestión de seguros de responsabilidad civil profesional.",
+    "Entrega de planos récord (as-built) al finalizar la construcción.",
+  ],
+  skills: [
+    {n: "Diseño y composición espacial", v: 94},
+    {n: "Software BIM / CAD / render", v: 91},
+    {n: "Normativas urbanas y de construcción", v: 85},
+    {n: "Gestión de proyectos y obra", v: 82},
+    {n: "Comunicación visual y presentación", v: 88},
+  ],
+  salaries: [
+    {role: "Recién egresado / dibujante", co: "$600–1,200/mes", global: "$2,000–3,500/mes"},
+    {role: "Arquitecto de proyectos mid", co: "$1,400–2,800/mes", global: "$4,500–7,500/mes"},
+    {role: "Director de proyectos senior", co: "$3,000–6,000/mes", global: "$8,000–15,000/mes"},
+    {role: "Socio / Starchitect / Gerente", co: "$6,000–20,000+/mes", global: "$15,000–100,000+/mes"},
+  ],
+  specs: ["Arquitectura residencial", "Arquitectura comercial e institucional", "Urbanismo y planificación", "Diseño de interiores", "BIM Management", "Arquitectura sostenible / LEED", "Patrimonio y restauración", "Gerencia inmobiliaria"],
+  outlook: [{l:"Sostenibilidad y LEED", v:85, c:"#4ade80"},{l:"BIM en construcción", v:82, c:"#f9a8d4"},{l:"Vivienda social (necesidad)", v:90, c:"#22c55e"},{l:"Parametrización y IA en diseño", v:75, c:"#4F9CF9"}],
+  pros: ["Legado físico permanente — tus obras pueden durar siglos.", "Enorme impacto social en calidad de vida urbana y habitacional.", "Gran variedad creativa — cada proyecto es diferente.", "Proyecto propio posible con inversión baja: un computador y software.", "La experiencia y el reconocimiento generan encargos de alto valor."],
+  cons: ["Primeros 5–8 años con salarios muy por debajo de otras carreras similares en duración.", "Largas horas en taller y obra — los proyectos no respetan horarios.", "Clientes con visiones subjetivas y cambiantes que generan conflictos.", "El 'star system' concentra fama y proyectos de alto valor en muy pocos despachos.", "Alta responsabilidad legal — un fallo constructivo genera demanda civil."],
+  curiosity: "Frank Lloyd Wright diseñó la Casa de la Cascada (Fallingwater) en 1936 a los 68 años. Cuenta la leyenda que cuando el cliente, Edgar Kaufmann, lo llamó diciéndole que iba a visitarlo, Wright —que llevaba meses sin dibujar nada— se sentó en su mesa y diseñó la casa completa en dos horas frente a sus alumnos. La casa fue elegida por el AIA como el mejor edificio del siglo XX. En arquitectura, la madurez creativa llega tarde y dura mucho — lo opuesto a la tecnología."
+}
+];
+
+const AREAS_ORDER = ["Tecnología","Salud","Ingeniería","Negocios","Ciencias","Derecho","Arte y Diseño"];
+
+function buildNav(){
+  const grouped = {};
+  CAREERS.forEach(c => {
+    if (!grouped[c.area]) grouped[c.area] = [];
+    grouped[c.area].push(c);
+  });
+  let html = '';
+  AREAS_ORDER.forEach(area => {
+    if (!grouped[area]) return;
+    html += `<div class="area-group"><div class="area-label">${area}</div>`;
+    grouped[area].forEach(c => {
+      html += `<a class="nav-item" href="#${c.id}" style="--acc:${c.acc}" onclick="setActive(this)">
+        <span class="nav-dot"></span>${c.name}
+      </a>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('nav-list').innerHTML = html;
+}
+
+function buildTOC(){
+  let html = '';
+  CAREERS.forEach(c => {
+    html += `<a class="toc-item" href="#${c.id}">
+      <span class="ti">${c.icon}</span>
+      <div><div class="ti-area">${c.area}</div><div class="ti-name">${c.name}</div></div>
+    </a>`;
+  });
+  document.getElementById('toc-grid').innerHTML = html;
+}
+
+function skillBar(s, acc){
+  return `<div class="skill-row">
+    <div class="skill-top"><span>${s.n}</span><span>${s.v}%</span></div>
+    <div class="skill-track"><div class="skill-fill" style="width:${s.v}%;background:${acc}"></div></div>
+  </div>`;
+}
+
+function salaryRow(s){
+  return `<tr><td>${s.role}</td><td>${s.co}</td><td>${s.global}</td></tr>`;
+}
+
+function outlookRow(o){
+  return `<div class="outlook-bar">
+    <span class="outlook-label">${o.l}</span>
+    <div class="outlook-track"><div class="outlook-fill" style="width:${o.v}%;background:${o.c};opacity:.75"></div></div>
+    <span style="font-size:11px;color:var(--text3);min-width:32px;text-align:right">${o.v}%</span>
+  </div>`;
+}
+
+function buildCareers(){
+  let html = '';
+  CAREERS.forEach(c => {
+    html += `<section class="career" id="${c.id}" style="--acc:${c.acc}">
+      <div class="career-header">
+        <div class="career-eyebrow">
+          <div class="career-icon-badge" style="background:${c.acc}22">${c.icon}</div>
+          <span class="area-badge">${c.area}</span>
+        </div>
+        <h2 class="career-title">${c.name}</h2>
+        <p class="career-tagline">${c.tagline}</p>
+        <div class="career-meta">
+          <div class="meta-chip"><span class="meta-label">Duración</span>&nbsp;<span class="meta-val">${c.duracion}</span></div>
+          <div class="meta-chip"><span class="meta-label">Demanda</span>&nbsp;<span class="meta-val">${c.demanda}</span></div>
+          <div class="meta-chip"><span class="meta-label">Modalidad</span>&nbsp;<span class="meta-val">${c.modalidad}</span></div>
+        </div>
+      </div>
+
+      <div class="salary-block">
+        <div class="salary-row">
+          <div class="salary-col">
+            <div class="s-label">Salario entrada</div>
+            <div class="s-val">$${c.salario_min.toLocaleString()}</div>
+            <div class="s-sub">USD / mes</div>
+          </div>
+          <div class="salary-col">
+            <div class="s-label">Salario medio</div>
+            <div class="s-val">$${Math.round((c.salario_min+c.salario_max)/2).toLocaleString()}</div>
+            <div class="s-sub">USD / mes</div>
+          </div>
+          <div class="salary-col">
+            <div class="s-label">Salario senior</div>
+            <div class="s-val">$${c.salario_senior.toLocaleString()}+</div>
+            <div class="s-sub">USD / mes</div>
+          </div>
+        </div>
+        <div class="salary-bar-wrap">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:8px;">Progresión salarial por nivel (USD global)</div>
+          ${c.salaries.map(s => `<div class="salary-bar-row">
+            <span class="salary-bar-label">${s.role.length > 20 ? s.role.substring(0,20)+'…' : s.role}</span>
+            <div class="salary-bar-track"><div class="salary-bar-fill" style="width:${Math.min(95, (parseInt(s.global.replace(/[^0-9]/g,'').substring(0,6)) / 400))}%"></div></div>
+            <span class="salary-bar-val">${s.global.split(' – ')[0]}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="block">
+          <div class="block-title"><div class="bt-accent"></div>Qué se estudia</div>
+          <ul class="item-list">${c.study.map(s=>`<li>${s}</li>`).join('')}</ul>
+        </div>
+        <div class="block">
+          <div class="block-title"><div class="bt-accent"></div>Empleos y roles</div>
+          <ul class="item-list">${c.jobs.map(j=>`<li>${j}</li>`).join('')}</ul>
+        </div>
+      </div>
+
+      <div class="content-grid full">
+        <div class="block full">
+          <div class="block-title"><div class="bt-accent"></div>Qué se hace realmente — día a día</div>
+          <ul class="item-list">${c.daily.map(d=>`<li>${d}</li>`).join('')}</ul>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="block">
+          <div class="block-title"><div class="bt-accent"></div>Obligaciones y responsabilidades</div>
+          <ul class="item-list">${c.oblig.map(o=>`<li>${o}</li>`).join('')}</ul>
+        </div>
+        <div class="block">
+          <div class="block-title"><div class="bt-accent"></div>Habilidades clave</div>
+          ${c.skills.map(s=>skillBar(s, c.acc)).join('')}
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="block">
+          <div class="block-title"><div class="bt-accent"></div>Especializaciones disponibles</div>
+          <div class="spec-grid">${c.specs.map(s=>`<span class="spec-tag">${s}</span>`).join('')}</div>
+        </div>
+        <div class="block">
+          <div class="block-title"><div class="bt-accent"></div>Perspectiva y tendencias</div>
+          ${c.outlook.map(o=>outlookRow(o)).join('')}
+        </div>
+      </div>
+
+      <div class="proscons">
+        <div class="pros-block">
+          <div class="block-title"><div class="bt-accent" style="background:rgba(34,197,94,.8)"></div>Ventajas reales</div>
+          <ul class="item-list">${c.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
+        </div>
+        <div class="cons-block">
+          <div class="block-title"><div class="bt-accent" style="background:rgba(239,68,68,.7)"></div>Desafíos reales</div>
+          <ul class="item-list">${c.cons.map(p=>`<li>${p}</li>`).join('')}</ul>
+        </div>
+      </div>
+
+      <div class="content-grid full">
+        <div class="block full">
+          <div class="block-title"><div class="bt-accent"></div>Tabla salarial detallada (Colombia vs. global)</div>
+          <table class="earnings-table">
+            <thead><tr><th>Perfil / nivel</th><th>Colombia</th><th>Global / remoto</th></tr></thead>
+            <tbody>${c.salaries.map(s=>salaryRow(s)).join('')}</tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="curiosity-block">
+        <div class="label">Dato que nadie te cuenta</div>
+        <p>${c.curiosity}</p>
+      </div>
+    </section>`;
+  });
+  document.getElementById('careers-container').innerHTML = html;
+}
+
+function setActive(el){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  if(window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+}
+
+function filterNav(q){
+  q = q.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    el.style.display = el.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.area-group').forEach(g=>{
+    const visible = [...g.querySelectorAll('.nav-item')].some(el=>el.style.display!=='none');
+    g.style.display = visible ? '' : 'none';
+  });
+}
+
+// Scroll spy
+function scrollSpy(){
+  const sections = document.querySelectorAll('.career');
+  const navItems = document.querySelectorAll('.nav-item');
+  let current = '';
+  sections.forEach(s=>{
+    if(window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navItems.forEach(n=>{
+    const href = n.getAttribute('href').replace('#','');
+    n.classList.toggle('active', href === current);
+  });
+}
+
+buildNav();
+buildTOC();
+buildCareers();
+window.addEventListener('scroll', scrollSpy, {passive:true});
+</script>
+</body>
+</html>

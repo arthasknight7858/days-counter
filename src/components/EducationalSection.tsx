@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useDeferredValue, useRef } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -24,6 +24,8 @@ import {
   Calculator,
   Coins,
   Star,
+  Lock,
+  ShoppingCart,
 } from "lucide-react";
 
 // Skeletons de carga dinámicos para reducir el bundle JS inicial
@@ -140,6 +142,27 @@ const CryptoTradingRoadmap = dynamic(
   }
 );
 
+const UniversityCareersRoadmap = dynamic(
+  () => import("./educational/UniversityCareersRoadmap"),
+  {
+    loading: () => <RoadmapSkeleton title="Carreras Universitarias" />,
+  }
+);
+
+const DropshippingRoadmap = dynamic(
+  () => import("./educational/DropshippingRoadmap"),
+  {
+    loading: () => <RoadmapSkeleton title="Dropshipping & E-commerce" />,
+  }
+);
+
+const AiOfmRoadmap = dynamic(
+  () => import("./educational/AiOfmRoadmap"),
+  {
+    loading: () => <RoadmapSkeleton title="AI OFM (Privado)" />,
+  }
+);
+
 export type EducationalTopic =
   | "ingles"
   | "coreano"
@@ -158,7 +181,10 @@ export type EducationalTopic =
   | "oratoria"
   | "ventas"
   | "matematicas"
-  | "cripto";
+  | "cripto"
+  | "carreras"
+  | "dropshipping"
+  | "ofm";
 
 type CategoryFilter =
   | "all"
@@ -172,6 +198,8 @@ type CategoryFilter =
 export default function EducationalSection() {
   const [activeTopic, setActiveTopic] = useState<EducationalTopic>("ingles");
   const [searchQuery, setSearchQuery] = useState("");
+  const deferredSearch = useDeferredValue(searchQuery);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>("all");
 
   const [favorites, setFavorites] = useState<string[]>(() => {
@@ -183,6 +211,28 @@ export default function EducationalSection() {
     }
     return ["ingles", "arquitectura"];
   });
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.key === "/" || (e.key === "k" && (e.ctrlKey || e.metaKey))) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   useEffect(() => {
     try {
@@ -347,9 +397,45 @@ export default function EducationalSection() {
           "cripto criptomonedas trading bitcoin btc eth blockchain velas gestion riesgo patrones",
         icon: Coins,
       },
+      {
+        id: "carreras" as EducationalTopic,
+        label: "🎓 13 Carreras & Sueldos",
+        category: "academia",
+        keywords:
+          "carreras universitarias sueldos sistemas medicina ciberseguridad derecho civil mecanica industrial ia finanzas arquitectura biotecnologia universidad empleos salarios",
+        icon: GraduationCap,
+      },
+      {
+        id: "dropshipping" as EducationalTopic,
+        label: "📦 Dropshipping & E-comm",
+        category: "negocios",
+        keywords:
+          "dropshipping shopify aliexpress ecommerce tiendas ventas marketing cjzendrop productos ganadores comercio digital",
+        icon: ShoppingCart,
+      },
+      {
+        id: "ofm" as EducationalTopic,
+        label: "🔒 AI OFM (Privado)",
+        category: "negocios",
+        keywords:
+          "ofm onlyfans ai persona chatting ppv fanvue agencias modelos privada 0258 clave",
+        icon: Lock,
+      },
     ],
     []
   );
+
+  const categoryCounts = useMemo(() => {
+    return {
+      all: topics.length,
+      favoritos: favorites.length,
+      idiomas: topics.filter((t) => t.category === "idiomas").length,
+      tecnologia: topics.filter((t) => t.category === "tecnologia").length,
+      negocios: topics.filter((t) => t.category === "negocios").length,
+      salud: topics.filter((t) => t.category === "salud").length,
+      academia: topics.filter((t) => t.category === "academia").length,
+    };
+  }, [topics, favorites]);
 
   const filteredTopics = useMemo(() => {
     return topics.filter((t) => {
@@ -359,14 +445,14 @@ export default function EducationalSection() {
           : selectedCategory === "favoritos"
           ? favorites.includes(t.id)
           : t.category === selectedCategory;
-      const q = searchQuery.toLowerCase().trim();
+      const q = deferredSearch.toLowerCase().trim();
       const matchesSearch =
         !q ||
         t.label.toLowerCase().includes(q) ||
         t.keywords.toLowerCase().includes(q);
       return matchesCategory && matchesSearch;
     });
-  }, [topics, selectedCategory, favorites, searchQuery]);
+  }, [topics, selectedCategory, favorites, deferredSearch]);
 
   const activeTopicObj = topics.find((t) => t.id === activeTopic);
 
@@ -391,7 +477,7 @@ export default function EducationalSection() {
             </span>
           </h2>
           <p className="text-purple-200/70 text-base sm:text-lg tracking-wide mt-1">
-            18 guías interactivas, hojas de ruta y simulacros preparados con amor para tu crecimiento
+            21 guías interactivas, hojas de ruta y simulacros preparados con amor para tu crecimiento
           </p>
         </div>
 
@@ -427,37 +513,52 @@ export default function EducationalSection() {
         <div className="relative w-full max-w-md mx-auto">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-purple-400" />
           <input
+            ref={searchInputRef}
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Buscar tema, materia o habilidad..."
-            className="w-full pl-11 pr-10 py-3 bg-white/5 border border-purple-500/25 focus:border-purple-400 rounded-2xl text-sm text-white placeholder:text-purple-300/50 outline-none backdrop-blur-md transition-all shadow-inner"
+            placeholder="Buscar tema, materia o habilidad... (Pulsa / para buscar)"
+            className="w-full pl-11 pr-16 py-3 bg-white/5 border border-purple-500/25 focus:border-purple-400 rounded-2xl text-sm text-white placeholder:text-purple-300/50 outline-none backdrop-blur-md transition-all shadow-inner"
           />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-purple-300/60 hover:text-white rounded-full cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+            {searchQuery ? (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="p-1 text-purple-300/60 hover:text-white rounded-full cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            ) : (
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-purple-300/60 bg-white/5 border border-purple-500/30 rounded">
+                /
+              </kbd>
+            )}
+          </div>
         </div>
 
-        {/* Category Pills */}
+        {/* Category Pills with counts */}
         <div className="flex flex-wrap items-center justify-center gap-2">
           {categories.map((cat) => {
             const isSelected = selectedCategory === cat.id;
+            const count = categoryCounts[cat.id as keyof typeof categoryCounts] ?? 0;
             return (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 border cursor-pointer select-none ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 border cursor-pointer select-none flex items-center gap-1.5 ${
                   isSelected
                     ? "bg-purple-600 text-white border-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.4)]"
                     : "bg-white/5 text-purple-200/70 border-purple-500/20 hover:bg-white/10 hover:text-white"
                 }`}
               >
-                {cat.label}
+                <span>{cat.label}</span>
+                <span
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                    isSelected ? "bg-white/20 text-white" : "bg-white/5 text-purple-300/60"
+                  }`}
+                >
+                  {count}
+                </span>
               </button>
             );
           })}
@@ -726,6 +827,42 @@ export default function EducationalSection() {
             transition={{ duration: 0.4 }}
           >
             <CryptoTradingRoadmap />
+          </motion.div>
+        )}
+
+        {activeTopic === "carreras" && (
+          <motion.div
+            key="carreras"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4 }}
+          >
+            <UniversityCareersRoadmap />
+          </motion.div>
+        )}
+
+        {activeTopic === "dropshipping" && (
+          <motion.div
+            key="dropshipping"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4 }}
+          >
+            <DropshippingRoadmap />
+          </motion.div>
+        )}
+
+        {activeTopic === "ofm" && (
+          <motion.div
+            key="ofm"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4 }}
+          >
+            <AiOfmRoadmap />
           </motion.div>
         )}
       </AnimatePresence>

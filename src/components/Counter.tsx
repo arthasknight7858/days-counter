@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Sparkles, Clock, CalendarHeart, ChevronDown } from "lucide-react";
+import { Heart, Sparkles, Clock, CalendarHeart, ChevronDown, PartyPopper } from "lucide-react";
 
 export default function Counter({ startDate }: { startDate: Date }) {
   const [showMilestones, setShowMilestones] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
+
   const [timeStats, setTimeStats] = useState({
     days: 0,
     hours: 0,
@@ -34,10 +36,10 @@ export default function Counter({ startDate }: { startDate: Date }) {
 
         const totalHours = Math.floor(difference / (1000 * 60 * 60));
         const totalMinutes = Math.floor(difference / (1000 * 60));
-        // Average resting heart rate ~80 bpm
+        // Frecuencia cardíaca media en reposo ~80 bpm
         const heartbeats = Math.floor(totalMinutes * 80);
 
-        // Next month anniversary calculation (Day 8 of upcoming month)
+        // Próximo aniversario mensual (día 8)
         let nextMonth = new Date(now.getFullYear(), now.getMonth(), 8, 0, 0, 0);
         if (now.getDate() >= 8) {
           nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 8, 0, 0, 0);
@@ -47,7 +49,7 @@ export default function Counter({ startDate }: { startDate: Date }) {
           ? 0
           : Math.max(1, Math.ceil(diffToNext / (1000 * 60 * 60 * 24)));
 
-        // Approximate months completed
+        // Meses completados exactos
         let months =
           (now.getFullYear() - startDate.getFullYear()) * 12 +
           (now.getMonth() - startDate.getMonth());
@@ -76,15 +78,53 @@ export default function Counter({ startDate }: { startDate: Date }) {
     return () => clearInterval(timer);
   }, [startDate]);
 
-  const units = [
-    { label: "DÍAS", value: timeStats.days },
-    { label: "HORAS", value: timeStats.hours },
-    { label: "MINUTOS", value: timeStats.minutes },
-    { label: "SEGUNDOS", value: timeStats.seconds },
-  ];
+  const triggerCelebration = () => {
+    setCelebrating(true);
+    setTimeout(() => setCelebrating(false), 3500);
+  };
+
+  const units = useMemo(
+    () => [
+      { label: "DÍAS", value: timeStats.days },
+      { label: "HORAS", value: timeStats.hours },
+      { label: "MINUTOS", value: timeStats.minutes },
+      { label: "SEGUNDOS", value: timeStats.seconds },
+    ],
+    [timeStats.days, timeStats.hours, timeStats.minutes, timeStats.seconds]
+  );
 
   return (
-    <div className="flex flex-col items-center w-full mt-10 mb-6">
+    <div className="flex flex-col items-center w-full mt-10 mb-6 relative">
+      {/* Interactive Floating Confetti / Hearts on celebration */}
+      <AnimatePresence>
+        {celebrating && (
+          <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden flex items-center justify-center">
+            {Array.from({ length: 18 }).map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{
+                  opacity: 1,
+                  scale: 0.5,
+                  x: 0,
+                  y: 0,
+                }}
+                animate={{
+                  opacity: 0,
+                  scale: 1.5,
+                  x: (i % 2 === 0 ? 1 : -1) * (40 + (i % 6) * 35),
+                  y: -80 - (i % 5) * 40,
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 2.5, ease: "easeOut" }}
+                className="absolute text-xl"
+              >
+                {i % 3 === 0 ? "💖" : i % 3 === 1 ? "✨" : "🎉"}
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* 4 Main Cards */}
       <div className="flex flex-wrap justify-center gap-3 sm:gap-5">
         {units.map((unit, index) => (
@@ -92,11 +132,11 @@ export default function Counter({ startDate }: { startDate: Date }) {
             key={unit.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 + 0.5, duration: 0.8, type: "spring" }}
+            transition={{ delay: index * 0.1 + 0.3, duration: 0.8, type: "spring" }}
             whileHover={{ scale: 1.05, boxShadow: "0px 0px 25px rgba(168, 85, 247, 0.4)" }}
             className="relative overflow-hidden group w-20 h-22 sm:w-28 sm:h-28 rounded-2xl bg-white/5 backdrop-blur-md border border-purple-500/20 shadow-[0_0_15px_rgba(0,0,0,0.2)] flex flex-col items-center justify-center transition-all duration-300"
           >
-            <div className="absolute inset-0 bg-linear-to-br from-purple-500/0 via-purple-500/5 to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-purple-500/5 to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             <motion.span
               key={unit.value}
@@ -113,17 +153,29 @@ export default function Counter({ startDate }: { startDate: Date }) {
         ))}
       </div>
 
-      {/* Romantic Stats Toggle */}
-      <button
-        onClick={() => setShowMilestones(!showMilestones)}
-        className="mt-5 flex items-center gap-2 text-xs text-purple-300/80 hover:text-purple-200 bg-white/5 hover:bg-white/10 px-4 py-1.5 rounded-full border border-purple-500/20 transition-all cursor-pointer shadow-sm"
-      >
-        <Sparkles className="w-3.5 h-3.5 text-purple-400 animate-pulse" />
-        <span>{showMilestones ? "Ocultar detalles de nuestra historia" : "Ver estadísticas de nuestro amor"}</span>
-        <motion.div animate={{ rotate: showMilestones ? 180 : 0 }} transition={{ duration: 0.3 }}>
-          <ChevronDown className="w-3.5 h-3.5 text-purple-400" />
-        </motion.div>
-      </button>
+      {/* Interactive Action Bar */}
+      <div className="flex items-center gap-2 mt-5">
+        <button
+          onClick={() => setShowMilestones(!showMilestones)}
+          aria-expanded={showMilestones}
+          className="flex items-center gap-2 text-xs text-purple-300/80 hover:text-purple-200 bg-white/5 hover:bg-white/10 px-4 py-1.5 rounded-full border border-purple-500/20 transition-all cursor-pointer shadow-sm active:scale-95 select-none"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-purple-400 animate-pulse" />
+          <span>{showMilestones ? "Ocultar detalles de nuestra historia" : "Ver estadísticas de nuestro amor"}</span>
+          <motion.div animate={{ rotate: showMilestones ? 180 : 0 }} transition={{ duration: 0.3 }}>
+            <ChevronDown className="w-3.5 h-3.5 text-purple-400" />
+          </motion.div>
+        </button>
+
+        <button
+          onClick={triggerCelebration}
+          title="Celebrar un momento especial"
+          aria-label="Celebrar amor"
+          className="p-1.5 rounded-full bg-pink-500/15 hover:bg-pink-500/25 border border-pink-500/30 text-pink-300 transition-all cursor-pointer active:scale-90"
+        >
+          <PartyPopper className="w-3.5 h-3.5" />
+        </button>
+      </div>
 
       {/* Milestones Card */}
       <AnimatePresence>
