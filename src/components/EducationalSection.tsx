@@ -24,7 +24,7 @@ import {
   Calculator,
   Coins,
   Star,
-  Lock,
+  Bot,
   ShoppingCart,
 } from "lucide-react";
 
@@ -415,11 +415,11 @@ export default function EducationalSection() {
       },
       {
         id: "ofm" as EducationalTopic,
-        label: "🔒 AI OFM (Privado)",
+        label: "🤖 AI OFM Operación",
         category: "negocios",
         keywords:
-          "ofm onlyfans ai persona chatting ppv fanvue agencias modelos privada 0258 clave",
-        icon: Lock,
+          "ofm onlyfans ai persona chatting ppv fanvue agencias modelos contenido digital automatizacion",
+        icon: Bot,
       },
     ],
     []

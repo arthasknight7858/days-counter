@@ -3,10 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Lock,
-  Unlock,
-  Shield,
-  KeyRound,
   DollarSign,
   Smartphone,
   Flame,
@@ -22,29 +18,14 @@ import {
   UserCheck,
   CheckCircle2,
   Square,
-  Eye,
-  EyeOff,
   Zap,
   Globe,
   Sliders,
-  Delete,
 } from "lucide-react";
 
 const CALC_TRM_COP = 4150;
 
 export default function AiOfmRoadmap() {
-  const [unlocked, setUnlocked] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        return sessionStorage.getItem("sofi_ofm_unlocked") === "true";
-      } catch {}
-    }
-    return false;
-  });
-
-  const [pinInput, setPinInput] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -64,52 +45,6 @@ export default function AiOfmRoadmap() {
     }
     return {};
   });
-
-  const handleUnlockWithPin = (pin: string) => {
-    if (pin.trim() === "0258") {
-      setUnlocked(true);
-      setErrorMsg("");
-      try {
-        sessionStorage.setItem("sofi_ofm_unlocked", "true");
-      } catch {}
-    } else {
-      setErrorMsg("Contraseña incorrecta. Acceso privado restringido.");
-    }
-  };
-
-  const handleUnlock = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    handleUnlockWithPin(pinInput);
-  };
-
-  const handleKeypadPress = (val: string) => {
-    if (val === "clear") {
-      setPinInput("");
-      setErrorMsg("");
-      return;
-    }
-    if (val === "back") {
-      setPinInput((prev) => prev.slice(0, -1));
-      setErrorMsg("");
-      return;
-    }
-    if (pinInput.length < 8) {
-      const nextPin = pinInput + val;
-      setPinInput(nextPin);
-      setErrorMsg("");
-      if (nextPin === "0258") {
-        setTimeout(() => handleUnlockWithPin(nextPin), 150);
-      }
-    }
-  };
-
-  const handleLock = () => {
-    setUnlocked(false);
-    setPinInput("");
-    try {
-      sessionStorage.removeItem("sofi_ofm_unlocked");
-    } catch {}
-  };
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -155,107 +90,6 @@ export default function AiOfmRoadmap() {
   const netRevenueUsd = grossRevenueUsd * 0.8;
   const netRevenueCop = netRevenueUsd * CALC_TRM_COP;
 
-  // Pantalla de bloqueo con Vault PIN Pad
-  if (!unlocked) {
-    return (
-      <div className="w-full min-h-[500px] flex items-center justify-center p-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-[#0e0e17]/95 border border-purple-500/30 backdrop-blur-xl shadow-[0_0_50px_rgba(124,106,247,0.15)] text-center space-y-5"
-        >
-          <div className="relative mx-auto w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-purple-600/30 to-pink-500/20 border border-purple-500/40 flex items-center justify-center shadow-inner">
-            <Lock className="w-8 h-8 sm:w-10 sm:h-10 text-purple-400 animate-pulse" />
-            <div className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-pink-500 animate-ping opacity-75" />
-          </div>
-
-          <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-semibold uppercase tracking-wider">
-              <Shield className="w-3.5 h-3.5 text-purple-400" />
-              Módulo Privado Protegido
-            </div>
-            <h3 className="text-2xl font-bold text-white tracking-tight">
-              AI OFM & Operación Digital
-            </h3>
-            <p className="text-xs text-purple-200/60 leading-relaxed">
-              Ingresa el PIN de acceso o utiliza el teclado numérico interactivo.
-            </p>
-          </div>
-
-          <form onSubmit={handleUnlock} className="space-y-4">
-            <div className="relative">
-              <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-purple-400/70" />
-              <input
-                type={showPassword ? "text" : "password"}
-                maxLength={8}
-                value={pinInput}
-                onChange={(e) => {
-                  setPinInput(e.target.value);
-                  if (errorMsg) setErrorMsg("");
-                }}
-                placeholder="PIN privado..."
-                autoFocus
-                className="w-full pl-11 pr-11 py-3 bg-white/5 border border-purple-500/30 focus:border-purple-400 rounded-2xl text-center font-mono tracking-widest text-lg text-white placeholder:text-purple-300/40 outline-none transition-all shadow-inner"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? "Ocultar clave" : "Mostrar clave"}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-purple-300/60 hover:text-white transition-colors cursor-pointer"
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-
-            {/* Interactive Numeric PIN Pad for Touch & Desktop */}
-            <div className="grid grid-cols-3 gap-2 pt-1 max-w-xs mx-auto">
-              {["1", "2", "3", "4", "5", "6", "7", "8", "9", "clear", "0", "back"].map((k) => (
-                <button
-                  key={k}
-                  type="button"
-                  onClick={() => handleKeypadPress(k)}
-                  className="h-11 rounded-xl bg-white/5 hover:bg-white/15 active:bg-purple-600/30 border border-purple-500/20 text-white font-mono text-sm font-semibold transition-all cursor-pointer flex items-center justify-center select-none"
-                >
-                  {k === "clear" ? (
-                    <span className="text-[11px] text-purple-300">C</span>
-                  ) : k === "back" ? (
-                    <Delete className="w-4 h-4 text-purple-300" />
-                  ) : (
-                    k
-                  )}
-                </button>
-              ))}
-            </div>
-
-            {errorMsg && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-medium flex items-center justify-center gap-2"
-              >
-                <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
-                <span>{errorMsg}</span>
-              </motion.div>
-            )}
-
-            <button
-              type="submit"
-              className="w-full py-3 px-6 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-sm tracking-wide shadow-[0_0_20px_rgba(124,106,247,0.4)] transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.98]"
-            >
-              <Unlock className="w-4 h-4" />
-              <span>Desbloquear Módulo</span>
-            </button>
-          </form>
-
-          <p className="text-[11px] text-purple-300/40">
-            Sesión temporal segura · Encriptado local
-          </p>
-        </motion.div>
-      </div>
-    );
-  }
-
   const subTabs = [
     { id: "all", label: "🌟 Guía Completa", icon: Sparkles },
     { id: "calc", label: "🧮 Calculadora Revenue", icon: Sliders },
@@ -287,9 +121,6 @@ export default function AiOfmRoadmap() {
               <span className="px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-xs font-mono font-medium">
                 GUÍA OPERATIVA 2024–2025
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-medium">
-                Desbloqueado 🔓
-              </span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
               Sistema Completo de <br />
@@ -301,14 +132,6 @@ export default function AiOfmRoadmap() {
               Construye, lanza y escala una operación OFM con personajes generados 100% por inteligencia artificial — desde cero, operando desde Colombia con cobros en USD.
             </p>
           </div>
-
-          <button
-            onClick={handleLock}
-            className="self-start md:self-center px-4 py-2.5 rounded-2xl bg-white/5 border border-purple-500/30 hover:bg-red-500/20 hover:border-red-500/40 text-purple-200 hover:text-red-300 text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer shrink-0"
-          >
-            <Lock className="w-3.5 h-3.5" />
-            <span>Bloquear Módulo</span>
-          </button>
         </div>
 
         {/* Quick Stats Grid */}
