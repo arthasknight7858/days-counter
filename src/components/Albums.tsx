@@ -120,6 +120,7 @@ const albums: AlbumItem[] = [
       "axel18.jpeg",
       "axel19.jpeg",
       "axel20.png",
+      "axel21.jpeg",
     ],
   },
   {
