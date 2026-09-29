@@ -26,7 +26,7 @@ export default function LettersAccordion() {
           <p>Te amo con toda mi alma, hoy y siempre.</p>
           <div className="pt-6 text-right font-bold text-pink-300 not-italic">
             — tu novio Axel :3
-          </div>
+          </div>  
         </div>
       )
     },
@@ -44,6 +44,27 @@ export default function LettersAccordion() {
           <p>Gracias por estar conmigo, por hacerme tan feliz y por permitirme compartir mi vida contigo.</p>
           <p>Te amo muchísimo, mi vida. Feliz segundo mes juntos, mi amor :3</p>
           <p>Te amo con toda mi alma, hoy y siempre.</p>
+          <div className="pt-6 text-right font-bold text-pink-300 not-italic">
+            — Tu novio, Axel :3
+          </div>
+        </div>
+      )
+    },
+    {
+      id: "mes-3",
+      title: "Carta del Tercer Mes",
+      date: "8 de Octubre de 2026",
+      content: (
+        <div className="space-y-3 sm:space-y-4 text-purple-100/90 leading-relaxed font-serif text-base sm:text-lg">
+          <p>Sofi, mi amor.</p>
+          <p>En estos últimos tres meses que hemos pasado juntos me he dado cuenta, cada día un poquito más, de que no hay nadie con quien quisiera estar más que contigo. Desde que llegaste a mi vida me has hecho muchísimo más feliz y, sin darme cuenta, te convertiste en mi lugar seguro, en esa persona con la que quiero compartirlo todo.</p>
+          <p>Aunque todavía llevamos poco tiempo y las experiencias que hemos vivido juntos han sido pocas comparadas con todas las que nos quedan por vivir, cada una de ellas ha sido completamente maravillosa y especial para mí. No cambiaría ninguno de esos momentos, porque todos tienen algo que los hace únicos simplemente por haberlos vivido contigo.</p>
+          <p>Para mí eres más que perfecta. Amo tu carita tierna, tus ojos hermosos, tus lindos labios, tu sonrisa que me deja completamente hipnotizado y, sobre todo, esa increíble forma de ser que tienes. Amo cómo me tratas, cómo me consientes, cómo me haces sentir querido y cada una de las maneras en las que me demuestras tu amor día tras día.</p>
+          <p>Desearía poder pasar muchísimo más tiempo contigo. Quiero seguir viviendo experiencias a tu lado, conocer nuevos lugares, hacer cosas juntos y crear muchos recuerdos juntos, quiero ver todas esas miles de películas que todavía no he visto a tu lado y disfrutar de tu compañia.</p>
+          <p>Nunca me voy a cansar de ti, ni de quererte, ni de decirte cuánto te amo. Quiero que sepas que mientras tú quieras tenerme a tu lado, voy a estar aquí, acompañándote y compartiendo contigo todo lo bonito que nos queda por vivir.</p>
+          <p>Te amo muchísimo, mi vida. Feliz tercer mes juntos, mi amor :3</p>
+          <p>Gracias por estos tres meses tan bonitos. Espero que este sea solamente el comienzo de todos los meses, años y momentos que todavía nos quedan por vivir juntos.</p>
+          <p>Te amaré siempre con toda mi alma. ❤️</p>
           <div className="pt-6 text-right font-bold text-pink-300 not-italic">
             — Tu novio, Axel :3
           </div>

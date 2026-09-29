@@ -21,39 +21,21 @@ import {
   Check,
   Download,
   Upload,
+  Music,
+  Film,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
+import { CustomNote, NoteColor, NoteCategory, MediaType } from "@/types/notes";
+import {
+  fetchAllNotes,
+  syncNotesToServer,
+  uploadMediaFile,
+} from "@/lib/notesStorage";
+import NoteAudioPlayer from "@/components/NoteAudioPlayer";
 
-export type NoteColor =
-  | "purple"
-  | "pink"
-  | "amber"
-  | "emerald"
-  | "cyan"
-  | "rose"
-  | "indigo";
-
-export type NoteCategory =
-  | "all"
-  | "amor"
-  | "metas"
-  | "recuerdos"
-  | "recordatorios"
-  | "citas";
-
-export interface CustomNote {
-  id: string;
-  title: string;
-  content: string;
-  date: string;
-  color: NoteColor;
-  category: "amor" | "metas" | "recuerdos" | "recordatorios" | "citas";
-  emoji: string;
-  imageUrl?: string;
-  isPinned?: boolean;
-  isAxelSpecial?: boolean;
-  createdAt: number;
-  reactions?: number;
-}
+export type { NoteColor, NoteCategory, MediaType, CustomNote };
 
 const COLOR_STYLES: Record<
   NoteColor,
@@ -152,6 +134,10 @@ const AVAILABLE_EMOJIS = [
   "🌷",
   "🍓",
   "🌙",
+  "🎵",
+  "🎧",
+  "📹",
+  "🌹",
 ];
 
 const INITIAL_AXEL_NOTE: CustomNote = {
@@ -194,7 +180,8 @@ export const NOTE_TEMPLATES: NoteTemplate[] = [
     category: "amor",
     color: "pink",
     emoji: "💖",
-    starter: "Mi cielo, hoy quería decirte lo mucho que te amo y lo infinitamente agradecido que estoy de tenerte a mi lado...",
+    starter:
+      "Mi cielo, hoy quería decirte lo mucho que te amo y lo infinitamente agradecido que estoy de tenerte a mi lado...",
   },
   {
     name: "Meta Juntos",
@@ -206,11 +193,20 @@ export const NOTE_TEMPLATES: NoteTemplate[] = [
     starter: "Un sueño que vamos a cumplir juntos paso a paso: ",
   },
   {
+    name: "Nota de Voz / Canción",
+    icon: "🎵",
+    title: "Una canción o mensaje especial para ti",
+    category: "amor",
+    color: "purple",
+    emoji: "🎶",
+    starter: "Escucha este audio que te dedico con todo mi corazón... 🎧💕",
+  },
+  {
     name: "Idea para Cita",
     icon: "🍿",
     title: "Plan para nuestra próxima salida",
     category: "citas",
-    color: "purple",
+    color: "rose",
     emoji: "🎬",
     starter: "Lugar o actividad: \nComida rica: \nLo especial de este día: ",
   },
@@ -230,68 +226,22 @@ export const NOTE_TEMPLATES: NoteTemplate[] = [
     category: "recordatorios",
     color: "emerald",
     emoji: "🌟",
-    starter: "¡Tú puedes con todo lo que te propongas! Recuerda tomar agüita, descansar y que cuentas conmigo siempre.",
+    starter:
+      "¡Tú puedes con todo lo que te propongas! Recuerda tomar agüita, descansar y que cuentas conmigo siempre.",
   },
 ];
 
-export type SortOption = "pinned" | "newest" | "oldest" | "photos";
-
-// Canvas image compressor to avoid exceeding LocalStorage quota
-function compressImage(file: File, maxWidth = 900, maxHeight = 900, quality = 0.8): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (event) => {
-      const img = new Image();
-      img.src = event.target?.result as string;
-      img.onload = () => {
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height) {
-          if (width > maxWidth) {
-            height = Math.round((height * maxWidth) / width);
-            width = maxWidth;
-          }
-        } else {
-          if (height > maxHeight) {
-            width = Math.round((width * maxHeight) / height);
-            height = maxHeight;
-          }
-        }
-
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) {
-          resolve(event.target?.result as string);
-          return;
-        }
-
-        ctx.drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL("image/jpeg", quality);
-        resolve(dataUrl);
-      };
-      img.onerror = (err) => reject(err);
-    };
-    reader.onerror = (err) => reject(err);
-  });
-}
+export type SortOption =
+  | "pinned"
+  | "newest"
+  | "oldest"
+  | "photos"
+  | "audios"
+  | "videos";
 
 export default function NotesSection() {
-  const [notes, setNotes] = useState<CustomNote[]>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const saved = localStorage.getItem("sofi_axel_pinboard_notes");
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-        }
-      } catch {}
-    }
-    return [INITIAL_AXEL_NOTE];
-  });
+  const [notes, setNotes] = useState<CustomNote[]>([INITIAL_AXEL_NOTE]);
+  const [isLoadingNotes, setIsLoadingNotes] = useState(true);
 
   const [activeCategory, setActiveCategory] = useState<NoteCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -300,7 +250,9 @@ export default function NotesSection() {
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Form State
   const [formTitle, setFormTitle] = useState("");
   const [formContent, setFormContent] = useState("");
   const [formColor, setFormColor] = useState<NoteColor>("pink");
@@ -308,35 +260,96 @@ export default function NotesSection() {
     "amor" | "metas" | "recuerdos" | "recordatorios" | "citas"
   >("amor");
   const [formEmoji, setFormEmoji] = useState("💖");
-  const [formImageBase64, setFormImageBase64] = useState<string | null>(null);
   const [formIsPinned, setFormIsPinned] = useState(false);
-  const [isCompressing, setIsCompressing] = useState(false);
+
+  // Attached Media State
+  const [mediaUploadType, setMediaUploadType] = useState<
+    "image" | "audio" | "video"
+  >("image");
+  const [formMediaUrl, setFormMediaUrl] = useState<string | null>(null);
+  const [formMediaType, setFormMediaType] = useState<MediaType | null>(null);
+  const [formMediaName, setFormMediaName] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const backupInputRef = useRef<HTMLInputElement | null>(null);
 
+  // 1. Initial Load from Server & IndexedDB
   useEffect(() => {
-    try {
-      localStorage.setItem("sofi_axel_pinboard_notes", JSON.stringify(notes));
-    } catch (e) {
-      console.warn("Storage quota exceeded or error saving notes:", e);
-    }
-  }, [notes]);
+    let isMounted = true;
+    fetchAllNotes()
+      .then((loadedNotes) => {
+        if (isMounted) {
+          if (Array.isArray(loadedNotes) && loadedNotes.length > 0) {
+            setNotes(loadedNotes);
+          }
+          setIsLoadingNotes(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Error al cargar notas:", err);
+        if (isMounted) setIsLoadingNotes(false);
+      });
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3500);
+  };
+
+  // Synchronize state and persist permanently
+  const updateAndSaveNotes = useCallback(
+    (updater: CustomNote[] | ((prev: CustomNote[]) => CustomNote[])) => {
+      setNotes((prevNotes) => {
+        const nextNotes =
+          typeof updater === "function" ? updater(prevNotes) : updater;
+        syncNotesToServer(nextNotes);
+        return nextNotes;
+      });
+    },
+    []
+  );
+
+  // File Upload Handler (Images, MP3 Audios, Videos)
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setUploadError(null);
+    setIsUploading(true);
+
     try {
-      setIsCompressing(true);
-      const compressed = await compressImage(file);
-      setFormImageBase64(compressed);
-    } catch (err) {
-      console.error("Error compressing image:", err);
-      alert("Hubo un error al procesar la imagen.");
+      const uploadResult = await uploadMediaFile(file);
+      setFormMediaUrl(uploadResult.url);
+      setFormMediaType(uploadResult.mediaType);
+      setFormMediaName(uploadResult.mediaName);
+    } catch (err: unknown) {
+      console.error("Error uploading file:", err);
+      const errMsg =
+        err instanceof Error
+          ? err.message
+          : "Hubo un error al procesar el archivo.";
+      setUploadError(errMsg);
     } finally {
-      setIsCompressing(false);
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
+  };
+
+  const removeAttachedMedia = () => {
+    setFormMediaUrl(null);
+    setFormMediaType(null);
+    setFormMediaName(null);
+    setUploadError(null);
   };
 
   const openCreateModal = () => {
@@ -346,8 +359,11 @@ export default function NotesSection() {
     setFormColor("pink");
     setFormCategory("amor");
     setFormEmoji("💖");
-    setFormImageBase64(null);
+    setFormMediaUrl(null);
+    setFormMediaType(null);
+    setFormMediaName(null);
     setFormIsPinned(false);
+    setUploadError(null);
     setIsModalOpen(true);
   };
 
@@ -366,14 +382,19 @@ export default function NotesSection() {
     setFormColor(note.color);
     setFormCategory(note.category);
     setFormEmoji(note.emoji);
-    setFormImageBase64(note.imageUrl || null);
+    setFormMediaUrl(note.mediaUrl || note.imageUrl || null);
+    setFormMediaType(
+      note.mediaType || (note.mediaUrl || note.imageUrl ? "image" : null)
+    );
+    setFormMediaName(note.mediaName || null);
     setFormIsPinned(!!note.isPinned);
+    setUploadError(null);
     setIsModalOpen(true);
   };
 
   const handleSaveNote = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formTitle.trim() && !formContent.trim()) return;
+    if (!formTitle.trim() && !formContent.trim() && !formMediaUrl) return;
 
     const today = new Date();
     const formattedDate = today.toLocaleDateString("es-ES", {
@@ -383,7 +404,7 @@ export default function NotesSection() {
     });
 
     if (editingNoteId) {
-      setNotes((prev) =>
+      updateAndSaveNotes((prev) =>
         prev.map((n) =>
           n.id === editingNoteId
             ? {
@@ -393,12 +414,19 @@ export default function NotesSection() {
                 color: formColor,
                 category: formCategory,
                 emoji: formEmoji,
-                imageUrl: formImageBase64 || undefined,
+                mediaUrl: formMediaUrl || undefined,
+                mediaType: formMediaType || undefined,
+                mediaName: formMediaName || undefined,
+                imageUrl:
+                  formMediaType === "image"
+                    ? formMediaUrl || undefined
+                    : undefined,
                 isPinned: formIsPinned,
               }
             : n
         )
       );
+      showToast("¡Nota actualizada con éxito! ✨");
     } else {
       const newNote: CustomNote = {
         id: "note_" + Date.now(),
@@ -408,13 +436,24 @@ export default function NotesSection() {
         color: formColor,
         category: formCategory,
         emoji: formEmoji,
-        imageUrl: formImageBase64 || undefined,
+        mediaUrl: formMediaUrl || undefined,
+        mediaType: formMediaType || undefined,
+        mediaName: formMediaName || undefined,
+        imageUrl:
+          formMediaType === "image" ? formMediaUrl || undefined : undefined,
         isPinned: formIsPinned,
         isAxelSpecial: false,
         createdAt: Date.now(),
         reactions: 0,
       };
-      setNotes((prev) => [newNote, ...prev]);
+
+      updateAndSaveNotes((prev) => [newNote, ...prev]);
+
+      // If user was on another category, ensure it's visible by resetting to 'all' or that category
+      if (activeCategory !== "all" && activeCategory !== formCategory) {
+        setActiveCategory("all");
+      }
+      showToast("¡Guardado en tu tablón de forma permanente! 💕");
     }
 
     setIsModalOpen(false);
@@ -423,19 +462,20 @@ export default function NotesSection() {
 
   const handleDeleteNote = (id: string) => {
     if (confirm("¿Estás segura de eliminar esta nota de tu tablón? 💕")) {
-      setNotes((prev) => prev.filter((n) => n.id !== id));
+      updateAndSaveNotes((prev) => prev.filter((n) => n.id !== id));
+      showToast("Nota eliminada del tablón");
     }
   };
 
   const handleTogglePin = (id: string) => {
-    setNotes((prev) =>
+    updateAndSaveNotes((prev) =>
       prev.map((n) => (n.id === id ? { ...n, isPinned: !n.isPinned } : n))
     );
   };
 
   const handleReactNote = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setNotes((prev) =>
+    updateAndSaveNotes((prev) =>
       prev.map((n) =>
         n.id === id ? { ...n, reactions: (n.reactions || 0) + 1 } : n
       )
@@ -451,10 +491,15 @@ export default function NotesSection() {
   }, []);
 
   const handleExportNotes = () => {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(notes, null, 2));
+    const dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(notes, null, 2));
     const downloadAnchor = document.createElement("a");
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `notas_axel_sofi_${new Date().toISOString().slice(0, 10)}.json`);
+    downloadAnchor.setAttribute(
+      "download",
+      `tablon_axel_sofi_${new Date().toISOString().slice(0, 10)}.json`
+    );
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -470,9 +515,13 @@ export default function NotesSection() {
       try {
         const imported = JSON.parse(event.target?.result as string);
         if (Array.isArray(imported)) {
-          if (confirm(`¿Deseas restaurar ${imported.length} notas desde tu copia de seguridad?`)) {
-            setNotes(imported);
-            alert("¡Notas restauradas con éxito! ✨");
+          if (
+            confirm(
+              `¿Deseas restaurar ${imported.length} notas desde tu copia de seguridad?`
+            )
+          ) {
+            updateAndSaveNotes(imported);
+            showToast("¡Notas restauradas con éxito! ✨");
           }
         } else {
           alert("El archivo no tiene el formato correcto.");
@@ -494,9 +543,22 @@ export default function NotesSection() {
           !q ||
           n.title.toLowerCase().includes(q) ||
           n.content.toLowerCase().includes(q) ||
-          n.date.toLowerCase().includes(q);
-        const matchesPhotos = sortBy === "photos" ? !!n.imageUrl : true;
-        return matchesCat && matchesSearch && matchesPhotos;
+          n.date.toLowerCase().includes(q) ||
+          (n.mediaName && n.mediaName.toLowerCase().includes(q));
+
+        let matchesMedia = true;
+        const effectiveMediaType =
+          n.mediaType || (n.mediaUrl || n.imageUrl ? "image" : undefined);
+
+        if (sortBy === "photos") {
+          matchesMedia = effectiveMediaType === "image";
+        } else if (sortBy === "audios") {
+          matchesMedia = effectiveMediaType === "audio";
+        } else if (sortBy === "videos") {
+          matchesMedia = effectiveMediaType === "video";
+        }
+
+        return matchesCat && matchesSearch && matchesMedia;
       })
       .sort((a, b) => {
         if (sortBy === "pinned") {
@@ -506,13 +568,38 @@ export default function NotesSection() {
         }
         if (sortBy === "newest") return b.createdAt - a.createdAt;
         if (sortBy === "oldest") return a.createdAt - b.createdAt;
-        if (sortBy === "photos") return b.createdAt - a.createdAt;
-        return 0;
+        return b.createdAt - a.createdAt;
       });
   }, [notes, activeCategory, searchQuery, sortBy]);
 
+  // File accept attribute based on selected media type
+  const fileAcceptString = useMemo(() => {
+    if (mediaUploadType === "audio") {
+      return "audio/*,.mp3,.wav,.m4a,.ogg,.aac,.webm";
+    }
+    if (mediaUploadType === "video") {
+      return "video/*,.mp4,.webm,.mov,.mkv";
+    }
+    return "image/*";
+  }, [mediaUploadType]);
+
   return (
-    <section className="w-full max-w-5xl mx-auto px-4 pb-20 z-10 space-y-8">
+    <section className="w-full max-w-5xl mx-auto px-4 pb-20 z-10 space-y-8 relative">
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl bg-slate-900/90 border border-pink-500/50 backdrop-blur-xl text-white text-sm font-semibold shadow-[0_10px_30px_rgba(236,72,153,0.3)] flex items-center gap-2"
+          >
+            <CheckCircle2 className="w-4 h-4 text-pink-400" />
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -523,17 +610,18 @@ export default function NotesSection() {
         <div>
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 text-xs font-semibold uppercase tracking-widest mb-3">
             <MessageSquareHeart className="w-4 h-4 text-pink-400" />
-            Muro de Recuerdos & Notas
+            Muro de Recuerdos, Audios & Notas
           </div>
           <h2 className="text-3xl sm:text-5xl font-bold flex flex-wrap items-baseline gap-3">
             <span className="text-white">Tablón de</span>
             <span className="text-pink-400 italic font-serif tracking-wide">
-              Notas & Fotos
+              Notas, Audios & Fotos
             </span>
             <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-pink-300 animate-pulse ml-1" />
           </h2>
           <p className="text-purple-200/70 text-base sm:text-lg tracking-wide mt-1">
-            Un rincón interactivo para subir fotitos, crear notas bonitas, metas y pensamientos que se guardan en tu dispositivo
+            Sube fotitos, notas de voz en MP3, videos y pensamientos bonitos que
+            se guardan para siempre
           </p>
         </div>
 
@@ -541,10 +629,10 @@ export default function NotesSection() {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={openCreateModal}
-            className="px-5 py-3 rounded-2xl bg-linear-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold text-sm shadow-[0_0_25px_rgba(236,72,153,0.4)] transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer shrink-0"
+            className="px-5 py-3 rounded-2xl bg-linear-to-r from-pink-500 via-purple-600 to-indigo-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold text-sm shadow-[0_0_25px_rgba(236,72,153,0.4)] transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer shrink-0"
           >
             <Plus className="w-5 h-5 stroke-[2.5]" />
-            <span>Nueva Nota / Foto</span>
+            <span>Nueva Nota / Audio / Foto</span>
           </button>
 
           {/* Backup Menu */}
@@ -584,7 +672,7 @@ export default function NotesSection() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Buscar entre tus notas, recuerdos o mensajes..."
+            placeholder="Buscar entre tus notas, audios, fotos o recuerdos..."
             className="w-full pl-11 pr-10 py-3 bg-white/5 border border-purple-500/25 focus:border-pink-400 rounded-2xl text-sm text-white placeholder:text-purple-300/50 outline-none backdrop-blur-md transition-all shadow-inner"
           />
           {searchQuery && (
@@ -636,22 +724,26 @@ export default function NotesSection() {
             })}
           </div>
 
-          {/* Sort Pills */}
-          <div className="flex items-center gap-2 text-xs text-purple-300/70">
-            <span className="text-[11px] uppercase tracking-wider font-semibold">Ordenar:</span>
-            <div className="flex items-center gap-1.5 flex-wrap">
+          {/* Sort & Media Filter Pills */}
+          <div className="flex items-center gap-2 text-xs text-purple-300/70 flex-wrap justify-center">
+            <span className="text-[11px] uppercase tracking-wider font-semibold">
+              Filtrar / Ordenar:
+            </span>
+            <div className="flex items-center gap-1.5 flex-wrap justify-center">
               {[
                 { id: "pinned" as SortOption, label: "📌 Fijadas" },
                 { id: "newest" as SortOption, label: "⏱️ Más recientes" },
                 { id: "oldest" as SortOption, label: "⏳ Antiguas" },
-                { id: "photos" as SortOption, label: "📷 Con fotos" },
+                { id: "photos" as SortOption, label: "📷 Fotos" },
+                { id: "audios" as SortOption, label: "🎵 Audios MP3" },
+                { id: "videos" as SortOption, label: "🎬 Videos" },
               ].map((opt) => (
                 <button
                   key={opt.id}
                   onClick={() => setSortBy(opt.id)}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all cursor-pointer ${
                     sortBy === opt.id
-                      ? "bg-purple-500/30 text-white border border-purple-400/50"
+                      ? "bg-purple-500/30 text-white border border-purple-400/50 shadow-sm"
                       : "bg-white/5 text-purple-300/60 hover:text-white border border-transparent"
                   }`}
                 >
@@ -663,11 +755,22 @@ export default function NotesSection() {
         </div>
       </div>
 
+      {/* Loading state indicator */}
+      {isLoadingNotes && (
+        <div className="p-8 text-center text-purple-300/60 flex items-center justify-center gap-2.5">
+          <Loader2 className="w-5 h-5 text-pink-400 animate-spin" />
+          <span className="text-sm">Cargando tus notas y recuerdos...</span>
+        </div>
+      )}
+
       {/* Grid of Notes / Memories */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <AnimatePresence>
           {filteredNotes.map((note) => {
             const style = COLOR_STYLES[note.color] || COLOR_STYLES.pink;
+            const effectiveMediaUrl = note.mediaUrl || note.imageUrl;
+            const effectiveMediaType: MediaType | undefined =
+              note.mediaType || (effectiveMediaUrl ? "image" : undefined);
 
             return (
               <motion.div
@@ -726,7 +829,11 @@ export default function NotesSection() {
                         }`}
                         title={note.isPinned ? "Desfijar" : "Fijar arriba"}
                       >
-                        <Pin className={`w-4 h-4 ${note.isPinned ? "fill-current" : ""}`} />
+                        <Pin
+                          className={`w-4 h-4 ${
+                            note.isPinned ? "fill-current" : ""
+                          }`}
+                        />
                       </button>
 
                       {/* Edit (only for custom notes) */}
@@ -769,30 +876,65 @@ export default function NotesSection() {
                     {note.title}
                   </h3>
 
-                  {/* Attached Image if any */}
-                  {note.imageUrl && (
-                    <div
-                      onClick={() => setPreviewImage(note.imageUrl!)}
-                      className="relative w-full h-44 sm:h-52 my-3 rounded-2xl overflow-hidden cursor-pointer group/img border border-white/10 shadow-inner bg-black/20"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={note.imageUrl}
-                        alt={note.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-xs font-semibold backdrop-blur-xs">
-                        <Maximize2 className="w-4 h-4" />
-                        <span>Ver foto completa</span>
-                      </div>
+                  {/* MEDIA RENDERING: IMAGE, AUDIO, VIDEO */}
+                  {effectiveMediaUrl && (
+                    <div className="my-3">
+                      {/* 1. Image */}
+                      {effectiveMediaType === "image" && (
+                        <div
+                          onClick={() => setPreviewImage(effectiveMediaUrl)}
+                          className="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden cursor-pointer group/img border border-white/10 shadow-inner bg-black/20"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={effectiveMediaUrl}
+                            alt={note.title}
+                            loading="lazy"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-xs font-semibold backdrop-blur-xs">
+                            <Maximize2 className="w-4 h-4" />
+                            <span>Ver foto completa</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 2. Audio (MP3) */}
+                      {effectiveMediaType === "audio" && (
+                        <NoteAudioPlayer
+                          src={effectiveMediaUrl}
+                          name={note.mediaName || "Audio MP3"}
+                          color={note.color}
+                        />
+                      )}
+
+                      {/* 3. Video */}
+                      {effectiveMediaType === "video" && (
+                        <div className="rounded-2xl overflow-hidden border border-white/15 bg-black shadow-lg">
+                          <video
+                            src={effectiveMediaUrl}
+                            controls
+                            playsInline
+                            preload="metadata"
+                            className="w-full max-h-56 object-contain bg-black"
+                          />
+                          {note.mediaName && (
+                            <div className="p-2 bg-black/40 text-[11px] text-purple-200/70 truncate flex items-center gap-1.5">
+                              <Film className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                              <span className="truncate">{note.mediaName}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
 
                   {/* Text Content */}
-                  <p className="text-white/90 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-sans">
-                    {note.content}
-                  </p>
+                  {note.content && (
+                    <p className="text-white/90 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-sans">
+                      {note.content}
+                    </p>
+                  )}
                 </div>
 
                 {/* Footer: Date, Reactions & Signature */}
@@ -810,7 +952,9 @@ export default function NotesSection() {
                       title="Enviar amor a esta nota"
                     >
                       <Heart className="w-3.5 h-3.5 text-pink-400 fill-pink-400 animate-heartbeat" />
-                      <span className="font-semibold text-[11px]">{note.reactions || 0}</span>
+                      <span className="font-semibold text-[11px]">
+                        {note.reactions || 0}
+                      </span>
                     </button>
 
                     {note.isAxelSpecial ? (
@@ -818,7 +962,9 @@ export default function NotesSection() {
                         De Axel :3
                       </span>
                     ) : (
-                      <span className="text-pink-300/80 font-medium">✨ Sofi & Axel</span>
+                      <span className="text-pink-300/80 font-medium">
+                        ✨ Sofi & Axel
+                      </span>
                     )}
                   </div>
                 </div>
@@ -828,12 +974,15 @@ export default function NotesSection() {
         </AnimatePresence>
       </div>
 
-      {filteredNotes.length === 0 && (
+      {filteredNotes.length === 0 && !isLoadingNotes && (
         <div className="p-12 text-center text-purple-300/70 flex flex-col items-center justify-center gap-3 bg-white/5 rounded-3xl border border-purple-500/20 backdrop-blur-md">
           <StickyNote className="w-10 h-10 text-pink-400" />
-          <p className="text-lg font-medium text-white">No hay notas en esta categoría</p>
+          <p className="text-lg font-medium text-white">
+            No hay notas en esta categoría
+          </p>
           <p className="text-sm text-purple-200/60 max-w-sm">
-            ¡Sé la primera en escribir algo lindo o subir una foto para recordar!
+            ¡Sé la primera en escribir algo lindo, grabar o subir una foto o
+            audio para recordar!
           </p>
           <button
             onClick={openCreateModal}
@@ -853,7 +1002,7 @@ export default function NotesSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => !isUploading && setIsModalOpen(false)}
               className="absolute inset-0 bg-black/80 backdrop-blur-md"
             />
 
@@ -870,14 +1019,18 @@ export default function NotesSection() {
                   <span className="text-2xl">{formEmoji}</span>
                   <div>
                     <h3 className="text-xl font-bold text-white font-serif">
-                      {editingNoteId ? "Editar Nota o Recuerdo" : "Nueva Nota o Recuerdo"}
+                      {editingNoteId
+                        ? "Editar Nota o Recuerdo"
+                        : "Nueva Nota o Recuerdo"}
                     </h3>
                     <p className="text-xs text-purple-300/70">
-                      Personaliza con colores, fotos y emojis
+                      Personaliza con colores, fotos, audios MP3 o videos
                     </p>
                   </div>
                 </div>
                 <button
+                  type="button"
+                  disabled={isUploading}
                   onClick={() => setIsModalOpen(false)}
                   className="p-1.5 text-white/50 hover:text-white rounded-full bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
                 >
@@ -924,7 +1077,7 @@ export default function NotesSection() {
                     required
                     value={formTitle}
                     onChange={(e) => setFormTitle(e.target.value)}
-                    placeholder="Ej: Nuestra próxima salida al cine 🍿"
+                    placeholder="Ej: Nuestra próxima salida al cine 🍿 o Canción bonita"
                     className="w-full px-4 py-2.5 bg-white/5 border border-purple-500/30 focus:border-pink-400 rounded-xl text-white text-sm outline-none transition-all"
                   />
                 </div>
@@ -940,7 +1093,6 @@ export default function NotesSection() {
                     </span>
                   </div>
                   <textarea
-                    required
                     rows={4}
                     value={formContent}
                     onChange={(e) => setFormContent(e.target.value)}
@@ -970,7 +1122,11 @@ export default function NotesSection() {
                       className="w-full px-3 py-2.5 bg-white/5 border border-purple-500/30 focus:border-pink-400 rounded-xl text-white text-xs outline-none cursor-pointer"
                     >
                       {Object.entries(CATEGORIES_INFO).map(([key, val]) => (
-                        <option key={key} value={key} className="bg-slate-900 text-white">
+                        <option
+                          key={key}
+                          value={key}
+                          className="bg-slate-900 text-white"
+                        >
                           {val.icon} {val.label}
                         </option>
                       ))}
@@ -1017,7 +1173,7 @@ export default function NotesSection() {
                   <label className="block text-xs font-semibold text-purple-200/80 mb-1.5">
                     Elige un sticker / emoji
                   </label>
-                  <div className="flex flex-wrap gap-2 p-2 bg-white/5 rounded-xl border border-purple-500/20">
+                  <div className="flex flex-wrap gap-2 p-2 bg-white/5 rounded-xl border border-purple-500/20 max-h-24 overflow-y-auto">
                     {AVAILABLE_EMOJIS.map((em) => (
                       <button
                         key={em}
@@ -1035,48 +1191,173 @@ export default function NotesSection() {
                   </div>
                 </div>
 
-                {/* Photo Upload (with Canvas auto-compression) */}
-                <div>
-                  <label className="block text-xs font-semibold text-purple-200/80 mb-1.5">
-                    Adjuntar Foto (Opcional · Se optimiza automáticamente)
-                  </label>
+                {/* MULTIMEDIA ATTACHMENT SECTION (PHOTO / AUDIO MP3 / VIDEO) */}
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-purple-500/25 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-purple-200/90 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+                      <span>Adjuntar Archivo (Foto, Audio MP3 o Video)</span>
+                    </label>
+                    {formMediaUrl && (
+                      <button
+                        type="button"
+                        onClick={removeAttachedMedia}
+                        className="text-[11px] text-rose-400 hover:text-rose-300 flex items-center gap-1 cursor-pointer"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        <span>Quitar archivo</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Hidden file input */}
                   <input
                     type="file"
                     ref={fileInputRef}
-                    accept="image/*"
-                    onChange={handleImageUpload}
+                    accept={fileAcceptString}
+                    onChange={handleFileUpload}
                     className="hidden"
                   />
 
-                  {isCompressing ? (
-                    <div className="py-3 px-4 rounded-xl bg-white/5 border border-purple-500/30 text-center text-xs text-purple-300 animate-pulse">
-                      Optimizando imagen... 📸
-                    </div>
-                  ) : formImageBase64 ? (
-                    <div className="relative w-full h-32 rounded-xl overflow-hidden border border-purple-400/40 group">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={formImageBase64}
-                        alt="Preview"
-                        className="w-full h-full object-cover"
-                      />
+                  {/* Media Type Tabs (if no media attached yet) */}
+                  {!formMediaUrl && !isUploading && (
+                    <div>
+                      <div className="grid grid-cols-3 gap-2 mb-3">
+                        <button
+                          type="button"
+                          onClick={() => setMediaUploadType("image")}
+                          className={`py-2 px-2 rounded-xl text-xs font-medium border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                            mediaUploadType === "image"
+                              ? "bg-pink-500/25 border-pink-400 text-white shadow-sm"
+                              : "bg-white/5 border-purple-500/20 text-purple-300 hover:bg-white/10"
+                          }`}
+                        >
+                          <Camera className="w-3.5 h-3.5 text-pink-400" />
+                          <span>Foto</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setMediaUploadType("audio")}
+                          className={`py-2 px-2 rounded-xl text-xs font-medium border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                            mediaUploadType === "audio"
+                              ? "bg-purple-500/25 border-purple-400 text-white shadow-sm"
+                              : "bg-white/5 border-purple-500/20 text-purple-300 hover:bg-white/10"
+                          }`}
+                        >
+                          <Music className="w-3.5 h-3.5 text-purple-400" />
+                          <span>Audio MP3</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setMediaUploadType("video")}
+                          className={`py-2 px-2 rounded-xl text-xs font-medium border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                            mediaUploadType === "video"
+                              ? "bg-indigo-500/25 border-indigo-400 text-white shadow-sm"
+                              : "bg-white/5 border-purple-500/20 text-purple-300 hover:bg-white/10"
+                          }`}
+                        >
+                          <Film className="w-3.5 h-3.5 text-indigo-400" />
+                          <span>Video</span>
+                        </button>
+                      </div>
+
+                      {/* Upload action button */}
                       <button
                         type="button"
-                        onClick={() => setFormImageBase64(null)}
-                        className="absolute top-2 right-2 p-1.5 rounded-full bg-black/70 text-white hover:bg-rose-600 transition-colors cursor-pointer"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full py-4 px-4 border border-dashed border-purple-500/40 hover:border-pink-400 rounded-xl bg-purple-950/20 hover:bg-purple-900/30 text-purple-200 text-xs font-medium flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
                       >
-                        <X className="w-4 h-4" />
+                        {mediaUploadType === "image" && (
+                          <>
+                            <Camera className="w-5 h-5 text-pink-400" />
+                            <span>Seleccionar Foto o Imagen (JPG, PNG, WebP)</span>
+                          </>
+                        )}
+                        {mediaUploadType === "audio" && (
+                          <>
+                            <Music className="w-5 h-5 text-purple-400" />
+                            <span>Seleccionar Audio MP3 o Nota de Voz</span>
+                          </>
+                        )}
+                        {mediaUploadType === "video" && (
+                          <>
+                            <Film className="w-5 h-5 text-indigo-400" />
+                            <span>Seleccionar Video (MP4, WebM)</span>
+                          </>
+                        )}
+                        <span className="text-[10px] text-purple-400/70">
+                          Se guarda de forma permanente en el servidor
+                        </span>
                       </button>
                     </div>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="w-full py-3 px-4 border border-dashed border-purple-500/40 hover:border-pink-400 rounded-xl bg-white/5 hover:bg-white/10 text-purple-300 text-xs font-medium flex items-center justify-center gap-2 transition-all cursor-pointer"
-                    >
-                      <Camera className="w-4 h-4 text-pink-400" />
-                      <span>Subir foto desde tu dispositivo</span>
-                    </button>
+                  )}
+
+                  {/* Uploading progress spinner */}
+                  {isUploading && (
+                    <div className="py-6 px-4 rounded-xl bg-black/40 border border-purple-500/30 text-center flex flex-col items-center justify-center gap-2 text-xs text-purple-200">
+                      <Loader2 className="w-6 h-6 text-pink-400 animate-spin" />
+                      <span className="font-semibold text-white">
+                        Subiendo y guardando archivo...
+                      </span>
+                      <span className="text-[10px] text-purple-300/60">
+                        Procesando en el servidor para que permanezca siempre visible
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Upload Error feedback */}
+                  {uploadError && (
+                    <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                      <span>{uploadError}</span>
+                    </div>
+                  )}
+
+                  {/* Live Media Previews inside Modal */}
+                  {formMediaUrl && !isUploading && (
+                    <div className="space-y-2">
+                      {formMediaType === "image" && (
+                        <div className="relative w-full h-36 rounded-xl overflow-hidden border border-purple-400/40 group">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={formMediaUrl}
+                            alt="Vista previa"
+                            className="w-full h-full object-cover"
+                          />
+                          <button
+                            type="button"
+                            onClick={removeAttachedMedia}
+                            className="absolute top-2 right-2 p-1.5 rounded-full bg-black/70 text-white hover:bg-rose-600 transition-colors cursor-pointer"
+                            title="Eliminar foto"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+
+                      {formMediaType === "audio" && (
+                        <div>
+                          <NoteAudioPlayer
+                            src={formMediaUrl}
+                            name={formMediaName || "Audio MP3"}
+                            color={formColor}
+                          />
+                        </div>
+                      )}
+
+                      {formMediaType === "video" && (
+                        <div className="relative rounded-xl overflow-hidden border border-purple-400/40 bg-black">
+                          <video
+                            src={formMediaUrl}
+                            controls
+                            playsInline
+                            className="w-full max-h-44 object-contain"
+                          />
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
 
@@ -1101,9 +1382,16 @@ export default function NotesSection() {
                 {/* Submit button */}
                 <button
                   type="submit"
-                  className="w-full mt-4 py-3 rounded-xl bg-linear-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-all cursor-pointer"
+                  disabled={isUploading}
+                  className={`w-full mt-4 py-3 rounded-xl bg-linear-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-all cursor-pointer ${
+                    isUploading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
-                  {editingNoteId ? "Guardar Cambios ✨" : "Guardar en mi Tablón ✨"}
+                  {isUploading
+                    ? "Subiendo archivo... Espera un momento"
+                    : editingNoteId
+                    ? "Guardar Cambios ✨"
+                    : "Guardar en mi Tablón ✨"}
                 </button>
               </form>
             </motion.div>
