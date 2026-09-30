@@ -8,20 +8,24 @@ export const runtime = "nodejs";
 
 const UPLOADS_DIR = path.join(process.cwd(), "public", "uploads");
 
-function getMediaType(mimeType: string, extension: string): MediaType {
-  const ext = extension.toLowerCase().replace(".", "");
+const ALLOWED_IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
+const ALLOWED_AUDIO_EXTS = new Set([".mp3", ".wav", ".m4a", ".ogg", ".aac", ".flac"]);
+const ALLOWED_VIDEO_EXTS = new Set([".mp4", ".webm", ".mov", ".mkv", ".avi"]);
 
-  if (
-    mimeType.startsWith("audio/") ||
-    ["mp3", "wav", "m4a", "ogg", "aac", "flac"].includes(ext)
-  ) {
+const ALL_ALLOWED_EXTS = new Set([
+  ...ALLOWED_IMAGE_EXTS,
+  ...ALLOWED_AUDIO_EXTS,
+  ...ALLOWED_VIDEO_EXTS,
+]);
+
+function getMediaType(mimeType: string, extension: string): MediaType {
+  const ext = extension.toLowerCase();
+
+  if (mimeType.startsWith("audio/") || ALLOWED_AUDIO_EXTS.has(ext)) {
     return "audio";
   }
 
-  if (
-    mimeType.startsWith("video/") ||
-    ["mp4", "webm", "mov", "mkv", "avi"].includes(ext)
-  ) {
+  if (mimeType.startsWith("video/") || ALLOWED_VIDEO_EXTS.has(ext)) {
     return "video";
   }
 
@@ -49,25 +53,47 @@ export async function POST(request: Request) {
       );
     }
 
+    const originalName = file.name || "archivo";
+    const rawExtension = path.extname(originalName) || "";
+    const cleanExtension = rawExtension.toLowerCase().replace(/[^a-z0-9.]/g, "");
+
+    // Validar extensión permitida
+    if (!cleanExtension || !ALL_ALLOWED_EXTS.has(cleanExtension)) {
+      return NextResponse.json(
+        {
+          error:
+            "Formato de archivo no permitido. Solo se admiten fotos (JPG, PNG, WEBP, GIF), audio (MP3, WAV, M4A, OGG) o video (MP4, WEBM, MOV).",
+        },
+        { status: 400 }
+      );
+    }
+
     await mkdir(UPLOADS_DIR, { recursive: true });
 
-    const originalName = file.name || "archivo";
-    const extension = path.extname(originalName) || "";
     const baseName = path
-      .basename(originalName, extension)
+      .basename(originalName, rawExtension)
       .replace(/[^a-zA-Z0-9_-]/g, "_")
       .substring(0, 40);
 
     const uniqueId = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
-    const fileName = `${uniqueId}_${baseName}${extension.toLowerCase()}`;
-    const filePath = path.join(UPLOADS_DIR, fileName);
+    const fileName = `${uniqueId}_${baseName}${cleanExtension}`;
+    
+    // Path traversal defense
+    const resolvedUploadsDir = path.resolve(UPLOADS_DIR);
+    const resolvedFilePath = path.resolve(UPLOADS_DIR, fileName);
+    if (!resolvedFilePath.startsWith(resolvedUploadsDir)) {
+      return NextResponse.json(
+        { error: "Nombre de archivo no válido." },
+        { status: 400 }
+      );
+    }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    await writeFile(filePath, buffer);
+    await writeFile(resolvedFilePath, buffer);
 
-    const mediaType = getMediaType(file.type || "", extension);
+    const mediaType = getMediaType(file.type || "", cleanExtension);
 
     return NextResponse.json({
       success: true,

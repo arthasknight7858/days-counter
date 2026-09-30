@@ -1,9 +1,25 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, GraduationCap, Dumbbell, Sparkles, StickyNote, BookmarkCheck } from "lucide-react";
+import {
+  Heart,
+  Smile,
+  Cake,
+  GraduationCap,
+  Dumbbell,
+  StickyNote,
+  BookmarkCheck,
+  Sparkles,
+} from "lucide-react";
 
-export type SectionType = "para-ti" | "educativo" | "ejercicio" | "notas" | "a-tener-en-cuenta";
+export type SectionType =
+  | "para-ti"
+  | "apodos"
+  | "cumpleanos"
+  | "educativo"
+  | "ejercicio"
+  | "notas"
+  | "a-tener-en-cuenta";
 
 interface SectionTabsProps {
   activeSection: SectionType;
@@ -17,6 +33,18 @@ export default function SectionTabs({ activeSection, onChangeSection }: SectionT
       label: "Para ti",
       icon: Heart,
       badge: "💖 Especial",
+    },
+    {
+      id: "apodos" as SectionType,
+      label: "Nuestros Apodos",
+      icon: Smile,
+      badge: "💬 Amor",
+    },
+    {
+      id: "cumpleanos" as SectionType,
+      label: "Cumpleaños",
+      icon: Cake,
+      badge: "🎂 Fechas",
     },
     {
       id: "educativo" as SectionType,
@@ -47,7 +75,7 @@ export default function SectionTabs({ activeSection, onChangeSection }: SectionT
   return (
     <div className="w-full flex flex-col items-center justify-center my-6 sm:my-10 z-20 px-4">
       {/* Glow background behind tabs */}
-      <div className="relative p-1.5 sm:p-2 rounded-2xl sm:rounded-full bg-white/5 backdrop-blur-xl border border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.2)] flex flex-wrap sm:flex-nowrap items-center justify-center gap-1.5 sm:gap-2">
+      <div className="relative p-1.5 sm:p-2 rounded-2xl sm:rounded-full bg-white/5 backdrop-blur-xl border border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.2)] flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 max-w-full">
         {tabs.map((tab) => {
           const isActive = activeSection === tab.id;
           const Icon = tab.icon;
@@ -56,7 +84,7 @@ export default function SectionTabs({ activeSection, onChangeSection }: SectionT
             <button
               key={tab.id}
               onClick={() => onChangeSection(tab.id)}
-              className={`relative px-5 py-3 sm:px-7 sm:py-3.5 rounded-xl sm:rounded-full font-medium text-sm sm:text-base transition-all duration-300 flex items-center gap-2.5 cursor-pointer select-none outline-none ${
+              className={`relative px-3.5 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 rounded-xl sm:rounded-full font-medium text-xs sm:text-sm md:text-base transition-all duration-300 flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none outline-none ${
                 isActive
                   ? "text-white font-semibold shadow-[0_0_20px_rgba(168,85,247,0.5)]"
                   : "text-purple-200/70 hover:text-white hover:bg-white/5"
@@ -71,17 +99,17 @@ export default function SectionTabs({ activeSection, onChangeSection }: SectionT
               )}
 
               <Icon
-                className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 ${
+                className={`w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 transition-transform duration-300 ${
                   isActive ? "text-white scale-110 animate-heartbeat" : "text-purple-400 group-hover:scale-110"
                 }`}
               />
-              <span className="tracking-wide">{tab.label}</span>
+              <span className="tracking-wide whitespace-nowrap">{tab.label}</span>
 
               {isActive && (
                 <motion.span
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="hidden md:inline-flex items-center text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-xs"
+                  className="hidden xl:inline-flex items-center text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-xs"
                 >
                   <Sparkles className="w-2.5 h-2.5 mr-1 text-purple-200" />
                   Activo

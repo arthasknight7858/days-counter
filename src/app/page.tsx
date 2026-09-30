@@ -25,6 +25,14 @@ const SectionLoadingSkeleton = ({ title }: { title: string }) => (
   </div>
 );
 
+const BirthdaysSection = dynamic(() => import("@/components/BirthdaysSection"), {
+  loading: () => <SectionLoadingSkeleton title="Cumpleaños de ambos" />,
+});
+
+const NicknamesSection = dynamic(() => import("@/components/NicknamesSection"), {
+  loading: () => <SectionLoadingSkeleton title="Nuestros lindos apodos" />,
+});
+
 const EducationalSection = dynamic(() => import("@/components/EducationalSection"), {
   loading: () => <SectionLoadingSkeleton title="Espacio Educativo" />,
 });
@@ -135,25 +143,70 @@ export default function Home() {
               transition={{ duration: 0.4 }}
               className="w-full flex flex-col items-center"
             >
+              {/* Quick Jump Navigation Chips */}
+              <div className="z-10 flex flex-wrap items-center justify-center gap-2 mt-1 mb-4 px-2">
+                {[
+                  { label: "Música", icon: "🎵", href: "#musica" },
+                  { label: "Sobre Sofi", icon: "🌸", href: "#sobre-sofi" },
+                  { label: "Cartas", icon: "💌", href: "#cartas" },
+                  { label: "Álbumes & Favoritas", icon: "📸", href: "#albumes" },
+                ].map((chip) => (
+                  <a
+                    key={chip.label}
+                    href={chip.href}
+                    className="px-3 py-1.5 rounded-full text-xs font-medium bg-white/5 hover:bg-white/10 text-purple-200 hover:text-white border border-purple-500/20 hover:border-purple-400/40 transition-all flex items-center gap-1.5 shadow-xs"
+                  >
+                    <span>{chip.icon}</span>
+                    <span>{chip.label}</span>
+                  </a>
+                ))}
+              </div>
+
               {/* Music Player Section */}
-              <div className="z-10 w-full mt-2 sm:mt-4">
+              <div id="musica" className="z-10 w-full mt-4">
                 <MusicPlayer />
               </div>
 
               {/* About Section */}
-              <div className="z-10 w-full mt-10">
+              <div id="sobre-sofi" className="z-10 w-full mt-10">
                 <AboutSofi />
               </div>
 
               {/* Letters Section */}
-              <div className="z-10 w-full mt-10">
+              <div id="cartas" className="z-10 w-full mt-10">
                 <LettersAccordion />
               </div>
 
               {/* Albums Section */}
-              <div className="z-10 w-full mt-10">
+              <div id="albumes" className="z-10 w-full mt-10">
                 <Albums />
               </div>
+            </motion.div>
+          )}
+
+          {activeSection === "apodos" && (
+            <motion.div
+              key="apodos"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+              className="w-full mt-2 sm:mt-4"
+            >
+              <NicknamesSection />
+            </motion.div>
+          )}
+
+          {activeSection === "cumpleanos" && (
+            <motion.div
+              key="cumpleanos"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+              className="w-full mt-2 sm:mt-4"
+            >
+              <BirthdaysSection />
             </motion.div>
           )}
 
@@ -222,4 +275,3 @@ export default function Home() {
     </MusicProvider>
   );
 }
-

@@ -58,12 +58,16 @@ export default function KeepInMindSection() {
     setOpenItemId(openItemId === id ? null : id);
   };
 
-  // Helper para extraer el ID de YouTube
+  // Helper para extraer el ID de YouTube (incluyendo shorts, youtu.be y watch?v=)
   const getYouTubeEmbedUrl = (url?: string) => {
     if (!url) return null;
     try {
       if (url.includes("youtu.be/")) {
-        const id = url.split("youtu.be/")[1]?.split("?")[0];
+        const id = url.split("youtu.be/")[1]?.split("?")[0]?.split("/")[0];
+        return `https://www.youtube-nocookie.com/embed/${id}`;
+      }
+      if (url.includes("/shorts/")) {
+        const id = url.split("/shorts/")[1]?.split("?")[0]?.split("/")[0];
         return `https://www.youtube-nocookie.com/embed/${id}`;
       }
       if (url.includes("watch?v=")) {

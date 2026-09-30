@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía de Robótica — De cero a robot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset y variables ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0d1117;
+    --bg2:      #161b22;
+    --bg3:      #21262d;
+    --border:   #30363d;
+    --cyan:     #00d9ff;
+    --cyan-dim: rgba(0,217,255,0.12);
+    --green:    #3fb950;
+    --amber:    #e3b341;
+    --coral:    #ff7b72;
+    --purple:   #bc8cff;
+    --text:     #e6edf3;
+    --text2:    #8b949e;
+    --mono:     'JetBrains Mono', monospace;
+    --sans:     'Inter', sans-serif;
+    --radius:   6px;
+    --sidebar:  260px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  nav {
+    width: var(--sidebar);
+    min-width: var(--sidebar);
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 0 0 2rem;
+    z-index: 100;
+  }
+
+  .nav-header {
+    padding: 1.25rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg2);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cyan);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-logo span { color: var(--text2); font-weight: 400; }
+
+  .nav-section-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 1.25rem 1.25rem 0.4rem;
+  }
+
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.35rem 1.25rem;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13.5px;
+    border-left: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+
+  nav a:hover, nav a.active {
+    color: var(--text);
+    border-left-color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+
+  nav a .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+
+  nav a:hover .dot, nav a.active .dot { background: var(--cyan); }
+
+  /* ── Main content ── */
+  main {
+    margin-left: var(--sidebar);
+    flex: 1;
+    max-width: 860px;
+    padding: 3rem 3rem 6rem;
+  }
+
+  /* ── Secciones ── */
+  .section {
+    margin-bottom: 5rem;
+    scroll-margin-top: 2rem;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 2.5rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--cyan);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 em {
+    color: var(--cyan);
+    font-style: normal;
+  }
+
+  .hero p {
+    color: var(--text2);
+    font-size: 16px;
+    max-width: 580px;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-value { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--cyan); }
+  .stat-label { font-size: 12px; color: var(--text2); }
+
+  /* ── Headings ── */
+  h2 {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h2::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 20px;
+    background: var(--cyan);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cyan);
+    margin: 1.5rem 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .section-desc {
+    color: var(--text2);
+    margin-bottom: 1.5rem;
+    font-size: 14.5px;
+  }
+
+  /* ── Level cards ── */
+  .level-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .level-card:hover { border-color: var(--cyan); }
+
+  .level-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .level-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid;
+  }
+
+  .badge-1 { color: var(--green);  border-color: var(--green);  background: rgba(63,185,80,.1); }
+  .badge-2 { color: var(--cyan);   border-color: var(--cyan);   background: rgba(0,217,255,.1); }
+  .badge-3 { color: var(--amber);  border-color: var(--amber);  background: rgba(227,179,65,.1); }
+  .badge-4 { color: var(--purple); border-color: var(--purple); background: rgba(188,140,255,.1); }
+  .badge-5 { color: var(--coral);  border-color: var(--coral);  background: rgba(255,123,114,.1); }
+
+  .level-title {
+    font-weight: 600;
+    font-size: 15px;
+    flex: 1;
+  }
+
+  .level-duration {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+
+  .level-chevron {
+    color: var(--text2);
+    font-size: 12px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .level-card.open .level-chevron { transform: rotate(90deg); }
+
+  .level-body {
+    display: none;
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .level-card.open .level-body { display: block; }
+
+  .level-body p {
+    color: var(--text2);
+    font-size: 14px;
+    padding: 1rem 0 0.5rem;
+    line-height: 1.7;
+  }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin-top: 0.75rem;
+  }
+
+  .topic-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.75rem;
+    font-size: 13px;
+  }
+
+  .topic-item .ti { font-size: 13px; color: var(--cyan); margin-right: 6px; }
+  .topic-item strong { font-weight: 600; display: block; margin-bottom: 2px; }
+  .topic-item span { color: var(--text2); font-size: 12px; }
+
+  .resource-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .resource-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+
+  .resource-link:hover {
+    color: var(--cyan);
+    border-color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+
+  .res-type {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .res-yt  { background: rgba(255,0,0,.15);       color: #ff4444; }
+  .res-web { background: rgba(0,217,255,.12);      color: var(--cyan); }
+  .res-doc { background: rgba(188,140,255,.12);    color: var(--purple); }
+  .res-lib { background: rgba(63,185,80,.12);      color: var(--green); }
+
+  /* ── Componentes electrónicos ── */
+  .component-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-top: 1rem;
+  }
+
+  .component-table th {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .component-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--bg3);
+    color: var(--text2);
+    vertical-align: top;
+  }
+
+  .component-table td:first-child {
+    color: var(--text);
+    font-weight: 500;
+    font-family: var(--mono);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .component-table tr:hover td { background: var(--bg3); }
+
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 20px;
+    font-family: var(--mono);
+  }
+
+  .pill-green  { background: rgba(63,185,80,.15);   color: var(--green); }
+  .pill-cyan   { background: rgba(0,217,255,.12);   color: var(--cyan); }
+  .pill-amber  { background: rgba(227,179,65,.12);  color: var(--amber); }
+  .pill-purple { background: rgba(188,140,255,.12); color: var(--purple); }
+  .pill-coral  { background: rgba(255,123,114,.12); color: var(--coral); }
+
+  /* ── Código inline ── */
+  code {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--cyan);
+  }
+
+  /* ── Code block ── */
+  .code-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+
+  .code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .code-block-header .lang { color: var(--cyan); }
+
+  .copy-btn {
+    background: none;
+    border: none;
+    color: var(--text2);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: var(--mono);
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .copy-btn:hover { color: var(--text); background: var(--bg3); }
+
+  pre {
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .kw  { color: var(--purple); }
+  .fn  { color: var(--cyan); }
+  .str { color: var(--amber); }
+  .cm  { color: var(--text2); font-style: italic; }
+  .num { color: var(--green); }
+  .tp  { color: var(--coral); }
+
+  /* ── Timeline de proyectos ── */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 1rem;
+  }
+
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem;
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: default;
+  }
+
+  .project-card:hover {
+    border-color: var(--cyan);
+    transform: translateY(-2px);
+  }
+
+  .project-difficulty {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-difficulty span {
+    width: 18px; height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+  }
+
+  .project-difficulty.diff-1 span:nth-child(1) { background: var(--green); }
+  .project-difficulty.diff-2 span:nth-child(-n+2) { background: var(--amber); }
+  .project-difficulty.diff-3 span:nth-child(-n+3) { background: var(--coral); }
+
+  .project-card h4 {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .project-card p {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.55;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+
+  /* ── Info callouts ── */
+  .callout {
+    border-left: 3px solid;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 14px;
+  }
+
+  .callout-tip   { border-color: var(--cyan);   background: var(--cyan-dim); color: var(--text); }
+  .callout-warn  { border-color: var(--amber);  background: rgba(227,179,65,.08); color: var(--text); }
+  .callout-note  { border-color: var(--purple); background: rgba(188,140,255,.08); color: var(--text); }
+
+  .callout strong { color: var(--cyan); }
+  .callout-warn strong { color: var(--amber); }
+  .callout-note strong { color: var(--purple); }
+
+  /* ── Diagrama comparativa de boards ── */
+  .board-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .board-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem;
+  }
+
+  .board-card h4 {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .board-card .sub {
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 0.75rem;
+  }
+
+  .board-spec {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--bg3);
+    color: var(--text2);
+  }
+
+  .board-spec:last-child { border-bottom: none; }
+  .board-spec span:last-child { color: var(--text); font-family: var(--mono); font-size: 12px; }
+
+  /* ── Glosario ── */
+  .glossary-item {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--bg3);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .glossary-term {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cyan);
+    min-width: 110px;
+    padding-top: 2px;
+  }
+
+  .glossary-def { font-size: 14px; color: var(--text2); }
+
+  /* ── Progress tracker ── */
+  .progress-section {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .progress-section h4 {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+  .checklist li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: background 0.1s;
+    user-select: none;
+  }
+
+  .checklist li:hover { background: var(--bg3); }
+
+  .checklist li input[type="checkbox"] {
+    accent-color: var(--cyan);
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .checklist li.done { color: var(--text2); text-decoration: line-through; }
+
+  .progress-bar-wrap {
+    background: var(--bg3);
+    border-radius: 4px;
+    height: 5px;
+    margin-top: 1rem;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--cyan);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 0.4rem;
+    text-align: right;
+  }
+
+  /* ── Footer ── */
+  .footer-note {
+    font-size: 13px;
+    color: var(--text2);
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 740px) {
+    nav { display: none; }
+    main { margin-left: 0; padding: 1.5rem 1.25rem 4rem; }
+    .board-compare { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════
+     SIDEBAR NAVEGACIÓN
+════════════════════════════ -->
+<nav>
+  <div class="nav-header">
+    <div class="nav-logo">robotica.guide <span>/ v1.0</span></div>
+  </div>
+
+  <div class="nav-section-title">Inicio</div>
+  <a href="#intro" class="active"><span class="dot"></span> Introducción</a>
+  <a href="#ruta"><span class="dot"></span> Ruta de aprendizaje</a>
+
+  <div class="nav-section-title">Fundamentos</div>
+  <a href="#electronica"><span class="dot"></span> Electrónica básica</a>
+  <a href="#programacion"><span class="dot"></span> Programación</a>
+  <a href="#boards"><span class="dot"></span> Microcontroladores</a>
+
+  <div class="nav-section-title">Intermedio</div>
+  <a href="#mecanica"><span class="dot"></span> Mecánica y actuadores</a>
+  <a href="#sensores"><span class="dot"></span> Sensores</a>
+  <a href="#control"><span class="dot"></span> Control PID</a>
+
+  <div class="nav-section-title">Avanzado</div>
+  <a href="#ros"><span class="dot"></span> ROS2</a>
+  <a href="#vision"><span class="dot"></span> Visión artificial</a>
+  <a href="#ia"><span class="dot"></span> IA en robótica</a>
+
+  <div class="nav-section-title">Extras</div>
+  <a href="#proyectos"><span class="dot"></span> Proyectos prácticos</a>
+  <a href="#glosario"><span class="dot"></span> Glosario</a>
+  <a href="#checklist"><span class="dot"></span> Mi progreso</a>
+</nav>
+
+<!-- ═══════════════════════════
+     MAIN CONTENT
+════════════════════════════ -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero" id="intro">
+    <div class="hero-tag">// guía completa de robótica</div>
+    <h1>De <em>cero</em> a<br>construir robots</h1>
+    <p>Todo lo que necesitas saber para aprender robótica: desde electrónica básica hasta IA aplicada, explicado con ejemplos reales y código que puedes usar hoy.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-value">5</span>
+        <span class="stat-label">niveles</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">12–18</span>
+        <span class="stat-label">meses estimados</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">30+</span>
+        <span class="stat-label">temas cubiertos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">100%</span>
+        <span class="stat-label">open source</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── RUTA DE APRENDIZAJE ─── -->
+  <div class="section" id="ruta">
+    <h2>Ruta de aprendizaje</h2>
+    <p class="section-desc">Cinco niveles progresivos. Cada uno construye sobre el anterior. Toca cada nivel para ver el detalle.</p>
+
+    <!-- NIVEL 1 -->
+    <div class="level-card" id="lv1">
+      <div class="level-header" onclick="toggleLevel('lv1')">
+        <span class="level-badge badge-1">N1</span>
+        <span class="level-title">Fundamentos de electrónica y programación</span>
+        <span class="level-duration">1–3 meses</span>
+        <span class="level-chevron">▶</span>
+      </div>
+      <div class="level-body">
+        <p>Antes de tocar cualquier robot necesitas entender cómo fluye la electricidad y cómo darle instrucciones a una máquina. No necesitas ser experto — con saber lo esencial ya puedes avanzar.</p>
+        <h3>Temas de electrónica</h3>
+        <div class="topic-grid">
+          <div class="topic-item"><strong>Voltaje, corriente, resistencia</strong><span>Ley de Ohm: V = I × R</span></div>
+          <div class="topic-item"><strong>Circuitos serie y paralelo</strong><span>Cómo se dividen voltaje y corriente</span></div>
+          <div class="topic-item"><strong>Resistencias y capacitores</strong><span>Los componentes más básicos</span></div>
+          <div class="topic-item"><strong>LEDs y transistores</strong><span>Controlar corriente con señales</span></div>
+          <div class="topic-item"><strong>Protoboard</strong><span>Armar circuitos sin soldar</span></div>
+          <div class="topic-item"><strong>Multímetro</strong><span>Medir voltaje, corriente, continuidad</span></div>
+        </div>
+        <h3>Temas de programación</h3>
+        <div class="topic-grid">
+          <div class="topic-item"><strong>Python</strong><span>Para scripts, IA y ROS</span></div>
+          <div class="topic-item"><strong>C/C++</strong><span>Para microcontroladores y velocidad</span></div>
+          <div class="topic-item"><strong>Variables y tipos</strong><span>int, float, bool, string</span></div>
+          <div class="topic-item"><strong>Loops y condicionales</strong><span>for, while, if/else</span></div>
+          <div class="topic-item"><strong>Funciones</strong><span>Reutilizar lógica</span></div>
+          <div class="topic-item"><strong>Álgebra lineal básica</strong><span>Vectores y matrices para robótica</span></div>
+        </div>
+        <h3>Recursos recomendados</h3>
+        <div class="resource-list">
+          <a class="resource-link" href="https://www.youtube.com/@ElectroBOOM" target="_blank"><span class="res-type res-yt">YT</span> ElectroBOOM — Electrónica explicada con humor</a>
+          <a class="resource-link" href="https://www.tinkercad.com/circuits" target="_blank"><span class="res-type res-web">WEB</span> Tinkercad Circuits — Simula circuitos gratis en el browser</a>
+          <a class="resource-link" href="https://docs.python.org/3/tutorial/" target="_blank"><span class="res-type res-doc">DOC</span> Tutorial oficial de Python 3</a>
+          <a class="resource-link" href="https://www.coursera.org/learn/python-crash-course" target="_blank"><span class="res-type res-web">WEB</span> Google's Python Crash Course (Coursera, gratis)</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- NIVEL 2 -->
+    <div class="level-card" id="lv2">
+      <div class="level-header" onclick="toggleLevel('lv2')">
+        <span class="level-badge badge-2">N2</span>
+        <span class="level-title">Microcontroladores y hardware</span>
+        <span class="level-duration">1–3 meses</span>
+        <span class="level-chevron">▶</span>
+      </div>
+      <div class="level-body">
+        <p>Aquí conectas el software con el mundo físico. Aprenderás a programar un microcontrolador para leer sensores, controlar motores y hacer parpadear cosas — el ciclo fundamental de la robótica.</p>
+        <h3>Temas clave</h3>
+        <div class="topic-grid">
+          <div class="topic-item"><strong>GPIO (pines)</strong><span>Entradas y salidas digitales</span></div>
+          <div class="topic-item"><strong>PWM</strong><span>Controlar velocidad de motores</span></div>
+          <div class="topic-item"><strong>I2C / SPI / UART</strong><span>Protocolos de comunicación</span></div>
+          <div class="topic-item"><strong>Interrupciones</strong><span>Responder a eventos externos</span></div>
+          <div class="topic-item"><strong>ADC</strong><span>Leer sensores analógicos</span></div>
+          <div class="topic-item"><strong>Timers</strong><span>Ejecutar código a tiempo exacto</span></div>
+        </div>
+        <h3>Ejemplo: tu primer LED parpadeante (Arduino)</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="lang">Arduino C++</span>
+            <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+          </div>
+          <pre><span class="cm">// El clásico "Hola Mundo" de la electrónica</span>
+<span class="kw">const int</span> LED_PIN = <span class="num">13</span>;   <span class="cm">// Pin donde conectas el LED</span>
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(LED_PIN, OUTPUT); <span class="cm">// Configura el pin como salida</span>
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="fn">digitalWrite</span>(LED_PIN, HIGH); <span class="cm">// Enciende</span>
+  <span class="fn">delay</span>(<span class="num">1000</span>);                  <span class="cm">// Espera 1 segundo</span>
+  <span class="fn">digitalWrite</span>(LED_PIN, LOW);  <span class="cm">// Apaga</span>
+  <span class="fn">delay</span>(<span class="num">1000</span>);                  <span class="cm">// Espera 1 segundo</span>
+  <span class="cm">// loop() se repite infinitamente → el LED parpadea</span>
+}</pre>
+        </div>
+        <div class="callout callout-tip"><strong>Tip:</strong> Empieza con Arduino Uno (~$10 USD en AliExpress). Tiene la comunidad más grande, miles de tutoriales y librerías para casi cualquier sensor.</div>
+        <h3>Recursos</h3>
+        <div class="resource-list">
+          <a class="resource-link" href="https://www.youtube.com/@HowToMechatronics" target="_blank"><span class="res-type res-yt">YT</span> How To Mechatronics — Los mejores tutoriales de Arduino en video</a>
+          <a class="resource-link" href="https://www.arduino.cc/reference/en/" target="_blank"><span class="res-type res-doc">DOC</span> Referencia oficial de Arduino — todas las funciones</a>
+          <a class="resource-link" href="https://randomnerdtutorials.com" target="_blank"><span class="res-type res-web">WEB</span> Random Nerd Tutorials — proyectos con ESP32 y Raspberry Pi</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- NIVEL 3 -->
+    <div class="level-card" id="lv3">
+      <div class="level-header" onclick="toggleLevel('lv3')">
+        <span class="level-badge badge-3">N3</span>
+        <span class="level-title">Mecánica, actuadores y control</span>
+        <span class="level-duration">2–4 meses</span>
+        <span class="level-chevron">▶</span>
+      </div>
+      <div class="level-body">
+        <p>Aquí el robot empieza a moverse de verdad. Aprenderás los tipos de motores, cómo diseñar la estructura física del robot y cómo implementar el algoritmo de control más usado en la industria: el PID.</p>
+        <h3>Tipos de motores</h3>
+        <div class="topic-grid">
+          <div class="topic-item"><strong>Motor DC</strong><span>Velocidad, fácil de controlar con PWM</span></div>
+          <div class="topic-item"><strong>Servomotor</strong><span>Posición precisa 0°–180°</span></div>
+          <div class="topic-item"><strong>Stepper (paso a paso)</strong><span>Control exacto de ángulo</span></div>
+          <div class="topic-item"><strong>Motor BLDC</strong><span>Alta eficiencia para drones</span></div>
+          <div class="topic-item"><strong>Actuador lineal</strong><span>Movimiento de traslación</span></div>
+          <div class="topic-item"><strong>Reductor (gearbox)</strong><span>Torque vs velocidad</span></div>
+        </div>
+        <h3>Control PID — el algoritmo estrella</h3>
+        <p style="padding-top:0.75rem">PID = <strong style="color:var(--coral)">P</strong>roporcional + <strong style="color:var(--amber)">I</strong>ntegral + <strong style="color:var(--purple)">D</strong>erivativo. Hace que un robot mantenga una trayectoria, velocidad o posición sin desviarse. Ejemplo: el control de temperatura de una impresora 3D usa PID.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="lang">Python — PID básico</span>
+            <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+          </div>
+          <pre><span class="kw">class</span> <span class="tp">PID</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, kp, ki, kd):
+        <span class="kw">self</span>.kp = kp  <span class="cm"># Proporcional: reacciona al error actual</span>
+        <span class="kw">self</span>.ki = ki  <span class="cm"># Integral:     acumula el error pasado</span>
+        <span class="kw">self</span>.kd = kd  <span class="cm"># Derivativo:   predice el error futuro</span>
+        <span class="kw">self</span>.prev_error = <span class="num">0</span>
+        <span class="kw">self</span>.integral   = <span class="num">0</span>
+
+    <span class="kw">def</span> <span class="fn">compute</span>(<span class="kw">self</span>, setpoint, measurement, dt):
+        error      = setpoint - measurement
+        <span class="kw">self</span>.integral  += error * dt
+        derivative  = (error - <span class="kw">self</span>.prev_error) / dt
+        output      = (<span class="kw">self</span>.kp * error +
+                       <span class="kw">self</span>.ki * <span class="kw">self</span>.integral +
+                       <span class="kw">self</span>.kd * derivative)
+        <span class="kw">self</span>.prev_error = error
+        <span class="kw">return</span> output
+
+<span class="cm"># Uso: mantener un robot a 50 cm de una pared</span>
+pid = <span class="tp">PID</span>(kp=<span class="num">1.2</span>, ki=<span class="num">0.01</span>, kd=<span class="num">0.4</span>)
+velocidad = pid.<span class="fn">compute</span>(setpoint=<span class="num">50</span>, measurement=sensor_cm, dt=<span class="num">0.05</span>)</pre>
+        </div>
+        <h3>Recursos</h3>
+        <div class="resource-list">
+          <a class="resource-link" href="https://www.youtube.com/watch?v=wkfEZmsQqiA" target="_blank"><span class="res-type res-yt">YT</span> Brian Douglas — PID Controllers explicado visualmente (inglés)</a>
+          <a class="resource-link" href="https://www.onshape.com" target="_blank"><span class="res-type res-web">WEB</span> Onshape — CAD gratis en el browser para diseñar piezas</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- NIVEL 4 -->
+    <div class="level-card" id="lv4">
+      <div class="level-header" onclick="toggleLevel('lv4')">
+        <span class="level-badge badge-4">N4</span>
+        <span class="level-title">ROS2 y simulación</span>
+        <span class="level-duration">2–4 meses</span>
+        <span class="level-chevron">▶</span>
+      </div>
+      <div class="level-body">
+        <p>ROS2 (Robot Operating System 2) es el estándar de la industria robótica. No es un sistema operativo — es un middleware que conecta módulos independientes: sensores, navegación, visión, manipuladores. Lo usan Boston Dynamics, NASA y casi todos los robots comerciales serios.</p>
+        <div class="callout callout-warn"><strong>Prerrequisito:</strong> Domina Python y Linux antes de entrar a ROS2. Sin eso, la curva de aprendizaje se vuelve innecesariamente dura.</div>
+        <h3>Conceptos fundamentales de ROS2</h3>
+        <div class="topic-grid">
+          <div class="topic-item"><strong>Nodo (Node)</strong><span>Proceso independiente con una función</span></div>
+          <div class="topic-item"><strong>Topic</strong><span>Canal de mensajes entre nodos</span></div>
+          <div class="topic-item"><strong>Mensaje (Msg)</strong><span>Estructura de datos entre nodos</span></div>
+          <div class="topic-item"><strong>Servicio</strong><span>Llamada solicitud/respuesta</span></div>
+          <div class="topic-item"><strong>Action</strong><span>Tarea larga con retroalimentación</span></div>
+          <div class="topic-item"><strong>Launch file</strong><span>Arrancar múltiples nodos</span></div>
+          <div class="topic-item"><strong>Gazebo</strong><span>Simulador 3D de robots</span></div>
+          <div class="topic-item"><strong>RViz2</strong><span>Visualizar datos del robot en tiempo real</span></div>
+        </div>
+        <h3>Tu primer nodo en Python</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="lang">Python — ROS2 nodo publicador</span>
+            <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+          </div>
+          <pre><span class="kw">import</span> rclpy
+<span class="kw">from</span> rclpy.node <span class="kw">import</span> Node
+<span class="kw">from</span> std_msgs.msg <span class="kw">import</span> String
+
+<span class="kw">class</span> <span class="tp">MiRobot</span>(Node):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>):
+        <span class="fn">super</span>().<span class="fn">__init__</span>(<span class="str">'mi_robot'</span>)
+        <span class="cm"># Crea un canal llamado "estado" donde publicará mensajes</span>
+        <span class="kw">self</span>.pub = <span class="kw">self</span>.<span class="fn">create_publisher</span>(String, <span class="str">'estado'</span>, <span class="num">10</span>)
+        <span class="cm"># Llama a publicar() cada 0.5 segundos</span>
+        <span class="kw">self</span>.<span class="fn">create_timer</span>(<span class="num">0.5</span>, <span class="kw">self</span>.publicar)
+
+    <span class="kw">def</span> <span class="fn">publicar</span>(<span class="kw">self</span>):
+        msg = String()
+        msg.data = <span class="str">'Robot activo 🤖'</span>
+        <span class="kw">self</span>.pub.<span class="fn">publish</span>(msg)
+        <span class="kw">self</span>.<span class="fn">get_logger</span>().<span class="fn">info</span>(msg.data)
+
+<span class="kw">def</span> <span class="fn">main</span>():
+    rclpy.<span class="fn">init</span>()
+    rclpy.<span class="fn">spin</span>(<span class="tp">MiRobot</span>())  <span class="cm"># Corre el nodo hasta Ctrl+C</span>
+    rclpy.<span class="fn">shutdown</span>()</pre>
+        </div>
+        <h3>Recursos</h3>
+        <div class="resource-list">
+          <a class="resource-link" href="https://docs.ros.org/en/humble/Tutorials.html" target="_blank"><span class="res-type res-doc">DOC</span> Tutoriales oficiales ROS2 Humble (el más estable)</a>
+          <a class="resource-link" href="https://www.youtube.com/@ArticulatedRobotics" target="_blank"><span class="res-type res-yt">YT</span> Articulated Robotics — el mejor canal de ROS2 en YouTube</a>
+          <a class="resource-link" href="https://gazebosim.org" target="_blank"><span class="res-type res-web">WEB</span> Gazebo Sim — simulador de física para robots</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- NIVEL 5 -->
+    <div class="level-card" id="lv5">
+      <div class="level-header" onclick="toggleLevel('lv5')">
+        <span class="level-badge badge-5">N5</span>
+        <span class="level-title">IA, visión y proyectos avanzados</span>
+        <span class="level-duration">ongoing</span>
+        <span class="level-chevron">▶</span>
+      </div>
+      <div class="level-body">
+        <p>Con los cuatro niveles anteriores ya puedes construir robots funcionales. Este nivel es donde los robots se vuelven autónomos: aprenden de su entorno, reconocen objetos, toman decisiones y navegan sin ayuda humana.</p>
+        <h3>Temas avanzados</h3>
+        <div class="topic-grid">
+          <div class="topic-item"><strong>SLAM</strong><span>Mapeo y localización simultáneos</span></div>
+          <div class="topic-item"><strong>Navigation2</strong><span>Planificación de rutas en ROS2</span></div>
+          <div class="topic-item"><strong>OpenCV</strong><span>Visión artificial (detección de objetos)</span></div>
+          <div class="topic-item"><strong>YOLO</strong><span>Detección de objetos en tiempo real</span></div>
+          <div class="topic-item"><strong>MoveIt2</strong><span>Planificación para brazos robóticos</span></div>
+          <div class="topic-item"><strong>Reinforcement Learning</strong><span>Robots que aprenden por ensayo/error</span></div>
+          <div class="topic-item"><strong>Transformers (ViT)</strong><span>Visión con atención</span></div>
+          <div class="topic-item"><strong>ROS2 + LLM</strong><span>Comandar robots con lenguaje natural</span></div>
+        </div>
+        <div class="callout callout-note"><strong>Tendencia 2024–2025:</strong> Integrar LLMs (como GPT-4 o modelos locales) para que los robots entiendan instrucciones en español y tomen decisiones de alto nivel. Es un campo abierto con pocas personas trabajando en él.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ELECTRÓNICA BÁSICA ─── -->
+  <div class="section" id="electronica">
+    <h2>Electrónica básica</h2>
+    <p class="section-desc">Los componentes que usarás en casi cualquier proyecto de robótica.</p>
+    <table class="component-table">
+      <thead>
+        <tr>
+          <th>Componente</th>
+          <th>Para qué sirve</th>
+          <th>Nivel</th>
+          <th>Precio aprox.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Resistencia</td><td>Limitar corriente, dividir voltaje. Imprescindible para no quemar LEDs.</td><td><span class="pill pill-green">básico</span></td><td>$0.01 c/u</td></tr>
+        <tr><td>Capacitor</td><td>Filtrar ruido, almacenar energía brevemente.</td><td><span class="pill pill-green">básico</span></td><td>$0.05–$0.50</td></tr>
+        <tr><td>LED</td><td>Indicar estados, sensores de luz con LDR.</td><td><span class="pill pill-green">básico</span></td><td>$0.05 c/u</td></tr>
+        <tr><td>Transistor (NPN)</td><td>Amplificar señales, controlar motores desde pines de 5V.</td><td><span class="pill pill-cyan">intermedio</span></td><td>$0.10 c/u</td></tr>
+        <tr><td>Driver L298N</td><td>Controlar 2 motores DC con dirección y velocidad.</td><td><span class="pill pill-cyan">intermedio</span></td><td>$2–$5</td></tr>
+        <tr><td>Regulador LM7805</td><td>Convertir 9–12V a 5V estables para circuitos.</td><td><span class="pill pill-cyan">intermedio</span></td><td>$0.50</td></tr>
+        <tr><td>Módulo L9110S</td><td>Driver compacto para motores pequeños (robots móviles).</td><td><span class="pill pill-cyan">intermedio</span></td><td>$1–$3</td></tr>
+        <tr><td>MOSFET (IRF540)</td><td>Controlar cargas de alta potencia (motores grandes, solenoides).</td><td><span class="pill pill-amber">avanzado</span></td><td>$0.50–$2</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── PROGRAMACIÓN ─── -->
+  <div class="section" id="programacion">
+    <h2>Programación para robots</h2>
+    <p class="section-desc">Qué lenguaje usar y cuándo.</p>
+
+    <div class="board-compare">
+      <div class="board-card">
+        <h4>Python</h4>
+        <div class="sub">El lenguaje más usado en robótica de alto nivel</div>
+        <div class="board-spec"><span>Velocidad</span><span>Media</span></div>
+        <div class="board-spec"><span>Facilidad</span><span>Alta</span></div>
+        <div class="board-spec"><span>ROS2</span><span>✓ soportado</span></div>
+        <div class="board-spec"><span>IA / ML</span><span>✓ PyTorch, TF</span></div>
+        <div class="board-spec"><span>En Arduino</span><span>✗ no aplica</span></div>
+        <div class="board-spec"><span>Usa para</span><span>ROS2, IA, scripts</span></div>
+      </div>
+      <div class="board-card">
+        <h4>C / C++</h4>
+        <div class="sub">El lenguaje del firmware y sistemas embebidos</div>
+        <div class="board-spec"><span>Velocidad</span><span>Muy alta</span></div>
+        <div class="board-spec"><span>Facilidad</span><span>Media/baja</span></div>
+        <div class="board-spec"><span>Arduino</span><span>✓ nativo</span></div>
+        <div class="board-spec"><span>ROS2</span><span>✓ rclcpp</span></div>
+        <div class="board-spec"><span>Memoria</span><span>Control total</span></div>
+        <div class="board-spec"><span>Usa para</span><span>MCUs, tiempo real</span></div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip" style="margin-top:1rem"><strong>Estrategia recomendada:</strong> Aprende Python primero para moverte rápido y validar ideas. Luego agrega C++ cuando necesites optimizar partes críticas de tiempo real.</div>
+  </div>
+
+  <!-- ─── BOARDS ─── -->
+  <div class="section" id="boards">
+    <h2>Microcontroladores y SBCs</h2>
+    <p class="section-desc">Las plataformas de hardware más usadas en robótica.</p>
+    <table class="component-table">
+      <thead>
+        <tr><th>Placa</th><th>Chip / OS</th><th>Uso principal</th><th>Precio</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Arduino Uno</td><td>ATmega328P</td><td>Aprendizaje, control de motores y sensores básicos. El punto de entrada.</td><td>~$5–$10</td></tr>
+        <tr><td>Arduino Mega</td><td>ATmega2560</td><td>Proyectos complejos que necesitan muchos pines (impresoras 3D, brazos).</td><td>~$10–$15</td></tr>
+        <tr><td>ESP32</td><td>Xtensa LX6</td><td>WiFi + Bluetooth integrado. Ideal para robots IoT y proyectos conectados.</td><td>~$4–$8</td></tr>
+        <tr><td>Raspberry Pi 4</td><td>ARM Cortex-A72 / Linux</td><td>El "cerebro" del robot: corre ROS2, visión artificial, Python completo.</td><td>~$35–$55</td></tr>
+        <tr><td>Raspberry Pi Pico</td><td>RP2040 / MicroPython</td><td>Microcontrolador barato con Python. Alternativa económica al Arduino.</td><td>~$4</td></tr>
+        <tr><td>Jetson Nano</td><td>ARM + GPU NVIDIA / Linux</td><td>IA y visión por computadora en el robot. GPU para inferencia local.</td><td>~$100–$150</td></tr>
+        <tr><td>STM32</td><td>ARM Cortex-M / baremetal</td><td>Tiempo real profesional. Usado en drones (Betaflight, ArduPilot).</td><td>~$5–$30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── MECÁNICA ─── -->
+  <div class="section" id="mecanica">
+    <h2>Mecánica y actuadores</h2>
+    <p class="section-desc">El cuerpo del robot. Aquí decides cómo se mueve.</p>
+
+    <h3>Servomotor — el actuador más versátil</h3>
+    <div class="code-block">
+      <div class="code-block-header">
+        <span class="lang">Arduino — control de servomotor</span>
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+      </div>
+      <pre><span class="kw">#include</span> <span class="str">&lt;Servo.h&gt;</span>  <span class="cm">// Librería para servos</span>
+
+Servo miServo;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  miServo.<span class="fn">attach</span>(<span class="num">9</span>);  <span class="cm">// Servo conectado al pin 9</span>
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cm">// Barrer de 0° a 180° y regresar</span>
+  <span class="kw">for</span> (<span class="kw">int</span> angulo = <span class="num">0</span>; angulo &lt;= <span class="num">180</span>; angulo++) {
+    miServo.<span class="fn">write</span>(angulo);
+    <span class="fn">delay</span>(<span class="num">15</span>);  <span class="cm">// 15ms para que el servo llegue</span>
+  }
+  <span class="kw">for</span> (<span class="kw">int</span> angulo = <span class="num">180</span>; angulo &gt;= <span class="num">0</span>; angulo--) {
+    miServo.<span class="fn">write</span>(angulo);
+    <span class="fn">delay</span>(<span class="num">15</span>);
+  }
+}</pre>
+    </div>
+
+    <h3>Tipos de transmisión mecánica</h3>
+    <div class="topic-grid">
+      <div class="topic-item"><strong>Engranajes</strong><span>Reducir velocidad, aumentar torque</span></div>
+      <div class="topic-item"><strong>Correa y polea</strong><span>Transmitir movimiento a distancia</span></div>
+      <div class="topic-item"><strong>Tornillo sin fin</strong><span>Alta reducción, irreversible</span></div>
+      <div class="topic-item"><strong>Piñón y cremallera</strong><span>Rotación → traslación lineal</span></div>
+      <div class="topic-item"><strong>Junta universal</strong><span>Transmitir movimiento en ángulo</span></div>
+      <div class="topic-item"><strong>Esfera roscada (ball screw)</strong><span>Precisión CNC y brazos</span></div>
+    </div>
+  </div>
+
+  <!-- ─── SENSORES ─── -->
+  <div class="section" id="sensores">
+    <h2>Sensores</h2>
+    <p class="section-desc">Los ojos y oídos del robot. Cada sensor responde una pregunta diferente.</p>
+    <table class="component-table">
+      <thead>
+        <tr><th>Sensor</th><th>Mide</th><th>Interfaz</th><th>Precio</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>HC-SR04</td><td>Distancia (2cm–4m) con ultrasonido</td><td>GPIO (trigger/echo)</td><td>~$1</td></tr>
+        <tr><td>MPU-6050</td><td>Aceleración + giroscopio 6DOF (IMU)</td><td>I2C</td><td>~$2</td></tr>
+        <tr><td>LiDAR RPLiDAR A1</td><td>360° distancias (para mapas SLAM)</td><td>UART/USB</td><td>~$100</td></tr>
+        <tr><td>Cámara OV2640</td><td>Video/imagen para visión artificial</td><td>SPI / CSI</td><td>~$5–$15</td></tr>
+        <tr><td>Encoder rotativo</td><td>Velocidad y posición exacta del motor</td><td>GPIO (quadrature)</td><td>~$3–$10</td></tr>
+        <tr><td>IR QTR-8RC</td><td>Seguidor de línea (array de 8 sensores IR)</td><td>GPIO analógico</td><td>~$8</td></tr>
+        <tr><td>BMP280</td><td>Presión y altitud (para drones)</td><td>I2C / SPI</td><td>~$2</td></tr>
+        <tr><td>GPS NEO-6M</td><td>Posición GPS para robots exteriores</td><td>UART</td><td>~$5–$10</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── CONTROL PID ─── -->
+  <div class="section" id="control">
+    <h2>Control PID</h2>
+    <p class="section-desc">El algoritmo fundamental para que un robot se mueva con precisión. Está en absolutamente todo: impresoras 3D, drones, brazos industriales, autos eléctricos.</p>
+
+    <div class="callout callout-note"><strong>Intuición:</strong> Imagina que intentas conducir un carro manteniendo exactamente 60 km/h. Acelerarás más si vas lento (<strong style="color:var(--coral)">P</strong>), recordarás cuánto tiempo llevas lento (<strong style="color:var(--amber)">I</strong>), y soltarás el acelerador antes de llegar a 60 para no pasarte (<strong style="color:var(--purple)">D</strong>). Eso es PID.</div>
+
+    <h3>¿Cómo ajustar las ganancias?</h3>
+    <div class="topic-grid" style="margin-top:0.5rem">
+      <div class="topic-item"><strong>Kp muy alto</strong><span>El sistema oscila y no se estabiliza</span></div>
+      <div class="topic-item"><strong>Kp muy bajo</strong><span>Tarda mucho en llegar al objetivo</span></div>
+      <div class="topic-item"><strong>Ki corrige</strong><span>El error estático residual de P solo</span></div>
+      <div class="topic-item"><strong>Ki muy alto</strong><span>Oscilación por acumulación del integral</span></div>
+      <div class="topic-item"><strong>Kd amortigua</strong><span>Reduce sobreimpulso y oscilaciones</span></div>
+      <div class="topic-item"><strong>Kd muy alto</strong><span>Ruido del sensor se amplifica</span></div>
+    </div>
+  </div>
+
+  <!-- ─── ROS2 ─── -->
+  <div class="section" id="ros">
+    <h2>ROS2 — Robot Operating System</h2>
+    <p class="section-desc">El sistema nervioso central de los robots modernos.</p>
+
+    <h3>Arquitectura de un robot con ROS2</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="lang">bash — comandos esenciales de ROS2</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      <pre><span class="cm"># Arrancar un nodo</span>
+ros2 run &lt;paquete&gt; &lt;nodo&gt;
+
+<span class="cm"># Ver todos los topics activos</span>
+ros2 topic list
+
+<span class="cm"># Escuchar mensajes en tiempo real</span>
+ros2 topic echo /cmd_vel
+
+<span class="cm"># Publicar manualmente (mover un robot)</span>
+ros2 topic pub /cmd_vel geometry_msgs/Twist \
+  "{linear: {x: 0.5}, angular: {z: 0.3}}"
+
+<span class="cm"># Ver el grafo de nodos conectados</span>
+rqt_graph
+
+<span class="cm"># Simulación con TurtleBot3</span>
+export TURTLEBOT3_MODEL=burger
+ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py</pre>
+    </div>
+    <div class="callout callout-tip"><strong>Instala:</strong> Ubuntu 22.04 + ROS2 Humble. Es la combinación más estable y la que tiene mejor soporte. Puedes usar WSL2 en Windows si no quieres hacer dual boot.</div>
+  </div>
+
+  <!-- ─── VISIÓN ─── -->
+  <div class="section" id="vision">
+    <h2>Visión artificial</h2>
+    <p class="section-desc">Hacer que el robot "vea" y entienda su entorno.</p>
+
+    <h3>Detección de objetos con OpenCV</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="lang">Python — detectar objetos con YOLO + cámara</span><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      <pre><span class="kw">from</span> ultralytics <span class="kw">import</span> YOLO
+<span class="kw">import</span> cv2
+
+<span class="cm"># Cargar modelo preentrenado (descarga automática ~6MB)</span>
+model = <span class="fn">YOLO</span>(<span class="str">'yolov8n.pt'</span>)  <span class="cm"># 'n' = nano, muy rápido</span>
+
+<span class="cm"># Capturar desde la cámara del robot</span>
+cap = cv2.<span class="fn">VideoCapture</span>(<span class="num">0</span>)
+
+<span class="kw">while</span> <span class="kw">True</span>:
+    ret, frame = cap.<span class="fn">read</span>()
+    resultados = model.<span class="fn">predict</span>(frame, conf=<span class="num">0.5</span>)
+
+    <span class="kw">for</span> obj <span class="kw">in</span> resultados[<span class="num">0</span>].boxes:
+        clase = model.names[<span class="kw">int</span>(obj.cls)]
+        confianza = <span class="kw">float</span>(obj.conf)
+        <span class="fn">print</span>(<span class="str">f"Veo: {clase} ({confianza:.0%})"</span>)
+
+    cv2.<span class="fn">imshow</span>(<span class="str">'Robot Vision'</span>, resultados[<span class="num">0</span>].plot())
+    <span class="kw">if</span> cv2.<span class="fn">waitKey</span>(<span class="num">1</span>) == <span class="num">27</span>: <span class="kw">break</span>  <span class="cm"># ESC para salir</span></pre>
+    </div>
+  </div>
+
+  <!-- ─── IA EN ROBÓTICA ─── -->
+  <div class="section" id="ia">
+    <h2>IA aplicada a robótica</h2>
+    <p class="section-desc">El futuro de los robots — y ya es presente.</p>
+    <div class="topic-grid">
+      <div class="topic-item"><strong>Computer Vision</strong><span>OpenCV, YOLO, depth cameras</span></div>
+      <div class="topic-item"><strong>Reinforcement Learning</strong><span>Robots que aprenden por recompensa</span></div>
+      <div class="topic-item"><strong>Imitation Learning</strong><span>Robots que aprenden de demostraciones</span></div>
+      <div class="topic-item"><strong>LLM + Robot</strong><span>Comandar con voz/texto natural</span></div>
+      <div class="topic-item"><strong>Object Grasping</strong><span>Agarre con redes neuronales</span></div>
+      <div class="topic-item"><strong>Sim2Real</strong><span>Entrenar en simulación, deplorar en físico</span></div>
+    </div>
+    <div class="callout callout-note" style="margin-top:1rem"><strong>Referencia obligada:</strong> <em>RT-2</em> de Google DeepMind (2023) y <em>Figure 01</em> demuestran robots que reciben instrucciones en lenguaje natural y ejecutan tareas complejas. El campo avanza más rápido que cualquier otro en robótica.</div>
+  </div>
+
+  <!-- ─── PROYECTOS ─── -->
+  <div class="section" id="proyectos">
+    <h2>Proyectos prácticos</h2>
+    <p class="section-desc">Ordenados por dificultad. Cada proyecto enseña un conjunto de habilidades.</p>
+
+    <div class="project-grid">
+      <div class="project-card">
+        <div class="project-difficulty diff-1"><span></span><span></span><span></span></div>
+        <h4>Robot seguidor de línea</h4>
+        <p>Sigue una línea negra con sensores IR. El clásico primer robot móvil. Introducción a PID.</p>
+        <div class="project-tags"><span class="tag">Arduino</span><span class="tag">IR QTR</span><span class="tag">PID</span><span class="tag">motores DC</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-difficulty diff-1"><span></span><span></span><span></span></div>
+        <h4>Brazo robótico 3DOF</h4>
+        <p>3 servos + cinemática inversa básica. Contrólalo con joystick o sliders.</p>
+        <div class="project-tags"><span class="tag">Servos</span><span class="tag">C++</span><span class="tag">cinemática</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-difficulty diff-2"><span></span><span></span><span></span></div>
+        <h4>Robot esquivador de obstáculos</h4>
+        <p>Usa ultrasonido para navegar autónomamente evitando paredes. Introduce lógica de comportamiento.</p>
+        <div class="project-tags"><span class="tag">HC-SR04</span><span class="tag">Arduino</span><span class="tag">L298N</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-difficulty diff-2"><span></span><span></span><span></span></div>
+        <h4>Cuadricóptero DIY</h4>
+        <p>Construye un drone con frame F450, ESCs, Pixhawk y ArduPilot. Aprende control de vuelo.</p>
+        <div class="project-tags"><span class="tag">Pixhawk</span><span class="tag">BLDC</span><span class="tag">ArduPilot</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-difficulty diff-3"><span></span><span></span><span></span></div>
+        <h4>Robot diferencial con ROS2</h4>
+        <p>Robot con SLAM: construye mapas de habitaciones y navega autónomamente de punto a punto.</p>
+        <div class="project-tags"><span class="tag">ROS2</span><span class="tag">LiDAR</span><span class="tag">SLAM</span><span class="tag">Nav2</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-difficulty diff-3"><span></span><span></span><span></span></div>
+        <h4>Brazo pick &amp; place con IA</h4>
+        <p>Detecta objetos con cámara+YOLO y los recoge con un brazo robótico de 6DOF. El proyecto "final boss".</p>
+        <div class="project-tags"><span class="tag">YOLO</span><span class="tag">MoveIt2</span><span class="tag">ROS2</span><span class="tag">6DOF</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── GLOSARIO ─── -->
+  <div class="section" id="glosario">
+    <h2>Glosario</h2>
+    <p class="section-desc">Los términos que más verás en tutoriales y papers.</p>
+
+    <div class="glossary-item"><span class="glossary-term">DOF</span><span class="glossary-def">Degrees of Freedom — grados de libertad. Un brazo con 6 DOF puede alcanzar casi cualquier posición y orientación en el espacio.</span></div>
+    <div class="glossary-item"><span class="glossary-term">MCU</span><span class="glossary-def">Microcontroller Unit. Chip que corre un programa en bucle (Arduino, ESP32, STM32). Sin sistema operativo, control directo del hardware.</span></div>
+    <div class="glossary-item"><span class="glossary-term">SBC</span><span class="glossary-def">Single Board Computer. Computadora completa en una placa (Raspberry Pi). Corre Linux, soporta Python, ROS2, IA.</span></div>
+    <div class="glossary-item"><span class="glossary-term">PWM</span><span class="glossary-def">Pulse Width Modulation. Técnica para simular voltaje analógico con señales digitales. Controla la velocidad de motores cambiando el ancho del pulso.</span></div>
+    <div class="glossary-item"><span class="glossary-term">I2C</span><span class="glossary-def">Protocolo de 2 cables (SDA + SCL) para conectar múltiples sensores al mismo bus. Cada sensor tiene una dirección única (ej: 0x68 para MPU-6050).</span></div>
+    <div class="glossary-item"><span class="glossary-term">SLAM</span><span class="glossary-def">Simultaneous Localization and Mapping. El robot construye un mapa de su entorno mientras simultáneamente determina su posición dentro de ese mapa.</span></div>
+    <div class="glossary-item"><span class="glossary-term">IMU</span><span class="glossary-def">Inertial Measurement Unit. Sensor que combina acelerómetro + giroscopio (y a veces magnetómetro). Mide orientación y movimiento. Fundamental en drones.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Odometría</span><span class="glossary-def">Estimar la posición del robot a partir del movimiento de sus ruedas (encoders). Acumula error con el tiempo — por eso se combina con LiDAR o GPS.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Cinemática</span><span class="glossary-def">Estudio del movimiento sin considerar fuerzas. Cinemática directa: dado ángulos de articulaciones → posición del extremo. Inversa: dado posición → ángulos.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Firmware</span><span class="glossary-def">Software que vive dentro del microcontrolador. Controla el hardware directamente. Se actualiza por USB o JTAG.</span></div>
+    <div class="glossary-item"><span class="glossary-term">ESC</span><span class="glossary-def">Electronic Speed Controller. Convierte señales PWM en la corriente trifásica que necesitan los motores BLDC (drones). También actúa como BEC (regulador de voltaje).</span></div>
+    <div class="glossary-item"><span class="glossary-term">URDF</span><span class="glossary-def">Unified Robot Description Format. Archivo XML que describe la geometría, articulaciones e inercias de un robot. ROS2 y Gazebo lo usan para simulación.</span></div>
+  </div>
+
+  <!-- ─── CHECKLIST ─── -->
+  <div class="section" id="checklist">
+    <h2>Mi progreso</h2>
+    <p class="section-desc">Marca lo que ya dominas. Se guarda en el navegador.</p>
+
+    <div class="progress-section">
+      <h4>// nivel 1 — fundamentos</h4>
+      <ul class="checklist" id="cl1">
+        <li><input type="checkbox" onchange="updateProgress()"> Entiendo voltaje, corriente y la Ley de Ohm</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Usé una protoboard para armar circuitos</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Sé usar un multímetro</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Programo en Python (loops, funciones, clases)</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Conozco la sintaxis básica de C++</li>
+      </ul>
+    </div>
+
+    <div class="progress-section">
+      <h4>// nivel 2 — microcontroladores</h4>
+      <ul class="checklist" id="cl2">
+        <li><input type="checkbox" onchange="updateProgress()"> Hice parpadear un LED con Arduino</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Leí un sensor con digitalRead/analogRead</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Controlé un servomotor</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Moví un motor DC con driver L298N</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Usé comunicación I2C con un sensor</li>
+      </ul>
+    </div>
+
+    <div class="progress-section">
+      <h4>// nivel 3 — mecánica y control</h4>
+      <ul class="checklist" id="cl3">
+        <li><input type="checkbox" onchange="updateProgress()"> Diseñé una pieza en Onshape o Fusion 360</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Implementé un controlador PID</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Construí un robot con ruedas o articulaciones</li>
+      </ul>
+    </div>
+
+    <div class="progress-section">
+      <h4>// nivel 4 — ROS2</h4>
+      <ul class="checklist" id="cl4">
+        <li><input type="checkbox" onchange="updateProgress()"> Instalé ROS2 en Ubuntu 22.04</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Creé un nodo publicador y suscriptor</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Simulé un robot en Gazebo</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Implementé navegación autónoma con Nav2</li>
+      </ul>
+    </div>
+
+    <div class="progress-section">
+      <h4>// nivel 5 — avanzado</h4>
+      <ul class="checklist" id="cl5">
+        <li><input type="checkbox" onchange="updateProgress()"> Integré una cámara con OpenCV en ROS2</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Usé YOLO para detección de objetos</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Implementé SLAM en un robot real</li>
+        <li><input type="checkbox" onchange="updateProgress()"> Construí un proyecto completo de principio a fin</li>
+      </ul>
+    </div>
+
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pbar"></div></div>
+    <div class="progress-label" id="plabel">0 / 22 completados</div>
+  </div>
+
+  <div class="footer-note">
+    robotica.guide — generado con Claude · todos los precios son aproximados y pueden variar
+  </div>
+
+</main>
+
+<script>
+  /* ── Toggle level cards ── */
+  function toggleLevel(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+
+  /* ── Copy code ── */
+  function copyCode(btn) {
+    const pre = btn.closest('.code-block').querySelector('pre');
+    const text = pre.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ copiado';
+      setTimeout(() => btn.textContent = 'copiar', 2000);
+    });
+  }
+
+  /* ── Checklist con localStorage ── */
+  const STORAGE_KEY = 'robotics_guide_progress';
+
+  function saveProgress() {
+    const state = {};
+    document.querySelectorAll('.checklist input[type="checkbox"]').forEach((cb, i) => {
+      state[i] = cb.checked;
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  }
+
+  function loadProgress() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      document.querySelectorAll('.checklist input[type="checkbox"]').forEach((cb, i) => {
+        if (saved[i]) {
+          cb.checked = true;
+          cb.closest('li').classList.add('done');
+        }
+      });
+    } catch(e) {}
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist input[type="checkbox"]');
+    let done = 0;
+    all.forEach(cb => {
+      cb.closest('li').classList.toggle('done', cb.checked);
+      if (cb.checked) done++;
+    });
+    const pct = Math.round((done / all.length) * 100);
+    document.getElementById('pbar').style.width = pct + '%';
+    document.getElementById('plabel').textContent = done + ' / ' + all.length + ' completados — ' + pct + '%';
+    saveProgress();
+  }
+
+  /* ── Active nav link on scroll ── */
+  const sections = document.querySelectorAll('.section, .hero');
+  const navLinks = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const id = entry.target.id;
+        const link = document.querySelector('nav a[href="#' + id + '"]');
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+
+  /* ── Init ── */
+  loadProgress();
+  updateProgress();
+</script>
+</body>
+</html>

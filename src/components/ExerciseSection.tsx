@@ -52,6 +52,10 @@ export default function ExerciseSection() {
         osc.start(now + i * 0.12);
         osc.stop(now + i * 0.12 + 0.65);
       });
+
+      setTimeout(() => {
+        ctx.close().catch(() => {});
+      }, 1500);
     } catch {}
   };
 

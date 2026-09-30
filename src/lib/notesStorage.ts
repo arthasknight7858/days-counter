@@ -100,7 +100,7 @@ export async function fetchAllNotes(): Promise<CustomNote[]> {
     const res = await fetch("/api/notes", { cache: "no-store" });
     if (res.ok) {
       const data = await res.json();
-      if (Array.isArray(data.notes) && data.notes.length > 0) {
+      if (Array.isArray(data.notes)) {
         // Guardar copia local en IndexedDB
         saveLocalNotesToIDB(data.notes);
         return data.notes;
@@ -122,9 +122,8 @@ export async function fetchAllNotes(): Promise<CustomNote[]> {
       const saved = localStorage.getItem("sofi_axel_pinboard_notes");
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           saveLocalNotesToIDB(parsed);
-          // Intentar sincronizar con el servidor
           syncNotesToServer(parsed);
           return parsed;
         }
@@ -132,8 +131,20 @@ export async function fetchAllNotes(): Promise<CustomNote[]> {
     } catch {}
   }
 
-  // 4. Si todo está vacío, devolver nota por defecto de Axel
+  // 4. Si todo está vacío y nunca se ha guardado nada, devolver nota por defecto de Axel
   return [INITIAL_AXEL_NOTE];
+}
+
+export async function deleteNoteFromServer(id: string): Promise<boolean> {
+  try {
+    const res = await fetch(`/api/notes?id=${encodeURIComponent(id)}`, {
+      method: "DELETE",
+    });
+    return res.ok;
+  } catch (err) {
+    console.warn("Error eliminando nota del servidor:", err);
+    return false;
+  }
 }
 
 /**
@@ -188,30 +199,16 @@ export async function uploadMediaFile(file: File): Promise<UploadResult> {
   const formData = new FormData();
   formData.append("file", file);
 
+  let res: Response;
   try {
-    const res = await fetch("/api/upload", {
+    res = await fetch("/api/upload", {
       method: "POST",
       body: formData,
     });
-
-    if (res.ok) {
-      const data = await res.json();
-      return {
-        url: data.url,
-        mediaType: data.mediaType,
-        mediaName: data.mediaName,
-        size: data.size,
-      };
-    } else {
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.error || "Error al subir archivo");
-    }
-  } catch (err) {
-    console.warn("Fallo en la subida al servidor, guardando como Blob local:", err);
-
-    // Fallback: Si estamos offline, determinar el tipo y crear un ObjectURL
+  } catch (networkErr) {
+    console.warn("Fallo de conexión con el servidor, usando Blob local temporal:", networkErr);
     let mediaType: MediaType = "image";
-    if (file.type.startsWith("audio/") || file.name.match(/\.(mp3|wav|ogg|m4a|aac)$/i)) {
+    if (file.type.startsWith("audio/") || file.name.match(/\.(mp3|wav|ogg|m4a|aac|flac)$/i)) {
       mediaType = "audio";
     } else if (file.type.startsWith("video/") || file.name.match(/\.(mp4|webm|mov|mkv)$/i)) {
       mediaType = "video";
@@ -224,5 +221,18 @@ export async function uploadMediaFile(file: File): Promise<UploadResult> {
       mediaName: file.name,
       size: file.size,
     };
+  }
+
+  if (res.ok) {
+    const data = await res.json();
+    return {
+      url: data.url,
+      mediaType: data.mediaType,
+      mediaName: data.mediaName,
+      size: data.size,
+    };
+  } else {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || `Error del servidor (${res.status}) al subir archivo`);
   }
 }

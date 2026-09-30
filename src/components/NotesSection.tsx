@@ -15,7 +15,6 @@ import {
   MessageSquareHeart,
   Camera,
   Maximize2,
-  Lock,
   Edit3,
   Copy,
   Check,
@@ -23,6 +22,7 @@ import {
   Upload,
   Music,
   Film,
+  Mic,
   Loader2,
   CheckCircle2,
   AlertCircle,
@@ -32,8 +32,12 @@ import {
   fetchAllNotes,
   syncNotesToServer,
   uploadMediaFile,
+  deleteNoteFromServer,
 } from "@/lib/notesStorage";
+import { useMusic } from "@/context/MusicContext";
 import NoteAudioPlayer from "@/components/NoteAudioPlayer";
+import AudioRecorder from "@/components/AudioRecorder";
+import CameraCapture from "@/components/CameraCapture";
 
 export type { NoteColor, NoteCategory, MediaType, CustomNote };
 
@@ -240,8 +244,15 @@ export type SortOption =
   | "videos";
 
 export default function NotesSection() {
+  const { isPlaying: isBgMusicPlaying, togglePlay: toggleBgMusic } = useMusic();
   const [notes, setNotes] = useState<CustomNote[]>([INITIAL_AXEL_NOTE]);
   const [isLoadingNotes, setIsLoadingNotes] = useState(true);
+
+  const handleAudioNotePlay = useCallback(() => {
+    if (isBgMusicPlaying) {
+      toggleBgMusic();
+    }
+  }, [isBgMusicPlaying, toggleBgMusic]);
 
   const [activeCategory, setActiveCategory] = useState<NoteCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -251,6 +262,7 @@ export default function NotesSection() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [noteToDelete, setNoteToDelete] = useState<{ id: string; title: string } | null>(null);
 
   // Form State
   const [formTitle, setFormTitle] = useState("");
@@ -271,6 +283,9 @@ export default function NotesSection() {
   const [formMediaName, setFormMediaName] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const [isRecordingAudio, setIsRecordingAudio] = useState(false);
+  const [isCapturingCamera, setIsCapturingCamera] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const backupInputRef = useRef<HTMLInputElement | null>(null);
@@ -345,11 +360,42 @@ export default function NotesSection() {
     }
   };
 
+  // Handler for live captured audio or camera photo
+  const handleMediaCaptured = async (file: File) => {
+    setIsRecordingAudio(false);
+    setIsCapturingCamera(false);
+    setUploadError(null);
+    setIsUploading(true);
+
+    try {
+      const uploadResult = await uploadMediaFile(file);
+      setFormMediaUrl(uploadResult.url);
+      setFormMediaType(uploadResult.mediaType);
+      setFormMediaName(uploadResult.mediaName);
+      showToast(
+        uploadResult.mediaType === "audio"
+          ? "¡Audio grabado y adjuntado con éxito! 🎙️💕"
+          : "¡Foto tomada y adjuntada con éxito! 📷✨"
+      );
+    } catch (err: unknown) {
+      console.error("Error uploading captured media:", err);
+      const errMsg =
+        err instanceof Error
+          ? err.message
+          : "Hubo un error al procesar y guardar la captura.";
+      setUploadError(errMsg);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const removeAttachedMedia = () => {
     setFormMediaUrl(null);
     setFormMediaType(null);
     setFormMediaName(null);
     setUploadError(null);
+    setIsRecordingAudio(false);
+    setIsCapturingCamera(false);
   };
 
   const openCreateModal = () => {
@@ -364,6 +410,8 @@ export default function NotesSection() {
     setFormMediaName(null);
     setFormIsPinned(false);
     setUploadError(null);
+    setIsRecordingAudio(false);
+    setIsCapturingCamera(false);
     setIsModalOpen(true);
   };
 
@@ -389,6 +437,8 @@ export default function NotesSection() {
     setFormMediaName(note.mediaName || null);
     setFormIsPinned(!!note.isPinned);
     setUploadError(null);
+    setIsRecordingAudio(false);
+    setIsCapturingCamera(false);
     setIsModalOpen(true);
   };
 
@@ -460,11 +510,14 @@ export default function NotesSection() {
     setEditingNoteId(null);
   };
 
-  const handleDeleteNote = (id: string) => {
-    if (confirm("¿Estás segura de eliminar esta nota de tu tablón? 💕")) {
-      updateAndSaveNotes((prev) => prev.filter((n) => n.id !== id));
-      showToast("Nota eliminada del tablón");
-    }
+  const handleDeleteNote = (id: string, title?: string) => {
+    setNoteToDelete({ id, title: title || "esta nota" });
+  };
+
+  const confirmDeleteNote = (id: string) => {
+    updateAndSaveNotes((prev) => prev.filter((n) => n.id !== id));
+    deleteNoteFromServer(id);
+    showToast("Nota eliminada del tablón 💕");
   };
 
   const handleTogglePin = (id: string) => {
@@ -836,34 +889,23 @@ export default function NotesSection() {
                         />
                       </button>
 
-                      {/* Edit (only for custom notes) */}
-                      {!note.isAxelSpecial && (
-                        <button
-                          onClick={() => openEditModal(note)}
-                          className="p-1.5 text-white/40 hover:text-purple-300 hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
-                          title="Editar nota"
-                        >
-                          <Edit3 className="w-4 h-4" />
-                        </button>
-                      )}
+                      {/* Edit */}
+                      <button
+                        onClick={() => openEditModal(note)}
+                        className="p-1.5 text-white/40 hover:text-purple-300 hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+                        title="Editar nota"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </button>
 
                       {/* Delete */}
-                      {!note.isAxelSpecial ? (
-                        <button
-                          onClick={() => handleDeleteNote(note.id)}
-                          className="p-1.5 text-white/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
-                          title="Eliminar nota"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      ) : (
-                        <span
-                          className="p-1.5 text-amber-400/80"
-                          title="Nota especial fijada por Axel"
-                        >
-                          <Lock className="w-3.5 h-3.5" />
-                        </span>
-                      )}
+                      <button
+                        onClick={() => handleDeleteNote(note.id, note.title)}
+                        className="p-1.5 text-white/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
+                        title="Eliminar nota del tablón"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
 
@@ -905,6 +947,7 @@ export default function NotesSection() {
                           src={effectiveMediaUrl}
                           name={note.mediaName || "Audio MP3"}
                           color={note.color}
+                          onPlay={handleAudioNotePlay}
                         />
                       )}
 
@@ -1222,75 +1265,133 @@ export default function NotesSection() {
                   {/* Media Type Tabs (if no media attached yet) */}
                   {!formMediaUrl && !isUploading && (
                     <div>
-                      <div className="grid grid-cols-3 gap-2 mb-3">
-                        <button
-                          type="button"
-                          onClick={() => setMediaUploadType("image")}
-                          className={`py-2 px-2 rounded-xl text-xs font-medium border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
-                            mediaUploadType === "image"
-                              ? "bg-pink-500/25 border-pink-400 text-white shadow-sm"
-                              : "bg-white/5 border-purple-500/20 text-purple-300 hover:bg-white/10"
-                          }`}
-                        >
-                          <Camera className="w-3.5 h-3.5 text-pink-400" />
-                          <span>Foto</span>
-                        </button>
+                      {isCapturingCamera ? (
+                        <CameraCapture
+                          onPhotoCaptured={handleMediaCaptured}
+                          onCancel={() => setIsCapturingCamera(false)}
+                          title="Tomar Foto para la Nota"
+                        />
+                      ) : isRecordingAudio ? (
+                        <AudioRecorder
+                          onAudioCaptured={handleMediaCaptured}
+                          onCancel={() => setIsRecordingAudio(false)}
+                          title="Grabar Nota de Voz para la Nota"
+                        />
+                      ) : (
+                        <>
+                          <div className="grid grid-cols-3 gap-2 mb-3">
+                            <button
+                              type="button"
+                              onClick={() => setMediaUploadType("image")}
+                              className={`py-2 px-2 rounded-xl text-xs font-medium border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                                mediaUploadType === "image"
+                                  ? "bg-pink-500/25 border-pink-400 text-white shadow-sm"
+                                  : "bg-white/5 border-purple-500/20 text-purple-300 hover:bg-white/10"
+                              }`}
+                            >
+                              <Camera className="w-3.5 h-3.5 text-pink-400" />
+                              <span>Foto</span>
+                            </button>
 
-                        <button
-                          type="button"
-                          onClick={() => setMediaUploadType("audio")}
-                          className={`py-2 px-2 rounded-xl text-xs font-medium border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
-                            mediaUploadType === "audio"
-                              ? "bg-purple-500/25 border-purple-400 text-white shadow-sm"
-                              : "bg-white/5 border-purple-500/20 text-purple-300 hover:bg-white/10"
-                          }`}
-                        >
-                          <Music className="w-3.5 h-3.5 text-purple-400" />
-                          <span>Audio MP3</span>
-                        </button>
+                            <button
+                              type="button"
+                              onClick={() => setMediaUploadType("audio")}
+                              className={`py-2 px-2 rounded-xl text-xs font-medium border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                                mediaUploadType === "audio"
+                                  ? "bg-purple-500/25 border-purple-400 text-white shadow-sm"
+                                  : "bg-white/5 border-purple-500/20 text-purple-300 hover:bg-white/10"
+                              }`}
+                            >
+                              <Music className="w-3.5 h-3.5 text-purple-400" />
+                              <span>Audio</span>
+                            </button>
 
-                        <button
-                          type="button"
-                          onClick={() => setMediaUploadType("video")}
-                          className={`py-2 px-2 rounded-xl text-xs font-medium border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
-                            mediaUploadType === "video"
-                              ? "bg-indigo-500/25 border-indigo-400 text-white shadow-sm"
-                              : "bg-white/5 border-purple-500/20 text-purple-300 hover:bg-white/10"
-                          }`}
-                        >
-                          <Film className="w-3.5 h-3.5 text-indigo-400" />
-                          <span>Video</span>
-                        </button>
-                      </div>
+                            <button
+                              type="button"
+                              onClick={() => setMediaUploadType("video")}
+                              className={`py-2 px-2 rounded-xl text-xs font-medium border flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                                mediaUploadType === "video"
+                                  ? "bg-indigo-500/25 border-indigo-400 text-white shadow-sm"
+                                  : "bg-white/5 border-purple-500/20 text-purple-300 hover:bg-white/10"
+                              }`}
+                            >
+                              <Film className="w-3.5 h-3.5 text-indigo-400" />
+                              <span>Video</span>
+                            </button>
+                          </div>
 
-                      {/* Upload action button */}
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full py-4 px-4 border border-dashed border-purple-500/40 hover:border-pink-400 rounded-xl bg-purple-950/20 hover:bg-purple-900/30 text-purple-200 text-xs font-medium flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
-                      >
-                        {mediaUploadType === "image" && (
-                          <>
-                            <Camera className="w-5 h-5 text-pink-400" />
-                            <span>Seleccionar Foto o Imagen (JPG, PNG, WebP)</span>
-                          </>
-                        )}
-                        {mediaUploadType === "audio" && (
-                          <>
-                            <Music className="w-5 h-5 text-purple-400" />
-                            <span>Seleccionar Audio MP3 o Nota de Voz</span>
-                          </>
-                        )}
-                        {mediaUploadType === "video" && (
-                          <>
-                            <Film className="w-5 h-5 text-indigo-400" />
-                            <span>Seleccionar Video (MP4, WebM)</span>
-                          </>
-                        )}
-                        <span className="text-[10px] text-purple-400/70">
-                          Se guarda de forma permanente en el servidor
-                        </span>
-                      </button>
+                          {/* Action buttons per media type */}
+                          {mediaUploadType === "image" && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                              <button
+                                type="button"
+                                onClick={() => setIsCapturingCamera(true)}
+                                className="py-4 px-3 border border-pink-500/40 hover:border-pink-400 rounded-xl bg-pink-950/20 hover:bg-pink-900/30 text-pink-200 text-xs font-semibold flex flex-col items-center justify-center gap-2 transition-all cursor-pointer shadow-xs group"
+                              >
+                                <div className="w-9 h-9 rounded-full bg-pink-500/20 group-hover:scale-110 flex items-center justify-center transition-transform">
+                                  <Camera className="w-5 h-5 text-pink-400" />
+                                </div>
+                                <span className="font-bold text-white">Tomar foto ahora</span>
+                                <span className="text-[10px] text-pink-300/70">Usa tu cámara o webcam</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => fileInputRef.current?.click()}
+                                className="py-4 px-3 border border-purple-500/30 hover:border-purple-400 rounded-xl bg-purple-950/20 hover:bg-purple-900/30 text-purple-200 text-xs font-medium flex flex-col items-center justify-center gap-2 transition-all cursor-pointer group"
+                              >
+                                <div className="w-9 h-9 rounded-full bg-purple-500/20 group-hover:scale-110 flex items-center justify-center transition-transform">
+                                  <Upload className="w-5 h-5 text-purple-400" />
+                                </div>
+                                <span className="font-bold text-white">Subir desde archivo</span>
+                                <span className="text-[10px] text-purple-300/70">JPG, PNG o WebP</span>
+                              </button>
+                            </div>
+                          )}
+
+                          {mediaUploadType === "audio" && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                              <button
+                                type="button"
+                                onClick={() => setIsRecordingAudio(true)}
+                                className="py-4 px-3 border border-purple-500/40 hover:border-purple-400 rounded-xl bg-purple-950/25 hover:bg-purple-900/35 text-purple-200 text-xs font-semibold flex flex-col items-center justify-center gap-2 transition-all cursor-pointer shadow-xs group"
+                              >
+                                <div className="w-9 h-9 rounded-full bg-purple-500/20 group-hover:scale-110 flex items-center justify-center transition-transform">
+                                  <Mic className="w-5 h-5 text-purple-400 animate-pulse" />
+                                </div>
+                                <span className="font-bold text-white">Grabar audio en vivo</span>
+                                <span className="text-[10px] text-purple-300/70">Graba con tu micrófono</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => fileInputRef.current?.click()}
+                                className="py-4 px-3 border border-purple-500/30 hover:border-purple-400 rounded-xl bg-purple-950/20 hover:bg-purple-900/30 text-purple-200 text-xs font-medium flex flex-col items-center justify-center gap-2 transition-all cursor-pointer group"
+                              >
+                                <div className="w-9 h-9 rounded-full bg-purple-500/20 group-hover:scale-110 flex items-center justify-center transition-transform">
+                                  <Upload className="w-5 h-5 text-purple-400" />
+                                </div>
+                                <span className="font-bold text-white">Subir archivo de audio</span>
+                                <span className="text-[10px] text-purple-300/70">MP3, WAV o M4A</span>
+                              </button>
+                            </div>
+                          )}
+
+                          {mediaUploadType === "video" && (
+                            <button
+                              type="button"
+                              onClick={() => fileInputRef.current?.click()}
+                              className="w-full py-4 px-4 border border-dashed border-indigo-500/40 hover:border-indigo-400 rounded-xl bg-indigo-950/20 hover:bg-indigo-900/30 text-indigo-200 text-xs font-medium flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
+                            >
+                              <Film className="w-5 h-5 text-indigo-400" />
+                              <span className="font-semibold text-white">Seleccionar Video (MP4, WebM)</span>
+                              <span className="text-[10px] text-purple-400/70">
+                                Se guarda de forma permanente en el servidor
+                              </span>
+                            </button>
+                          )}
+                        </>
+                      )}
                     </div>
                   )}
 
@@ -1343,6 +1444,7 @@ export default function NotesSection() {
                             src={formMediaUrl}
                             name={formMediaName || "Audio MP3"}
                             color={formColor}
+                            onPlay={handleAudioNotePlay}
                           />
                         </div>
                       )}
@@ -1379,20 +1481,49 @@ export default function NotesSection() {
                   </label>
                 </div>
 
-                {/* Submit button */}
-                <button
-                  type="submit"
-                  disabled={isUploading}
-                  className={`w-full mt-4 py-3 rounded-xl bg-linear-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-all cursor-pointer ${
-                    isUploading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  {isUploading
-                    ? "Subiendo archivo... Espera un momento"
-                    : editingNoteId
-                    ? "Guardar Cambios ✨"
-                    : "Guardar en mi Tablón ✨"}
-                </button>
+                {/* Submit button / Delete option if editing */}
+                {editingNoteId ? (
+                  <div className="flex items-center gap-2.5 mt-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const currentNote = notes.find((n) => n.id === editingNoteId);
+                        setIsModalOpen(false);
+                        if (currentNote) {
+                          setNoteToDelete({ id: currentNote.id, title: currentNote.title });
+                        }
+                      }}
+                      className="py-3 px-4 rounded-xl border border-rose-500/30 hover:border-rose-400/50 hover:bg-rose-500/10 text-rose-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                      title="Eliminar esta nota del tablón"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span>Eliminar</span>
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isUploading}
+                      className={`flex-1 py-3 rounded-xl bg-linear-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-all cursor-pointer ${
+                        isUploading ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                    >
+                      {isUploading
+                        ? "Subiendo archivo... Espera un momento"
+                        : "Guardar Cambios ✨"}
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isUploading}
+                    className={`w-full mt-4 py-3 rounded-xl bg-linear-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-all cursor-pointer ${
+                      isUploading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    {isUploading
+                      ? "Subiendo archivo... Espera un momento"
+                      : "Guardar en mi Tablón ✨"}
+                  </button>
+                )}
               </form>
             </motion.div>
           </div>
@@ -1428,6 +1559,61 @@ export default function NotesSection() {
               >
                 <X className="w-5 h-5" />
               </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {noteToDelete && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setNoteToDelete(null)}
+              className="absolute inset-0 bg-black/75 backdrop-blur-sm cursor-pointer"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 15 }}
+              className="relative w-full max-w-sm rounded-3xl bg-neutral-900 border border-rose-500/30 p-6 text-center shadow-[0_10px_40px_rgba(244,63,94,0.3)] z-10 space-y-4"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center mx-auto text-rose-400">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white font-serif">
+                  ¿Eliminar nota del tablón?
+                </h3>
+                <p className="text-xs text-purple-200/80 mt-1 line-clamp-2">
+                  &ldquo;{noteToDelete.title}&rdquo;
+                </p>
+                <p className="text-[11px] text-white/50 mt-1.5">
+                  Esta nota se quitará del muro de recuerdos permanentemente.
+                </p>
+              </div>
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setNoteToDelete(null)}
+                  className="flex-1 py-2.5 rounded-xl border border-white/10 hover:bg-white/5 text-white/80 hover:text-white text-xs font-semibold transition-all cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    confirmDeleteNote(noteToDelete.id);
+                    setNoteToDelete(null);
+                  }}
+                  className="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold shadow-[0_0_15px_rgba(244,63,94,0.4)] transition-all cursor-pointer"
+                >
+                  Sí, eliminar
+                </button>
+              </div>
             </motion.div>
           </div>
         )}

@@ -163,6 +163,20 @@ const AiOfmRoadmap = dynamic(
   }
 );
 
+const RoboticsRoadmap = dynamic(
+  () => import("./educational/RoboticsRoadmap"),
+  {
+    loading: () => <RoadmapSkeleton title="Robótica & Hardware" />,
+  }
+);
+
+const AiRoadmap = dynamic(
+  () => import("./educational/AiRoadmap"),
+  {
+    loading: () => <RoadmapSkeleton title="Inteligencia Artificial" />,
+  }
+);
+
 export type EducationalTopic =
   | "ingles"
   | "coreano"
@@ -184,7 +198,9 @@ export type EducationalTopic =
   | "cripto"
   | "carreras"
   | "dropshipping"
-  | "ofm";
+  | "ofm"
+  | "robotica"
+  | "ia";
 
 type CategoryFilter =
   | "all"
@@ -415,11 +431,27 @@ export default function EducationalSection() {
       },
       {
         id: "ofm" as EducationalTopic,
-        label: "🤖 AI OFM Operación",
+        label: "💼 AI OFM Operación",
         category: "negocios",
         keywords:
           "ofm onlyfans ai persona chatting ppv fanvue agencias modelos contenido digital automatizacion",
         icon: Bot,
+      },
+      {
+        id: "robotica" as EducationalTopic,
+        label: "🤖 Robótica & Hardware",
+        category: "tecnologia",
+        keywords:
+          "robotica hardware arduino esp32 ros2 cinematica pid motores sensores lidar drones mecatronica automatizacion gazebo rviz fusion360 stm32",
+        icon: Bot,
+      },
+      {
+        id: "ia" as EducationalTopic,
+        label: "🧠 Inteligencia Artificial",
+        category: "tecnologia",
+        keywords:
+          "inteligencia artificial machine learning deep learning pytorch transformers llms rag agentes mlops prompt engineering redes neuronales mcp vllm huggingface ollama",
+        icon: BrainCircuit,
       },
     ],
     []
@@ -863,6 +895,30 @@ export default function EducationalSection() {
             transition={{ duration: 0.4 }}
           >
             <AiOfmRoadmap />
+          </motion.div>
+        )}
+
+        {activeTopic === "robotica" && (
+          <motion.div
+            key="robotica"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4 }}
+          >
+            <RoboticsRoadmap />
+          </motion.div>
+        )}
+
+        {activeTopic === "ia" && (
+          <motion.div
+            key="ia"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4 }}
+          >
+            <AiRoadmap />
           </motion.div>
         )}
       </AnimatePresence>

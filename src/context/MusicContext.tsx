@@ -276,6 +276,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const [repeatMode, setRepeatMode] = useState<"off" | "all" | "one">("all");
   const [direction, setDirection] = useState<1 | -1>(1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const consecutiveErrorsRef = useRef<number>(0);
 
   const currentSong = songs[currentIndex] || songs[0];
 
@@ -341,6 +342,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   }, [isShuffle]);
 
   const playSong = useCallback((index: number) => {
+    consecutiveErrorsRef.current = 0;
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
     setIsPlaying(true);
@@ -530,11 +532,22 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
         src={encodeURI(currentSong.file)}
         onTimeUpdate={handleTimeUpdate}
         onDurationChange={handleTimeUpdate}
-        onLoadedMetadata={handleTimeUpdate}
-        onCanPlay={handleTimeUpdate}
+        onLoadedMetadata={() => {
+          consecutiveErrorsRef.current = 0;
+          handleTimeUpdate();
+        }}
+        onCanPlay={() => {
+          consecutiveErrorsRef.current = 0;
+          handleTimeUpdate();
+        }}
         onEnded={handleSongEnd}
         onError={() => {
-          // Auto-skip to next song if a track fails to decode
+          consecutiveErrorsRef.current += 1;
+          if (consecutiveErrorsRef.current >= 3) {
+            console.warn("Reproducción pausada: no se pudo cargar el audio.");
+            setIsPlaying(false);
+            return;
+          }
           setTimeout(() => {
             handleNext();
           }, 500);

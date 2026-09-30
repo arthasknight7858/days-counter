@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roadmap Completo de IA — De Cero a Experto</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #38bdf8;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --yellow: #fbbf24;
+
+    /* phase colors */
+    --p1: #38bdf8;
+    --p2: #a78bfa;
+    --p3: #34d399;
+    --p4: #fb923c;
+    --p5: #f472b6;
+    --p6: #fbbf24;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface2: #f1f5f9;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #94a3b8;
+      --text-dim: #475569;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 7rem 2rem 5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .hero-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    border: 1px solid var(--border);
+    display: inline-block;
+    padding: 4px 10px;
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+  .stat-n {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .stat-l {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── TIMELINE SPINE ── */
+  .timeline-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+  }
+
+  .section-header {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .phase {
+    position: relative;
+    margin-bottom: 3.5rem;
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .phase-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+    min-width: 60px;
+    opacity: 0.15;
+    color: var(--pc);
+  }
+  .phase-meta { flex: 1; }
+  .phase-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--pc);
+    margin-bottom: 4px;
+    display: block;
+  }
+  .phase h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .phase-dur {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.4rem;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--pc);
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .card p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.65;
+    margin-bottom: 0.75rem;
+  }
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .topic {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 3px 7px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text-dim);
+  }
+
+  /* ── HOW TO LEARN SECTION ── */
+  .how-section {
+    max-width: 960px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .method-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 4px;
+  }
+  .method-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  .method-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .method-card p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.65;
+  }
+  .method-card ul {
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+  }
+  .method-card ul li {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin-bottom: 3px;
+  }
+  .badge-yes {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    background: #064e3b;
+    color: #34d399;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-left: 6px;
+  }
+  .badge-no {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    background: #450a0a;
+    color: #f87171;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-left: 6px;
+  }
+
+  /* ── RESOURCES ── */
+  .resources-section {
+    max-width: 960px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .resource-category h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .resource-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .resource-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+  }
+  .resource-item strong {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  /* ── STRATEGIES ── */
+  .strategies-section {
+    max-width: 960px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .strategy-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.3rem;
+    border-radius: 4px;
+  }
+  .strategy-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+  .strategy-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .strategy-card p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.65;
+  }
+
+  /* ── YOUTUBE SECTION ── */
+  .yt-section {
+    max-width: 960px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .yt-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid #ff0000;
+    padding: 1.5rem 2rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+  .yt-banner h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .yt-banner p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .yt-channels {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.75rem;
+  }
+  .yt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1rem;
+    border-radius: 4px;
+  }
+  .yt-card .ch-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .yt-card .ch-focus {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    margin-bottom: 5px;
+    display: block;
+  }
+  .yt-card p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── TIPS BOX ── */
+  .tips-section {
+    max-width: 960px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .tip-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  .tip-emoji {
+    font-size: 1.3rem;
+  }
+  .tip-content h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .tip-content p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 960px;
+    margin: 2rem auto;
+    border: none;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .hero { padding: 4rem 1.25rem 3rem; }
+    .timeline-wrap, .how-section, .resources-section, .strategies-section, .yt-section, .tips-section { padding: 0 1.25rem; }
+    .hero-stats { gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">AI_ROADMAP</div>
+  <ul class="nav-links">
+    <li><a href="#fases">Fases</a></li>
+    <li><a href="#como">Cómo Aprender</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="#recursos">Recursos</a></li>
+    <li><a href="#estrategias">Estrategias</a></li>
+    <li><a href="#tips">Tips</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-tag">ROADMAP COMPLETO · ESPAÑOL</div>
+  <h1>Aprende <span>Inteligencia<br>Artificial</span> desde cero</h1>
+  <p class="hero-sub">Todo lo que necesitas saber para ir de absoluto principiante a profesional en IA: temarios completos, estrategias de aprendizaje, recursos, canales de YouTube y trucos reales del proceso.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-n">6</span><span class="stat-l">Fases</span></div>
+    <div class="stat"><span class="stat-n">30+</span><span class="stat-l">Áreas de estudio</span></div>
+    <div class="stat"><span class="stat-n">12–24</span><span class="stat-l">Meses estimados</span></div>
+    <div class="stat"><span class="stat-n">∞</span><span class="stat-l">Profundidad posible</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FASES ══════════════════════ -->
+<section id="fases" class="timeline-wrap">
+  <div class="section-header">FASE 1 — FUNDAMENTOS MATEMÁTICOS Y DE PROGRAMACIÓN</div>
+
+  <div class="phase" style="--pc: var(--p1)">
+    <div class="phase-header">
+      <div class="phase-num">01</div>
+      <div class="phase-meta">
+        <span class="phase-tag">PUNTO DE PARTIDA</span>
+        <h2>Matemáticas y Python</h2>
+        <span class="phase-dur">⏱ 2–4 meses · Antes de todo lo demás</span>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Álgebra Lineal</div>
+        <p>El lenguaje secreto de la IA. Todo modelo es, en el fondo, operaciones sobre matrices y vectores. Sin esto, no entenderás nada en profundidad.</p>
+        <div class="topics">
+          <span class="topic">Vectores</span><span class="topic">Matrices</span><span class="topic">Producto punto</span><span class="topic">Transposición</span><span class="topic">Eigenvalores</span><span class="topic">SVD</span><span class="topic">Espacios vectoriales</span><span class="topic">Transformaciones lineales</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Cálculo</div>
+        <p>Para entender cómo aprenden las redes neuronales necesitas derivadas. El backpropagation es puro cálculo diferencial.</p>
+        <div class="topics">
+          <span class="topic">Derivadas</span><span class="topic">Gradientes</span><span class="topic">Regla de la cadena</span><span class="topic">Derivadas parciales</span><span class="topic">Optimización</span><span class="topic">Integrales básicas</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Estadística y Probabilidad</div>
+        <p>Los modelos no dan certezas sino probabilidades. Esta área es esencial para evaluar modelos y entender su incertidumbre.</p>
+        <div class="topics">
+          <span class="topic">Probabilidad condicional</span><span class="topic">Distribuciones</span><span class="topic">Media/Varianza</span><span class="topic">Bayes</span><span class="topic">Hipótesis</span><span class="topic">Correlación</span><span class="topic">MLE</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Python para Datos</div>
+        <p>El lenguaje universal del ML. Aprende Python no como programador sino como científico de datos: NumPy, Pandas y visualización.</p>
+        <div class="topics">
+          <span class="topic">Python básico</span><span class="topic">NumPy</span><span class="topic">Pandas</span><span class="topic">Matplotlib</span><span class="topic">Seaborn</span><span class="topic">Jupyter</span><span class="topic">Funciones</span><span class="topic">OOP básica</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="section-header">FASE 2 — MACHINE LEARNING CLÁSICO</div>
+
+  <div class="phase" style="--pc: var(--p2)">
+    <div class="phase-header">
+      <div class="phase-num">02</div>
+      <div class="phase-meta">
+        <span class="phase-tag">EL CORAZÓN TRADICIONAL</span>
+        <h2>Machine Learning</h2>
+        <span class="phase-dur">⏱ 2–3 meses · La base de todo</span>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Aprendizaje Supervisado</div>
+        <p>El modelo aprende de datos etiquetados. Es el paradigma más usado en la industria. Regresión para predecir números, clasificación para predecir categorías.</p>
+        <div class="topics">
+          <span class="topic">Regresión lineal</span><span class="topic">Regresión logística</span><span class="topic">KNN</span><span class="topic">SVM</span><span class="topic">Árboles de decisión</span><span class="topic">Random Forest</span><span class="topic">Gradient Boosting</span><span class="topic">XGBoost</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Aprendizaje No Supervisado</div>
+        <p>El modelo encuentra patrones sin etiquetas. Útil cuando no tienes datos anotados y quieres descubrir estructura oculta.</p>
+        <div class="topics">
+          <span class="topic">K-Means</span><span class="topic">DBSCAN</span><span class="topic">PCA</span><span class="topic">Clustering jerárquico</span><span class="topic">t-SNE</span><span class="topic">Autoencoders</span><span class="topic">GMM</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Evaluación de Modelos</div>
+        <p>Un modelo sin evaluación es inútil. Aprende a medir si tu modelo realmente funciona y por qué puede fallar.</p>
+        <div class="topics">
+          <span class="topic">Train/Val/Test split</span><span class="topic">Cross-validation</span><span class="topic">Accuracy / F1 / AUC</span><span class="topic">Matriz de confusión</span><span class="topic">Bias-Variance</span><span class="topic">Overfitting</span><span class="topic">Regularización</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Scikit-learn</div>
+        <p>La librería estándar de ML en Python. Con ella puedes implementar cualquier algoritmo clásico en pocas líneas de código.</p>
+        <div class="topics">
+          <span class="topic">Pipelines</span><span class="topic">Preprocesamiento</span><span class="topic">GridSearchCV</span><span class="topic">Encoders</span><span class="topic">Scalers</span><span class="topic">Feature selection</span><span class="topic">Model persistence</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="section-header">FASE 3 — DEEP LEARNING Y REDES NEURONALES</div>
+
+  <div class="phase" style="--pc: var(--p3)">
+    <div class="phase-header">
+      <div class="phase-num">03</div>
+      <div class="phase-meta">
+        <span class="phase-tag">EL NÚCLEO MODERNO</span>
+        <h2>Deep Learning</h2>
+        <span class="phase-dur">⏱ 3–5 meses · Aquí empieza la magia real</span>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Redes Neuronales Densas (MLP)</div>
+        <p>El bloque base. Neuronas, capas, activaciones, backpropagation. Entender esto al 100% te abre el camino al resto.</p>
+        <div class="topics">
+          <span class="topic">Perceptrón</span><span class="topic">Capas ocultas</span><span class="topic">ReLU / Sigmoid / Tanh</span><span class="topic">Backpropagation</span><span class="topic">SGD / Adam</span><span class="topic">Learning rate</span><span class="topic">Batch size</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Redes Convolucionales (CNN)</div>
+        <p>Diseñadas para imágenes. Aprenden a detectar bordes, texturas y objetos de forma jerárquica. Base de visión por computadora.</p>
+        <div class="topics">
+          <span class="topic">Convolución</span><span class="topic">Pooling</span><span class="topic">Feature maps</span><span class="topic">LeNet / AlexNet</span><span class="topic">VGG / ResNet</span><span class="topic">Transfer learning</span><span class="topic">Data augmentation</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Redes Recurrentes (RNN / LSTM)</div>
+        <p>Para secuencias: texto, audio, series de tiempo. Tienen "memoria" del pasado, aunque han sido superadas por los Transformers en muchos casos.</p>
+        <div class="topics">
+          <span class="topic">RNN</span><span class="topic">LSTM</span><span class="topic">GRU</span><span class="topic">Vanishing gradient</span><span class="topic">Seq2Seq</span><span class="topic">Embeddings</span><span class="topic">Time series</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Transformers y Atención</div>
+        <p>La arquitectura que cambió todo. GPT, BERT, Stable Diffusion, Whisper: todos son Transformers. Imprescindible entenderla.</p>
+        <div class="topics">
+          <span class="topic">Mecanismo de atención</span><span class="topic">Self-attention</span><span class="topic">Multi-head attention</span><span class="topic">Positional encoding</span><span class="topic">Encoder / Decoder</span><span class="topic">BERT</span><span class="topic">GPT</span><span class="topic">Fine-tuning</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">PyTorch y TensorFlow/Keras</div>
+        <p>Los dos frameworks dominantes. PyTorch es preferido en investigación, Keras/TF en producción legacy. Empieza por PyTorch.</p>
+        <div class="topics">
+          <span class="topic">Tensores</span><span class="topic">Autograd</span><span class="topic">DataLoader</span><span class="topic">Módulos y capas</span><span class="topic">Training loops</span><span class="topic">GPU / CUDA</span><span class="topic">Checkpoints</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Técnicas de Entrenamiento</div>
+        <p>La diferencia entre un modelo que aprende y uno que no suele estar en estos detalles técnicos del proceso de entrenamiento.</p>
+        <div class="topics">
+          <span class="topic">Dropout</span><span class="topic">Batch Normalization</span><span class="topic">Early stopping</span><span class="topic">Learning rate schedulers</span><span class="topic">Gradient clipping</span><span class="topic">Mixed precision</span><span class="topic">Hyperparameter tuning</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="section-header">FASE 4 — ÁREAS ESPECIALIZADAS</div>
+
+  <div class="phase" style="--pc: var(--p4)">
+    <div class="phase-header">
+      <div class="phase-num">04</div>
+      <div class="phase-meta">
+        <span class="phase-tag">ELIGE TU ESPECIALIDAD</span>
+        <h2>Dominios Especializados</h2>
+        <span class="phase-dur">⏱ 3–6 meses · Profundiza en el área que más te apasiona</span>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Procesamiento de Lenguaje Natural (NLP)</div>
+        <p>Enseñar a las máquinas a entender y generar texto humano. Área de altísima demanda gracias a los LLMs.</p>
+        <div class="topics">
+          <span class="topic">Tokenización</span><span class="topic">Word2Vec / GloVe</span><span class="topic">Clasificación de texto</span><span class="topic">NER</span><span class="topic">Sentiment analysis</span><span class="topic">RAG</span><span class="topic">LangChain</span><span class="topic">Hugging Face</span><span class="topic">Fine-tuning LLMs</span><span class="topic">Prompting</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Visión por Computadora (CV)</div>
+        <p>Ver y entender imágenes y vídeos. Desde clasificar fotos hasta detectar enfermedades en radiografías.</p>
+        <div class="topics">
+          <span class="topic">Detección de objetos</span><span class="topic">YOLO</span><span class="topic">Segmentación semántica</span><span class="topic">Pose estimation</span><span class="topic">Reconocimiento facial</span><span class="topic">OCR</span><span class="topic">Image generation</span><span class="topic">OpenCV</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">IA Generativa</div>
+        <p>Crear contenido nuevo: texto, imágenes, audio, vídeo y código. La frontera más emocionante y en más rápida evolución.</p>
+        <div class="topics">
+          <span class="topic">GANs</span><span class="topic">VAEs</span><span class="topic">Diffusion models</span><span class="topic">Stable Diffusion</span><span class="topic">LoRA / DreamBooth</span><span class="topic">LLMs (GPT, Claude, Llama)</span><span class="topic">Multimodal models</span><span class="topic">Prompt engineering</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Aprendizaje por Refuerzo (RL)</div>
+        <p>Un agente aprende a actuar en un entorno mediante recompensas. Base de AlphaGo, robótica y control autónomo.</p>
+        <div class="topics">
+          <span class="topic">MDP</span><span class="topic">Q-Learning</span><span class="topic">Deep Q-Networks</span><span class="topic">Policy gradient</span><span class="topic">PPO / A3C</span><span class="topic">RLHF</span><span class="topic">Gym / Gymnasium</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">IA en Audio y Speech</div>
+        <p>Reconocer habla, sintetizar voz, generar música. Whisper, TTS y modelos de audio están en auge.</p>
+        <div class="topics">
+          <span class="topic">ASR (Reconocimiento de voz)</span><span class="topic">TTS (Síntesis de voz)</span><span class="topic">Spectrograms</span><span class="topic">Whisper</span><span class="topic">Wav2Vec</span><span class="topic">Música generativa</span><span class="topic">Audio classification</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">IA para Series de Tiempo</div>
+        <p>Predicción de datos temporales: bolsa, clima, demanda energética, salud. Área muy usada en finanzas e industria.</p>
+        <div class="topics">
+          <span class="topic">ARIMA / SARIMA</span><span class="topic">Prophet</span><span class="topic">LSTM para series</span><span class="topic">Transformer para TS</span><span class="topic">Anomaly detection</span><span class="topic">Forecasting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="section-header">FASE 5 — MLOps Y PRODUCCIÓN</div>
+
+  <div class="phase" style="--pc: var(--p5)">
+    <div class="phase-header">
+      <div class="phase-num">05</div>
+      <div class="phase-meta">
+        <span class="phase-tag">DEL NOTEBOOK AL MUNDO REAL</span>
+        <h2>MLOps y Despliegue</h2>
+        <span class="phase-dur">⏱ 2–3 meses · Para que tu IA llegue a usuarios reales</span>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Gestión de Datos y Pipelines</div>
+        <p>Un modelo es tan bueno como sus datos. Aprende a construir pipelines de datos robustos y reproducibles.</p>
+        <div class="topics">
+          <span class="topic">ETL</span><span class="topic">Feature stores</span><span class="topic">Data versioning</span><span class="topic">DVC</span><span class="topic">Airflow</span><span class="topic">Data quality</span><span class="topic">Label Studio</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Experiment Tracking</div>
+        <p>Con cientos de experimentos, necesitas registrar qué probaste, qué funcionó y por qué. Indispensable en proyectos reales.</p>
+        <div class="topics">
+          <span class="topic">MLflow</span><span class="topic">Weights & Biases</span><span class="topic">Comet ML</span><span class="topic">Métricas</span><span class="topic">Model registry</span><span class="topic">Reproducibilidad</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Despliegue de Modelos</div>
+        <p>Convertir tu modelo en una API o servicio que otros puedan consumir. El puente entre ciencia de datos e ingeniería.</p>
+        <div class="topics">
+          <span class="topic">FastAPI</span><span class="topic">Flask</span><span class="topic">Docker</span><span class="topic">REST APIs</span><span class="topic">ONNX</span><span class="topic">TorchServe</span><span class="topic">Triton Inference Server</span><span class="topic">Streamlit</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Cloud y Escalado</div>
+        <p>Cuando tu modelo necesita más potencia de la que tu ordenador tiene. Los grandes proyectos viven en la nube.</p>
+        <div class="topics">
+          <span class="topic">AWS SageMaker</span><span class="topic">Google Vertex AI</span><span class="topic">Azure ML</span><span class="topic">Kubernetes</span><span class="topic">GPUs en la nube</span><span class="topic">Serverless inference</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Monitorización en Producción</div>
+        <p>Los modelos se degradan con el tiempo. Necesitas detectar cuando el modelo empieza a fallar en el mundo real.</p>
+        <div class="topics">
+          <span class="topic">Data drift</span><span class="topic">Model drift</span><span class="topic">Evidently AI</span><span class="topic">Prometheus / Grafana</span><span class="topic">A/B testing</span><span class="topic">Shadow deployment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="section-header">FASE 6 — TEMAS AVANZADOS Y TRANSVERSALES</div>
+
+  <div class="phase" style="--pc: var(--p6)">
+    <div class="phase-header">
+      <div class="phase-num">06</div>
+      <div class="phase-meta">
+        <span class="phase-tag">NIVEL EXPERTO</span>
+        <h2>Fronteras y Responsabilidad</h2>
+        <span class="phase-dur">⏱ Continuo · La IA que quieres construir vs la IA que deberías construir</span>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">IA Explicable (XAI)</div>
+        <p>¿Por qué tu modelo tomó esa decisión? En medicina, finanzas y justicia es obligatorio poder explicar los modelos.</p>
+        <div class="topics">
+          <span class="topic">SHAP</span><span class="topic">LIME</span><span class="topic">Grad-CAM</span><span class="topic">Feature importance</span><span class="topic">Model interpretability</span><span class="topic">Counterfactuals</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">IA Ética y Sesgos</div>
+        <p>Los modelos aprenden los sesgos de sus datos. Detectarlos y mitigarlos es una responsabilidad profesional y humana.</p>
+        <div class="topics">
+          <span class="topic">Fairness</span><span class="topic">Bias en datos</span><span class="topic">Algorithmic accountability</span><span class="topic">Disparate impact</span><span class="topic">Aequitas</span><span class="topic">Regulación EU AI Act</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Agentes de IA</div>
+        <p>Sistemas que razonan, planifican y usan herramientas de forma autónoma. El paradigma actual más disruptivo.</p>
+        <div class="topics">
+          <span class="topic">ReAct</span><span class="topic">Tool use</span><span class="topic">LangGraph</span><span class="topic">AutoGPT / crewAI</span><span class="topic">RAG avanzado</span><span class="topic">Multi-agent systems</span><span class="topic">Memory</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Seguridad en IA</div>
+        <p>Los modelos pueden ser atacados y manipulados. La seguridad en IA es un campo emergente con enorme demanda.</p>
+        <div class="topics">
+          <span class="topic">Adversarial attacks</span><span class="topic">Prompt injection</span><span class="topic">Red teaming</span><span class="topic">Jailbreaking</span><span class="topic">Robustness</span><span class="topic">AI safety</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Investigación y Papers</div>
+        <p>Para estar al día necesitas leer investigación. arXiv publica papers cada día. Saber leerlos es una habilidad en sí misma.</p>
+        <div class="topics">
+          <span class="topic">arXiv.org</span><span class="topic">Cómo leer papers</span><span class="topic">Papers with Code</span><span class="topic">NeurIPS / ICLR / ICML</span><span class="topic">Reproducir papers</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">IA Multimodal</div>
+        <p>Modelos que mezclan texto, imagen, audio y vídeo. GPT-4V, Gemini, LLaVA. La convergencia de todas las modalidades.</p>
+        <div class="topics">
+          <span class="topic">CLIP</span><span class="topic">Flamingo</span><span class="topic">GPT-4V</span><span class="topic">Gemini</span><span class="topic">Imagen / DALL-E</span><span class="topic">Vision-language models</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CÓMO APRENDER ══════════════════════ -->
+<section id="como" class="how-section">
+  <div class="section-header">MÉTODOS Y ENFOQUES DE APRENDIZAJE</div>
+  <div class="method-grid">
+    <div class="method-card">
+      <span class="method-icon">🎯</span>
+      <h3>Aprende haciendo, no mirando</h3>
+      <p>El error más común: ver tutoriales sin escribir código. Tu cerebro necesita la fricción del error para aprender. Regla: por cada hora que miras, pasa 2 horas implementando.</p>
+      <ul>
+        <li>Pausa el vídeo y escribe el código tú</li>
+        <li>Reproduce el resultado desde memoria</li>
+        <li>Modifica el ejemplo y rompe cosas a propósito</li>
+      </ul>
+    </div>
+    <div class="method-card">
+      <span class="method-icon">🏗️</span>
+      <h3>Proyectos reales desde el día 1</h3>
+      <p>No esperes a "saber suficiente". Elige un proyecto pequeño que te importe desde la fase 1 y ve añadiendo lo que aprendes. La motivación sobrevive cuando el proyecto es tuyo.</p>
+      <ul>
+        <li>Semana 2: clasifica tus propias imágenes</li>
+        <li>Mes 2: predice algo que te interese</li>
+        <li>Mes 4: construye tu primer modelo de NLP</li>
+      </ul>
+    </div>
+    <div class="method-card">
+      <span class="method-icon">🔄</span>
+      <h3>Repetición espaciada</h3>
+      <p>El olvido es inevitable. Usa sistemas de repetición espaciada (Anki) para los conceptos que necesitas retener a largo plazo: fórmulas, definiciones, diferencias entre algoritmos.</p>
+      <ul>
+        <li>15 min de Anki diarios antes de estudiar</li>
+        <li>Crea tus propias tarjetas mientras estudias</li>
+        <li>No memorices: entiende y luego fija</li>
+      </ul>
+    </div>
+    <div class="method-card">
+      <span class="method-icon">📖</span>
+      <h3>Teoría y práctica en paralelo</h3>
+      <p>No puedes aprender pura teoría ni pura práctica. El flujo ideal: lees el concepto → lo implementas desde cero → lo usas en un librería → lo aplicas en tu proyecto.</p>
+      <ul>
+        <li>Lee el paper o capítulo del libro</li>
+        <li>Implementa el algoritmo a mano en NumPy</li>
+        <li>Luego usa la librería optimizada</li>
+      </ul>
+    </div>
+    <div class="method-card">
+      <span class="method-icon">🤝</span>
+      <h3>Aprende en comunidad</h3>
+      <p>El aprendizaje en solitario tiene límites. Una comunidad te da retroalimentación, motivación y exposición a problemas que tú no hubieras pensado.</p>
+      <ul>
+        <li>Kaggle: competencias y notebooks públicos</li>
+        <li>Discord / Slack de cursos</li>
+        <li>Twitter/X: seguir investigadores</li>
+        <li>Meetups locales o virtuales de ML</li>
+      </ul>
+    </div>
+    <div class="method-card">
+      <span class="method-icon">✍️</span>
+      <h3>Escribe lo que aprendes</h3>
+      <p>Explicar un concepto te obliga a entenderlo de verdad. Escribe posts, threads, o simplemente un diario de aprendizaje. El efecto Feynman: si no puedes explicarlo simple, no lo entiendes.</p>
+      <ul>
+        <li>Blog personal o Medium en español</li>
+        <li>Threads en Twitter/X explicando temas</li>
+        <li>Notas en Notion o Obsidian organizadas</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ YOUTUBE ══════════════════════ -->
+<section id="youtube" class="yt-section">
+  <div class="section-header">¿PUEDO APRENDER POR YOUTUBE?</div>
+
+  <div class="yt-banner">
+    <h3>✅ Sí, pero con condiciones <span class="badge-yes">POSIBLE</span><span class="badge-no">NO SUFICIENTE SOLO</span></h3>
+    <p>YouTube es excelente para conceptos visuales, intuición y motivación. Es terrible como única fuente: los vídeos no te dan práctica guiada, retroalimentación ni estructura progresiva. La estrategia ganadora es <strong>YouTube + curso estructurado + proyectos propios</strong>. Usa YouTube para aclarar dudas específicas y reforzar conceptos, no como curriculum principal.</p>
+  </div>
+
+  <div class="yt-channels">
+    <div class="yt-card">
+      <div class="ch-name">3Blue1Brown</div>
+      <span class="ch-focus">MATEMÁTICAS / INTUICIÓN</span>
+      <p>Las mejores visualizaciones de álgebra lineal y cálculo del mundo. Imprescindible para entender las bases.</p>
+    </div>
+    <div class="yt-card">
+      <div class="ch-name">Andrej Karpathy</div>
+      <span class="ch-focus">DEEP LEARNING DESDE 0</span>
+      <p>Ex-Director de IA de Tesla. Su serie "Neural Networks: Zero to Hero" es legendaria. Todo desde Python puro.</p>
+    </div>
+    <div class="yt-card">
+      <div class="ch-name">Sentdex</div>
+      <span class="ch-focus">PYTHON / ML PRÁCTICO</span>
+      <p>Python aplicado a datos y ML. Muy práctico, muchos proyectos reales. Bueno para la fase inicial.</p>
+    </div>
+    <div class="yt-card">
+      <div class="ch-name">Yannic Kilcher</div>
+      <span class="ch-focus">PAPERS DE INVESTIGACIÓN</span>
+      <p>Explica los papers más importantes de IA con mucho detalle técnico. Para cuando quieres entender el estado del arte.</p>
+    </div>
+    <div class="yt-card">
+      <div class="ch-name">Two Minute Papers</div>
+      <span class="ch-focus">NOVEDADES EN IA</span>
+      <p>Resúmenes breves de papers nuevos. Perfecto para mantenerse al día sin leer papers completos cada día.</p>
+    </div>
+    <div class="yt-card">
+      <div class="ch-name">Lex Fridman</div>
+      <span class="ch-focus">ENTREVISTAS / VISIÓN AMPLIA</span>
+      <p>Entrevistas largas con los máximos referentes de IA. Más inspiración que técnica, pero da perspectiva del campo.</p>
+    </div>
+    <div class="yt-card">
+      <div class="ch-name">StatQuest (Josh Starmer)</div>
+      <span class="ch-focus">ESTADÍSTICA / ML VISUAL</span>
+      <p>Explica estadística y ML de forma absurdamente clara. El mejor para entender los fundamentos sin sufrimiento.</p>
+    </div>
+    <div class="yt-card">
+      <div class="ch-name">Dot CSV (en español)</div>
+      <span class="ch-focus">IA EN ESPAÑOL</span>
+      <p>El mejor canal de IA en español. Divulgación de calidad, proyectos y noticias del campo. Muy recomendado.</p>
+    </div>
+    <div class="yt-card">
+      <div class="ch-name">Ringa Tech (en español)</div>
+      <span class="ch-focus">PYTHON / ML EN ESPAÑOL</span>
+      <p>ML y Python explicado en español latinoamericano. Tutoriales prácticos y proyectos accesibles.</p>
+    </div>
+    <div class="yt-card">
+      <div class="ch-name">DeepLearning.AI</div>
+      <span class="ch-focus">CURSOS OFICIALES</span>
+      <p>Canal oficial de Andrew Ng. Contenido de sus cursos de Coursera, muchos disponibles gratis. Alta calidad.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ RECURSOS ══════════════════════ -->
+<section id="recursos" class="resources-section">
+  <div class="section-header">RECURSOS ESENCIALES POR CATEGORÍA</div>
+
+  <div class="resource-category">
+    <h3>📚 Cursos Estructurados (la columna vertebral)</h3>
+    <div class="resource-list">
+      <div class="resource-item"><strong>fast.ai — Practical Deep Learning</strong>Top-down, gratis, muy práctico. Ideal después de Python básico.</div>
+      <div class="resource-item"><strong>DeepLearning.AI (Coursera)</strong>Andrew Ng. La ruta más conocida y respetada. Empieza por ML Specialization.</div>
+      <div class="resource-item"><strong>CS231n (Stanford)</strong>Computer Vision. El curso universitario más famoso. Notas y vídeos gratis online.</div>
+      <div class="resource-item"><strong>CS224n (Stanford)</strong>NLP con Deep Learning. El equivalente de CS231n pero para texto.</div>
+      <div class="resource-item"><strong>Full Stack Deep Learning</strong>Cubre el ciclo completo: datos → modelo → producción. Muy orientado a la industria.</div>
+      <div class="resource-item"><strong>Hugging Face Course</strong>Gratis. El mejor recurso para aprender Transformers y NLP moderno de primera mano.</div>
+    </div>
+  </div>
+
+  <div class="resource-category">
+    <h3>📖 Libros que realmente valen</h3>
+    <div class="resource-list">
+      <div class="resource-item"><strong>Deep Learning (Goodfellow et al.)</strong>La biblia académica del DL. Denso pero completo. Disponible gratis en deeplearningbook.org</div>
+      <div class="resource-item"><strong>Hands-On ML (Aurélien Géron)</strong>El mejor libro práctico. Scikit-learn + TF con ejemplos reales. Altamente recomendado.</div>
+      <div class="resource-item"><strong>Mathematics for ML</strong>De Deisenroth et al. Cubre toda la matemática necesaria. Gratis en PDF oficial.</div>
+      <div class="resource-item"><strong>The Hundred-Page ML Book</strong>Andriy Burkov. Síntesis densa pero brillante. Para repasar conceptos rápido.</div>
+      <div class="resource-item"><strong>Speech and Language Processing</strong>Jurafsky & Martin. El libro de referencia de NLP. Borrador gratis online.</div>
+    </div>
+  </div>
+
+  <div class="resource-category">
+    <h3>🛠️ Plataformas de práctica</h3>
+    <div class="resource-list">
+      <div class="resource-item"><strong>Kaggle</strong>Datasets, notebooks, competencias. El mejor lugar para practicar con datos reales y aprender de otros.</div>
+      <div class="resource-item"><strong>Google Colab</strong>GPUs gratis en el navegador. El entorno de desarrollo estándar para aprender DL sin hardware.</div>
+      <div class="resource-item"><strong>Hugging Face Hub</strong>Miles de modelos preentrenados. El "GitHub de la IA".</div>
+      <div class="resource-item"><strong>Papers with Code</strong>Papers + implementaciones. Para reproducir investigación y encontrar el estado del arte.</div>
+      <div class="resource-item"><strong>LeetCode ML / StrataScratch</strong>Preguntas de entrevistas de ML. Imprescindible si buscas trabajo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ ESTRATEGIAS ══════════════════════ -->
+<section id="estrategias" class="strategies-section">
+  <div class="section-header">ESTRATEGIAS DE APRENDIZAJE QUE FUNCIONAN</div>
+  <div class="strategy-grid">
+    <div class="strategy-card">
+      <span class="strategy-num">ESTRATEGIA 01</span>
+      <h3>El ciclo de 4 pasos</h3>
+      <p>Para cada concepto nuevo: <strong>1) lee</strong> la teoría, <strong>2) implementa</strong> desde cero sin copiar, <strong>3) compara</strong> con implementaciones de referencia, <strong>4) aplica</strong> en tu proyecto. Saltar pasos crea una ilusión de conocimiento.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="strategy-num">ESTRATEGIA 02</span>
+      <h3>Un proyecto hilo conductor</h3>
+      <p>Desde el inicio, elige un problema que te importe (predicción de algo en tu país, clasificar tus fotos, analizar comentarios en español). Conforme aprendes nuevas técnicas, aplícalas al mismo proyecto. Ver cómo mejora es el mejor motivador.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="strategy-num">ESTRATEGIA 03</span>
+      <h3>Tiempo bloqueado, no disperso</h3>
+      <p>2 horas concentradas valen más que 6 horas fragmentadas. Bloquea 2 horas diarias sin teléfono, sin Twitter, sin nada. La IA es un campo técnico profundo: necesita atención sostenida. Usa la técnica Pomodoro si te cuesta.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="strategy-num">ESTRATEGIA 04</span>
+      <h3>Construye en público</h3>
+      <p>Publica tus proyectos en GitHub, aunque sean imperfectos. Escribe sobre lo que aprendes en LinkedIn o Twitter. Esto te da retroalimentación real, construye tu portafolio y te fuerza a entender lo que explicas.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="strategy-num">ESTRATEGIA 05</span>
+      <h3>No perfectices antes de terminar</h3>
+      <p>El peor enemigo: rehacer el mismo tutorial más bonito en lugar de avanzar. Termina proyectos imperfectos, ponlos en GitHub y pasa al siguiente. Diez proyectos mediocres terminados te enseñan más que uno perfecto sin acabar.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="strategy-num">ESTRATEGIA 06</span>
+      <h3>Lee un paper a la semana</h3>
+      <p>Desde la fase 3, lee un paper por semana. No todos completos: lee el abstract, la introducción, las figuras, los resultados. Con el tiempo desarrollas intuición para leer investigación y te mantienes al día con un campo que cambia mensualmente.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="strategy-num">ESTRATEGIA 07</span>
+      <h3>Rota entre recursos</h3>
+      <p>Si llevas una semana con el mismo libro y te atascas, cambia de formato: un vídeo, una notebook de Kaggle, un paper aplicado. El mismo concepto explicado de tres formas distintas por fin hace clic. No es rendirte, es inteligente.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="strategy-num">ESTRATEGIA 08</span>
+      <h3>Usa IA para aprender IA</h3>
+      <p>ChatGPT, Claude y GitHub Copilot son tus asistentes de estudio. Pídele a Claude que te explique backpropagation de cinco formas distintas hasta que entiendas. Úsalos para depurar, generar ejercicios y testear tu comprensión con preguntas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ TRUCOS Y TIPS ══════════════════════ -->
+<section id="tips" class="tips-section">
+  <div class="section-header">TRUCOS REALES DEL PROCESO</div>
+
+  <div class="tip-box">
+    <div class="tip-emoji">🚀</div>
+    <div class="tip-content">
+      <h4>No esperes a tener las matemáticas perfectas para empezar ML</h4>
+      <p>Aprende matemáticas y ML en paralelo. Cuando llegues a backpropagation y necesites derivadas, ahí sí las estudias en profundidad. Aprender álgebra lineal en abstracto antes de ver para qué sirve es agotador e ineficiente.</p>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-emoji">🧩</div>
+    <div class="tip-content">
+      <h4>Implementa los algoritmos desde cero aunque ya existan librerías</h4>
+      <p>Escribe K-Means en NumPy aunque puedas importarlo de sklearn. Implementa una red neuronal sin PyTorch. Este ejercicio crea un entendimiento profundo que te diferencia de quien solo sabe llamar funciones. Karpathy lo llama "the painful but correct way".</p>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-emoji">📉</div>
+    <div class="tip-content">
+      <h4>El 80% de ML real es limpieza y preparación de datos</h4>
+      <p>Los cursos te muestran datasets perfectos. En la realidad, pasas más tiempo limpiando, transformando y entendiendo los datos que entrenando modelos. Aprende pandas a fondo, aprende a visualizar datos y a detectar anomalías. Es la habilidad más subestimada.</p>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-emoji">🔬</div>
+    <div class="tip-content">
+      <h4>Kaggle es el gimnasio perfecto, pero úsalo bien</h4>
+      <p>No empieces por competencias difíciles. Usa los "Getting Started" competitions, lee notebooks de otros participantes (se llaman "notebooks" en Kaggle), analiza por qué los mejores ganaron. Aprende de las soluciones ganadoras: son lecciones de ML práctico avanzado gratuitas.</p>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-emoji">⚡</div>
+    <div class="tip-content">
+      <h4>Google Colab Pro vale la pena en cierto punto</h4>
+      <p>La versión gratuita de Colab tiene límites de GPU. Cuando llegues a DL (fase 3), considera Colab Pro (~10 USD/mes) o usa los créditos gratuitos de Google Cloud / AWS que dan al registrarte. No te compres una GPU física hasta saber que vas en serio.</p>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-emoji">🗓️</div>
+    <div class="tip-content">
+      <h4>Los plazos son estimados, no plazos reales</h4>
+      <p>Los "2-4 meses" de cada fase son para alguien dedicando 1-2 horas diarias con consistencia. Si estás aprendiendo con trabajo y familia, multiplica por 1.5 o 2. No hay vergüenza en tomarse más tiempo, hay vergüenza en abandonar. La constancia de 6 meses gana a la intensidad de 2 semanas.</p>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-emoji">🌎</div>
+    <div class="tip-content">
+      <h4>El inglés no es opcional en IA</h4>
+      <p>El 95% de los papers, cursos de calidad, documentación y discusiones técnicas están en inglés. No tienes que hablarlo perfectamente, pero sí leerlo con fluidez técnica. Invertir tiempo en mejorar tu inglés técnico multiplica el acceso a recursos. Empieza a leer documentación en inglés desde el primer día.</p>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-emoji">💼</div>
+    <div class="tip-content">
+      <h4>El portafolio importa más que los certificados</h4>
+      <p>Un certificado de Coursera es bueno. Tres proyectos en GitHub con README claro, resultados documentados y código limpio valen diez veces más en una entrevista. Cada proyecto que termines, súbelo. Cada notebook de Kaggle interesante, publícalo. Construye evidencia pública de lo que sabes hacer.</p>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-emoji">🧠</div>
+    <div class="tip-content">
+      <h4>No hay que saber todo: elige una especialidad</h4>
+      <p>Después de las fases 1-3, el campo es demasiado vasto para cubrirlo todo. Un NLP engineer que sabe mucho de LLMs, fine-tuning y sistemas de recuperación vale mucho más que alguien que sabe un poco de todo. Las fases 4 en adelante son para profundizar, no para abarcar. Elige lo que te apasione.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Roadmap generado con ❤️ · Actualizado 2025 · El campo cambia rápido: mantente curioso
+</footer>
+
+</body>
+</html>

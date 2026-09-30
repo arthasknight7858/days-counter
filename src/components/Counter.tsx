@@ -4,76 +4,76 @@ import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Sparkles, Clock, CalendarHeart, ChevronDown, PartyPopper } from "lucide-react";
 
+interface TimeStats {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  totalHours: number;
+  totalMinutes: number;
+  heartbeats: number;
+  daysToNextMonth: number;
+  monthsCompleted: number;
+  isAnniversaryDay: boolean;
+}
+
+function calculateTimeStats(startDate: Date): TimeStats {
+  const now = new Date();
+  const difference = Math.max(0, now.getTime() - startDate.getTime());
+  const isAnniversaryDay = now.getDate() === 8;
+
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((difference / 1000 / 60) % 60);
+  const seconds = Math.floor((difference / 1000) % 60);
+
+  const totalHours = Math.floor(difference / (1000 * 60 * 60));
+  const totalMinutes = Math.floor(difference / (1000 * 60));
+  const heartbeats = Math.floor(totalMinutes * 80);
+
+  let nextMonth = new Date(now.getFullYear(), now.getMonth(), 8, 0, 0, 0);
+  if (now.getDate() >= 8) {
+    nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 8, 0, 0, 0);
+  }
+  const diffToNext = nextMonth.getTime() - now.getTime();
+  const daysToNextMonth = isAnniversaryDay
+    ? 0
+    : Math.max(1, Math.ceil(diffToNext / (1000 * 60 * 60 * 24)));
+
+  let months =
+    (now.getFullYear() - startDate.getFullYear()) * 12 +
+    (now.getMonth() - startDate.getMonth());
+  if (now.getDate() < startDate.getDate()) {
+    months--;
+  }
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+    totalHours,
+    totalMinutes,
+    heartbeats,
+    daysToNextMonth,
+    monthsCompleted: Math.max(0, months),
+    isAnniversaryDay,
+  };
+}
+
 export default function Counter({ startDate }: { startDate: Date }) {
   const [showMilestones, setShowMilestones] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
 
-  const [timeStats, setTimeStats] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    totalHours: 0,
-    totalMinutes: 0,
-    heartbeats: 0,
-    daysToNextMonth: 0,
-    monthsCompleted: 0,
-    isAnniversaryDay: false,
-  });
+  const [timeStats, setTimeStats] = useState<TimeStats>(() => calculateTimeStats(startDate));
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const now = new Date();
-      const difference = now.getTime() - startDate.getTime();
-
-      const isAnniversaryDay = now.getDate() === 8;
-
-      if (difference >= 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((difference / 1000 / 60) % 60);
-        const seconds = Math.floor((difference / 1000) % 60);
-
-        const totalHours = Math.floor(difference / (1000 * 60 * 60));
-        const totalMinutes = Math.floor(difference / (1000 * 60));
-        // Frecuencia cardíaca media en reposo ~80 bpm
-        const heartbeats = Math.floor(totalMinutes * 80);
-
-        // Próximo aniversario mensual (día 8)
-        let nextMonth = new Date(now.getFullYear(), now.getMonth(), 8, 0, 0, 0);
-        if (now.getDate() >= 8) {
-          nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 8, 0, 0, 0);
-        }
-        const diffToNext = nextMonth.getTime() - now.getTime();
-        const daysToNextMonth = isAnniversaryDay
-          ? 0
-          : Math.max(1, Math.ceil(diffToNext / (1000 * 60 * 60 * 24)));
-
-        // Meses completados exactos
-        let months =
-          (now.getFullYear() - startDate.getFullYear()) * 12 +
-          (now.getMonth() - startDate.getMonth());
-        if (now.getDate() < startDate.getDate()) {
-          months--;
-        }
-
-        setTimeStats({
-          days,
-          hours,
-          minutes,
-          seconds,
-          totalHours,
-          totalMinutes,
-          heartbeats,
-          daysToNextMonth,
-          monthsCompleted: Math.max(0, months),
-          isAnniversaryDay,
-        });
-      }
+    const updateStats = () => {
+      setTimeStats(calculateTimeStats(startDate));
     };
 
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
+    updateStats();
+    const timer = setInterval(updateStats, 1000);
 
     return () => clearInterval(timer);
   }, [startDate]);

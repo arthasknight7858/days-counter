@@ -35,7 +35,7 @@ async function readNotesFromFile(): Promise<CustomNote[]> {
   try {
     const content = await readFile(NOTES_FILE, "utf-8");
     const parsed = JSON.parse(content);
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    if (Array.isArray(parsed)) {
       return parsed;
     }
   } catch {
@@ -59,21 +59,70 @@ export async function GET() {
   }
 }
 
+const VALID_COLORS = new Set(["purple", "pink", "amber", "emerald", "cyan", "rose", "indigo"]);
+const VALID_CATEGORIES = new Set(["amor", "metas", "recuerdos", "recordatorios", "citas"]);
+
+function sanitizeNote(n: unknown): CustomNote | null {
+  if (!n || typeof n !== "object") return null;
+  const raw = n as Record<string, unknown>;
+
+  if (typeof raw.id !== "string" || !raw.id.trim()) return null;
+  if (typeof raw.title !== "string") return null;
+  if (typeof raw.content !== "string") return null;
+
+  const color = typeof raw.color === "string" && VALID_COLORS.has(raw.color)
+    ? (raw.color as CustomNote["color"])
+    : "purple";
+
+  const category = typeof raw.category === "string" && VALID_CATEGORIES.has(raw.category)
+    ? (raw.category as CustomNote["category"])
+    : "amor";
+
+  return {
+    id: raw.id.trim().slice(0, 100),
+    title: raw.title.slice(0, 300),
+    content: raw.content.slice(0, 50000),
+    date: typeof raw.date === "string" ? raw.date.slice(0, 100) : "",
+    color,
+    category,
+    emoji: typeof raw.emoji === "string" ? raw.emoji.slice(0, 10) : "📝",
+    imageUrl: typeof raw.imageUrl === "string" ? raw.imageUrl.slice(0, 2000) : undefined,
+    mediaUrl: typeof raw.mediaUrl === "string" ? raw.mediaUrl.slice(0, 2000) : undefined,
+    mediaType: raw.mediaType === "audio" || raw.mediaType === "video" || raw.mediaType === "image" ? raw.mediaType : undefined,
+    mediaName: typeof raw.mediaName === "string" ? raw.mediaName.slice(0, 200) : undefined,
+    mediaSize: typeof raw.mediaSize === "number" ? raw.mediaSize : undefined,
+    isPinned: Boolean(raw.isPinned),
+    isAxelSpecial: Boolean(raw.isAxelSpecial),
+    createdAt: typeof raw.createdAt === "number" ? raw.createdAt : Date.now(),
+    reactions: typeof raw.reactions === "number" ? Math.max(0, Math.floor(raw.reactions)) : 0,
+  };
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     let updatedNotes: CustomNote[] = [];
 
-    if (Array.isArray(body.notes)) {
-      updatedNotes = body.notes;
-    } else if (body.note && typeof body.note === "object") {
+    if (body.action === "delete" && typeof body.id === "string") {
       const currentNotes = await readNotesFromFile();
-      const existingIndex = currentNotes.findIndex((n) => n.id === body.note.id);
+      updatedNotes = currentNotes.filter((n) => n.id !== body.id);
+    } else if (Array.isArray(body.notes)) {
+      const sanitized = body.notes
+        .map((item: unknown) => sanitizeNote(item))
+        .filter((n: CustomNote | null): n is CustomNote => n !== null);
+      updatedNotes = sanitized.slice(0, 500);
+    } else if (body.note && typeof body.note === "object") {
+      const sanitized = sanitizeNote(body.note);
+      if (!sanitized) {
+        return NextResponse.json({ error: "Datos de nota inválidos" }, { status: 400 });
+      }
+      const currentNotes = await readNotesFromFile();
+      const existingIndex = currentNotes.findIndex((n) => n.id === sanitized.id);
       if (existingIndex >= 0) {
-        currentNotes[existingIndex] = body.note;
+        currentNotes[existingIndex] = sanitized;
         updatedNotes = currentNotes;
       } else {
-        updatedNotes = [body.note, ...currentNotes];
+        updatedNotes = [sanitized, ...currentNotes];
       }
     } else {
       return NextResponse.json(
@@ -83,11 +132,31 @@ export async function POST(request: Request) {
     }
 
     await writeNotesToFile(updatedNotes);
-    return NextResponse.json({ success: true, count: updatedNotes.length });
+    return NextResponse.json({ success: true, count: updatedNotes.length, notes: updatedNotes });
   } catch (error) {
     console.error("Error saving notes:", error);
     return NextResponse.json(
       { error: "Error al guardar notas en el servidor" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "ID de nota requerido" }, { status: 400 });
+    }
+    const currentNotes = await readNotesFromFile();
+    const updatedNotes = currentNotes.filter((n) => n.id !== id);
+    await writeNotesToFile(updatedNotes);
+    return NextResponse.json({ success: true, count: updatedNotes.length, notes: updatedNotes });
+  } catch (error) {
+    console.error("Error deleting note from server:", error);
+    return NextResponse.json(
+      { error: "Error al eliminar nota en el servidor" },
       { status: 500 }
     );
   }
