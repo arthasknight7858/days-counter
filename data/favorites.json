@@ -1,6 +1,48 @@
 {
   "axel": [
     {
+      "image": "sofi72.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790766935370,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi65.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790766928528,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi69.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790739820454,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi64.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790739816973,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi63.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790739815490,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi38.png",
+      "folder": "Sofi",
+      "addedAt": 1790739806591,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
       "image": "sofi40.jpeg",
       "folder": "Sofi",
       "addedAt": 1790735317732,
@@ -51,6 +93,62 @@
     }
   ],
   "sofi": [
+    {
+      "image": "sofi46.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790810826279,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi62.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790810813993,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi66.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790810807392,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi67.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790810805428,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi69.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790810802825,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi70.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790810802115,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi72.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790810800997,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi73.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790810799543,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
     {
       "image": "sofi28.png",
       "folder": "Sofi",
