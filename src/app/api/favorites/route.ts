@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { FavoritesData, FavoritePhoto } from "@/types/favorites";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -14,60 +15,32 @@ const DEFAULT_FAVORITES: FavoritesData = {
     {
       albumId: "sofi",
       folder: "Sofi",
-      image: "sofi.png",
+      image: "sofi40.jpeg",
       albumTitle: "Sofi",
-      addedAt: 1724300000000,
+      addedAt: 1790735317732,
     },
     {
       albumId: "sofi",
       folder: "Sofi",
-      image: "sofi 19.png",
+      image: "sofi 17.png",
       albumTitle: "Sofi",
-      addedAt: 1724300001000,
-    },
-    {
-      albumId: "juntos",
-      folder: "juntos",
-      image: "juntos 1.jpeg",
-      albumTitle: "Juntos",
-      addedAt: 1724300002000,
+      addedAt: 1790735287171,
     },
     {
       albumId: "sofi",
       folder: "Sofi",
-      image: "sofi73.jpeg",
+      image: "sofi28.png",
       albumTitle: "Sofi",
-      addedAt: 1724300003000,
+      addedAt: 1790735283979,
     },
   ],
   sofi: [
     {
-      albumId: "axel",
-      folder: "axel",
-      image: "axel1.jpeg",
-      albumTitle: "Axel",
-      addedAt: 1724300000000,
-    },
-    {
-      albumId: "juntos",
-      folder: "juntos",
-      image: "juntos 2.jpeg",
-      albumTitle: "Juntos",
-      addedAt: 1724300001000,
-    },
-    {
-      albumId: "xv",
-      folder: "fiesta de XV",
-      image: "xv.png",
-      albumTitle: "Tu fiesta de XV",
-      addedAt: 1724300002000,
-    },
-    {
-      albumId: "kukis",
-      folder: "kukis",
-      image: "kukis 1.jpg",
-      albumTitle: "Kukiss",
-      addedAt: 1724300003000,
+      albumId: "sofi",
+      folder: "Sofi",
+      image: "sofi28.png",
+      albumTitle: "Sofi",
+      addedAt: 1790736645287,
     },
   ],
 };
@@ -86,12 +59,34 @@ async function readFavoritesFromFile(): Promise<FavoritesData> {
 }
 
 async function writeFavoritesToFile(data: FavoritesData): Promise<void> {
-  await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(FAVORITES_FILE, JSON.stringify(data, null, 2), "utf-8");
+  try {
+    await mkdir(DATA_DIR, { recursive: true });
+    await writeFile(FAVORITES_FILE, JSON.stringify(data, null, 2), "utf-8");
+  } catch (err) {
+    console.warn("No se pudo escribir archivo local de favoritos:", err);
+  }
 }
 
 export async function GET() {
   try {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase
+        .from("favorites")
+        .select("data")
+        .eq("id", "main")
+        .maybeSingle();
+
+      if (!error && data && data.data && typeof data.data === "object") {
+        const parsed = data.data as FavoritesData;
+        if (Array.isArray(parsed.axel) && Array.isArray(parsed.sofi)) {
+          writeFavoritesToFile(parsed).catch(() => {});
+          return NextResponse.json({ favorites: parsed });
+        }
+      } else if (error) {
+        console.warn("Supabase favorites GET error, usando respaldo local:", error.message);
+      }
+    }
+
     const favorites = await readFavoritesFromFile();
     return NextResponse.json({ favorites });
   } catch (error) {
@@ -149,6 +144,12 @@ export async function POST(request: Request) {
         { error: "Formato de datos no válido" },
         { status: 400 }
       );
+    }
+
+    if (isSupabaseConfigured && supabase) {
+      await supabase
+        .from("favorites")
+        .upsert({ id: "main", data: currentFavorites });
     }
 
     await writeFavoritesToFile(currentFavorites);

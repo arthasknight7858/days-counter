@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -30,12 +31,35 @@ async function readMessagesFromFile(): Promise<{ axel: string; sofi: string }> {
 }
 
 async function writeMessagesToFile(messages: { axel: string; sofi: string }): Promise<void> {
-  await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(MESSAGES_FILE, JSON.stringify(messages, null, 2), "utf-8");
+  try {
+    await mkdir(DATA_DIR, { recursive: true });
+    await writeFile(MESSAGES_FILE, JSON.stringify(messages, null, 2), "utf-8");
+  } catch (err) {
+    console.warn("No se pudo escribir archivo local de mensajes:", err);
+  }
 }
 
 export async function GET() {
   try {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase
+        .from("birthday_messages")
+        .select("axel, sofi")
+        .eq("id", "main")
+        .maybeSingle();
+
+      if (!error && data) {
+        const messages = {
+          axel: typeof data.axel === "string" ? data.axel : "",
+          sofi: typeof data.sofi === "string" ? data.sofi : "",
+        };
+        writeMessagesToFile(messages).catch(() => {});
+        return NextResponse.json({ messages });
+      } else if (error) {
+        console.warn("Supabase birthday-messages GET error, usando respaldo local:", error.message);
+      }
+    }
+
     const messages = await readMessagesFromFile();
     return NextResponse.json({ messages });
   } catch (error) {
@@ -56,6 +80,17 @@ export async function POST(request: Request) {
       if (typeof body.messages.sofi === "string") current.sofi = body.messages.sofi.trim().slice(0, 5000);
     } else {
       return NextResponse.json({ error: "Datos de mensaje no válidos" }, { status: 400 });
+    }
+
+    if (isSupabaseConfigured && supabase) {
+      await supabase
+        .from("birthday_messages")
+        .upsert({
+          id: "main",
+          axel: current.axel,
+          sofi: current.sofi,
+          updated_at: new Date().toISOString(),
+        });
     }
 
     await writeMessagesToFile(current);

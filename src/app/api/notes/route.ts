@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { CustomNote } from "@/types/notes";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -31,6 +32,48 @@ Recuerda que siempre estaré ahí para ti y escucharte, y te ayudaré en todo lo
   reactions: 5,
 };
 
+function toNoteRow(note: CustomNote) {
+  return {
+    id: note.id,
+    title: note.title,
+    content: note.content,
+    date: note.date,
+    color: note.color,
+    category: note.category,
+    emoji: note.emoji,
+    image_url: note.imageUrl || null,
+    media_url: note.mediaUrl || null,
+    media_type: note.mediaType || null,
+    media_name: note.mediaName || null,
+    media_size: note.mediaSize || null,
+    is_pinned: note.isPinned || false,
+    is_axel_special: note.isAxelSpecial || false,
+    created_at: note.createdAt,
+    reactions: note.reactions || 0,
+  };
+}
+
+function fromNoteRow(row: Record<string, unknown>): CustomNote {
+  return {
+    id: String(row.id),
+    title: String(row.title),
+    content: String(row.content),
+    date: String(row.date || ""),
+    color: (row.color as CustomNote["color"]) || "purple",
+    category: (row.category as CustomNote["category"]) || "amor",
+    emoji: String(row.emoji || "🌟"),
+    imageUrl: row.image_url ? String(row.image_url) : undefined,
+    mediaUrl: row.media_url ? String(row.media_url) : undefined,
+    mediaType: (row.media_type as CustomNote["mediaType"]) || undefined,
+    mediaName: row.media_name ? String(row.media_name) : undefined,
+    mediaSize: typeof row.media_size === "number" || typeof row.media_size === "string" ? Number(row.media_size) : undefined,
+    isPinned: Boolean(row.is_pinned),
+    isAxelSpecial: Boolean(row.is_axel_special),
+    createdAt: Number(row.created_at || Date.now()),
+    reactions: Number(row.reactions || 0),
+  };
+}
+
 async function readNotesFromFile(): Promise<CustomNote[]> {
   try {
     const content = await readFile(NOTES_FILE, "utf-8");
@@ -45,12 +88,37 @@ async function readNotesFromFile(): Promise<CustomNote[]> {
 }
 
 async function writeNotesToFile(notes: CustomNote[]): Promise<void> {
-  await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(NOTES_FILE, JSON.stringify(notes, null, 2), "utf-8");
+  try {
+    await mkdir(DATA_DIR, { recursive: true });
+    await writeFile(NOTES_FILE, JSON.stringify(notes, null, 2), "utf-8");
+  } catch (err) {
+    console.warn("No se pudo escribir archivo local de notas:", err);
+  }
 }
 
 export async function GET() {
   try {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase
+        .from("notes")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!error && Array.isArray(data)) {
+        if (data.length > 0) {
+          const notes = data.map((r: Record<string, unknown>) => fromNoteRow(r));
+          writeNotesToFile(notes).catch(() => {});
+          return NextResponse.json({ notes });
+        } else {
+          // Si la tabla está vacía, sembrar la nota de Axel
+          await supabase.from("notes").insert(toNoteRow(INITIAL_AXEL_NOTE));
+          return NextResponse.json({ notes: [INITIAL_AXEL_NOTE] });
+        }
+      } else if (error) {
+        console.warn("Supabase notes GET error, usando respaldo local:", error.message);
+      }
+    }
+
     const notes = await readNotesFromFile();
     return NextResponse.json({ notes });
   } catch (error) {
@@ -104,6 +172,9 @@ export async function POST(request: Request) {
     let updatedNotes: CustomNote[] = [];
 
     if (body.action === "delete" && typeof body.id === "string") {
+      if (isSupabaseConfigured && supabase) {
+        await supabase.from("notes").delete().eq("id", body.id);
+      }
       const currentNotes = await readNotesFromFile();
       updatedNotes = currentNotes.filter((n) => n.id !== body.id);
     } else if (Array.isArray(body.notes)) {
@@ -111,11 +182,21 @@ export async function POST(request: Request) {
         .map((item: unknown) => sanitizeNote(item))
         .filter((n: CustomNote | null): n is CustomNote => n !== null);
       updatedNotes = sanitized.slice(0, 500);
+
+      if (isSupabaseConfigured && supabase && updatedNotes.length > 0) {
+        const rows = updatedNotes.map(toNoteRow);
+        await supabase.from("notes").upsert(rows);
+      }
     } else if (body.note && typeof body.note === "object") {
       const sanitized = sanitizeNote(body.note);
       if (!sanitized) {
         return NextResponse.json({ error: "Datos de nota inválidos" }, { status: 400 });
       }
+
+      if (isSupabaseConfigured && supabase) {
+        await supabase.from("notes").upsert(toNoteRow(sanitized));
+      }
+
       const currentNotes = await readNotesFromFile();
       const existingIndex = currentNotes.findIndex((n) => n.id === sanitized.id);
       if (existingIndex >= 0) {
@@ -149,6 +230,11 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json({ error: "ID de nota requerido" }, { status: 400 });
     }
+
+    if (isSupabaseConfigured && supabase) {
+      await supabase.from("notes").delete().eq("id", id);
+    }
+
     const currentNotes = await readNotesFromFile();
     const updatedNotes = currentNotes.filter((n) => n.id !== id);
     await writeNotesToFile(updatedNotes);

@@ -91,13 +91,48 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    await writeFile(resolvedFilePath, buffer);
+    // 1. Intentar subir a Supabase Storage (para persistencia global en la nube)
+    let globalUrl: string | null = null;
+    const { supabase, isSupabaseConfigured } = await import("@/lib/supabase");
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { error: storageError } = await supabase.storage
+          .from("media_uploads")
+          .upload(fileName, buffer, {
+            contentType: file.type || "application/octet-stream",
+            upsert: true,
+          });
+
+        if (!storageError) {
+          const { data: publicUrlData } = supabase.storage
+            .from("media_uploads")
+            .getPublicUrl(fileName);
+
+          if (publicUrlData?.publicUrl) {
+            globalUrl = publicUrlData.publicUrl;
+          }
+        } else {
+          console.warn("Aviso: Supabase Storage error, guardando en disco local:", storageError.message);
+        }
+      } catch (uploadErr) {
+        console.warn("Aviso: Fallo conectando con Supabase Storage, usando respaldo local:", uploadErr);
+      }
+    }
+
+    // 2. Guardar también en disco local como respaldo
+    try {
+      await writeFile(resolvedFilePath, buffer);
+    } catch (diskErr) {
+      console.warn("No se pudo escribir en disco local:", diskErr);
+    }
 
     const mediaType = getMediaType(file.type || "", cleanExtension);
+    const finalUrl = globalUrl || `/uploads/${fileName}`;
 
     return NextResponse.json({
       success: true,
-      url: `/uploads/${fileName}`,
+      url: finalUrl,
       mediaType,
       mediaName: originalName,
       size: file.size,
