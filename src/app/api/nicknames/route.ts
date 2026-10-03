@@ -3,6 +3,13 @@ import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { Nickname } from "@/types/nicknames";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  checkRateLimit,
+  getClientIp,
+  sanitizeText,
+  verifyOriginOrCsrf,
+  isBotSubmission,
+} from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -11,130 +18,38 @@ const DATA_DIR = path.join(process.cwd(), "data");
 const NICKNAMES_FILE = path.join(DATA_DIR, "nicknames.json");
 
 const DEFAULT_NICKNAMES: Nickname[] = [
-  {
-    id: "nick-axel-1",
-    text: "Amor",
-    target: "sofi",
-    createdAt: 1724300000000,
-    hearts: 12,
-  },
-  {
-    id: "nick-axel-2",
-    text: "Mi amor",
-    target: "sofi",
-    createdAt: 1724300010000,
-    hearts: 15,
-  },
-  {
-    id: "nick-axel-3",
-    text: "Mi niña",
-    target: "sofi",
-    createdAt: 1724300020000,
-    hearts: 14,
-  },
-  {
-    id: "nick-axel-4",
-    text: "Mi chikis",
-    target: "sofi",
-    createdAt: 1724300030000,
-    hearts: 9,
-  },
-  {
-    id: "nick-axel-5",
-    text: "My little wifey",
-    target: "sofi",
-    createdAt: 1724300040000,
-    hearts: 16,
-  },
-  {
-    id: "nick-axel-6",
-    text: "Mi bebe",
-    target: "sofi",
-    createdAt: 1724300050000,
-    hearts: 10,
-  },
-  {
-    id: "nick-axel-7",
-    text: "Mi bebesita",
-    target: "sofi",
-    createdAt: 1724300060000,
-    hearts: 11,
-  },
-  {
-    id: "nick-axel-8",
-    text: "Mi cielo",
-    target: "sofi",
-    createdAt: 1724300070000,
-    hearts: 13,
-  },
-  {
-    id: "nick-axel-9",
-    text: "Mi corazon",
-    target: "sofi",
-    createdAt: 1724300080000,
-    hearts: 14,
-  },
-  {
-    id: "nick-axel-10",
-    text: "Mi vida",
-    target: "sofi",
-    createdAt: 1724300090000,
-    hearts: 17,
-  },
-  {
-    id: "nick-axel-11",
-    text: "Mi nalgona",
-    target: "sofi",
-    createdAt: 1724300100000,
-    hearts: 20,
-  },
-  {
-    id: "nick-sofi-1",
-    text: "Amor",
-    target: "axel",
-    createdAt: 1724300000000,
-    hearts: 12,
-  },
-  {
-    id: "nick-sofi-2",
-    text: "Mi amor",
-    target: "axel",
-    createdAt: 1724300010000,
-    hearts: 18,
-  },
-  {
-    id: "nick-sofi-3",
-    text: "Mi niño",
-    target: "axel",
-    createdAt: 1724300020000,
-    hearts: 15,
-  },
-  {
-    id: "nick-sofi-4",
-    text: "Mi cielo",
-    target: "axel",
-    createdAt: 1724300030000,
-    hearts: 13,
-  },
-  {
-    id: "nick-sofi-5",
-    text: "Mi vida",
-    target: "axel",
-    createdAt: 1724300040000,
-    hearts: 19,
-  },
+  { id: "nick-axel-1", text: "Amor", target: "sofi", createdAt: 1724300000000, hearts: 12 },
+  { id: "nick-axel-2", text: "Mi amor", target: "sofi", createdAt: 1724300010000, hearts: 15 },
+  { id: "nick-axel-3", text: "Mi niña", target: "sofi", createdAt: 1724300020000, hearts: 14 },
+  { id: "nick-axel-4", text: "Mi chikis", target: "sofi", createdAt: 1724300030000, hearts: 9 },
+  { id: "nick-axel-5", text: "My little wifey", target: "sofi", createdAt: 1724300040000, hearts: 16 },
+  { id: "nick-axel-6", text: "Mi bebe", target: "sofi", createdAt: 1724300050000, hearts: 10 },
+  { id: "nick-axel-7", text: "Mi bebesita", target: "sofi", createdAt: 1724300060000, hearts: 11 },
+  { id: "nick-axel-8", text: "Mi cielo", target: "sofi", createdAt: 1724300070000, hearts: 13 },
+  { id: "nick-axel-9", text: "Mi corazon", target: "sofi", createdAt: 1724300080000, hearts: 14 },
+  { id: "nick-axel-10", text: "Mi vida", target: "sofi", createdAt: 1724300090000, hearts: 17 },
+  { id: "nick-axel-11", text: "Mi nalgona", target: "sofi", createdAt: 1724300100000, hearts: 20 },
+  { id: "nick-sofi-1", text: "Amor", target: "axel", createdAt: 1724300000000, hearts: 12 },
+  { id: "nick-sofi-2", text: "Mi amor", target: "axel", createdAt: 1724300010000, hearts: 15 },
+  { id: "nick-sofi-3", text: "Mi nene", target: "axel", createdAt: 1724300020000, hearts: 18 },
+  { id: "nick-sofi-4", text: "Mi chiki", target: "axel", createdAt: 1724300030000, hearts: 11 },
+  { id: "nick-sofi-5", text: "My husband", target: "axel", createdAt: 1724300040000, hearts: 19 },
+  { id: "nick-sofi-6", text: "Mi bebe", target: "axel", createdAt: 1724300050000, hearts: 13 },
+  { id: "nick-sofi-7", text: "Mi cielo", target: "axel", createdAt: 1724300060000, hearts: 14 },
+  { id: "nick-sofi-8", text: "Mi corazon", target: "axel", createdAt: 1724300070000, hearts: 12 },
+  { id: "nick-sofi-9", text: "Mi vida", target: "axel", createdAt: 1724300080000, hearts: 16 },
+  { id: "nick-sofi-10", text: "Mi nalgon", target: "axel", createdAt: 1724300090000, hearts: 22 },
 ];
 
-function toNicknameRow(nickname: Nickname) {
+function toNicknameRow(item: Nickname) {
   return {
-    id: nickname.id,
-    text: nickname.text,
-    meaning: nickname.meaning || null,
-    target: nickname.target,
-    created_at: nickname.createdAt,
-    hearts: nickname.hearts ?? 1,
-    audio_url: nickname.audioUrl || null,
-    updated_at: new Date().toISOString(),
+    id: item.id,
+    text: item.text,
+    meaning: item.meaning || null,
+    target: item.target,
+    created_at: item.createdAt,
+    hearts: item.hearts || 1,
+    audio_url: item.audioUrl || null,
   };
 }
 
@@ -145,7 +60,7 @@ function fromNicknameRow(row: Record<string, unknown>): Nickname {
     meaning: row.meaning ? String(row.meaning) : undefined,
     target: row.target === "axel" ? "axel" : "sofi",
     createdAt: Number(row.created_at || Date.now()),
-    hearts: Number(row.hearts || 0),
+    hearts: Number(row.hearts || 1),
     audioUrl: row.audio_url ? String(row.audio_url) : undefined,
   };
 }
@@ -172,8 +87,14 @@ async function writeNicknamesToFile(nicknames: Nickname[]): Promise<void> {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = checkRateLimit(`get_nicks_${ip}`, 100, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Demasiadas solicitudes" }, { status: 429 });
+    }
+
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase
         .from("nicknames")
@@ -186,7 +107,6 @@ export async function GET() {
           writeNicknamesToFile(nicknames).catch(() => {});
           return NextResponse.json({ nicknames });
         } else {
-          // Si la tabla está vacía en Supabase, sembrar los apodos por defecto
           const rows = DEFAULT_NICKNAMES.map(toNicknameRow);
           await supabase.from("nicknames").insert(rows);
           return NextResponse.json({ nicknames: DEFAULT_NICKNAMES });
@@ -220,8 +140,8 @@ function sanitizeNickname(raw: unknown): Nickname | null {
 
   return {
     id: String(n.id || `nick-${Date.now()}`).slice(0, 60),
-    text: String(n.text).trim().slice(0, 80),
-    meaning: typeof n.meaning === "string" ? n.meaning.trim().slice(0, 300) : undefined,
+    text: sanitizeText(n.text, 80),
+    meaning: typeof n.meaning === "string" ? sanitizeText(n.meaning, 300) : undefined,
     target: n.target === "axel" ? "axel" : "sofi",
     createdAt: typeof n.createdAt === "number" ? n.createdAt : Date.now(),
     hearts: typeof n.hearts === "number" ? Math.max(0, n.hearts) : 0,
@@ -231,13 +151,28 @@ function sanitizeNickname(raw: unknown): Nickname | null {
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = checkRateLimit(`post_nicks_${ip}`, 45, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Límite de solicitudes superado." }, { status: 429 });
+    }
+
+    if (!verifyOriginOrCsrf(request)) {
+      return NextResponse.json({ error: "Petición no permitida (CORS/Origin)" }, { status: 403 });
+    }
+
     const body = await request.json();
+
+    if (isBotSubmission(body)) {
+      return NextResponse.json({ success: true, nicknames: [] });
+    }
+
     let currentNicknames = await readNicknamesFromFile();
 
     if (body.action === "add" && body.nickname && typeof body.nickname === "object") {
-      const rawText = String(body.nickname.text || "").trim().slice(0, 80);
-      const capitalizedText = rawText ? rawText.charAt(0).toUpperCase() + rawText.slice(1) : "";
-      
+      const sanitizedText = sanitizeText(body.nickname.text || "", 80);
+      const capitalizedText = sanitizedText ? sanitizedText.charAt(0).toUpperCase() + sanitizedText.slice(1) : "";
+
       if (!capitalizedText) {
         return NextResponse.json(
           { error: "El apodo no puede estar vacío" },
@@ -245,11 +180,15 @@ export async function POST(request: Request) {
         );
       }
 
-      const rawMeaning = body.nickname.meaning ? String(body.nickname.meaning).trim().slice(0, 300) : undefined;
+      const rawMeaning = body.nickname.meaning ? sanitizeText(body.nickname.meaning, 300) : undefined;
       const rawAudio = body.nickname.audioUrl ? String(body.nickname.audioUrl).trim() : undefined;
-      const safeAudio = rawAudio && (rawAudio.startsWith("/uploads/") || rawAudio.startsWith("blob:") || rawAudio.startsWith("https://"))
-        ? rawAudio.slice(0, 500)
-        : undefined;
+      const safeAudio =
+        rawAudio &&
+        (rawAudio.startsWith("/uploads/") ||
+          rawAudio.startsWith("blob:") ||
+          rawAudio.startsWith("https://"))
+          ? rawAudio.slice(0, 500)
+          : undefined;
 
       const newNickname: Nickname = {
         id: `nick-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -267,20 +206,22 @@ export async function POST(request: Request) {
 
       currentNicknames = [newNickname, ...currentNicknames];
     } else if (body.action === "delete" && typeof body.id === "string") {
+      const cleanId = String(body.id).trim().slice(0, 80);
       if (isSupabaseConfigured && supabase) {
-        await supabase.from("nicknames").delete().eq("id", body.id);
+        await supabase.from("nicknames").delete().eq("id", cleanId);
       }
-      currentNicknames = currentNicknames.filter((n) => n.id !== body.id);
+      currentNicknames = currentNicknames.filter((n) => n.id !== cleanId);
     } else if (body.action === "like" && typeof body.id === "string") {
+      const cleanId = String(body.id).trim().slice(0, 80);
       currentNicknames = currentNicknames.map((n) =>
-        n.id === body.id ? { ...n, hearts: Math.min(9999, (n.hearts || 0) + 1) } : n
+        n.id === cleanId ? { ...n, hearts: Math.min(9999, (n.hearts || 0) + 1) } : n
       );
-      const updatedItem = currentNicknames.find((n) => n.id === body.id);
+      const updatedItem = currentNicknames.find((n) => n.id === cleanId);
       if (isSupabaseConfigured && supabase && updatedItem) {
         await supabase
           .from("nicknames")
           .update({ hearts: updatedItem.hearts, updated_at: new Date().toISOString() })
-          .eq("id", body.id);
+          .eq("id", cleanId);
       }
     } else if (Array.isArray(body.nicknames)) {
       currentNicknames = body.nicknames

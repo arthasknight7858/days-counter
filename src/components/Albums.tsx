@@ -1623,7 +1623,7 @@ export default function Albums() {
                           ? `/uploads/${currentItem.image}`
                           : `/assets/${currentItem.folder}/${currentItem.image}`
                       }
-                      alt="Foto en grande"
+                      alt={`Recuerdo especial de Axel & Sofía - ${currentItem.folder}`}
                       className="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl border border-white/10"
                     />
 

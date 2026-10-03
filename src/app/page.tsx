@@ -49,7 +49,15 @@ const KeepInMindSection = dynamic(() => import("@/components/KeepInMindSection")
   loading: () => <SectionLoadingSkeleton title="Recomendaciones" />,
 });
 
-// 08.07.2026 - July 8th, 2026 (Definido fuera del componente para evitar re-instanciaciones)
+const LoveContactForm = dynamic(() => import("@/components/LoveContactForm"), {
+  loading: () => <SectionLoadingSkeleton title="Buzón de Mensajes" />,
+});
+
+const FaqAndReviewsSection = dynamic(() => import("@/components/FaqAndReviewsSection"), {
+  loading: () => <SectionLoadingSkeleton title="Preguntas Frecuentes y Recuerdos" />,
+});
+
+// 08.07.2026 - July 8th, 2026
 const START_DATE = new Date(2026, 6, 8, 0, 0, 0);
 
 const emptySubscribe = () => () => {};
@@ -62,6 +70,27 @@ export default function Home() {
     () => false
   );
 
+  const getSectionLabel = (sec: SectionType) => {
+    switch (sec) {
+      case "para-ti":
+        return "Para ti";
+      case "apodos":
+        return "Apodos";
+      case "cumpleanos":
+        return "Cumpleaños";
+      case "educativo":
+        return "Espacio Educativo";
+      case "ejercicio":
+        return "Rutinas de Ejercicio";
+      case "notas":
+        return "Tablón de Notas";
+      case "a-tener-en-cuenta":
+        return "Recomendaciones";
+      default:
+        return "Inicio";
+    }
+  };
+
   if (!mounted) {
     return (
       <main className="min-h-screen w-full relative flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden font-sans bg-[#070514]" suppressHydrationWarning>
@@ -72,7 +101,7 @@ export default function Home() {
 
   return (
     <MusicProvider>
-      <main className="min-h-screen w-full relative flex flex-col items-center justify-start p-4 sm:p-8 overflow-hidden font-sans" suppressHydrationWarning>
+      <main className="min-h-screen w-full relative flex flex-col items-center justify-start p-4 sm:p-8 pb-24 sm:pb-12 overflow-hidden font-sans" suppressHydrationWarning>
         <BackgroundEffects />
 
         <div className="z-10 flex flex-col items-center w-full max-w-4xl mx-auto">
@@ -128,8 +157,86 @@ export default function Home() {
           {/* Counter Component */}
           <Counter startDate={START_DATE} />
 
-          {/* Navigation Tabs (Para ti, Educativo, Ejercicio, Notas, A tener en cuenta) */}
+          {/* CTA ANTES DEL SCROLL (Above the fold CTA bar) */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.1 }}
+            className="flex flex-wrap items-center justify-center gap-2.5 my-5 z-10 px-2"
+          >
+            <button
+              onClick={() => {
+                setActiveSection("para-ti");
+                setTimeout(() => {
+                  const el = document.getElementById("buzon");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+              }}
+              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-lg shadow-purple-600/30 transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <span>💌</span>
+              <span>Dejar Mensajito</span>
+            </button>
+            <a
+              href="#musica"
+              onClick={() => setActiveSection("para-ti")}
+              className="px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-purple-200 hover:text-white border border-purple-500/20 text-xs sm:text-sm font-medium flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-xs"
+            >
+              <span>🎵</span>
+              <span>Nuestra Música</span>
+            </a>
+            <a
+              href="#albumes"
+              onClick={() => setActiveSection("para-ti")}
+              className="px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-purple-200 hover:text-white border border-purple-500/20 text-xs sm:text-sm font-medium flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-xs"
+            >
+              <span>📸</span>
+              <span>Ver Álbumes</span>
+            </a>
+            <button
+              onClick={() => {
+                setActiveSection("para-ti");
+                setTimeout(() => {
+                  const el = document.getElementById("faqs");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+              }}
+              className="px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-purple-200 hover:text-white border border-purple-500/20 text-xs sm:text-sm font-medium flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-xs cursor-pointer"
+            >
+              <span>✨</span>
+              <span>Hitos & FAQs</span>
+            </button>
+          </motion.div>
+
+          {/* Navigation Tabs */}
           <SectionTabs activeSection={activeSection} onChangeSection={setActiveSection} />
+
+          {/* MIGAS DE PAN (Breadcrumbs) */}
+          <nav aria-label="Migas de pan" className="z-10 flex items-center gap-2 text-xs text-purple-300/70 my-3 px-4 py-1.5 rounded-full bg-white/5 border border-purple-500/15 backdrop-blur-md">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveSection("para-ti");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="hover:text-purple-200 transition-colors flex items-center gap-1 cursor-pointer"
+            >
+              <span>🏠</span>
+              <span>Inicio</span>
+            </button>
+            <span className="text-purple-500/50">/</span>
+            <button
+              type="button"
+              onClick={() => setActiveSection("para-ti")}
+              className="hover:text-purple-200 transition-colors cursor-pointer"
+            >
+              Axel & Sofía
+            </button>
+            <span className="text-purple-500/50">/</span>
+            <span className="text-white font-medium">
+              {getSectionLabel(activeSection)}
+            </span>
+          </nav>
         </div>
 
         {/* Dynamic Sections Content */}
@@ -150,6 +257,8 @@ export default function Home() {
                   { label: "Sobre Sofi", icon: "🌸", href: "#sobre-sofi" },
                   { label: "Cartas", icon: "💌", href: "#cartas" },
                   { label: "Álbumes & Favoritas", icon: "📸", href: "#albumes" },
+                  { label: "Buzón de Amor", icon: "✍️", href: "#buzon" },
+                  { label: "Hitos & FAQs", icon: "❓", href: "#faqs" },
                 ].map((chip) => (
                   <a
                     key={chip.label}
@@ -180,6 +289,16 @@ export default function Home() {
               {/* Albums Section */}
               <div id="albumes" className="z-10 w-full mt-10">
                 <Albums />
+              </div>
+
+              {/* Love Contact Form (Buzón de Mensajes & Dedicatorias) */}
+              <div id="buzon" className="z-10 w-full mt-10">
+                <LoveContactForm />
+              </div>
+
+              {/* FAQs, Hitos, Equipo y Reseñas de Amor */}
+              <div id="faqs" className="z-10 w-full mt-10">
+                <FaqAndReviewsSection />
               </div>
             </motion.div>
           )}
@@ -268,6 +387,36 @@ export default function Home() {
           activeSection={activeSection}
           onGoToMusic={() => setActiveSection("para-ti")}
         />
+
+        {/* STICKY MOBILE NAVIGATION DOCK (CTA fijo en móvil) */}
+        <div className="sm:hidden fixed bottom-3 left-3 right-3 z-40 bg-slate-950/90 backdrop-blur-xl border border-purple-500/30 rounded-2xl py-2 px-3 flex items-center justify-around shadow-[0_10px_30px_rgba(168,85,247,0.35)]">
+          {[
+            { id: "para-ti", label: "Para ti", icon: "💖" },
+            { id: "notas", label: "Notas", icon: "💌" },
+            { id: "educativo", label: "Estudio", icon: "📚" },
+            { id: "ejercicio", label: "Fitness", icon: "⚡" },
+            { id: "apodos", label: "Apodos", icon: "✨" },
+          ].map((tab) => {
+            const isActive = activeSection === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  setActiveSection(tab.id as SectionType);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all cursor-pointer ${
+                  isActive
+                    ? "text-purple-300 font-semibold scale-110"
+                    : "text-purple-300/60 hover:text-white"
+                }`}
+              >
+                <span className="text-base leading-none">{tab.icon}</span>
+                <span className="text-[10px] leading-tight">{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
 
         {/* Floating Back to Top with circular scroll indicator */}
         <BackToTop />

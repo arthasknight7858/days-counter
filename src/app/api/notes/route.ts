@@ -3,6 +3,13 @@ import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { CustomNote } from "@/types/notes";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  checkRateLimit,
+  getClientIp,
+  sanitizeText,
+  isBotSubmission,
+  verifyOriginOrCsrf,
+} from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -96,8 +103,18 @@ async function writeNotesToFile(notes: CustomNote[]): Promise<void> {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Rate limit para prevenir scraping o saturación
+    const ip = getClientIp(request);
+    const rl = checkRateLimit(`get_notes_${ip}`, 120, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Demasiadas solicitudes. Por favor espera unos momentos." },
+        { status: 429, headers: { "Retry-After": String(rl.resetInSeconds) } }
+      );
+    }
+
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase
         .from("notes")
@@ -148,16 +165,16 @@ function sanitizeNote(n: unknown): CustomNote | null {
 
   return {
     id: raw.id.trim().slice(0, 100),
-    title: raw.title.slice(0, 300),
-    content: raw.content.slice(0, 50000),
-    date: typeof raw.date === "string" ? raw.date.slice(0, 100) : "",
+    title: sanitizeText(raw.title, 300),
+    content: sanitizeText(raw.content, 50000),
+    date: typeof raw.date === "string" ? sanitizeText(raw.date, 100) : "",
     color,
     category,
-    emoji: typeof raw.emoji === "string" ? raw.emoji.slice(0, 10) : "📝",
+    emoji: typeof raw.emoji === "string" ? sanitizeText(raw.emoji, 10) : "📝",
     imageUrl: typeof raw.imageUrl === "string" ? raw.imageUrl.slice(0, 2000) : undefined,
     mediaUrl: typeof raw.mediaUrl === "string" ? raw.mediaUrl.slice(0, 2000) : undefined,
     mediaType: raw.mediaType === "audio" || raw.mediaType === "video" || raw.mediaType === "image" ? raw.mediaType : undefined,
-    mediaName: typeof raw.mediaName === "string" ? raw.mediaName.slice(0, 200) : undefined,
+    mediaName: typeof raw.mediaName === "string" ? sanitizeText(raw.mediaName, 200) : undefined,
     mediaSize: typeof raw.mediaSize === "number" ? raw.mediaSize : undefined,
     isPinned: Boolean(raw.isPinned),
     isAxelSpecial: Boolean(raw.isAxelSpecial),
@@ -168,15 +185,36 @@ function sanitizeNote(n: unknown): CustomNote | null {
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request);
+    // Rate limit: 45 mutaciones por minuto por IP
+    const rl = checkRateLimit(`post_notes_${ip}`, 45, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Límite de solicitudes superado. Por favor espera." },
+        { status: 429, headers: { "Retry-After": String(rl.resetInSeconds) } }
+      );
+    }
+
+    if (!verifyOriginOrCsrf(request)) {
+      return NextResponse.json({ error: "Petición no autorizada (CSRF/Origin)" }, { status: 403 });
+    }
+
     const body = await request.json();
+
+    // Detección de bots
+    if (isBotSubmission(body)) {
+      return NextResponse.json({ success: true, count: 0, notes: [] });
+    }
+
     let updatedNotes: CustomNote[] = [];
 
     if (body.action === "delete" && typeof body.id === "string") {
+      const cleanId = String(body.id).trim().slice(0, 100);
       if (isSupabaseConfigured && supabase) {
-        await supabase.from("notes").delete().eq("id", body.id);
+        await supabase.from("notes").delete().eq("id", cleanId);
       }
       const currentNotes = await readNotesFromFile();
-      updatedNotes = currentNotes.filter((n) => n.id !== body.id);
+      updatedNotes = currentNotes.filter((n) => n.id !== cleanId);
     } else if (Array.isArray(body.notes)) {
       const sanitized = body.notes
         .map((item: unknown) => sanitizeNote(item))
@@ -225,18 +263,32 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = checkRateLimit(`delete_notes_${ip}`, 30, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Límite de solicitudes superado." },
+        { status: 429 }
+      );
+    }
+
+    if (!verifyOriginOrCsrf(request)) {
+      return NextResponse.json({ error: "Petición no autorizada" }, { status: 403 });
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     if (!id) {
       return NextResponse.json({ error: "ID de nota requerido" }, { status: 400 });
     }
+    const cleanId = id.trim().slice(0, 100);
 
     if (isSupabaseConfigured && supabase) {
-      await supabase.from("notes").delete().eq("id", id);
+      await supabase.from("notes").delete().eq("id", cleanId);
     }
 
     const currentNotes = await readNotesFromFile();
-    const updatedNotes = currentNotes.filter((n) => n.id !== id);
+    const updatedNotes = currentNotes.filter((n) => n.id !== cleanId);
     await writeNotesToFile(updatedNotes);
     return NextResponse.json({ success: true, count: updatedNotes.length, notes: updatedNotes });
   } catch (error) {

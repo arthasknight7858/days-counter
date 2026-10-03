@@ -3,6 +3,12 @@ import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { FavoritesData, FavoritePhoto } from "@/types/favorites";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  checkRateLimit,
+  getClientIp,
+  verifyOriginOrCsrf,
+  isBotSubmission,
+} from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -67,8 +73,14 @@ async function writeFavoritesToFile(data: FavoritesData): Promise<void> {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = checkRateLimit(`get_favs_${ip}`, 100, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Demasiadas peticiones" }, { status: 429 });
+    }
+
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase
         .from("favorites")
@@ -97,7 +109,22 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = checkRateLimit(`post_favs_${ip}`, 60, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Límite de solicitudes superado." }, { status: 429 });
+    }
+
+    if (!verifyOriginOrCsrf(request)) {
+      return NextResponse.json({ error: "Petición no permitida (CORS/Origin)" }, { status: 403 });
+    }
+
     const body = await request.json();
+
+    if (isBotSubmission(body)) {
+      return NextResponse.json({ success: true, favorites: DEFAULT_FAVORITES });
+    }
+
     let currentFavorites = await readFavoritesFromFile();
 
     if (body.favorites && Array.isArray(body.favorites.axel) && Array.isArray(body.favorites.sofi)) {

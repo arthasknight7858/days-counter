@@ -2,6 +2,13 @@ import { NextResponse } from "next/server";
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  checkRateLimit,
+  getClientIp,
+  sanitizeText,
+  verifyOriginOrCsrf,
+  isBotSubmission,
+} from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -39,8 +46,14 @@ async function writeMessagesToFile(messages: { axel: string; sofi: string }): Pr
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = checkRateLimit(`get_bday_${ip}`, 100, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Demasiadas peticiones" }, { status: 429 });
+    }
+
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase
         .from("birthday_messages")
@@ -70,14 +83,29 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = checkRateLimit(`post_bday_${ip}`, 30, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Límite de solicitudes superado." }, { status: 429 });
+    }
+
+    if (!verifyOriginOrCsrf(request)) {
+      return NextResponse.json({ error: "Petición no permitida (CORS/Origin)" }, { status: 403 });
+    }
+
     const body = await request.json();
+
+    if (isBotSubmission(body)) {
+      return NextResponse.json({ success: true, messages: DEFAULT_MESSAGES });
+    }
+
     const current = await readMessagesFromFile();
 
     if (body.person === "axel" || body.person === "sofi") {
-      current[body.person as "axel" | "sofi"] = String(body.message || "").trim().slice(0, 5000);
+      current[body.person as "axel" | "sofi"] = sanitizeText(body.message, 5000);
     } else if (body.messages && typeof body.messages === "object") {
-      if (typeof body.messages.axel === "string") current.axel = body.messages.axel.trim().slice(0, 5000);
-      if (typeof body.messages.sofi === "string") current.sofi = body.messages.sofi.trim().slice(0, 5000);
+      if (typeof body.messages.axel === "string") current.axel = sanitizeText(body.messages.axel, 5000);
+      if (typeof body.messages.sofi === "string") current.sofi = sanitizeText(body.messages.sofi, 5000);
     } else {
       return NextResponse.json({ error: "Datos de mensaje no válidos" }, { status: 400 });
     }

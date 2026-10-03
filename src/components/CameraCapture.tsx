@@ -267,7 +267,7 @@ export default function CameraCapture({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={photoDataUrl}
-            alt="Foto capturada"
+            alt="Fotografía recién capturada con la cámara para compartir"
             className="w-full h-full object-cover"
           />
         )}

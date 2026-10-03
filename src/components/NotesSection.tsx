@@ -1424,7 +1424,7 @@ export default function NotesSection() {
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={formMediaUrl}
-                            alt="Vista previa"
+                            alt="Vista previa de imagen adjunta a la nota de amor"
                             className="w-full h-full object-cover"
                           />
                           <button
@@ -1550,7 +1550,7 @@ export default function NotesSection() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewImage}
-                alt="Foto adjunta"
+                alt="Fotografía o recuerdo ampliado adjunto a la nota de amor"
                 className="max-h-[80vh] w-auto rounded-2xl object-contain shadow-2xl border border-purple-500/30"
               />
               <button
