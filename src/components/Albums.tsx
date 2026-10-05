@@ -26,6 +26,22 @@ import { uploadMediaFile } from "@/lib/notesStorage";
 
 const FAVORITES_STORAGE_KEY = "sofi_axel_favorites_cache";
 
+export function getPhotoSrc(folder: string, image: string): string {
+  if (!image) return "";
+  if (
+    image.startsWith("http://") ||
+    image.startsWith("https://") ||
+    image.startsWith("data:") ||
+    image.startsWith("blob:")
+  ) {
+    return image;
+  }
+  if (folder === "uploads") {
+    return image.startsWith("/uploads/") ? image : `/uploads/${image}`;
+  }
+  return `/assets/${folder}/${image}`;
+}
+
 interface AlbumItem {
   id: string;
   icon: string;
@@ -449,33 +465,55 @@ export default function Albums() {
     [quickSelectMode, quickSelectTarget, toggleFavorite, isFavorite]
   );
 
-  const handlePhotoCapturedOrUploaded = async (file: File) => {
+  const handlePhotosUploaded = async (files: FileList | File[] | File) => {
+    const fileArray = files instanceof File ? [files] : Array.from(files);
+    if (fileArray.length === 0) return;
+
     setIsCapturingWithCamera(false);
     setPhotoUploadError(null);
     setIsUploadingPhoto(true);
 
     try {
-      const uploadResult = await uploadMediaFile(file);
-      const fileName = uploadResult.url.replace(/^\/uploads\//, "");
-      const newFav: FavoritePhoto = {
-        albumId: targetPersonForPhoto === "axel" ? "fav-axel" : "fav-sofi",
-        folder: "uploads",
-        image: fileName,
-        albumTitle: targetPersonForPhoto === "axel" ? "Favoritas de Axel" : "Favoritas de Sofi",
-        addedAt: Date.now(),
-      };
+      const newFavs: FavoritePhoto[] = [];
 
-      const updatedFavorites: FavoritesData = {
-        ...favorites,
-        [targetPersonForPhoto]: [newFav, ...(favorites[targetPersonForPhoto] || [])],
-      };
-      saveFavorites(updatedFavorites);
-      setIsAddingPhoto(false);
-      showToast(
-        targetPersonForPhoto === "axel"
-          ? "¡Foto agregada a las Favoritas de Axel! 🧑📸"
-          : "¡Foto agregada a las Favoritas de Sofi! 💖📸"
-      );
+      for (const file of fileArray) {
+        try {
+          const uploadResult = await uploadMediaFile(file);
+          const imageIdentifier = uploadResult.url.startsWith("/uploads/")
+            ? uploadResult.url.replace(/^\/uploads\//, "")
+            : uploadResult.url;
+
+          newFavs.push({
+            albumId: targetPersonForPhoto === "axel" ? "fav-axel" : "fav-sofi",
+            folder: "uploads",
+            image: imageIdentifier,
+            albumTitle: targetPersonForPhoto === "axel" ? "Favoritas de Axel" : "Favoritas de Sofi",
+            addedAt: Date.now(),
+          });
+        } catch (singleErr) {
+          console.warn("Aviso al subir foto individual:", singleErr);
+        }
+      }
+
+      if (newFavs.length > 0) {
+        const updatedFavorites: FavoritesData = {
+          ...favorites,
+          [targetPersonForPhoto]: [...newFavs, ...(favorites[targetPersonForPhoto] || [])],
+        };
+        saveFavorites(updatedFavorites);
+        setIsAddingPhoto(false);
+        showToast(
+          targetPersonForPhoto === "axel"
+            ? (newFavs.length === 1
+                ? "¡Foto agregada a las Favoritas de Axel! 🧑📸"
+                : `¡${newFavs.length} fotos agregadas a Favoritas de Axel! 🧑📸`)
+            : (newFavs.length === 1
+                ? "¡Foto agregada a las Favoritas de Sofi! 💖📸"
+                : `¡${newFavs.length} fotos agregadas a Favoritas de Sofi! 💖📸`)
+        );
+      } else {
+        throw new Error("No se pudo procesar la foto.");
+      }
     } catch (err: unknown) {
       console.error("Error uploading photo:", err);
       setPhotoUploadError(
@@ -605,8 +643,8 @@ export default function Albums() {
 
   const handleDownload = (folder: string, img: string) => {
     const link = document.createElement("a");
-    link.href = folder === "uploads" ? `/uploads/${img}` : `/assets/${folder}/${img}`;
-    link.download = img;
+    link.href = getPhotoSrc(folder, img);
+    link.download = img.split("/").pop() || "foto_recuerdo.jpg";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -744,11 +782,13 @@ export default function Albums() {
         <input
           type="file"
           ref={photoFileInputRef}
-          accept="image/jpeg,image/png,image/webp,image/jpg"
+          accept="image/*,.heic,.heif,.avif,.webp,.png,.jpg,.jpeg"
+          multiple
           className="hidden"
           onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) handlePhotoCapturedOrUploaded(file);
+            if (e.target.files && e.target.files.length > 0) {
+              handlePhotosUploaded(e.target.files);
+            }
           }}
         />
 
@@ -769,7 +809,7 @@ export default function Albums() {
                   <div>
                     <h3 className="text-base font-bold text-white">Capturar o Guardar Foto Especial</h3>
                     <p className="text-xs text-purple-200/70">
-                      Tómate una foto o sube una imagen y guárdala directamente en favoritas
+                      Tómate una foto o sube cualquier imagen y guárdala directamente en favoritas
                     </p>
                   </div>
                 </div>
@@ -823,7 +863,7 @@ export default function Albums() {
               {/* Action method */}
               {isCapturingWithCamera ? (
                 <CameraCapture
-                  onPhotoCaptured={handlePhotoCapturedOrUploaded}
+                  onPhotoCaptured={(file) => handlePhotosUploaded([file])}
                   onCancel={() => setIsCapturingWithCamera(false)}
                   title={`Tomar Foto para ${
                     targetPersonForPhoto === "axel" ? "Axel" : "Sofi"
@@ -833,7 +873,7 @@ export default function Albums() {
                 <div className="py-8 px-4 rounded-2xl bg-black/40 border border-purple-500/30 text-center flex flex-col items-center justify-center gap-2 text-xs text-purple-200">
                   <Loader2 className="w-6 h-6 text-pink-400 animate-spin" />
                   <span className="font-semibold text-white">
-                    Guardando foto en el álbum...
+                    Guardando fotos en el álbum...
                   </span>
                 </div>
               ) : (
@@ -862,7 +902,7 @@ export default function Albums() {
                     </div>
                     <div className="text-left">
                       <div className="font-bold text-white">Subir desde archivo</div>
-                      <div className="text-[10px] text-purple-300/70">Selecciona JPG, PNG o WebP</div>
+                      <div className="text-[10px] text-purple-300/70">Cualquier foto (JPG, PNG, HEIC, WebP...)</div>
                     </div>
                   </button>
                 </div>
@@ -974,11 +1014,7 @@ export default function Albums() {
                                 }}
                               >
                                 <img
-                                  src={
-                                    fav.folder === "uploads"
-                                      ? `/uploads/${fav.image}`
-                                      : `/assets/${fav.folder}/${fav.image}`
-                                  }
+                                  src={getPhotoSrc(fav.folder, fav.image)}
                                   alt={`Favorita de Axel ${i + 1}`}
                                   loading="lazy"
                                   decoding="async"
@@ -1115,11 +1151,7 @@ export default function Albums() {
                                 }}
                               >
                                 <img
-                                  src={
-                                    fav.folder === "uploads"
-                                      ? `/uploads/${fav.image}`
-                                      : `/assets/${fav.folder}/${fav.image}`
-                                  }
+                                  src={getPhotoSrc(fav.folder, fav.image)}
                                   alt={`Favorita de Sofi ${i + 1}`}
                                   loading="lazy"
                                   decoding="async"
@@ -1623,11 +1655,7 @@ export default function Albums() {
                     title="Doble clic para guardar en favoritas ❤️"
                   >
                     <img
-                      src={
-                        currentItem.folder === "uploads"
-                          ? `/uploads/${currentItem.image}`
-                          : `/assets/${currentItem.folder}/${currentItem.image}`
-                      }
+                      src={getPhotoSrc(currentItem.folder, currentItem.image)}
                       alt={`Recuerdo especial de Axel & Sofía - ${currentItem.folder}`}
                       className="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl border border-white/10"
                     />

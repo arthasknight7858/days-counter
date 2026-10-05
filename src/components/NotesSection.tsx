@@ -628,12 +628,12 @@ export default function NotesSection() {
   // File accept attribute based on selected media type
   const fileAcceptString = useMemo(() => {
     if (mediaUploadType === "audio") {
-      return "audio/*,.mp3,.wav,.m4a,.ogg,.aac,.webm";
+      return "audio/*,.mp3,.wav,.m4a,.ogg,.aac,.flac,.opus,.weba";
     }
     if (mediaUploadType === "video") {
-      return "video/*,.mp4,.webm,.mov,.mkv";
+      return "video/*,.mp4,.webm,.mov,.mkv,.avi,.3gp,.m4v";
     }
-    return "image/*";
+    return "image/*,.heic,.heif,.avif,.webp,.png,.jpg,.jpeg";
   }, [mediaUploadType]);
 
   return (

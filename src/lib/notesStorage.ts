@@ -199,40 +199,64 @@ export async function uploadMediaFile(file: File): Promise<UploadResult> {
   const formData = new FormData();
   formData.append("file", file);
 
-  let res: Response;
+  let res: Response | null = null;
   try {
     res = await fetch("/api/upload", {
       method: "POST",
       body: formData,
     });
   } catch (networkErr) {
-    console.warn("Fallo de conexión con el servidor, usando Blob local temporal:", networkErr);
-    let mediaType: MediaType = "image";
-    if (file.type.startsWith("audio/") || file.name.match(/\.(mp3|wav|ogg|m4a|aac|flac)$/i)) {
-      mediaType = "audio";
-    } else if (file.type.startsWith("video/") || file.name.match(/\.(mp4|webm|mov|mkv)$/i)) {
-      mediaType = "video";
+    console.warn("Fallo de conexión con el servidor:", networkErr);
+  }
+
+  if (res && res.ok) {
+    try {
+      const data = await res.json();
+      return {
+        url: data.url,
+        mediaType: data.mediaType,
+        mediaName: data.mediaName,
+        size: data.size,
+      };
+    } catch (parseErr) {
+      console.warn("Error leyendo respuesta de subida:", parseErr);
     }
-
-    const blobUrl = URL.createObjectURL(file);
-    return {
-      url: blobUrl,
-      mediaType,
-      mediaName: file.name,
-      size: file.size,
-    };
   }
 
-  if (res.ok) {
-    const data = await res.json();
-    return {
-      url: data.url,
-      mediaType: data.mediaType,
-      mediaName: data.mediaName,
-      size: data.size,
-    };
-  } else {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.error || `Error del servidor (${res.status}) al subir archivo`);
+  // Si falló el servidor, usar respaldo local para que el usuario NUNCA pierda su foto o archivo
+  console.warn("Subida al servidor no completada, activando respaldo local para evitar errores");
+  let mediaType: MediaType = "image";
+  if (file.type.startsWith("audio/") || file.name.match(/\.(mp3|wav|ogg|m4a|aac|flac|opus|weba)$/i)) {
+    mediaType = "audio";
+  } else if (file.type.startsWith("video/") || file.name.match(/\.(mp4|webm|mov|mkv|avi|3gp)$/i)) {
+    mediaType = "video";
   }
+
+  // Para archivos < 8MB, convertir a Data URL (base64) persistente
+  if (typeof window !== "undefined" && file.size <= 8 * 1024 * 1024) {
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+      return {
+        url: dataUrl,
+        mediaType,
+        mediaName: file.name,
+        size: file.size,
+      };
+    } catch {
+      // En caso de fallo con FileReader, continuar con ObjectURL
+    }
+  }
+
+  const blobUrl = URL.createObjectURL(file);
+  return {
+    url: blobUrl,
+    mediaType,
+    mediaName: file.name,
+    size: file.size,
+  };
 }

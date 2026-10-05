@@ -137,7 +137,16 @@ export async function POST(request: Request) {
       }
 
       const safeFolder = path.basename(String(rawItem.folder)).replace(/[^a-zA-Z0-9_\-\s]/g, "");
-      const safeImage = path.basename(String(rawItem.image)).replace(/[^a-zA-Z0-9_\-.\s]/g, "");
+      const imgStr = String(rawItem.image).trim();
+      const isExternalOrDataUrl =
+        imgStr.startsWith("http://") ||
+        imgStr.startsWith("https://") ||
+        imgStr.startsWith("data:") ||
+        imgStr.startsWith("blob:");
+
+      const safeImage = isExternalOrDataUrl
+        ? imgStr
+        : path.basename(imgStr).replace(/[^a-zA-Z0-9_\-.\s]/g, "");
       const safeTitle = typeof rawItem.albumTitle === "string" ? rawItem.albumTitle.slice(0, 100) : "Álbum";
       const safeAlbumId = typeof rawItem.albumId === "string" ? rawItem.albumId.slice(0, 50) : "album";
 

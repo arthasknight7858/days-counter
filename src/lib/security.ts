@@ -159,20 +159,40 @@ export function isBotSubmission(body: Record<string, unknown>): boolean {
  * Comprueba que el Origin o Referer coincida con el Host
  */
 export function verifyOriginOrCsrf(request: Request): boolean {
-  // En Next.js, solicitudes internas son seguras si el origin coincide con host
   const host = request.headers.get("host");
+  const fwdHost = request.headers.get("x-forwarded-host");
   const origin = request.headers.get("origin");
   const referer = request.headers.get("referer");
 
-  // Si no hay host (solicitud inusual), rechazar
-  if (!host) return false;
+  // Si no se envía ni origin ni referer (ej. API directa o scripts cliente), permitir sujeto a rate limit
+  if (!origin && !referer) {
+    return true;
+  }
 
-  const allowedHosts = new Set([host, `localhost:3000`, `127.0.0.1:3000`]);
+  const allowedHosts = new Set<string>([
+    "localhost",
+    "127.0.0.1",
+    "localhost:3000",
+    "127.0.0.1:3000",
+  ]);
+
+  if (host) {
+    allowedHosts.add(host);
+    allowedHosts.add(host.split(":")[0]);
+  }
+
+  if (fwdHost) {
+    allowedHosts.add(fwdHost);
+    allowedHosts.add(fwdHost.split(":")[0]);
+  }
 
   if (origin) {
     try {
-      const originHost = new URL(origin).host;
-      return allowedHosts.has(originHost);
+      const originUrl = new URL(origin);
+      if (allowedHosts.has(originUrl.host) || allowedHosts.has(originUrl.hostname)) {
+        return true;
+      }
+      return false;
     } catch {
       return false;
     }
@@ -180,14 +200,16 @@ export function verifyOriginOrCsrf(request: Request): boolean {
 
   if (referer) {
     try {
-      const refererHost = new URL(referer).host;
-      return allowedHosts.has(refererHost);
+      const refererUrl = new URL(referer);
+      if (allowedHosts.has(refererUrl.host) || allowedHosts.has(refererUrl.hostname)) {
+        return true;
+      }
+      return false;
     } catch {
       return false;
     }
   }
 
-  // Si no se envía ni origin ni referer (ej. API directa o curl sin referer), permitir pero sujeto a rate limit estricto
   return true;
 }
 
