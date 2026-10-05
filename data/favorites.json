@@ -94,9 +94,93 @@
   ],
   "sofi": [
     {
-      "image": "sofi46.jpeg",
+      "image": "axel27.jpeg",
+      "folder": "axel",
+      "addedAt": 1791209369349,
+      "albumId": "axel",
+      "albumTitle": "Axel"
+    },
+    {
+      "image": "axel22.jpeg",
+      "folder": "axel",
+      "addedAt": 1791209345089,
+      "albumId": "axel",
+      "albumTitle": "Axel"
+    },
+    {
+      "image": "juntos10.jpeg",
+      "folder": "juntos",
+      "addedAt": 1790877197312,
+      "albumId": "juntos",
+      "albumTitle": "Juntos"
+    },
+    {
+      "image": "axel1.jpeg",
+      "folder": "axel",
+      "addedAt": 1790877047051,
+      "albumId": "axel",
+      "albumTitle": "Axel"
+    },
+    {
+      "image": "axel7.jpeg",
+      "folder": "axel",
+      "addedAt": 1790877043061,
+      "albumId": "axel",
+      "albumTitle": "Axel"
+    },
+    {
+      "image": "axel19.jpeg",
+      "folder": "axel",
+      "addedAt": 1790877032387,
+      "albumId": "axel",
+      "albumTitle": "Axel"
+    },
+    {
+      "image": "axel26.jpeg",
+      "folder": "axel",
+      "addedAt": 1790877028777,
+      "albumId": "axel",
+      "albumTitle": "Axel"
+    },
+    {
+      "image": "axel21.jpeg",
+      "folder": "axel",
+      "addedAt": 1790877021749,
+      "albumId": "axel",
+      "albumTitle": "Axel"
+    },
+    {
+      "image": "axel15.jpeg",
+      "folder": "axel",
+      "addedAt": 1790877018029,
+      "albumId": "axel",
+      "albumTitle": "Axel"
+    },
+    {
+      "image": "axel14.jpeg",
+      "folder": "axel",
+      "addedAt": 1790877013163,
+      "albumId": "axel",
+      "albumTitle": "Axel"
+    },
+    {
+      "image": "sofi66.jpeg",
       "folder": "Sofi",
-      "addedAt": 1790810826279,
+      "addedAt": 1790876945568,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi54.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790876921247,
+      "albumId": "sofi",
+      "albumTitle": "Sofi"
+    },
+    {
+      "image": "sofi63.jpeg",
+      "folder": "Sofi",
+      "addedAt": 1790876881306,
       "albumId": "sofi",
       "albumTitle": "Sofi"
     },
@@ -104,20 +188,6 @@
       "image": "sofi62.jpeg",
       "folder": "Sofi",
       "addedAt": 1790810813993,
-      "albumId": "sofi",
-      "albumTitle": "Sofi"
-    },
-    {
-      "image": "sofi66.jpeg",
-      "folder": "Sofi",
-      "addedAt": 1790810807392,
-      "albumId": "sofi",
-      "albumTitle": "Sofi"
-    },
-    {
-      "image": "sofi67.jpeg",
-      "folder": "Sofi",
-      "addedAt": 1790810805428,
       "albumId": "sofi",
       "albumTitle": "Sofi"
     },
@@ -146,13 +216,6 @@
       "image": "sofi73.jpeg",
       "folder": "Sofi",
       "addedAt": 1790810799543,
-      "albumId": "sofi",
-      "albumTitle": "Sofi"
-    },
-    {
-      "image": "sofi28.png",
-      "folder": "Sofi",
-      "addedAt": 1790736645287,
       "albumId": "sofi",
       "albumTitle": "Sofi"
     }

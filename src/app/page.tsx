@@ -53,10 +53,6 @@ const LoveContactForm = dynamic(() => import("@/components/LoveContactForm"), {
   loading: () => <SectionLoadingSkeleton title="Buzón de Mensajes" />,
 });
 
-const FaqAndReviewsSection = dynamic(() => import("@/components/FaqAndReviewsSection"), {
-  loading: () => <SectionLoadingSkeleton title="Preguntas Frecuentes y Recuerdos" />,
-});
-
 // 08.07.2026 - July 8th, 2026
 const START_DATE = new Date(2026, 6, 8, 0, 0, 0);
 
@@ -193,19 +189,6 @@ export default function Home() {
               <span>📸</span>
               <span>Ver Álbumes</span>
             </a>
-            <button
-              onClick={() => {
-                setActiveSection("para-ti");
-                setTimeout(() => {
-                  const el = document.getElementById("faqs");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }, 100);
-              }}
-              className="px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-purple-200 hover:text-white border border-purple-500/20 text-xs sm:text-sm font-medium flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-xs cursor-pointer"
-            >
-              <span>✨</span>
-              <span>Hitos & FAQs</span>
-            </button>
           </motion.div>
 
           {/* Navigation Tabs */}
@@ -258,7 +241,6 @@ export default function Home() {
                   { label: "Cartas", icon: "💌", href: "#cartas" },
                   { label: "Álbumes & Favoritas", icon: "📸", href: "#albumes" },
                   { label: "Buzón de Amor", icon: "✍️", href: "#buzon" },
-                  { label: "Hitos & FAQs", icon: "❓", href: "#faqs" },
                 ].map((chip) => (
                   <a
                     key={chip.label}
@@ -294,11 +276,6 @@ export default function Home() {
               {/* Love Contact Form (Buzón de Mensajes & Dedicatorias) */}
               <div id="buzon" className="z-10 w-full mt-10">
                 <LoveContactForm />
-              </div>
-
-              {/* FAQs, Hitos, Equipo y Reseñas de Amor */}
-              <div id="faqs" className="z-10 w-full mt-10">
-                <FaqAndReviewsSection />
               </div>
             </motion.div>
           )}
