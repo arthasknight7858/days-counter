@@ -49,6 +49,7 @@ const DEFAULT_FAVORITES: FavoritesData = {
       addedAt: 1790736645287,
     },
   ],
+  customPhotos: {},
 };
 
 async function readFavoritesFromFile(): Promise<FavoritesData> {

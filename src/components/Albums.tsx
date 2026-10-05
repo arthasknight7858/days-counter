@@ -151,6 +151,7 @@ const albums: AlbumItem[] = [
       "sofi72.jpeg",
       "sofi73.jpeg",
       "sofi74.jpeg",
+      "sofi75.jpeg",
     ],
   },
   {
@@ -308,10 +309,10 @@ export default function Albums() {
   const [isSlideshow, setIsSlideshow] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Estados para tomar o agregar foto en vivo a favoritas
+  // Estados para tomar o agregar foto en vivo a favoritas o a álbumes
   const [isAddingPhoto, setIsAddingPhoto] = useState(false);
   const [isCapturingWithCamera, setIsCapturingWithCamera] = useState(false);
-  const [targetPersonForPhoto, setTargetPersonForPhoto] = useState<"axel" | "sofi">("axel");
+  const [targetDestination, setTargetDestination] = useState<string>("fav-axel");
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [photoUploadError, setPhotoUploadError] = useState<string | null>(null);
   const photoFileInputRef = useRef<HTMLInputElement | null>(null);
@@ -350,6 +351,45 @@ export default function Albums() {
     }, 1200);
   }, []);
 
+  // Guardar favoritos
+  const saveFavorites = useCallback((newFavs: FavoritesData) => {
+    setFavorites(newFavs);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(newFavs));
+    }
+    fetch("/api/favorites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ favorites: newFavs }),
+    }).catch((e) => console.error("Error saving favorites to API:", e));
+  }, []);
+
+  const getAlbumAllImages = useCallback(
+    (album: AlbumItem): string[] => {
+      const custom = favorites.customPhotos?.[album.id] || [];
+      return [...custom, ...album.images];
+    },
+    [favorites.customPhotos]
+  );
+
+  const removeCustomPhotoFromAlbum = useCallback(
+    (albumId: string, imgUrl: string, e?: React.MouseEvent) => {
+      if (e) e.stopPropagation();
+      const existing = favorites.customPhotos?.[albumId] || [];
+      const updated = existing.filter((item) => item !== imgUrl);
+      const updatedFavorites: FavoritesData = {
+        ...favorites,
+        customPhotos: {
+          ...(favorites.customPhotos || {}),
+          [albumId]: updated,
+        },
+      };
+      saveFavorites(updatedFavorites);
+      showToast("Foto eliminada del álbum 🗑️");
+    },
+    [favorites, saveFavorites, showToast]
+  );
+
   // Sincronizar favoritos con servidor al montar
   useEffect(() => {
     let isCancelled = false;
@@ -368,19 +408,6 @@ export default function Albums() {
     return () => {
       isCancelled = true;
     };
-  }, []);
-
-  // Guardar favoritos
-  const saveFavorites = useCallback((newFavs: FavoritesData) => {
-    setFavorites(newFavs);
-    if (typeof window !== "undefined") {
-      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(newFavs));
-    }
-    fetch("/api/favorites", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ favorites: newFavs }),
-    }).catch((e) => console.error("Error saving favorites to API:", e));
   }, []);
 
   const isFavorite = useCallback(
@@ -474,45 +501,83 @@ export default function Albums() {
     setIsUploadingPhoto(true);
 
     try {
-      const newFavs: FavoritePhoto[] = [];
+      if (targetDestination === "fav-axel" || targetDestination === "fav-sofi") {
+        const person = targetDestination === "fav-axel" ? "axel" : "sofi";
+        const newFavs: FavoritePhoto[] = [];
 
-      for (const file of fileArray) {
-        try {
-          const uploadResult = await uploadMediaFile(file);
-          const imageIdentifier = uploadResult.url.startsWith("/uploads/")
-            ? uploadResult.url.replace(/^\/uploads\//, "")
-            : uploadResult.url;
+        for (const file of fileArray) {
+          try {
+            const uploadResult = await uploadMediaFile(file);
+            const imageIdentifier = uploadResult.url.startsWith("/uploads/")
+              ? uploadResult.url.replace(/^\/uploads\//, "")
+              : uploadResult.url;
 
-          newFavs.push({
-            albumId: targetPersonForPhoto === "axel" ? "fav-axel" : "fav-sofi",
-            folder: "uploads",
-            image: imageIdentifier,
-            albumTitle: targetPersonForPhoto === "axel" ? "Favoritas de Axel" : "Favoritas de Sofi",
-            addedAt: Date.now(),
-          });
-        } catch (singleErr) {
-          console.warn("Aviso al subir foto individual:", singleErr);
+            newFavs.push({
+              albumId: targetDestination,
+              folder: "uploads",
+              image: imageIdentifier,
+              albumTitle: person === "axel" ? "Favoritas de Axel" : "Favoritas de Sofi",
+              addedAt: Date.now(),
+            });
+          } catch (singleErr) {
+            console.warn("Aviso al subir foto a favoritas:", singleErr);
+          }
         }
-      }
 
-      if (newFavs.length > 0) {
-        const updatedFavorites: FavoritesData = {
-          ...favorites,
-          [targetPersonForPhoto]: [...newFavs, ...(favorites[targetPersonForPhoto] || [])],
-        };
-        saveFavorites(updatedFavorites);
-        setIsAddingPhoto(false);
-        showToast(
-          targetPersonForPhoto === "axel"
-            ? (newFavs.length === 1
-                ? "¡Foto agregada a las Favoritas de Axel! 🧑📸"
-                : `¡${newFavs.length} fotos agregadas a Favoritas de Axel! 🧑📸`)
-            : (newFavs.length === 1
-                ? "¡Foto agregada a las Favoritas de Sofi! 💖📸"
-                : `¡${newFavs.length} fotos agregadas a Favoritas de Sofi! 💖📸`)
-        );
+        if (newFavs.length > 0) {
+          const updatedFavorites: FavoritesData = {
+            ...favorites,
+            [person]: [...newFavs, ...(favorites[person] || [])],
+          };
+          saveFavorites(updatedFavorites);
+          setIsAddingPhoto(false);
+          showToast(
+            person === "axel"
+              ? (newFavs.length === 1
+                  ? "¡Foto agregada a las Favoritas de Axel! 🧑📸"
+                  : `¡${newFavs.length} fotos agregadas a Favoritas de Axel! 🧑📸`)
+              : (newFavs.length === 1
+                  ? "¡Foto agregada a las Favoritas de Sofi! 💖📸"
+                  : `¡${newFavs.length} fotos agregadas a Favoritas de Sofi! 💖📸`)
+          );
+        } else {
+          throw new Error("No se pudo procesar la foto.");
+        }
       } else {
-        throw new Error("No se pudo procesar la foto.");
+        // Guardar en uno de los otros álbumes (Juntos, Sofi, Axel, Kukiss, Jacobo, Besos, Anime, XV)
+        const targetAlbum = albums.find((a) => a.id === targetDestination);
+        const albumTitle = targetAlbum ? targetAlbum.title : "Álbum";
+        const existingCustom = favorites.customPhotos?.[targetDestination] || [];
+        const newUploadedUrls: string[] = [];
+
+        for (const file of fileArray) {
+          try {
+            const uploadResult = await uploadMediaFile(file);
+            newUploadedUrls.push(uploadResult.url);
+          } catch (singleErr) {
+            console.warn("Aviso al subir foto al álbum:", singleErr);
+          }
+        }
+
+        if (newUploadedUrls.length > 0) {
+          const updatedFavorites: FavoritesData = {
+            ...favorites,
+            customPhotos: {
+              ...(favorites.customPhotos || {}),
+              [targetDestination]: [...newUploadedUrls, ...existingCustom],
+            },
+          };
+          saveFavorites(updatedFavorites);
+          setOpenAlbum(targetDestination);
+          setIsAddingPhoto(false);
+          showToast(
+            newUploadedUrls.length === 1
+              ? `¡Foto agregada al álbum ${albumTitle}! 📸✨`
+              : `¡${newUploadedUrls.length} fotos agregadas al álbum ${albumTitle}! 📸✨`
+          );
+        } else {
+          throw new Error("No se pudo procesar la foto para el álbum.");
+        }
       }
     } catch (err: unknown) {
       console.error("Error uploading photo:", err);
@@ -552,13 +617,14 @@ export default function Albums() {
     const album = albums.find((a) => a.id === lightbox.albumId);
     if (!album) return [];
 
-    return album.images.map((img) => ({
-      folder: album.folder,
+    const allImages = getAlbumAllImages(album);
+    return allImages.map((img) => ({
+      folder: img.startsWith("http") || img.startsWith("data:") || img.startsWith("blob:") || img.startsWith("/uploads/") ? "uploads" : album.folder,
       image: img,
       title: album.title,
       albumId: album.id,
     }));
-  }, [lightbox, favorites]);
+  }, [lightbox, favorites, getAlbumAllImages]);
 
   const currentItem = lightbox && currentLightboxItems.length > 0
     ? currentLightboxItems[lightbox.imageIndex]
@@ -827,36 +893,81 @@ export default function Albums() {
               </div>
 
               {/* Destination selector */}
-              <div className="mb-4">
-                <label className="text-xs font-semibold text-purple-200/80 mb-2 block uppercase tracking-wider">
-                  ¿A qué colección deseas agregarla?
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setTargetPersonForPhoto("axel")}
-                    className={`py-2.5 px-4 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 cursor-pointer transition-all ${
-                      targetPersonForPhoto === "axel"
-                        ? "bg-indigo-600/40 border-indigo-400 text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]"
-                        : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
-                    }`}
-                  >
-                    <span>🧑</span>
-                    <span>Favoritas de Axel</span>
-                  </button>
+              <div className="mb-5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-purple-200/90 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+                    <span>¿A qué colección o álbum deseas agregarla?</span>
+                  </label>
+                  <span className="text-[11px] text-pink-300 font-semibold">
+                    Destino:{" "}
+                    {targetDestination === "fav-axel"
+                      ? "🧑 Favoritas de Axel"
+                      : targetDestination === "fav-sofi"
+                      ? "💖 Favoritas de Sofi"
+                      : `${albums.find((a) => a.id === targetDestination)?.icon || "📁"} ${albums.find((a) => a.id === targetDestination)?.title || "Álbum"}`}
+                  </span>
+                </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setTargetPersonForPhoto("sofi")}
-                    className={`py-2.5 px-4 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 cursor-pointer transition-all ${
-                      targetPersonForPhoto === "sofi"
-                        ? "bg-fuchsia-600/40 border-fuchsia-400 text-white shadow-[0_0_15px_rgba(217,70,239,0.4)]"
-                        : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
-                    }`}
-                  >
-                    <span>💖</span>
-                    <span>Favoritas de Sofi</span>
-                  </button>
+                {/* Sección 1: Favoritas */}
+                <div>
+                  <span className="text-[11px] text-purple-300/80 font-semibold block mb-1.5">
+                    Colecciones Especiales (Favoritas):
+                  </span>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => setTargetDestination("fav-axel")}
+                      className={`py-2 px-3 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 cursor-pointer transition-all ${
+                        targetDestination === "fav-axel"
+                          ? "bg-indigo-600/50 border-indigo-400 text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]"
+                          : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
+                      }`}
+                    >
+                      <span>🧑</span>
+                      <span>Favoritas de Axel</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setTargetDestination("fav-sofi")}
+                      className={`py-2 px-3 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 cursor-pointer transition-all ${
+                        targetDestination === "fav-sofi"
+                          ? "bg-fuchsia-600/50 border-fuchsia-400 text-white shadow-[0_0_15px_rgba(217,70,239,0.4)]"
+                          : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
+                      }`}
+                    >
+                      <span>💖</span>
+                      <span>Favoritas de Sofi</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Sección 2: Todos los otros Álbumes */}
+                <div>
+                  <span className="text-[11px] text-purple-300/80 font-semibold block mb-1.5">
+                    Nuestros Álbumes de Recuerdos:
+                  </span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {albums.map((album) => {
+                      const isSelected = targetDestination === album.id;
+                      return (
+                        <button
+                          key={album.id}
+                          type="button"
+                          onClick={() => setTargetDestination(album.id)}
+                          className={`py-2 px-2.5 rounded-xl text-xs font-medium border flex items-center gap-2 cursor-pointer transition-all text-left ${
+                            isSelected
+                              ? "bg-purple-600/50 border-pink-400 text-white shadow-[0_0_12px_rgba(236,72,153,0.4)] font-bold"
+                              : "bg-white/5 border-white/10 text-purple-200/80 hover:bg-white/10 hover:text-white"
+                          }`}
+                        >
+                          <span className="text-sm shrink-0">{album.icon}</span>
+                          <span className="truncate">{album.title}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
@@ -866,7 +977,11 @@ export default function Albums() {
                   onPhotoCaptured={(file) => handlePhotosUploaded([file])}
                   onCancel={() => setIsCapturingWithCamera(false)}
                   title={`Tomar Foto para ${
-                    targetPersonForPhoto === "axel" ? "Axel" : "Sofi"
+                    targetDestination === "fav-axel"
+                      ? "Favoritas de Axel"
+                      : targetDestination === "fav-sofi"
+                      ? "Favoritas de Sofi"
+                      : `Álbum ${albums.find((a) => a.id === targetDestination)?.title || "Recuerdos"}`
                   }`}
                 />
               ) : isUploadingPhoto ? (
@@ -1226,7 +1341,7 @@ export default function Albums() {
                 </div>
                 <div className="flex items-center gap-3 text-purple-300">
                   <span className="text-sm font-medium opacity-80">
-                    {album.images.length} fotos
+                    {getAlbumAllImages(album).length} fotos
                   </span>
                   <motion.div
                     animate={{ rotate: openAlbum === album.id ? 180 : 0 }}
@@ -1247,66 +1362,87 @@ export default function Albums() {
                   >
                     <div className="p-4 sm:p-6 pt-0">
                       {/* Filter Tabs within Album */}
-                      <div className="flex items-center justify-between flex-wrap gap-2 mb-4 pb-3 border-b border-purple-500/20">
-                        <div className="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setAlbumFilters((prev) => ({ ...prev, [album.id]: "all" }))
-                            }
-                            className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                              (albumFilters[album.id] || "all") === "all"
-                                ? "bg-purple-600 text-white shadow-sm"
-                                : "bg-white/5 hover:bg-white/10 text-purple-200/70 hover:text-white"
-                            }`}
-                          >
-                            Todas ({album.images.length})
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setAlbumFilters((prev) => ({ ...prev, [album.id]: "axel" }))
-                            }
-                            className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                              albumFilters[album.id] === "axel"
-                                ? "bg-indigo-600 text-white shadow-sm"
-                                : "bg-indigo-950/30 hover:bg-indigo-900/40 text-indigo-300/80 hover:text-white border border-indigo-500/20"
-                            }`}
-                          >
-                            <span>🧑 De Axel</span>
-                            <span className="px-1.5 py-0.2 rounded-full bg-black/40 text-[10px]">
-                              {album.images.filter((img) => isFavorite("axel", album.folder, img)).length}
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setAlbumFilters((prev) => ({ ...prev, [album.id]: "sofi" }))
-                            }
-                            className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                              albumFilters[album.id] === "sofi"
-                                ? "bg-fuchsia-600 text-white shadow-sm"
-                                : "bg-fuchsia-950/30 hover:bg-fuchsia-900/40 text-fuchsia-300/80 hover:text-white border border-fuchsia-500/20"
-                            }`}
-                          >
-                            <span>💖 De Sofi</span>
-                            <span className="px-1.5 py-0.2 rounded-full bg-black/40 text-[10px]">
-                              {album.images.filter((img) => isFavorite("sofi", album.folder, img)).length}
-                            </span>
-                          </button>
-                        </div>
+                      {(() => {
+                        const allAlbumImgs = getAlbumAllImages(album);
+                        return (
+                          <div className="flex items-center justify-between flex-wrap gap-2 mb-4 pb-3 border-b border-purple-500/20">
+                            <div className="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setAlbumFilters((prev) => ({ ...prev, [album.id]: "all" }))
+                                }
+                                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                                  (albumFilters[album.id] || "all") === "all"
+                                    ? "bg-purple-600 text-white shadow-sm"
+                                    : "bg-white/5 hover:bg-white/10 text-purple-200/70 hover:text-white"
+                                }`}
+                              >
+                                Todas ({allAlbumImgs.length})
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setAlbumFilters((prev) => ({ ...prev, [album.id]: "axel" }))
+                                }
+                                className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                                  albumFilters[album.id] === "axel"
+                                    ? "bg-indigo-600 text-white shadow-sm"
+                                    : "bg-indigo-950/30 hover:bg-indigo-900/40 text-indigo-300/80 hover:text-white border border-indigo-500/20"
+                                }`}
+                              >
+                                <span>🧑 De Axel</span>
+                                <span className="px-1.5 py-0.2 rounded-full bg-black/40 text-[10px]">
+                                  {allAlbumImgs.filter((img) => isFavorite("axel", album.folder, img)).length}
+                                </span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setAlbumFilters((prev) => ({ ...prev, [album.id]: "sofi" }))
+                                }
+                                className={`px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                                  albumFilters[album.id] === "sofi"
+                                    ? "bg-fuchsia-600 text-white shadow-sm"
+                                    : "bg-fuchsia-950/30 hover:bg-fuchsia-900/40 text-fuchsia-300/80 hover:text-white border border-fuchsia-500/20"
+                                }`}
+                              >
+                                <span>💖 De Sofi</span>
+                                <span className="px-1.5 py-0.2 rounded-full bg-black/40 text-[10px]">
+                                  {allAlbumImgs.filter((img) => isFavorite("sofi", album.folder, img)).length}
+                                </span>
+                              </button>
+                            </div>
 
-                        <div className="text-[11px] text-purple-300/60 hidden sm:block">
-                          {quickSelectMode
-                            ? `✨ Modo activo: Toca para guardar para ${quickSelectTarget === "axel" ? "Axel 🧑" : "Sofi 💖"}`
-                            : "Tip: Toca 🧑 o 💖, o doble clic en la foto"}
-                        </div>
-                      </div>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setTargetDestination(album.id);
+                                  setIsAddingPhoto(true);
+                                  window.scrollTo({ top: 380, behavior: "smooth" });
+                                }}
+                                className="px-3 py-1.5 rounded-full text-xs font-semibold bg-linear-to-r from-pink-600/30 to-purple-600/30 hover:from-pink-600 hover:to-purple-600 text-pink-200 hover:text-white border border-pink-400/40 flex items-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-95"
+                              >
+                                <Camera className="w-3.5 h-3.5 text-pink-300" />
+                                <span>+ Subir fotos a {album.title}</span>
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })()}
 
                       {(() => {
                         const currentFilter = albumFilters[album.id] || "all";
-                        const displayedImages = album.images
-                          .map((img, originalIndex) => ({ img, originalIndex }))
+                        const allAlbumImages = getAlbumAllImages(album);
+                        const customImgsSet = new Set(favorites.customPhotos?.[album.id] || []);
+
+                        const displayedImages = allAlbumImages
+                          .map((img, originalIndex) => ({
+                            img,
+                            originalIndex,
+                            isCustom: customImgsSet.has(img),
+                          }))
                           .filter(({ img }) => {
                             if (currentFilter === "axel") return isFavorite("axel", album.folder, img);
                             if (currentFilter === "sofi") return isFavorite("sofi", album.folder, img);
@@ -1326,7 +1462,7 @@ export default function Albums() {
 
                         return (
                           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-                            {displayedImages.map(({ img, originalIndex }, i) => {
+                            {displayedImages.map(({ img, originalIndex, isCustom }, i) => {
                               const isAxelFav = isFavorite("axel", album.folder, img);
                               const isSofiFav = isFavorite("sofi", album.folder, img);
                               const burstKey = `${album.folder}-${img}`;
@@ -1334,7 +1470,7 @@ export default function Albums() {
 
                               return (
                                 <motion.div
-                                  key={originalIndex}
+                                  key={`${img}-${originalIndex}`}
                                   initial={{ opacity: 0, scale: 0.9 }}
                                   animate={{ opacity: 1, scale: 1 }}
                                   transition={{
@@ -1353,12 +1489,22 @@ export default function Albums() {
                                   onClick={() => handlePhotoClick(album.folder, img, album.id, originalIndex)}
                                 >
                                   <img
-                                    src={`/assets/${album.folder}/${img}`}
+                                    src={getPhotoSrc(album.folder, img)}
                                     alt={`${album.title} foto ${originalIndex + 1}`}
                                     loading="lazy"
                                     decoding="async"
                                     className="object-cover w-full h-full group-hover:scale-108 transition-transform duration-500 ease-out"
                                   />
+
+                                  {/* Custom uploaded badge */}
+                                  {isCustom && (
+                                    <div className="absolute bottom-2 left-2 z-10 pointer-events-none">
+                                      <div className="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-pink-950/90 text-pink-200 border border-pink-400/40 backdrop-blur-xs flex items-center gap-1 shadow-md">
+                                        <Sparkles className="w-2.5 h-2.5 text-pink-300" />
+                                        <span>Subida</span>
+                                      </div>
+                                    </div>
+                                  )}
 
                                   {/* Favorite Status Badge on Top Left */}
                                   {(isAxelFav || isSofiFav) && (
@@ -1392,8 +1538,20 @@ export default function Albums() {
                                     </div>
                                   )}
 
-                                  {/* Interactive Favorite Buttons on Top Right */}
+                                  {/* Interactive Favorite & Delete Buttons on Top Right */}
                                   <div className="absolute top-2 right-2 z-20 flex items-center gap-1.5">
+                                    {/* Delete button for custom uploaded photos */}
+                                    {isCustom && (
+                                      <button
+                                        type="button"
+                                        onClick={(e) => removeCustomPhotoFromAlbum(album.id, img, e)}
+                                        className="w-7.5 h-7.5 sm:w-8.5 sm:h-8.5 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-lg active:scale-90 bg-black/70 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30"
+                                        title="Eliminar esta foto subida del álbum"
+                                      >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                      </button>
+                                    )}
+
                                     {/* Axel Favorite Toggle */}
                                     <button
                                       type="button"

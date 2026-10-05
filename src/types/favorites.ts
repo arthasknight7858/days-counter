@@ -9,4 +9,5 @@ export interface FavoritePhoto {
 export interface FavoritesData {
   axel: FavoritePhoto[];
   sofi: FavoritePhoto[];
+  customPhotos?: Record<string, string[]>;
 }
