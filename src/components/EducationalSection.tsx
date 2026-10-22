@@ -509,34 +509,48 @@ export default function EducationalSection() {
             </span>
           </h2>
           <p className="text-purple-200/70 text-base sm:text-lg tracking-wide mt-1">
-            21 guías interactivas, hojas de ruta y simulacros preparados con amor para tu crecimiento
+            23 guías interactivas, hojas de ruta y simulacros preparados con amor para tu crecimiento
           </p>
         </div>
 
-        {/* Favorite Active Topic Toggle Button */}
-        {activeTopicObj && (
-          <button
-            onClick={() => toggleFavorite(activeTopic)}
-            className={`px-4 py-2.5 rounded-2xl border text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
-              favorites.includes(activeTopic)
-                ? "bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
-                : "bg-white/5 text-purple-300/80 border-purple-500/25 hover:bg-white/10 hover:text-white"
-            }`}
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* Standalone HTML Button */}
+          <a
+            href="/educative.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2.5 rounded-2xl border text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shrink-0 bg-purple-500/15 text-purple-200 border-purple-500/30 hover:bg-purple-500/25 hover:text-white shadow-sm"
+            title="Abrir todas las 23 guías en un solo archivo HTML independiente"
           >
-            <Star
-              className={`w-4 h-4 ${
+            <BookOpen className="w-4 h-4 text-purple-400" />
+            <span>Ver Todo en HTML Aparte 📄</span>
+          </a>
+
+          {/* Favorite Active Topic Toggle Button */}
+          {activeTopicObj && (
+            <button
+              onClick={() => toggleFavorite(activeTopic)}
+              className={`px-4 py-2.5 rounded-2xl border text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
                 favorites.includes(activeTopic)
-                  ? "fill-amber-400 text-amber-400"
-                  : "text-purple-400"
+                  ? "bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+                  : "bg-white/5 text-purple-300/80 border-purple-500/25 hover:bg-white/10 hover:text-white"
               }`}
-            />
-            <span>
-              {favorites.includes(activeTopic)
-                ? "En tu Plan de Estudio ⭐"
-                : "+ Guardar en Mi Plan"}
-            </span>
-          </button>
-        )}
+            >
+              <Star
+                className={`w-4 h-4 ${
+                  favorites.includes(activeTopic)
+                    ? "fill-amber-400 text-amber-400"
+                    : "text-purple-400"
+                }`}
+              />
+              <span>
+                {favorites.includes(activeTopic)
+                  ? "En tu Plan de Estudio ⭐"
+                  : "+ Guardar en Mi Plan"}
+              </span>
+            </button>
+          )}
+        </div>
       </motion.div>
 
       {/* Search & Category Filter Bar */}

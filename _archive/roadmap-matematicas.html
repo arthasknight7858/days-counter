@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap: Aprende Matemáticas desde Cero — De Aritmética a Cálculo y Álgebra Lineal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090e;
+  --bg2: #0f121c;
+  --bg3: #161a29;
+  --border: rgba(168, 85, 247, 0.25);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --accent: #a855f7;
+  --accent-cyan: #06b6d4;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --purple-glow: rgba(168, 85, 247, 0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  line-height: 1.65;
+  padding: 0 20px 100px;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+.hero {
+  padding: 60px 0 40px;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 40px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid var(--border);
+  color: #c084fc;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, #fff 30%, #c084fc 70%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero p {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 780px;
+  margin: 0 auto 24px;
+}
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.stat-pill {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 10px 18px;
+  text-align: center;
+}
+.stat-pill strong {
+  display: block;
+  font-size: 20px;
+  color: #c084fc;
+}
+.stat-pill span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.section-title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 48px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  border-left: 4px solid var(--accent);
+  padding-left: 14px;
+}
+.stage-card {
+  background: var(--bg2);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 22px;
+  transition: all 0.25s ease;
+}
+.stage-card:hover {
+  border-color: var(--border);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px var(--purple-glow);
+}
+.stage-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.stage-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.stage-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid var(--border);
+  color: #c084fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.stage-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+}
+.stage-time {
+  font-size: 13px;
+  color: var(--muted);
+}
+.stage-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-light);
+  color: #e2e8f0;
+}
+.stage-desc {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.topic-tag {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 8px 12px;
+  transition: all 0.2s;
+}
+.topic-tag:hover {
+  background: rgba(168, 85, 247, 0.08);
+  border-color: var(--border);
+}
+.topic-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+  display: block;
+}
+.topic-sub {
+  font-size: 11px;
+  color: var(--muted);
+  display: block;
+  margin-top: 2px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+  padding: 22px;
+  transition: all 0.2s ease;
+}
+.card:hover {
+  border-color: var(--border);
+  transform: translateY(-2px);
+}
+.card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card p {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.formula-block {
+  background: #040508;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+}
+.formula-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #c084fc;
+  margin-bottom: 4px;
+}
+.formula-math {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  color: #38bdf8;
+  font-weight: 600;
+  background: rgba(255,255,255,0.03);
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 4px 0;
+  word-break: break-word;
+}
+.formula-desc {
+  font-size: 12px;
+  color: var(--muted);
+}
+.trick-card {
+  background: var(--bg2);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.trick-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent-amber);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+.trick-card h4 {
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.trick-example {
+  background: rgba(0,0,0,0.4);
+  border-left: 3px solid var(--accent-cyan);
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #e0f2fe;
+  border-radius: 0 8px 8px 0;
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg2);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  margin-bottom: 30px;
+}
+.calendar-table th, .calendar-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13.5px;
+}
+.calendar-table th {
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.calendar-table tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+.quiz-container {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 40px;
+}
+.question-item {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-light);
+}
+.question-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+.opt-btn {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-light);
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #e2e8f0;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.opt-btn:hover {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: var(--border);
+}
+.opt-btn.correct {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  color: #34d399;
+  font-weight: bold;
+}
+.opt-btn.wrong {
+  background: rgba(244, 63, 94, 0.2);
+  border-color: #f43f5e;
+  color: #fb7185;
+}
+.faq-item {
+  background: var(--bg2);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 12px;
+}
+.faq-q {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.faq-a {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">📐 Ruta Autodidacta Completa</div>
+  <h1>Aprende Matemáticas desde Cero</h1>
+  <p>Desde fundamentos numéricos, aritmética y fracciones elementales hasta cálculo diferencial, integral, ecuaciones diferenciales y álgebra lineal multivariable. El lenguaje de la física, la inteligencia artificial y la ciencia moderna desglosado con pedagogía visual.</p>
+  
+  <div class="stats-bar">
+    <div class="stat-pill">
+      <strong>7 + 2</strong>
+      <span>Etapas Maestras</span>
+    </div>
+    <div class="stat-pill">
+      <strong>52 Semanas</strong>
+      <span>Plan Integral</span>
+    </div>
+    <div class="stat-pill">
+      <strong>100% Gratis</strong>
+      <span>Recursos Abiertos</span>
+    </div>
+    <div class="stat-pill">
+      <strong>1 h/día</strong>
+      <span>Práctica Deliberada</span>
+    </div>
+  </div>
+</div>
+
+<h2 class="section-title">📚 Temario Maestro por Etapas</h2>
+
+<!-- ETAPA 1 -->
+<div class="stage-card">
+  <div class="stage-header">
+    <div class="stage-meta">
+      <div class="stage-num">1</div>
+      <div>
+        <div class="stage-title">Fundamentos Numéricos y Aritmética</div>
+        <div class="stage-time">Semanas 1–4 · ~20–28 horas</div>
+      </div>
+    </div>
+    <span class="stage-badge">Base Absoluta · Principiante</span>
+  </div>
+  <p class="stage-desc">Todo el edificio matemático descansa aquí. Si hay lagunas en esta etapa, todo lo posterior tambaleará. Repasar números negativos, criterios de divisibilidad y factorización prima consolida cimientos indestructibles.</p>
+  <div class="topics-grid">
+    <div class="topic-tag"><span class="topic-title">Números naturales</span><span class="topic-sub">Contar, ordenar, comparar, recta</span></div>
+    <div class="topic-tag"><span class="topic-title">Suma y resta</span><span class="topic-sub">Algoritmos, reagrupación</span></div>
+    <div class="topic-tag"><span class="topic-title">Multiplicación</span><span class="topic-sub">Tablas del 1 al 12, propiedad distributiva</span></div>
+    <div class="topic-tag"><span class="topic-title">División larga</span><span class="topic-sub">Exacta e inexacta, cociente y residuo</span></div>
+    <div class="topic-tag"><span class="topic-title">Números enteros</span><span class="topic-sub">Regla de signos, valor absoluto</span></div>
+    <div class="topic-tag"><span class="topic-title">Orden de operaciones</span><span class="topic-sub">PEMDAS / BODMAS estricto</span></div>
+    <div class="topic-tag"><span class="topic-title">Factores y múltiplos</span><span class="topic-sub">MCD, MCM, algoritmo euclidiano</span></div>
+    <div class="topic-tag"><span class="topic-title">Números primos</span><span class="topic-sub">Teorema Fundamental de la Aritmética</span></div>
+    <div class="topic-tag"><span class="topic-title">Criterios divisibilidad</span><span class="topic-sub">Del 2, 3, 5, 7, 9, 11</span></div>
+    <div class="topic-tag"><span class="topic-title">Potencias enteras</span><span class="topic-sub">Base, exponente, potencias de 10</span></div>
+    <div class="topic-tag"><span class="topic-title">Raíces cuadradas</span><span class="topic-sub">Exactas e irracionales elementales</span></div>
+    <div class="topic-tag"><span class="topic-title">Cálculo mental</span><span class="topic-sub">Estrategias de estimación y redondeo</span></div>
+  </div>
+</div>
+
+<!-- ETAPA 2 -->
+<div class="stage-card">
+  <div class="stage-header">
+    <div class="stage-meta">
+      <div class="stage-num">2</div>
+      <div>
+        <div class="stage-title">Fracciones, Decimales y Razones</div>
+        <div class="stage-time">Semanas 5–8 · ~20–28 horas</div>
+      </div>
+    </div>
+    <span class="stage-badge">Aritmética Racional · Básico</span>
+  </div>
+  <p class="stage-desc">El talón de Aquiles de la mayoría de los estudiantes. Las fracciones son indispensables para el álgebra simbólica y las razones de cambio del cálculo.</p>
+  <div class="topics-grid">
+    <div class="topic-tag"><span class="topic-title">Fracciones propias/impropias</span><span class="topic-sub">Conversión a números mixtos</span></div>
+    <div class="topic-tag"><span class="topic-title">Fracciones equivalentes</span><span class="topic-sub">Simplificación por MCD</span></div>
+    <div class="topic-tag"><span class="topic-title">Suma y resta</span><span class="topic-sub">Mínimo Común Múltiplo (MCM)</span></div>
+    <div class="topic-tag"><span class="topic-title">Multiplicación y división</span><span class="topic-sub">Fracción recíproca y producto cruzado</span></div>
+    <div class="topic-tag"><span class="topic-title">Valor posicional decimal</span><span class="topic-sub">Décimas, centésimas y milésimas</span></div>
+    <div class="topic-tag"><span class="topic-title">Porcentajes</span><span class="topic-sub">Cálculo directo e inverso (X% de Y)</span></div>
+    <div class="topic-tag"><span class="topic-title">Aumentos y descuentos</span><span class="topic-sub">Factores multiplicadores (1 ± r)</span></div>
+    <div class="topic-tag"><span class="topic-title">Regla de tres</span><span class="topic-sub">Directa, inversa y compuesta</span></div>
+    <div class="topic-tag"><span class="topic-title">Notación científica</span><span class="topic-sub">Órdenes de magnitud en ciencias</span></div>
+  </div>
+</div>
+
+<!-- ETAPA 3 -->
+<div class="stage-card">
+  <div class="stage-header">
+    <div class="stage-meta">
+      <div class="stage-num">3</div>
+      <div>
+        <div class="stage-title">Álgebra Básica y Modelado Lineal</div>
+        <div class="stage-time">Semanas 9–14 · ~30–42 horas</div>
+      </div>
+    </div>
+    <span class="stage-badge">Pensamiento Abstracto · Intermedio Bajo</span>
+  </div>
+  <p class="stage-desc">La transición de la aritmética concreta al lenguaje abstracto de variables. Las letras son contenedores lógicos que permiten resolver enigmas universales.</p>
+  <div class="topics-grid">
+    <div class="topic-tag"><span class="topic-title">Variables y términos</span><span class="topic-sub">Coeficientes, grados y reducción</span></div>
+    <div class="topic-tag"><span class="topic-title">Ecuaciones lineales 1D</span><span class="topic-sub">Despeje con propiedades de igualdad</span></div>
+    <div class="topic-tag"><span class="topic-title">Problemas de palabras</span><span class="topic-sub">Traducción de lenguaje verbal a algebraico</span></div>
+    <div class="topic-tag"><span class="topic-title">Inecuaciones lineales</span><span class="topic-sub">Intervalos cerrados/abiertos, recta real</span></div>
+    <div class="topic-tag"><span class="topic-title">Plano cartesiano</span><span class="topic-sub">Pares ordenados (x,y) y cuadrantes</span></div>
+    <div class="topic-tag"><span class="topic-title">La línea recta</span><span class="topic-sub">Pendiente m = Δy/Δx, forma y = mx + b</span></div>
+    <div class="topic-tag"><span class="topic-title">Sistemas 2×2</span><span class="topic-sub">Métodos de sustitución, igualación y reducción</span></div>
+    <div class="topic-tag"><span class="topic-title">Leyes de exponentes</span><span class="topic-sub">Exponentes negativos, cero y fraccionarios</span></div>
+  </div>
+</div>
+
+<!-- ETAPA 4 -->
+<div class="stage-card">
+  <div class="stage-header">
+    <div class="stage-meta">
+      <div class="stage-num">4</div>
+      <div>
+        <div class="stage-title">Geometría Euclidiana y Trigonometría</div>
+        <div class="stage-time">Semanas 15–20 · ~30–42 horas</div>
+      </div>
+    </div>
+    <span class="stage-badge">Espacio y Proporciones · Intermedio</span>
+  </div>
+  <p class="stage-desc">El estudio visual del espacio y las relaciones angulares. La trigonometría es el puente geométrico indispensable para física, vectores, robótica y cálculo.</p>
+  <div class="topics-grid">
+    <div class="topic-tag"><span class="topic-title">Polígonos y ángulos</span><span class="topic-sub">Suma de ángulos interiores, triángulos</span></div>
+    <div class="topic-tag"><span class="topic-title">Teorema de Pitágoras</span><span class="topic-sub">a² + b² = c², ternas pitagóricas</span></div>
+    <div class="topic-tag"><span class="topic-title">Áreas y perímetros</span><span class="topic-sub">Círculos, trapezoides y polígonos regulares</span></div>
+    <div class="topic-tag"><span class="topic-title">Geometría tridimensional</span><span class="topic-sub">Volúmenes de prismas, conos y esferas</span></div>
+    <div class="topic-tag"><span class="topic-title">SOH-CAH-TOA</span><span class="topic-sub">Seno, coseno y tangente en triángulos</span></div>
+    <div class="topic-tag"><span class="topic-title">El Círculo Unitario</span><span class="topic-sub">Radianes, coordenadas (cos θ, sin θ)</span></div>
+    <div class="topic-tag"><span class="topic-title">Identidad fundamental</span><span class="topic-sub">sin²(θ) + cos²(θ) = 1</span></div>
+    <div class="topic-tag"><span class="topic-title">Leyes de senos y cosenos</span><span class="topic-sub">Triángulos no rectángulos oblicuángulos</span></div>
+    <div class="topic-tag"><span class="topic-title">Ondas sinusoidales</span><span class="topic-sub">Amplitud, frecuencia y desfase de ondas</span></div>
+  </div>
+</div>
+
+<!-- ETAPA 5 -->
+<div class="stage-card">
+  <div class="stage-header">
+    <div class="stage-meta">
+      <div class="stage-num">5</div>
+      <div>
+        <div class="stage-title">Álgebra Intermedia y Teoría de Funciones</div>
+        <div class="stage-time">Semanas 21–28 · ~40–56 horas</div>
+      </div>
+    </div>
+    <span class="stage-badge">Relaciones Dinámicas · Intermedio Alto</span>
+  </div>
+  <p class="stage-desc">Las funciones representan el corazón del análisis moderno: modelos matemáticos que asignan una salida unívoca a cada entrada en su dominio.</p>
+  <div class="topics-grid">
+    <div class="topic-tag"><span class="topic-title">Productos notables</span><span class="topic-sub">Binomios al cuadrado, diferencia cuadrados</span></div>
+    <div class="topic-tag"><span class="topic-title">Factorización maestra</span><span class="topic-sub">Trinomios ax² + bx + c y agrupación</span></div>
+    <div class="topic-tag"><span class="topic-title">Fórmula cuadrática</span><span class="topic-sub">Raíces, vértice y discriminante Δ = b² - 4ac</span></div>
+    <div class="topic-tag"><span class="topic-title">Concepto de Función</span><span class="topic-sub">Dominio, codominio, rango y prueba vertical</span></div>
+    <div class="topic-tag"><span class="topic-title">Función exponencial</span><span class="topic-sub">Base de Euler e, crecimiento biológico</span></div>
+    <div class="topic-tag"><span class="topic-title">Logaritmos</span><span class="topic-sub">Propiedades de suma, resta, cambio de base</span></div>
+    <div class="topic-tag"><span class="topic-title">Funciones racionales</span><span class="topic-sub">Asíntotas verticales, horizontales y oblicuas</span></div>
+    <div class="topic-tag"><span class="topic-title">Composición e inversa</span><span class="topic-sub">f(g(x)), simetría sobre la recta y = x</span></div>
+  </div>
+</div>
+
+<!-- ETAPA 6 -->
+<div class="stage-card">
+  <div class="stage-header">
+    <div class="stage-meta">
+      <div class="stage-num">6</div>
+      <div>
+        <div class="stage-title">Precálculo, Vectores y Probabilidad</div>
+        <div class="stage-time">Semanas 29–40 · ~60–84 horas</div>
+      </div>
+    </div>
+    <span class="stage-badge">La Gran Antesala · Avanzado</span>
+  </div>
+  <p class="stage-desc">Todo el instrumental cuantitativo que alimenta la ciencia de datos, finanzas cuantitativas y modelos de aprendizaje automático.</p>
+  <div class="topics-grid">
+    <div class="topic-tag"><span class="topic-title">Sucesiones y series</span><span class="topic-sub">Progresiones aritméticas y geométricas</span></div>
+    <div class="topic-tag"><span class="topic-title">Binomio de Newton</span><span class="topic-sub">Triángulo de Pascal y coeficientes binomiales</span></div>
+    <div class="topic-tag"><span class="topic-title">Combinatoria</span><span class="topic-sub">Permutaciones P(n,r) y combinaciones C(n,k)</span></div>
+    <div class="topic-tag"><span class="topic-title">Probabilidad clásica</span><span class="topic-sub">Espacios muestrales y regla de Laplace</span></div>
+    <div class="topic-tag"><span class="topic-title">Teorema de Bayes</span><span class="topic-sub">Probabilidad condicionada P(A|B)</span></div>
+    <div class="topic-tag"><span class="topic-title">Estadística descriptiva</span><span class="topic-sub">Media, mediana, varianza y desviación σ</span></div>
+    <div class="topic-tag"><span class="topic-title">Distribución normal</span><span class="topic-sub">Curva campana de Gauss, Z-scores</span></div>
+    <div class="topic-tag"><span class="topic-title">Vectores 2D y 3D</span><span class="topic-sub">Norma, producto escalar (punto) y cruz</span></div>
+  </div>
+</div>
+
+<!-- ETAPA 7 -->
+<div class="stage-card">
+  <div class="stage-header">
+    <div class="stage-meta">
+      <div class="stage-num">7</div>
+      <div>
+        <div class="stage-title">Cálculo Diferencial e Integral (Cálculo 1)</div>
+        <div class="stage-time">Semanas 41–52 · ~80–110 horas</div>
+      </div>
+    </div>
+    <span class="stage-badge">Lenguaje de la Naturaleza · Universitario</span>
+  </div>
+  <p class="stage-desc">El análisis del cambio continuo. Isaac Newton y Gottfried Leibniz revolucionaron el pensamiento humano unificando la tasa de cambio con el área bajo curvas.</p>
+  <div class="topics-grid">
+    <div class="topic-tag"><span class="topic-title">Límites e indeterminación</span><span class="topic-sub">Definición intuitiva, 0/0, regla de L'Hôpital</span></div>
+    <div class="topic-tag"><span class="topic-title">Definición de Derivada</span><span class="topic-sub">Límite del cociente incremental f'(x)</span></div>
+    <div class="topic-tag"><span class="topic-title">Reglas de derivación</span><span class="topic-sub">Potencia, producto, cociente</span></div>
+    <div class="topic-tag"><span class="topic-title">Regla de la Cadena</span><span class="topic-sub">Composición f(g(x)), interpretación geométrica</span></div>
+    <div class="topic-tag"><span class="topic-title">Optimización</span><span class="topic-sub">Puntos críticos, criterio de la 2ª derivada</span></div>
+    <div class="topic-tag"><span class="topic-title">Integral Indefinida</span><span class="topic-sub">Antiderivadas y constante de integración C</span></div>
+    <div class="topic-tag"><span class="topic-title">Técnicas de integración</span><span class="topic-sub">Sustitución simple, partes (LIATE)</span></div>
+    <div class="topic-tag"><span class="topic-title">Teorema Fundamental</span><span class="topic-sub">Evaluación de integral definida ∫ₐᵇ f(x)dx</span></div>
+  </div>
+</div>
+
+<!-- ETAPA 8 (BONUS) -->
+<div class="stage-card" style="border-color: rgba(6, 182, 212, 0.4);">
+  <div class="stage-header">
+    <div class="stage-meta">
+      <div class="stage-num" style="background:rgba(6, 182, 212, 0.15); color:#38bdf8; border-color:rgba(6, 182, 212, 0.3);">+</div>
+      <div>
+        <div class="stage-title">Álgebra Lineal & Cálculo Multivariable (Bonus Universitario)</div>
+        <div class="stage-time">Especialización · ~60 horas</div>
+      </div>
+    </div>
+    <span class="stage-badge" style="color:#38bdf8; border-color:rgba(6, 182, 212, 0.3);">Machine Learning & Física</span>
+  </div>
+  <p class="stage-desc">Para quienes aspiran a entender la Inteligencia Artificial, gráficos 3D, física teórica o economía avanzada.</p>
+  <div class="topics-grid">
+    <div class="topic-tag"><span class="topic-title">Álgebra de matrices</span><span class="topic-sub">Suma, producto matricial, matriz transpuesta</span></div>
+    <div class="topic-tag"><span class="topic-title">Determinantes e inversas</span><span class="topic-sub">det(A), adjunta, eliminación de Gauss-Jordan</span></div>
+    <div class="topic-tag"><span class="topic-title">Autovalores y autovectores</span><span class="topic-sub">det(A - λI) = 0, diagonalización y PCA</span></div>
+    <div class="topic-tag"><span class="topic-title">Derivadas parciales</span><span class="topic-sub">∂f/∂x, ∂f/∂y en campos escalares</span></div>
+    <div class="topic-tag"><span class="topic-title">Vector Gradiente ∇f</span><span class="topic-sub">Dirección de máximo ascenso (Gradient Descent)</span></div>
+    <div class="topic-tag"><span class="topic-title">Multiplicadores Lagrange</span><span class="topic-sub">Optimización sujeta a restricciones g(x)=c</span></div>
+    <div class="topic-tag"><span class="topic-title">Integrales dobles</span><span class="topic-sub">Cálculo de volúmenes en coordenadas polares</span></div>
+    <div class="topic-tag"><span class="topic-title">EDO separables</span><span class="topic-sub">dy/dx = g(x)h(y), decaimiento y Newton</span></div>
+  </div>
+</div>
+
+<h2 class="section-title">📐 Compendio de Fórmulas Maestras Clasificadas</h2>
+<div class="grid-2">
+  <div class="card">
+    <h3>Álgebra & Ecuaciones</h3>
+    <div class="formula-block">
+      <div class="formula-name">Fórmula Cuadrática General</div>
+      <div class="formula-math">x = (-b ± √(b² - 4ac)) / (2a)</div>
+      <div class="formula-desc">Resuelve ax² + bx + c = 0</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Diferencia de Cuadrados</div>
+      <div class="formula-math">a² - b² = (a + b)(a - b)</div>
+      <div class="formula-desc">Factorización instantánea</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Binomio al Cuadrado</div>
+      <div class="formula-math">(a ± b)² = a² ± 2ab + b²</div>
+      <div class="formula-desc">Desarrollo de producto notable</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Vértice de la Parábola</div>
+      <div class="formula-math">xᵥ = -b / (2a)  |  yᵥ = f(xᵥ)</div>
+      <div class="formula-desc">Máximo o mínimo cuadrático</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Trigonometría & Geometría</h3>
+    <div class="formula-block">
+      <div class="formula-name">Teorema de Pitágoras</div>
+      <div class="formula-math">c² = a² + b²  ⟹  c = √(a² + b²)</div>
+      <div class="formula-desc">Triángulos rectángulos</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Identidad Pitagórica Fundamental</div>
+      <div class="formula-math">sin²(θ) + cos²(θ) = 1</div>
+      <div class="formula-desc">Base de toda la trigonometría</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Ley de Cosenos</div>
+      <div class="formula-math">c² = a² + b² - 2ab · cos(C)</div>
+      <div class="formula-desc">Triángulos oblicuángulos generales</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Círculo: Área y Perímetro</div>
+      <div class="formula-math">A = π·r²  |  P = 2·π·r</div>
+      <div class="formula-desc">En función del radio r</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Cálculo Diferencial & Integral</h3>
+    <div class="formula-block">
+      <div class="formula-name">Regla de la Potencia (Derivada)</div>
+      <div class="formula-math">d/dx [xⁿ] = n · xⁿ⁻¹</div>
+      <div class="formula-desc">Para cualquier exponente real n</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Regla de la Cadena</div>
+      <div class="formula-math">d/dx [f(g(x))] = f'(g(x)) · g'(x)</div>
+      <div class="formula-desc">Derivada de funciones compuestas</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Integración por Partes</div>
+      <div class="formula-math">∫ u dv = u·v - ∫ v du</div>
+      <div class="formula-desc">Mnemotecnia LIATE</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Teorema Fundamental del Cálculo</div>
+      <div class="formula-math">∫ₐᵇ f(x) dx = F(b) - F(a)</div>
+      <div class="formula-desc">Conexión exacta entre antiderivada y área</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Álgebra Lineal & Multivariable (Bonus)</h3>
+    <div class="formula-block">
+      <div class="formula-name">Vector Gradiente (Dirección de Ascenso)</div>
+      <div class="formula-math">∇f(x, y) = ( ∂f/∂x , ∂f/∂y )</div>
+      <div class="formula-desc">Base de la optimización en Machine Learning</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Determinante 2×2 e Inversa</div>
+      <div class="formula-math">det(A) = ad - bc  |  A⁻¹ = (1/det)·adj(A)</div>
+      <div class="formula-desc">Matrices cuadradas no singulares</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Ecuación Característica (Autovalores)</div>
+      <div class="formula-math">det(A - λI) = 0</div>
+      <div class="formula-desc">Cálculo de Eigenvalues en álgebra lineal</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-name">Interés Compuesto Continuo</div>
+      <div class="formula-math">A = P · e^(r·t)</div>
+      <div class="formula-desc">Crecimiento continuo con la constante e</div>
+    </div>
+  </div>
+</div>
+
+<h2 class="section-title">📅 Plan de Estudio Sugerido (52 Semanas)</h2>
+<table class="calendar-table">
+  <thead>
+    <tr>
+      <th>Periodo</th>
+      <th>Etapas Cubiertas</th>
+      <th>Horas / Semana</th>
+      <th>Objetivo Principal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Meses 1–2 (Sem 1–8)</strong></td>
+      <td>Etapa 1 y 2 · Aritmética & Fracciones</td>
+      <td>5–6 h/sem</td>
+      <td>Eliminar lagunas en operaciones racionales y agilidad de cálculo mental.</td>
+    </tr>
+    <tr>
+      <td><strong>Meses 3–4 (Sem 9–16)</strong></td>
+      <td>Etapa 3 · Álgebra Lineal Elemental</td>
+      <td>6–7 h/sem</td>
+      <td>Dominar el despeje de ecuaciones, rectas cartesianas y sistemas 2×2.</td>
+    </tr>
+    <tr>
+      <td><strong>Meses 5–6 (Sem 17–24)</strong></td>
+      <td>Etapa 4 · Geometría & Trigonometría</td>
+      <td>6–7 h/sem</td>
+      <td>Fluidez en círculo unitario, razones trigonométricas y áreas espaciales.</td>
+    </tr>
+    <tr>
+      <td><strong>Meses 7–8 (Sem 25–32)</strong></td>
+      <td>Etapa 5 · Funciones & Álgebra Superior</td>
+      <td>7–8 h/sem</td>
+      <td>Dominio de parábolas, exponenciales, logaritmos y gráficas analíticas.</td>
+    </tr>
+    <tr>
+      <td><strong>Meses 9–10 (Sem 33–40)</strong></td>
+      <td>Etapa 6 · Precálculo & Probabilidad</td>
+      <td>7–8 h/sem</td>
+      <td>Vectores, sucesiones, combinatoria y bases de límites intuitivos.</td>
+    </tr>
+    <tr>
+      <td><strong>Meses 11–12 (Sem 41–52)</strong></td>
+      <td>Etapa 7 · Cálculo Diferencial e Integral</td>
+      <td>8–10 h/sem</td>
+      <td>Derivación completa, optimización, integrales y teorema fundamental.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="section-title">⚡ 6 Trucos de Cálculo Mental y Resolución Rápida</h2>
+<div class="grid-2">
+  <div class="trick-card">
+    <span class="trick-badge">Cálculo Mental</span>
+    <h4>Multiplicar por 11 en 1 segundo</h4>
+    <p>Para números de 2 dígitos, suma ambos y coloca el resultado en el medio.</p>
+    <div class="trick-example">35 × 11 → 3 + 5 = 8 → 385 | 72 × 11 → 792</div>
+  </div>
+
+  <div class="trick-card">
+    <span class="trick-badge">Cálculo Mental</span>
+    <h4>Cuadrados de números terminados en 5</h4>
+    <p>Multiplica el dígito previo por su siguiente consecutivo y agrega 25 al final.</p>
+    <div class="trick-example">35² → 3 × 4 = 12 → 1225 | 65² → 6 × 7 = 42 → 4225</div>
+  </div>
+
+  <div class="trick-card">
+    <span class="trick-badge">Porcentajes Reversibles</span>
+    <h4>X% de Y es igual a Y% de X</h4>
+    <p>Los porcentajes conmutan. Si calcular uno es difícil, inviértelo mentalmente.</p>
+    <div class="trick-example">¿16% de 50? Es igual al 50% de 16 = 8. ¡Instantáneo!</div>
+  </div>
+
+  <div class="trick-card">
+    <span class="trick-badge">Resolución</span>
+    <h4>El Truco de '¿Qué me piden?'</h4>
+    <p>Anota siempre: 1) Qué me piden. 2) Qué datos tengo. 3) Cuál es el puente lógico. Elimina el 70% de errores de lectura apresurada.</p>
+  </div>
+</div>
+
+<h2 class="section-title">🎯 Test Diagnóstico de Nivel (Comprueba tus Respuestas)</h2>
+<div class="quiz-container">
+  <div class="question-item">
+    <div class="question-title">1. ¿Cuánto es 7 × 8?</div>
+    <div class="options-grid">
+      <button class="opt-btn" onclick="this.classList.add('wrong')">54</button>
+      <button class="opt-btn" onclick="this.classList.add('correct')">56 ✓ (Correcto)</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">48</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">64</button>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-title">2. Simplifica la fracción: 18 / 24</div>
+    <div class="options-grid">
+      <button class="opt-btn" onclick="this.classList.add('correct')">3/4 ✓ (Correcto)</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">2/3</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">6/8</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">9/12</button>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-title">3. Resuelve la ecuación lineal: 3x + 7 = 22</div>
+    <div class="options-grid">
+      <button class="opt-btn" onclick="this.classList.add('wrong')">x = 3</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">x = 4</button>
+      <button class="opt-btn" onclick="this.classList.add('correct')">x = 5 ✓ (3·5 + 7 = 22)</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">x = 6</button>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-title">4. ¿Cuánto mide la hipotenusa de un triángulo rectángulo de catetos 3 y 4?</div>
+    <div class="options-grid">
+      <button class="opt-btn" onclick="this.classList.add('correct')">5 ✓ (√(9 + 16) = √25 = 5)</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">6</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">7</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">√7</button>
+    </div>
+  </div>
+
+  <div class="question-item" style="border:none;">
+    <div class="question-title">5. ¿Cuál es la derivada de la función f(x) = x³ − 2x?</div>
+    <div class="options-grid">
+      <button class="opt-btn" onclick="this.classList.add('correct')">3x² − 2 ✓ (Por regla de la potencia)</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">3x² + 2</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">x² − 2</button>
+      <button class="opt-btn" onclick="this.classList.add('wrong')">3x − 2</button>
+    </div>
+  </div>
+</div>
+
+<h2 class="section-title">🌐 Plataformas y Canales Universitarios Gratuitos</h2>
+<div class="grid-3">
+  <div class="card">
+    <strong style="color:#c084fc; font-size:16px;">Khan Academy</strong>
+    <p>khanacademy.org/es — Desde primaria hasta cálculo multivariable con ejercicios interactivos y corrección en tiempo real.</p>
+  </div>
+  <div class="card">
+    <strong style="color:#38bdf8; font-size:16px;">3Blue1Brown</strong>
+    <p>youtube.com/@3blue1brown_es — Las mejores visualizaciones geométricas del mundo de cálculo, álgebra lineal y redes neuronales.</p>
+  </div>
+  <div class="card">
+    <strong style="color:#34d399; font-size:16px;">El Traductor de Ingeniería</strong>
+    <p>youtube.com/@ElTraductorDeIngenieria — Explicaciones filosóficas y profundas del 'por qué' de cada fórmula y concepto matemático.</p>
+  </div>
+  <div class="card">
+    <strong style="color:#fbbf24; font-size:16px;">Paul's Online Math Notes</strong>
+    <p>tutorial.math.lamar.edu — El sitio de apuntes universitarios de cálculo y EDO más prestigioso y claro del mundo angloparlante.</p>
+  </div>
+  <div class="card">
+    <strong style="color:#f43f5e; font-size:16px;">GeoGebra & Desmos</strong>
+    <p>geogebra.org y desmos.com — Graficadoras interactivas para ver en tiempo real cómo cambian funciones, parábolas y planos en 3D.</p>
+  </div>
+  <div class="card">
+    <strong style="color:#a78bfa; font-size:16px;">Profe Alex & JulioProfe</strong>
+    <p>Canales de referencia hispanohablantes para resolución paso a paso de cientos de ejercicios de exámenes y tareas.</p>
+  </div>
+</div>
+
+</body>
+</html>

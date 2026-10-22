@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap: Hábitos Atómicos & Productividad — El Poder del 1% Diario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #090a10;
+  --bg2: #10121d;
+  --bg3: #181b2a;
+  --border: rgba(217, 164, 65, 0.25);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --accent: #d9a441;
+  --accent2: #f43f5e;
+  --accent3: #10b981;
+  --accent4: #8b5cf6;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --gold-glow: rgba(217, 164, 65, 0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  line-height: 1.65;
+  padding: 0 20px 100px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.hero {
+  padding: 60px 0 40px;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 40px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(217, 164, 65, 0.15);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, #fff 30%, var(--accent) 70%, #f43f5e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero p {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 760px;
+  margin: 0 auto 24px;
+}
+.quote-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 24px;
+  max-width: 680px;
+  margin: 0 auto;
+  font-style: italic;
+  color: #e2e8f0;
+}
+.quote-author {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 6px;
+  font-style: normal;
+}
+.section-title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 50px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  border-left: 4px solid var(--accent);
+  padding-left: 14px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 24px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  border-color: var(--border);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px var(--gold-glow);
+}
+.card-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.law-1 { border-color: rgba(217, 164, 65, 0.4); }
+.law-1 .card-tag { background: rgba(217, 164, 65, 0.15); color: #fbbf24; }
+.law-2 { border-color: rgba(244, 63, 94, 0.4); }
+.law-2 .card-tag { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+.law-3 { border-color: rgba(16, 185, 129, 0.4); }
+.law-3 .card-tag { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.law-4 { border-color: rgba(139, 92, 246, 0.4); }
+.law-4 .card-tag { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+.card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #fff;
+}
+.card p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+.tips-list {
+  list-style: none;
+}
+.tips-list li {
+  font-size: 13.5px;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 20px;
+}
+.tips-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+.timeline-item {
+  display: flex;
+  gap: 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 18px;
+  align-items: flex-start;
+}
+.timeline-step {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(217, 164, 65, 0.15);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.timeline-content h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.timeline-content p {
+  font-size: 13px;
+  color: var(--muted);
+}
+.interactive-tracker {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 30px;
+}
+.tracker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tracker-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.tracker-item.completed {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+.tracker-item.completed span {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+.btn-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+.tracker-item.completed .btn-check {
+  background: #10b981;
+  border-color: #10b981;
+  color: #fff;
+}
+.framework-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.framework-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">✨ Guía Maestra de Crecimiento Personal</div>
+  <h1>El Poder del 1% Mejor Cada Día</h1>
+  <p>No necesitas cambiar tu vida de la noche a la mañana. Mejorar un 1% cada día te hace <strong>37.78 veces mejor</strong> al cabo de un año (1.01³⁶⁵ = 37.78). La constancia amable y la ingeniería de hábitos transforman tus metas en realidades automáticas.</p>
+  <div class="quote-box">
+    &ldquo;No nos elevamos al nivel de nuestras metas; caemos al nivel de nuestros sistemas cotidianos. No necesitas cambiar tus metas; necesitas cambiar tus hábitos.&rdquo;
+    <span class="quote-author">— James Clear, autor de Hábitos Atómicos</span>
+  </div>
+</div>
+
+<h2 class="section-title">🧠 Neurobiología de los Hábitos & Circuitos de Dopamina</h2>
+<div class="framework-box">
+  <div class="framework-header">🔬 El Bucle Neurológico de los Ganglios Basales</div>
+  <p style="color:var(--muted); font-size:14px; margin-bottom:14px;">
+    Los hábitos se consolidan en los <strong>ganglios basales</strong> del cerebro mediante el bucle de 4 fases descubierto por la neurociencia moderna:
+  </p>
+  <div class="grid-2">
+    <div style="background:rgba(0,0,0,0.3); padding:14px; border-radius:12px; border:1px solid var(--border-light);">
+      <strong style="color:#fbbf24;">1. La Señal (Trigger):</strong> El estímulo ambiental que desencadena la anticipación de recompensa en el cerebro.
+    </div>
+    <div style="background:rgba(0,0,0,0.3); padding:14px; border-radius:12px; border:1px solid var(--border-light);">
+      <strong style="color:#fb7185;">2. El Deseo (Craving):</strong> La fuerza motivacional impulsada por el pico de <em>dopamina</em>. No deseamos la conducta en sí, sino el cambio de estado emocional.
+    </div>
+    <div style="background:rgba(0,0,0,0.3); padding:14px; border-radius:12px; border:1px solid var(--border-light);">
+      <strong style="color:#34d399;">3. La Respuesta (Routine):</strong> La acción física o mental ejecutada cuando la fricción es menor que el deseo.
+    </div>
+    <div style="background:rgba(0,0,0,0.3); padding:14px; border-radius:12px; border:1px solid var(--border-light);">
+      <strong style="color:#a78bfa;">4. La Recompensa (Reward):</strong> El cierre biológico que satisface la necesidad e indica al cerebro: "Recuerda esta acción para la próxima vez".
+    </div>
+  </div>
+</div>
+
+<h2 class="section-title">⚡ Las 4 Leyes del Cambio de Conducta</h2>
+<div class="grid-2">
+  <div class="card law-1">
+    <span class="card-tag">1ª Ley · La Señal</span>
+    <h3>Hacerlo Obvio</h3>
+    <p>Si quieres que un hábito forme parte de tu vida, haz que la señal para iniciarlo sea imposible de ignorar en tu entorno.</p>
+    <ul class="tips-list">
+      <li><strong>Diseño del entorno:</strong> Deja el libro sobre tu almohada o la botella con agua fresca en tu escritorio. Lo visible se ejecuta.</li>
+      <li><strong>Apilamiento de hábitos (Habit Stacking):</strong> Fórmula: "Después de [hábito actual que ya hago], haré [nuevo hábito deseado]".</li>
+      <li><strong>Intención de implementación:</strong> "Yo haré [conducta] a las [hora exacta] en [lugar específico]". La vaguedad engendra procrastinación.</li>
+    </ul>
+  </div>
+
+  <div class="card law-2">
+    <span class="card-tag">2ª Ley · El Deseo</span>
+    <h3>Hacerlo Atractivo</h3>
+    <p>Nuestro cerebro se mueve por anticipación de placer. Cuanto más atractivo sea el ritual previo, más fácil será repetirlo.</p>
+    <ul class="tips-list">
+      <li><strong>Emparejamiento de tentaciones:</strong> Une lo que <em>necesitas</em> hacer con algo que te <em>encanta</em> hacer en ese instante.</li>
+      <li><strong>Ritual de inicio dopaminérgico:</strong> Escuchar tu canción favorita o servirte un café especial justo antes de estudiar.</li>
+      <li><strong>Presión de grupo positiva:</strong> Rodéate de personas donde tu conducta deseada sea la norma social cotidiana.</li>
+    </ul>
+  </div>
+
+  <div class="card law-3">
+    <span class="card-tag">3ª Ley · La Respuesta</span>
+    <h3>Hacerlo Fácil</h3>
+    <p>La energía humana busca la menor resistencia. Reduce la fricción al mínimo posible para comenzar sin gasto de fuerza de voluntad.</p>
+    <ul class="tips-list">
+      <li><strong>Regla de los 2 Minutos:</strong> Al iniciar un nuevo hábito, redúcelo a una versión que tome menos de 120 segundos (ej. leer 1 página).</li>
+      <li><strong>Diseño de fricción negativa:</strong> Deja la ropa deportiva lista la noche anterior o el código abierto en el monitor.</li>
+      <li><strong>Aumenta la fricción en malos hábitos:</strong> Pon el celular en otra habitación o desinstala apps de scroll infinito entre semana.</li>
+    </ul>
+  </div>
+
+  <div class="card law-4">
+    <span class="card-tag">4ª Ley · La Recompensa</span>
+    <h3>Hacerlo Satisfactorio</h3>
+    <p>Lo que es recompensado de inmediato se repite. Lo que se percibe doloroso o castigado se extingue sistemáticamente.</p>
+    <ul class="tips-list">
+      <li><strong>Celebración de micro-victorias:</strong> Sonríe y tacha la tarea con orgullo inmediatamente después de completarla (anclaje neurológico).</li>
+      <li><strong>Regla de oro de la consistencia:</strong> "Nunca faltes dos días seguidos". Si fallas un día por imprevisto, retoma obligatoriamente al siguiente.</li>
+      <li><strong>Identidad sobre resultados:</strong> No digas "estoy tratando de leer", di con orgullo "soy un lector apasionado".</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="section-title">⏱️ Técnicas de Enfoque Profundo (Deep Work)</h2>
+<div class="grid-2">
+  <div class="card">
+    <h3>🍅 Técnica Pomodoro Pro (50 / 10 o 25 / 5)</h3>
+    <p>50 minutos de enfoque total en una sola tarea sin pestañas secundarias ni notificaciones + 10 minutos de descanso activo (caminar, beber agua, mirar a lo lejos). Cada 3 ciclos, descanso largo de 30 minutos.</p>
+    <div style="font-size:12px; color: var(--accent); font-weight:700;">Beneficio: Respeta los ritmos ultradianos del cerebro y maximiza la velocidad cognitiva.</div>
+  </div>
+  <div class="card">
+    <h3>🗓️ Time Blocking & Matriz de Eisenhower</h3>
+    <p>Asigna bloques sagrados en tu calendario. Divide las tareas en: 1) Urgente e Importante (Ejecutar hoy), 2) Importante no Urgente (Horas de Deep Work para el futuro), 3) Rutinarias (Agruparlas por la tarde).</p>
+    <div style="font-size:12px; color: var(--accent); font-weight:700;">Beneficio: Evita que lo urgente opaque lo que verdaderamente transformará tu vida.</div>
+  </div>
+  <div class="card">
+    <h3>🧘 Protocolo de Apagado (Shutdown Ritual)</h3>
+    <p>Al terminar tu jornada, di en voz alta "Cierre completado", ordena tu espacio y anota los 3 objetivos de mañana. No vuelvas a mirar pendientes laborales hasta el día siguiente.</p>
+    <div style="font-size:12px; color: var(--accent); font-weight:700;">Beneficio: Desactiva el Efecto Zeigarnik (la tendencia del cerebro a rumiar tareas incompletas).</div>
+  </div>
+  <div class="card">
+    <h3>🛡️ Gestión del Cronotipo Personal</h3>
+    <p>Identifica tus 3 horas de máxima lucidez mental (comúnmente 8:30–11:30 AM o 4:00–7:00 PM). Reserva ese bloque exclusivamente para tu proyecto más difícil, nunca para tareas administrativas.</p>
+    <div style="font-size:12px; color: var(--accent); font-weight:700;">Beneficio: Un bloque de 90 min en tu hora pico rinde más que 5 horas con fatiga mental.</div>
+  </div>
+</div>
+
+<h2 class="section-title">☀️ Rutinas Diarias de Alto Rendimiento</h2>
+<div class="grid-2">
+  <div>
+    <h3 style="margin-bottom:14px; color:#fbbf24;">🌅 Rutina Matutina</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-step">1</div>
+        <div class="timeline-content">
+          <h4>Despertar sin pantallas (primeros 30 min)</h4>
+          <p>Protege tu corteza prefrontal de la sobreestimulación pasiva y las noticias negativas.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-step">2</div>
+        <div class="timeline-content">
+          <h4>Hidratación y electrolitos (500 ml)</h4>
+          <p>Restaura el volumen celular y reactiva la perfusión cerebral tras el ayuno nocturno.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-step">3</div>
+        <div class="timeline-content">
+          <h4>Luz solar directa (10–15 min)</h4>
+          <p>La luz activa el núcleo supraquiasmático, elevando el cortisol matutino y sincronizando tu reloj biológico.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-step">4</div>
+        <div class="timeline-content">
+          <h4>Las 3 "Grandes Rocas" (Big Rocks)</h4>
+          <p>Define con claridad meridiana las 3 victorias esenciales que harán de tu día un éxito rotundo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="margin-bottom:14px; color:#a78bfa;">🌙 Rutina Nocturna</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-step">1</div>
+        <div class="timeline-content">
+          <h4>Filtro de luz azul 60 min antes</h4>
+          <p>Apaga computadoras y televisión para permitir la síntesis natural de melatonina.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-step">2</div>
+        <div class="timeline-content">
+          <h4>Preparación del terreno de mañana</h4>
+          <p>Ropa elegida, cuaderno abierto en la página correspondiente y mesa limpia.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-step">3</div>
+        <div class="timeline-content">
+          <h4>Diario de Gratitud y Reflexión</h4>
+          <p>Anota 3 cosas bonitas ocurridas hoy y 1 aprendizaje clave que te deja el día.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-step">4</div>
+        <div class="timeline-content">
+          <h4>Lectura analógica en papel o respiración 4-7-8</h4>
+          <p>Induce al sistema parasimpático para un sueño REM y de ondas lentas profundamente reparador.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="section-title">📅 El Sistema de Revisión Semanal (Weekly Review de GTD)</h2>
+<div class="framework-box">
+  <div class="framework-header">📝 Protocolo Dominical de 30 Minutos para el Éxito Semanal</div>
+  <p style="color:var(--muted); font-size:14px; margin-bottom:14px;">
+    Dedica 30 minutos cada domingo por la tarde para resetear tu mente y llegar al lunes con total claridad ejecutiva:
+  </p>
+  <ul class="tips-list">
+    <li><strong>1. Vaciado mental (Brain Dump):</strong> Anota en una hoja en blanco todas las ideas sueltas, pendientes y preocupaciones que ronden tu mente.</li>
+    <li><strong>2. Auditoría de la semana pasada:</strong> ¿Qué metas se cumplieron? ¿Qué obstáculos surgieron? ¿Qué hábito falló y qué ajuste ambiental lo resolverá?</li>
+    <li><strong>3. Bloques de calendario fijos:</strong> Programa tus sesiones de estudio, entrenamientos y descanso antes de que los imprevistos de otros ocupen tu tiempo.</li>
+    <li><strong>4. Una sola meta prioritaria:</strong> Si solo pudieras lograr una gran cosa esta semana, ¿cuál movería más la aguja en tu vida?</li>
+  </ul>
+</div>
+
+<h2 class="section-title">✅ Tracker Interactivo de Hábitos Diarios</h2>
+<div class="interactive-tracker">
+  <div class="tracker-item" onclick="this.classList.toggle('completed')">
+    <span>💧 Hidratación consciente (2 Litros de Agua al día)</span>
+    <div class="btn-check">✓</div>
+  </div>
+  <div class="tracker-item" onclick="this.classList.toggle('completed')">
+    <span>📖 Lectura deliberada (10 a 20 páginas de un libro enriquecedor)</span>
+    <div class="btn-check">✓</div>
+  </div>
+  <div class="tracker-item" onclick="this.classList.toggle('completed')">
+    <span>🧠 Sesión de Estudio / Idiomas / Código (50 min de Deep Work)</span>
+    <div class="btn-check">✓</div>
+  </div>
+  <div class="tracker-item" onclick="this.classList.toggle('completed')">
+    <span>🏃 Movimiento físico (30 min de ejercicio, gimnasio o caminata)</span>
+    <div class="btn-check">✓</div>
+  </div>
+  <div class="tracker-item" onclick="this.classList.toggle('completed')">
+    <span>✨ Espacio de trabajo ordenado y minimalista</span>
+    <div class="btn-check">✓</div>
+  </div>
+  <div class="tracker-item" onclick="this.classList.toggle('completed')">
+    <span>😴 Sueño de calidad (7 a 8 Horas en habitación fresca y oscura)</span>
+    <div class="btn-check">✓</div>
+  </div>
+</div>
+
+<h2 class="section-title">📚 Biblioteca Esencial Recomendada</h2>
+<div class="grid-2">
+  <div class="card">
+    <span class="card-tag">Lectura Clave</span>
+    <h3>Hábitos Atómicos</h3>
+    <p><strong>James Clear</strong> — El compendio definitivo de ingeniería de hábitos, diseño ambiental y efecto compuesto a largo plazo.</p>
+  </div>
+  <div class="card">
+    <span class="card-tag">Neurociencia</span>
+    <h3>El Poder de los Hábitos</h3>
+    <p><strong>Charles Duhigg</strong> — La base científica de cómo los ganglios basales automatizan rutinas y cómo reprogramar bucles nocivos.</p>
+  </div>
+  <div class="card">
+    <span class="card-tag">Productividad</span>
+    <h3>Céntrate (Deep Work)</h3>
+    <p><strong>Cal Newport</strong> — Estrategias rigurosas para generar trabajo de alto valor y concentración en una economía ruidosa.</p>
+  </div>
+  <div class="card">
+    <span class="card-tag">Organización</span>
+    <h3>El Método Bullet Journal</h3>
+    <p><strong>Ryder Carroll</strong> — Claridad analógica, atención plena y registro histórico de tu crecimiento personal día a día.</p>
+  </div>
+</div>
+
+</body>
+</html>

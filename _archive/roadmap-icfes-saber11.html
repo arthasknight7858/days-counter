@@ -1501,6 +1501,132 @@
   </div>
 </section>
 
+
+<!-- CUADERNILLOS INTERACTIVOS OFICIALES -->
+<section style="background: var(--bg2); border-top: 1px solid var(--border); padding: 80px 24px;">
+  <div class="container">
+    <div class="section-tag" style="background:rgba(79, 142, 247, 0.15); color:var(--accent1); border:1px solid rgba(79,142,247,0.3);">Práctica Oficial Interactiva</div>
+    <h2 class="section-title">Cuadernillos Saber 11° con Explicaciones</h2>
+    <p class="section-sub">Preguntas extraídas de cuadernillos liberados por el ICFES. Selecciona tu respuesta para comprobar tu nivel de inmediato y leer la justificación pedagógica.</p>
+
+    <!-- PREGUNTA 1: MATEMÁTICAS -->
+    <div class="strat-card" style="margin-bottom: 24px; border-color: rgba(79, 142, 247, 0.4);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span style="font-size:11px; font-weight:700; text-transform:uppercase; background:rgba(79,142,247,0.15); color:#60a5fa; padding:4px 10px; border-radius:6px;">Matemáticas · Interpretación & Representación</span>
+        <span style="font-size:12px; color:var(--muted);">Pregunta 1</span>
+      </div>
+      <p style="color:#e2e8f0; font-size:14.5px; margin-bottom:12px; line-height:1.6;">
+        <strong>Contexto:</strong> Cuatro cursos, cada uno con igual número de estudiantes, presentan anualmente una prueba de matemáticas.<br>
+        Promedios año anterior: Curso I = 63, II = 61, III = 50, IV = 53.<br>
+        Promedios año actual: Curso I = 65, II = 45, III = 53, IV = 54.<br>
+        Al revisar los puntajes, una persona afirma que hubo un aumento en el puntaje global respecto al año anterior.
+      </p>
+      <p style="color:#fff; font-weight:600; font-size:14.5px; margin-bottom:14px;">¿Esta afirmación es correcta o incorrecta?</p>
+      
+      <div style="display:grid; gap:8px; margin-bottom:14px;">
+        <button onclick="checkIcfes(this, false, 'promedio-exp-1')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          A. Correcta, ya que el promedio de la mayoría de los cursos aumentó respecto al año anterior.
+        </button>
+        <button onclick="checkIcfes(this, true, 'promedio-exp-1')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          B. Incorrecta, ya que el promedio total en el año anterior (227/4 = 56.75) es superior al promedio total en el año actual (217/4 = 54.25).
+        </button>
+        <button onclick="checkIcfes(this, false, 'promedio-exp-1')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          C. Correcta, ya que al observar todos los promedios, el mayor corresponde al curso I en el año actual.
+        </button>
+        <button onclick="checkIcfes(this, false, 'promedio-exp-1')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          D. Incorrecta, ya que se necesita el puntaje individual de cada estudiante para comparar.
+        </button>
+      </div>
+      <div id="promedio-exp-1" style="display:none; padding:12px 16px; background:rgba(16, 185, 129, 0.1); border-left:4px solid #10b981; border-radius:8px; font-size:13px; color:#a7f3d0;">
+        <strong>Justificación:</strong> Opción B correcta. El promedio global ponderado (al tener igual número de alumnos) se calcula sumando y dividiendo entre 4. Año anterior: 227/4 = 56.75. Año actual: 217/4 = 54.25. Por tanto, el puntaje general disminuyó.
+      </div>
+    </div>
+
+    <!-- PREGUNTA 2: LECTURA CRÍTICA -->
+    <div class="strat-card" style="margin-bottom: 24px; border-color: rgba(167, 139, 250, 0.4);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span style="font-size:11px; font-weight:700; text-transform:uppercase; background:rgba(167,139,250,0.15); color:#c084fc; padding:4px 10px; border-radius:6px;">Lectura Crítica · Reflexión sobre el Contenido</span>
+        <span style="font-size:12px; color:var(--muted);">Pregunta 2</span>
+      </div>
+      <p style="color:#e2e8f0; font-size:14.5px; margin-bottom:12px; line-height:1.6;">
+        <strong>Texto:</strong> "La historia de las ideas demuestra que toda nueva teoría científica pasa por tres fases: primero es ridiculizada como absurda, luego es atacada como peligrosa para la moral o la religión, y finalmente es aceptada como algo tan obvio que 'todos siempre lo supieron'."
+      </p>
+      <p style="color:#fff; font-weight:600; font-size:14.5px; margin-bottom:14px;">El propósito retórico del autor al enumerar estas tres etapas es:</p>
+      
+      <div style="display:grid; gap:8px; margin-bottom:14px;">
+        <button onclick="checkIcfes(this, false, 'lectura-exp-2')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          A. Descalificar los avances científicos contemporáneos como modas pasajeras.
+        </button>
+        <button onclick="checkIcfes(this, true, 'lectura-exp-2')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          B. Exponer con ironía la resistencia psicológica y social al cambio de paradigmas.
+        </button>
+        <button onclick="checkIcfes(this, false, 'lectura-exp-2')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          C. Defender que la moral y la religión deben supervisar las hipótesis de laboratorio.
+        </button>
+        <button onclick="checkIcfes(this, false, 'lectura-exp-2')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          D. Explicar el método experimental paso a paso.
+        </button>
+      </div>
+      <div id="lectura-exp-2" style="display:none; padding:12px 16px; background:rgba(16, 185, 129, 0.1); border-left:4px solid #10b981; border-radius:8px; font-size:13px; color:#a7f3d0;">
+        <strong>Justificación:</strong> Opción B correcta. La cita (atribuida a Schopenhauer) utiliza el contraste irónico de las tres etapas para evidenciar la hipocresía social ante las ideas disruptivas.
+      </div>
+    </div>
+
+    <!-- PREGUNTA 3: CIENCIAS NATURALES -->
+    <div class="strat-card" style="margin-bottom: 24px; border-color: rgba(52, 211, 153, 0.4);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span style="font-size:11px; font-weight:700; text-transform:uppercase; background:rgba(52,211,153,0.15); color:#34d399; padding:4px 10px; border-radius:6px;">Ciencias Naturales · Indagación Científica</span>
+        <span style="font-size:12px; color:var(--muted);">Pregunta 3</span>
+      </div>
+      <p style="color:#e2e8f0; font-size:14.5px; margin-bottom:12px; line-height:1.6;">
+        <strong>Contexto:</strong> En un ecosistema acuático se detecta un aumento súbito de nitrógeno y fósforo proveniente de fertilizantes agrícolas. Dos semanas después se observa una proliferación masiva de algas superficiales, seguida de una mortandad masiva de peces en el fondo.
+      </p>
+      <p style="color:#fff; font-weight:600; font-size:14.5px; margin-bottom:14px;">¿Cuál es la causa biológica directa de la muerte de los peces?</p>
+      
+      <div style="display:grid; gap:8px; margin-bottom:14px;">
+        <button onclick="checkIcfes(this, false, 'ciencias-exp-3')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          A. El nitrógeno y fósforo envenenan directamente el sistema digestivo de los peces.
+        </button>
+        <button onclick="checkIcfes(this, true, 'ciencias-exp-3')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          B. La descomposición bacteriana de las algas agota el oxígeno disuelto en el agua (Eutrofización).
+        </button>
+        <button onclick="checkIcfes(this, false, 'ciencias-exp-3')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          C. Las algas consumen todo el dióxido de carbono impidiendo la fotosíntesis de los peces.
+        </button>
+        <button onclick="checkIcfes(this, false, 'ciencias-exp-3')" style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:10px 14px; border-radius:10px; color:#cbd5e1; text-align:left; cursor:pointer;">
+          D. La temperatura del agua descendió bruscamente debido a la sombra de las algas.
+        </button>
+      </div>
+      <div id="ciencias-exp-3" style="display:none; padding:12px 16px; background:rgba(16, 185, 129, 0.1); border-left:4px solid #10b981; border-radius:8px; font-size:13px; color:#a7f3d0;">
+        <strong>Justificación:</strong> Opción B correcta. El fenómeno se denomina <em>eutrofización</em>. Al morir la biomasa vegetal excedente, las bacterias aerobias la descomponen consumiendo todo el oxígeno disuelto (anoxia acuática), asfixiando la fauna.
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+function checkIcfes(btn, isCorrect, expId) {
+  const parent = btn.parentElement;
+  Array.from(parent.children).forEach(b => {
+    b.style.pointerEvents = 'none';
+    b.style.opacity = '0.6';
+  });
+  if (isCorrect) {
+    btn.style.background = 'rgba(16, 185, 129, 0.25)';
+    btn.style.borderColor = '#10b981';
+    btn.style.color = '#34d399';
+    btn.style.fontWeight = 'bold';
+    btn.style.opacity = '1';
+  } else {
+    btn.style.background = 'rgba(244, 63, 94, 0.25)';
+    btn.style.borderColor = '#f43f5e';
+    btn.style.color = '#fb7185';
+    btn.style.opacity = '1';
+  }
+  const exp = document.getElementById(expId);
+  if (exp) exp.style.display = 'block';
+}
+</script>
+
 <!-- FOOTER -->
 <footer>
   <p>🇨🇴 Roadmap ICFES Saber 11° — Guía completa basada en la estructura oficial del examen 2026</p>
