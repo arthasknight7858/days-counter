@@ -240,6 +240,21 @@ const albums: AlbumItem[] = [
     ],
   },
   {
+    id: "makeups",
+    icon: "💄",
+    title: "Makeups",
+    folder: "makeups",
+    images: [
+      "make1.png",
+      "make2.png",
+      "make3.png",
+      "make4.png",
+      "make5.png",
+      "make6.png",
+      "make7.png",
+    ],
+  },
+  {
     id: "kukis",
     icon: "😻",
     title: "Kukiss",
