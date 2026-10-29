@@ -177,6 +177,11 @@ export const songs: Song[] = [
     cover: "/music/swag.png",
   },
   {
+    title: "TODO CONTIGO",
+    file: "/music/TODO CONTIGO.mp3",
+    cover: "/music/swag.png",
+  },
+  {
     title: "WHAT MAKES YOU BEAUTIFUL",
     file: "/music/What Makes You Beautiful.mp3",
     cover: "/music/swag.png",
