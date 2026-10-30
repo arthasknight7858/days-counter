@@ -69,6 +69,10 @@ const albums: AlbumItem[] = [
       "juntos10.jpeg",
       "juntos11.jpeg",
       "juntos12.jpeg",
+      "juntos13.png",
+      "juntos14.png",
+      "juntos15.png",
+      "juntos16.png",
     ],
   },
   {
@@ -165,6 +169,10 @@ const albums: AlbumItem[] = [
       "sofi86.jpeg",  
       "sofi86.png",
       "sofi87.jpeg",
+      "sofi88.png",
+      "sofi89.png",
+      "sofi90.png",
+      "sofi91.png",
     ],
   },
   {
