@@ -70,6 +70,27 @@ export default function LettersAccordion() {
           </div>
         </div>
       )
+    },
+    {
+      id: "mes-4",
+      title: "Carta del Cuarto Mes",
+      date: "8 de Noviembre de 2026",
+      content: (
+        <div className="space-y-3 sm:space-y-4 text-purple-100/90 leading-relaxed font-serif text-base sm:text-lg">
+          <p>Sofi. Mi amor.</p>
+          <p>Ya son 4 meses que hemos estado juntos, 4 meses desde que comenzamos a compartir esta historia tan bonita que estamos construyendo. A veces me pongo a pensar en todo este tiempo y me doy cuenta de lo feliz que me hace tenerte en mi vida. Cada día que pasa encuentro una nueva razón para quererte todavía más, y aunque quizás para algunas personas cuatro meses no parezcan demasiado tiempo, para mí han significado muchísimo, porque cada momento contigo se ha convertido en algo que atesoro de corazón.</p>
+          <p>Me encantaría que pudiéramos vernos mucho más seguido, salir juntos, abrazarnos sin tener que preocuparnos por cuándo volveremos a vernos y hacer todas esas pequeñas cosas que tanto deseo compartir contigo. A veces me da un poquito de tristeza que no podamos disfrutar de tantos momentos juntos como quisiera, por eso valoro mucho cada oportunidad que tengo de estar a tu lado. Tengo muchísimas ganas de que llegue el momento en el que podamos compartir más tiempo juntos y crear todos esos recuerdos que todavía nos faltan.</p>
+          <p>Quiero que sepas que desde que llegaste a mi vida muchas cosas han cambiado para bien. Me haces feliz de maneras que quizás ni siquiera imaginas. Me encanta hablar contigo, saber de tu día, escucharte, hacerte reír y simplemente tenerte presente en mi vida. Incluso en los días más normales, saber que te tengo hace que todo sea un poquito mejor. No sabes lo bonito que es tener a alguien como tú con quien compartir mis pensamientos, mis sentimientos y tantas partes de mí.</p>
+          <p>También quiero recordarte lo maravillosa que eres. Eres una niña hermosa, con un corazón precioso y una forma de ser que me encanta. Me fascina tu sonrisa, tus ojitos, tu carita y cada pequeño detalle que te hace ser tú. Me encanta cómo eres conmigo, cómo me tratas y todas esas pequeñas cosas que haces y que consiguen hacerme sentir tan querido. Espero que nunca dudes de lo especial que eres para mí, porque de verdad no cambiaría tenerte en mi vida por nada.</p>
+          <p>Quiero seguir conociéndote cada día un poquito más, seguir aprendiendo de ti, acompañarte en tus días buenos y también en los difíciles, apoyarte cuando lo necesites y celebrar contigo cada cosa bonita que te pase. No quiero estar solamente en los momentos felices, también quiero ser esa persona con la que puedas contar cuando las cosas no salgan como esperabas. Quiero que siempre tengas presente que no estás sola, que tienes a alguien que te ama muchísimo y que desea verte feliz.</p>
+          <p>Gracias por estos cuatro meses tan bonitos, por tu cariño, por tu paciencia, por cada sonrisa que me has regalado y por permitirme formar parte de tu vida. No sé qué nos espera más adelante, pero sí sé que quiero seguir compartiendo mi vida contigo, seguir creando recuerdos y celebrar muchos más meses a tu lado. Espero que este sea solamente uno de los primeros capítulos de una historia que todavía tiene muchísimo por vivir.</p>
+          <p>Te amo muchísimo, mi vida. Feliz cuarto mes juntos, mi amor :3</p>
+          <p>Te amo con toda mi alma, hoy y siempre. ❤️</p>
+          <div className="pt-6 text-right font-bold text-pink-300 not-italic">
+            — Tu novio, Axel :3
+          </div>
+        </div>
+      )
     }
   ];
 
